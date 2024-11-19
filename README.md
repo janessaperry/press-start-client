@@ -1,4 +1,5 @@
-![Press Start Logo](./public/press-start-logo-tagline-dark.svg)
+![Press Start Logo](./public/press-start-logo-tagline-dark.svg#gh-dark-mode-only)
+![Press Start Logo](./public/press-start-logo-tagline-light.svg#gh-light-mode-only)
 
 ## Overview
 
