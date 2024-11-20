@@ -1,7 +1,7 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixins" as *;
 
-.main {
+.main--backdrop {
 	background: linear-gradient($primary-brand-700 25vh, transparent 25vh);
 	@include page-layout;
 }
@@ -112,6 +112,7 @@
 		border: $bw-2 solid $accent-callout;
 		background-color: transparent;
 		transition: background-color 0.2s;
+		color: $text-light-50;
 
 		& .btn__icon {
 			color: $accent-callout;
@@ -119,6 +120,18 @@
 
 		&:hover {
 			background-color: rgba($bg-light, 0.2);
+		}
+	}
+
+	&--warn {
+		border: $bw-2 solid $accent-warn;
+
+		& .btn__icon {
+			color: $accent-warn;
+		}
+
+		&:hover {
+			background-color: rgba($accent-warn, 0.2);
 		}
 	}
 }

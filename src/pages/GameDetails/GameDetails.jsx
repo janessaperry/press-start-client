@@ -3,7 +3,7 @@ import "./GameDetails.scss";
 
 function GameDetails() {
 	return (
-		<main className="main">
+		<main className="main main--backdrop">
 			<section className="game-details">
 				<div className="game-details__wrapper game-details__wrapper--cover-actions">
 					<div className="game-details__image-placeholder"></div>
