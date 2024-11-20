@@ -1,11 +1,11 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixins" as *;
 
-.library {
+.collection {
 	@include section-padding;
 }
 
-.library-games {
+.collection-games {
 	.game-card {
 		@include flex-col($spacing-16);
 
@@ -35,13 +35,13 @@
 			font-size: $fs-reg;
 		}
 
-		&__library-actions-wrapper {
+		&__collection-actions-wrapper {
 			border-top: $bw-1 solid rgba($primary-brand-50, 0.4);
 			padding-top: $spacing-16;
 			@include flex-col($spacing-16);
 		}
 
-		&__library-actions {
+		&__collection-actions {
 			@include flex-row($spacing-16);
 
 			& .btn--primary {

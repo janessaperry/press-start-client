@@ -1,9 +1,12 @@
-import { CaretDown, GameController, Heart, Trash } from "@phosphor-icons/react";
-import "./Library.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { CaretDown, GameController, Trash } from "@phosphor-icons/react";
+import "./Collection.scss";
+import { useParams } from "react-router-dom";
 
-function Library() {
-	//todo bring in from database
+function Collection() {
+	const { userId } = useParams();
+	const baseApiUrl = import.meta.env.VITE_API_URL;
 	const [isOpen, setIsOpen] = useState(null);
 	const [gameConsole, setGameConsole] = useState("Xbox X|S");
 	const [gameFormat, setGameFormat] = useState("Digital");
@@ -23,11 +26,22 @@ function Library() {
 		{ label: "Physical", value: "physical" },
 	];
 
+	const getGameCollection = async () => {
+		try {
+			const response = await axios.get(`${baseApiUrl}/collection/${userId}`);
+			console.log(response.data);
+		} catch (error) {}
+	};
+
+	useEffect(() => {
+		getGameCollection();
+	}, []);
+
 	return (
 		<main className="main">
-			<section className="library">
+			<section className="collection">
 				<div className="title-wrapper">
-					<h1 className="title">My Library</h1>
+					<h1 className="title">My Collection</h1>
 				</div>
 
 				<div className="filters">
@@ -49,7 +63,7 @@ function Library() {
 					</div>
 				</div>
 
-				<div className="library-games">
+				<div className="collection-games">
 					<div className="game-cards">
 						<div className="game-card">
 							<div className="game-card__info-wrapper">
@@ -88,7 +102,7 @@ function Library() {
 								</div>
 							</div>
 
-							<div className="game-card__library-actions-wrapper">
+							<div className="game-card__collection-actions-wrapper">
 								<div className="game-card__platforms">
 									<h4 className="game-card__platforms-title">
 										Owned / Wishlisted On
@@ -163,7 +177,7 @@ function Library() {
 									</div>
 								</div>
 
-								<div className="game-card__library-actions">
+								<div className="game-card__collection-actions">
 									<button className="btn btn--primary" type="button">
 										Want to play{" "}
 										<CaretDown className="btn__icon" weight="bold" />
@@ -181,4 +195,4 @@ function Library() {
 	);
 }
 
-export default Library;
+export default Collection;

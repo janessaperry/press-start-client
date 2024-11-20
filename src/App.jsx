@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import Library from "./pages/Library/Library";
+import Collection from "./pages/Collection/Collection";
 import Explore from "./pages/Explore/Explore";
 import GameDetails from "./pages/GameDetails/GameDetails";
 import "./App.scss";
@@ -14,10 +14,10 @@ function App() {
 			>
 				<Header />
 				<Routes>
-					<Route path="/" element={<Library />}></Route>
+					<Route path="/" element={<Collection />}></Route>
 					<Route path="/explore" element={<Explore />}></Route>
 					<Route path="/explore/:platform" element={<Explore />}></Route>
-					<Route path="/library" element={<Library />}></Route>
+					<Route path="/collection/:userId" element={<Collection />}></Route>
 					<Route path="/game-details/:gameId" element={<GameDetails />}></Route>
 					<Route path="/settings" element={<GameDetails />}></Route>
 				</Routes>
