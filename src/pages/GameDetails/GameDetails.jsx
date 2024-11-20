@@ -62,6 +62,104 @@ function GameDetails() {
 
 			<section className="similar-games">
 				<h2 className="similar-games__title">Similar Games</h2>
+
+				<div className="game-cards">
+					<div className="game-card">
+						<div className="game-card__cover-wrapper">
+							<div className="game-card__image-placeholder"></div>
+						</div>
+
+						<div className="game-card__content-wrapper">
+							<div className="game-card__title-wrapper">
+								<p className="game-card__title">Game name</p>
+								<div className="game-card__rating-chip">
+									<span className="game-card__rating-label">92</span>
+								</div>
+							</div>
+
+							<div className="game-card__platforms">
+								<h4 className="game-card__platforms-title">Platforms</h4>
+								<ul className="game-card__chips">
+									<li className="game-card__chip">Chip label</li>
+									<li className="game-card__chip">Chip label</li>
+									<li className="game-card__chip">Chip label</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div className="game-card">
+						<div className="game-card__cover-wrapper">
+							<div className="game-card__image-placeholder"></div>
+						</div>
+
+						<div className="game-card__content-wrapper">
+							<div className="game-card__title-wrapper">
+								<h3 className="game-card__title">Game name</h3>
+								<div className="game-card__rating-chip">
+									<span className="game-card__rating-label">92</span>
+								</div>
+							</div>
+
+							<div className="game-card__platforms">
+								<h4 className="game-card__platforms-title">Platforms</h4>
+								<ul className="game-card__chips">
+									<li className="game-card__chip">Chip label</li>
+									<li className="game-card__chip">Chip label</li>
+									<li className="game-card__chip">Chip label</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div className="game-card">
+						<div className="game-card__cover-wrapper">
+							<div className="game-card__image-placeholder"></div>
+						</div>
+
+						<div className="game-card__content-wrapper">
+							<div className="game-card__title-wrapper">
+								<h3 className="game-card__title">Game name</h3>
+								<div className="game-card__rating-chip">
+									<span className="game-card__rating-label">92</span>
+								</div>
+							</div>
+
+							<div className="game-card__platforms">
+								<h4 className="game-card__platforms-title">Platforms</h4>
+								<ul className="game-card__chips">
+									<li className="game-card__chip">Chip label</li>
+									<li className="game-card__chip">Chip label</li>
+									<li className="game-card__chip">Chip label</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div className="game-card">
+						<div className="game-card__cover-wrapper">
+							<div className="game-card__image-placeholder"></div>
+						</div>
+
+						<div className="game-card__content-wrapper">
+							<div className="game-card__title-wrapper">
+								<h3 className="game-card__title">Game name</h3>
+								<div className="game-card__rating-chip">
+									<span className="game-card__rating-label">92</span>
+								</div>
+							</div>
+
+							<div className="game-card__platforms">
+								<h4 className="game-card__platforms-title">Platforms</h4>
+								<ul className="game-card__chips">
+									<li className="game-card__chip">Chip label</li>
+									<li className="game-card__chip">Chip label</li>
+									<li className="game-card__chip">Chip label</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
 			</section>
 
 			<section className="franchise-games">

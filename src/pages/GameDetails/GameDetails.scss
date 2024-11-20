@@ -69,7 +69,7 @@
 
 	&__chip {
 		list-style: none;
-		background-color: rgba(255, 255, 255, 0.07);
+		background-color: rgba($bg-dark, 0.07);
 		border: $bw-1 solid #9c1386;
 		padding: $spacing-8 $spacing-12;
 		border-radius: $br-100;
@@ -78,11 +78,13 @@
 }
 
 .similar-games {
-	@include section-padding;
+	padding: $spacing-40 0;
+	// @include section-padding;
 }
 
 .franchise-games {
-	@include section-padding;
+	padding: $spacing-40 0;
+	// @include section-padding;
 }
 
 .btn {
@@ -118,5 +120,76 @@
 		&:hover {
 			background-color: rgba($bg-light, 0.2);
 		}
+	}
+}
+
+.game-cards {
+	@include flex-col($spacing-16);
+
+	@include tablet {
+		@include flex-row($spacing-16);
+		flex-wrap: wrap;
+	}
+}
+
+.game-card {
+	flex-basis: calc(50% - $spacing-8);
+	padding: $spacing-16;
+	background-color: $primary-brand-700;
+	border-radius: $br-24;
+	@include flex-row($spacing-16);
+
+	&__cover-wrapper {
+		flex-basis: 25%;
+	}
+
+	&__image-placeholder {
+		background-color: $bg-dark;
+		aspect-ratio: 3/4;
+		border-radius: $br-16;
+	}
+
+	&__content-wrapper {
+		flex-grow: 1;
+		@include flex-col($spacing-16);
+	}
+
+	&__title-wrapper {
+		@include flex-row($spacing-16);
+	}
+
+	&__title {
+		flex-grow: 1;
+		font-size: $fs-xl;
+	}
+
+	&__rating-chip {
+		border: $bw-2 solid $accent-bright;
+		border-radius: $br-100;
+		padding: $spacing-4;
+	}
+
+	&__rating-label {
+		color: $accent-bright;
+		font-size: $fs-lg;
+		font-weight: $fw-semibold;
+	}
+
+	&__platforms {
+		@include flex-col($spacing-8);
+	}
+
+	&__chips {
+		@include flex-row($spacing-8);
+		flex-wrap: wrap;
+	}
+
+	&__chip {
+		list-style: none;
+		background-color: rgba($bg-dark, 0.07);
+		border: $bw-1 solid $primary-brand-500;
+		padding: $spacing-8 $spacing-12;
+		border-radius: $br-100;
+		font-size: $fs-reg;
 	}
 }
