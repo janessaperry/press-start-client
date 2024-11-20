@@ -1,0 +1,52 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.explore-search {
+	background-color: $primary-brand-700;
+	@include flex-col($spacing-16);
+	@include section-padding;
+}
+
+.browse-platforms {
+	@include section-padding;
+
+	&__content-wrapper {
+		@include flex-col($spacing-16);
+	}
+
+	&__cards {
+		@include flex-row($spacing-16);
+		flex-wrap: wrap;
+
+		@include tablet {
+			flex-wrap: nowrap;
+		}
+	}
+
+	&__card-link {
+		padding: $spacing-24 $spacing-16;
+		flex-basis: calc(50% - $spacing-8);
+		border-radius: $br-16;
+		color: $text-light-50;
+		font-size: $fs-lg;
+		font-weight: $fw-semibold;
+		background-color: $primary-brand-500;
+
+		@include flex-row;
+		justify-content: center;
+		align-items: center;
+
+		@include tablet {
+			font-size: $fs-xl;
+			padding: $spacing-40 $spacing-24;
+		}
+	}
+}
+
+.browse-new-releases {
+	@include section-padding;
+}
+
+.browse-coming-soon {
+	@include section-padding;
+}
