@@ -1,0 +1,50 @@
+@use "./variables" as *;
+
+@mixin tablet {
+	@media (min-width: $tablet-breakpoint) {
+		@content;
+	}
+}
+
+@mixin desktop {
+	@media (min-width: $desktop-breakpoint) {
+		@content;
+	}
+}
+
+@mixin flex-row($gap: 0) {
+	display: flex;
+	flex-direction: row;
+	gap: $gap;
+}
+
+@mixin flex-col($gap: 0) {
+	display: flex;
+	flex-direction: column;
+	gap: $gap;
+}
+
+@mixin page-layout {
+	padding: $spacing-16;
+
+	@include tablet {
+		padding: $spacing-40;
+	}
+
+	@include desktop {
+		padding: 10vw;
+	}
+}
+
+//todo this is for inner padding for containers.. maybe section padding is better?
+@mixin section-padding {
+	padding: $spacing-40 $spacing-16;
+
+	@include tablet {
+		padding: $spacing-64 $spacing-40;
+	}
+}
+
+@mixin body-fonts {
+	//todo want to keep this? define more?
+}
