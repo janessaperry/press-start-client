@@ -1,0 +1,122 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.main {
+	background: linear-gradient($primary-brand-700 25vh, transparent 25vh);
+	@include page-layout;
+}
+
+.game-details {
+	min-height: 30vh;
+	padding: $spacing-16;
+	background-color: $primary-brand-500;
+	border-radius: $br-24;
+	@include flex-col($spacing-24);
+	align-items: center;
+
+	&__wrapper {
+		@include flex-col($spacing-16);
+
+		&--cover-actions {
+			align-items: center;
+		}
+	}
+
+	&__image-placeholder {
+		background-color: $primary-brand-700;
+		width: 180px;
+		aspect-ratio: 3/4;
+		border-radius: $br-16;
+	}
+
+	&__library-actions {
+		@include flex-row($spacing-16);
+	}
+
+	&__header-section {
+		@include flex-row($spacing-16);
+		align-items: center;
+	}
+
+	&__title-wrapper {
+		flex: 1 1 0;
+	}
+
+	&__rating-chip {
+		border: $bw-2 solid $accent-bright;
+		border-radius: $br-100;
+		padding: $spacing-8;
+	}
+
+	&__rating-label {
+		color: $accent-bright;
+		font-size: $fs-xl;
+		font-weight: $fw-black;
+	}
+
+	&__content-section {
+		@include flex-col($spacing-24);
+	}
+
+	&__content-wrapper {
+		@include flex-col($spacing-8);
+	}
+
+	&__chips {
+		@include flex-row($spacing-8);
+		flex-wrap: wrap;
+	}
+
+	&__chip {
+		list-style: none;
+		background-color: rgba(255, 255, 255, 0.07);
+		border: $bw-1 solid #9c1386;
+		padding: $spacing-8 $spacing-12;
+		border-radius: $br-100;
+		font-size: $fs-reg;
+	}
+}
+
+.similar-games {
+	@include section-padding;
+}
+
+.franchise-games {
+	@include section-padding;
+}
+
+.btn {
+	cursor: pointer;
+	border: $bw-1 solid $accent-callout;
+	border-radius: $br-100;
+	padding: $spacing-12 $spacing-16;
+	@include flex-row($spacing-8);
+	align-items: center;
+
+	&__icon {
+		color: inherit;
+	}
+
+	&--primary {
+		background-color: $accent-callout;
+		transition: background-color 0.2s;
+
+		&:hover {
+			background-color: #14a7ac;
+		}
+	}
+
+	&--outline {
+		border: $bw-2 solid $accent-callout;
+		background-color: transparent;
+		transition: background-color 0.2s;
+
+		& .btn__icon {
+			color: $accent-callout;
+		}
+
+		&:hover {
+			background-color: rgba($bg-light, 0.2);
+		}
+	}
+}
