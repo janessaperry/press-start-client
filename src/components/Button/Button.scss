@@ -1,0 +1,51 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.btn {
+	cursor: pointer;
+	border: $bw-1 solid $accent-callout;
+	border-radius: $br-100;
+	padding: $spacing-12 $spacing-16;
+	@include flex-row($spacing-8);
+	align-items: center;
+
+	&__icon {
+		color: inherit;
+	}
+
+	&--primary {
+		background-color: $accent-callout;
+		transition: background-color 0.2s;
+
+		&:hover {
+			background-color: #14a7ac;
+		}
+	}
+
+	&--outline {
+		border: $bw-2 solid $accent-callout;
+		background-color: transparent;
+		transition: background-color 0.2s;
+		color: $text-light-50;
+
+		& .btn__icon {
+			color: $accent-callout;
+		}
+
+		&:hover {
+			background-color: rgba($bg-light, 0.2);
+		}
+	}
+
+	&--warn {
+		border: $bw-2 solid $accent-warn;
+
+		& .btn__icon {
+			color: $accent-warn;
+		}
+
+		&:hover {
+			background-color: rgba($accent-warn, 0.2);
+		}
+	}
+}
