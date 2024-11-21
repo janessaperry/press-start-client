@@ -1,0 +1,96 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.game-card__link {
+	flex-basis: calc(50% - $spacing-8);
+
+	@include tablet {
+		flex-basis: calc(50% - $spacing-12);
+	}
+
+	&:hover {
+		text-decoration: none;
+	}
+
+	& > * {
+		text-decoration: inherit;
+	}
+}
+
+.game-card {
+	height: 100%;
+	padding: $spacing-16;
+	background-color: $primary-brand-700;
+	border-radius: $br-24;
+	@include flex-row($spacing-16);
+
+	@include tablet {
+		padding: $spacing-24;
+	}
+
+	&:hover {
+		background-color: $primary-brand-500;
+		transition: background-color 0.2s;
+	}
+
+	&__cover-wrapper {
+		flex-basis: 25%;
+	}
+
+	&__cover {
+		width: 100%;
+		background-color: $bg-dark;
+		aspect-ratio: 3/4;
+		border-radius: $br-16;
+	}
+
+	&__content-wrapper {
+		flex-basis: 75%;
+		@include flex-col($spacing-16);
+	}
+
+	&__title-wrapper {
+		@include flex-row($spacing-16);
+		align-items: flex-start;
+	}
+
+	&__title {
+		flex-grow: 1;
+		font-size: $fs-xl;
+		line-height: 32px;
+	}
+
+	&__rating-chip {
+		border: $bw-2 solid $accent-bright;
+		border-radius: $br-100;
+		padding: $spacing-4;
+		color: $accent-bright;
+		font-size: $fs-lg;
+		font-weight: $fw-semibold;
+
+		&--na {
+			color: rgba($text-light-50, 0.6);
+			border-color: rgba($text-light-50, 0.6);
+			font-weight: 400;
+			opacity: 0.2;
+		}
+	}
+
+	&__platforms {
+		@include flex-col($spacing-8);
+	}
+
+	&__chips {
+		@include flex-row($spacing-8);
+		flex-wrap: wrap;
+	}
+
+	&__chip {
+		list-style: none;
+		background-color: rgba($bg-dark, 0.07);
+		border: $bw-1 solid $primary-brand-500;
+		padding: $spacing-8 $spacing-12;
+		border-radius: $br-100;
+		font-size: $fs-reg;
+	}
+}
