@@ -2,6 +2,7 @@
 @use "../../styles/partials/mixins" as *;
 
 .game-card__link {
+	cursor: pointer;
 	flex-basis: calc(50% - $spacing-8);
 
 	@include tablet {
