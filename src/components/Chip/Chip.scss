@@ -1,0 +1,14 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.chip {
+	background-color: rgba($bg-dark, 0.07);
+	border: $bw-1 solid #9c1386;
+	padding: $spacing-8 $spacing-12;
+	border-radius: $br-100;
+	font-size: $fs-reg;
+
+	@include tablet {
+		padding: $spacing-8 $spacing-16;
+	}
+}
