@@ -14,19 +14,44 @@
 	@include flex-col($spacing-24);
 	align-items: center;
 
+	@include tablet {
+		padding: $spacing-24;
+		@include flex-row($spacing-24);
+		align-items: stretch;
+	}
+
+	@include desktop {
+		padding: $spacing-64;
+	}
+
 	&__wrapper {
 		@include flex-col($spacing-16);
 
 		&--cover-actions {
 			align-items: center;
+
+			@include tablet {
+				flex-basis: 25%;
+				align-items: stretch;
+			}
+		}
+
+		&--info {
+			@include tablet {
+				flex-basis: 75%;
+			}
 		}
 	}
 
-	&__image-placeholder {
+	&__cover {
 		background-color: $primary-brand-700;
 		width: 180px;
 		aspect-ratio: 3/4;
 		border-radius: $br-16;
+
+		@include tablet {
+			width: 100%;
+		}
 	}
 
 	&__library-actions {
@@ -61,20 +86,6 @@
 	&__content-wrapper {
 		@include flex-col($spacing-8);
 	}
-
-	&__chips {
-		@include flex-row($spacing-8);
-		flex-wrap: wrap;
-	}
-
-	&__chip {
-		list-style: none;
-		background-color: rgba($bg-dark, 0.07);
-		border: $bw-1 solid #9c1386;
-		padding: $spacing-8 $spacing-12;
-		border-radius: $br-100;
-		font-size: $fs-reg;
-	}
 }
 
 .similar-games {
@@ -85,124 +96,4 @@
 .franchise-games {
 	padding: $spacing-40 0;
 	// @include section-padding;
-}
-
-.btn {
-	cursor: pointer;
-	border: $bw-1 solid $accent-callout;
-	border-radius: $br-100;
-	padding: $spacing-12 $spacing-16;
-	@include flex-row($spacing-8);
-	align-items: center;
-
-	&__icon {
-		color: inherit;
-	}
-
-	&--primary {
-		background-color: $accent-callout;
-		transition: background-color 0.2s;
-
-		&:hover {
-			background-color: #14a7ac;
-		}
-	}
-
-	&--outline {
-		border: $bw-2 solid $accent-callout;
-		background-color: transparent;
-		transition: background-color 0.2s;
-		color: $text-light-50;
-
-		& .btn__icon {
-			color: $accent-callout;
-		}
-
-		&:hover {
-			background-color: rgba($bg-light, 0.2);
-		}
-	}
-
-	&--warn {
-		border: $bw-2 solid $accent-warn;
-
-		& .btn__icon {
-			color: $accent-warn;
-		}
-
-		&:hover {
-			background-color: rgba($accent-warn, 0.2);
-		}
-	}
-}
-
-.game-cards {
-	@include flex-col($spacing-16);
-
-	@include tablet {
-		@include flex-row($spacing-16);
-		flex-wrap: wrap;
-	}
-}
-
-.game-card {
-	flex-basis: calc(50% - $spacing-8);
-	padding: $spacing-16;
-	background-color: $primary-brand-700;
-	border-radius: $br-24;
-	@include flex-row($spacing-16);
-
-	&__cover-wrapper {
-		flex-basis: 25%;
-	}
-
-	&__image-placeholder {
-		background-color: $bg-dark;
-		aspect-ratio: 3/4;
-		border-radius: $br-16;
-	}
-
-	&__content-wrapper {
-		flex-grow: 1;
-		@include flex-col($spacing-16);
-	}
-
-	&__title-wrapper {
-		@include flex-row($spacing-16);
-	}
-
-	&__title {
-		flex-grow: 1;
-		font-size: $fs-xl;
-	}
-
-	&__rating-chip {
-		border: $bw-2 solid $accent-bright;
-		border-radius: $br-100;
-		padding: $spacing-4;
-	}
-
-	&__rating-label {
-		color: $accent-bright;
-		font-size: $fs-lg;
-		font-weight: $fw-semibold;
-	}
-
-	&__platforms {
-		@include flex-col($spacing-8);
-	}
-
-	&__chips {
-		@include flex-row($spacing-8);
-		flex-wrap: wrap;
-	}
-
-	&__chip {
-		list-style: none;
-		background-color: rgba($bg-dark, 0.07);
-		border: $bw-1 solid $primary-brand-500;
-		padding: $spacing-8 $spacing-12;
-		border-radius: $br-100;
-		font-size: $fs-reg;
-	}
 }

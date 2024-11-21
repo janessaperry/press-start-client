@@ -1,31 +1,65 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import { CaretDown, Heart } from "@phosphor-icons/react";
+import GameCardsList from "../../components/GameCardsList/GameCardsList.jsx";
+import ChipList from "../../components/ChipList/ChipList.jsx";
+import Button from "../../components/Button/Button.jsx";
 import "./GameDetails.scss";
 
 function GameDetails() {
+	const baseApiUrl = import.meta.env.VITE_API_URL;
+	const [currentGame, setCurrentGame] = useState([]);
+	const [similarGames, setSimilarGames] = useState([]);
+	const [franchises, setFranchises] = useState([]);
+	const { gameId } = useParams();
+
+	const getGameDetails = async () => {
+		try {
+			const response = await axios.get(`${baseApiUrl}/game-details/${gameId}`);
+			setCurrentGame(response.data);
+			setSimilarGames(response.data.similarGames);
+			window.scrollTo(0, 0);
+			console.log(response.data);
+		} catch (error) {}
+	};
+
+	useEffect(() => {
+		getGameDetails();
+	}, [gameId]);
+
 	return (
 		<main className="main main--backdrop">
 			<section className="game-details">
 				<div className="game-details__wrapper game-details__wrapper--cover-actions">
-					<div className="game-details__image-placeholder"></div>
+					<img className="game-details__cover" src={currentGame?.cover} />
 					<div className="game-details__library-actions">
-						<button className="btn btn--primary" type="button">
-							Add to Library <CaretDown className="btn__icon" weight="bold" />
-						</button>
-						<button className="btn btn--outline" type="button">
-							<Heart className="btn__icon" weight="bold" />
-						</button>
+						<Button
+							contextClasses={"btn--primary"}
+							iconLeft={<CaretDown className="btn__icon" weight="bold" />}
+							iconRight={<CaretDown className="btn__icon" weight="bold" />}
+							label="Add to Library"
+						/>
+						<Button
+							contextClasses={"btn--outline"}
+							iconLeft={<Heart className="btn__icon" weight="bold" />}
+						/>
 					</div>
 				</div>
 
 				<div className="game-details__wrapper game-details__wrapper--info">
 					<div className="game-details__header-section">
 						<div className="game-details__title-wrapper">
-							<h1 className="game-details__title">Game Title</h1>
-							<p className="game-details__meta">Developer • Release date</p>
+							<h1 className="game-details__title">{currentGame?.name}</h1>
+							<p className="game-details__meta">
+								{currentGame?.developer} • {currentGame?.releaseDate}
+							</p>
 						</div>
 
 						<div className="game-details__rating-chip">
-							<span className="game-details__rating-label">92</span>
+							<span className="game-details__rating-label">
+								{currentGame?.rating}
+							</span>
 						</div>
 					</div>
 
@@ -33,28 +67,18 @@ function GameDetails() {
 						<div className="game-details__content-wrapper">
 							<h2 className="game-details__content-title">Description</h2>
 							<p className="game-details__content-body">
-								Lorem ipsum dolor sit amet consectetur adipisicing elit.
-								Aliquid, magnam dolorum modi dolor quam facilis quasi voluptatem
-								id omnis corrupti maiores accusamus dolores veritatis ipsum
-								repudiandae totam dolore quo debitis.
+								{currentGame?.summary}
 							</p>
 						</div>
 
 						<div className="game-details__content-wrapper">
 							<h4 className="game-details__title">Platforms</h4>
-							<ul className="game-details__chips">
-								<li className="game-details__chip">Chip label</li>
-							</ul>
+							<ChipList chipData={currentGame?.platforms} />
 						</div>
 
 						<div className="game-details__content-wrapper">
 							<h4 className="game-details__content-title">Genres</h4>
-							<ul className="game-details__chips">
-								<li className="game-details__chip">Chip label</li>
-								<li className="game-details__chip">Chip label</li>
-								<li className="game-details__chip">Chip label</li>
-								<li className="game-details__chip">Chip label</li>
-							</ul>
+							<ChipList chipData={currentGame?.genres} />
 						</div>
 					</div>
 				</div>
@@ -62,104 +86,7 @@ function GameDetails() {
 
 			<section className="similar-games">
 				<h2 className="similar-games__title">Similar Games</h2>
-
-				<div className="game-cards">
-					<div className="game-card">
-						<div className="game-card__cover-wrapper">
-							<div className="game-card__image-placeholder"></div>
-						</div>
-
-						<div className="game-card__content-wrapper">
-							<div className="game-card__title-wrapper">
-								<p className="game-card__title">Game name</p>
-								<div className="game-card__rating-chip">
-									<span className="game-card__rating-label">92</span>
-								</div>
-							</div>
-
-							<div className="game-card__platforms">
-								<h4 className="game-card__platforms-title">Platforms</h4>
-								<ul className="game-card__chips">
-									<li className="game-card__chip">Chip label</li>
-									<li className="game-card__chip">Chip label</li>
-									<li className="game-card__chip">Chip label</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-
-					<div className="game-card">
-						<div className="game-card__cover-wrapper">
-							<div className="game-card__image-placeholder"></div>
-						</div>
-
-						<div className="game-card__content-wrapper">
-							<div className="game-card__title-wrapper">
-								<h3 className="game-card__title">Game name</h3>
-								<div className="game-card__rating-chip">
-									<span className="game-card__rating-label">92</span>
-								</div>
-							</div>
-
-							<div className="game-card__platforms">
-								<h4 className="game-card__platforms-title">Platforms</h4>
-								<ul className="game-card__chips">
-									<li className="game-card__chip">Chip label</li>
-									<li className="game-card__chip">Chip label</li>
-									<li className="game-card__chip">Chip label</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-
-					<div className="game-card">
-						<div className="game-card__cover-wrapper">
-							<div className="game-card__image-placeholder"></div>
-						</div>
-
-						<div className="game-card__content-wrapper">
-							<div className="game-card__title-wrapper">
-								<h3 className="game-card__title">Game name</h3>
-								<div className="game-card__rating-chip">
-									<span className="game-card__rating-label">92</span>
-								</div>
-							</div>
-
-							<div className="game-card__platforms">
-								<h4 className="game-card__platforms-title">Platforms</h4>
-								<ul className="game-card__chips">
-									<li className="game-card__chip">Chip label</li>
-									<li className="game-card__chip">Chip label</li>
-									<li className="game-card__chip">Chip label</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-
-					<div className="game-card">
-						<div className="game-card__cover-wrapper">
-							<div className="game-card__image-placeholder"></div>
-						</div>
-
-						<div className="game-card__content-wrapper">
-							<div className="game-card__title-wrapper">
-								<h3 className="game-card__title">Game name</h3>
-								<div className="game-card__rating-chip">
-									<span className="game-card__rating-label">92</span>
-								</div>
-							</div>
-
-							<div className="game-card__platforms">
-								<h4 className="game-card__platforms-title">Platforms</h4>
-								<ul className="game-card__chips">
-									<li className="game-card__chip">Chip label</li>
-									<li className="game-card__chip">Chip label</li>
-									<li className="game-card__chip">Chip label</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
+				<GameCardsList gamesList={similarGames} />
 			</section>
 
 			<section className="franchise-games">
