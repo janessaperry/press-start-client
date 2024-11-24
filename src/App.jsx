@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Collection from "./pages/Collection/Collection";
@@ -14,7 +14,8 @@ function App() {
 			>
 				<Header />
 				<Routes>
-					<Route path="/" element={<Collection />}></Route>
+					{/* <Route path="/" element={<Collection />}></Route> */}
+					<Route path="/" element={<Navigate to="/collection/1" />}></Route>
 					<Route path="/explore" element={<Explore />}></Route>
 					<Route path="/explore/:platform" element={<Explore />}></Route>
 					<Route path="/collection/:userId" element={<Collection />}></Route>

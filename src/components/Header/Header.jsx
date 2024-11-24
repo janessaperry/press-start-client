@@ -35,7 +35,7 @@ function Header() {
 						</NavLink>
 					</li>
 					<li className="header__nav-item">
-						<NavLink className="header__nav-link" to="/collection">
+						<NavLink className="header__nav-link" to="/collection/1">
 							My Collection
 						</NavLink>
 					</li>
