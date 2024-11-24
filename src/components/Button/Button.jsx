@@ -1,7 +1,7 @@
 import "./Button.scss";
 
 function Button({
-	callback,
+	handleBtnClick,
 	type,
 	iconLeft,
 	iconRight,
@@ -10,7 +10,7 @@ function Button({
 }) {
 	return (
 		<button
-			onClick={callback}
+			onClick={handleBtnClick}
 			type={!type ? "button" : type}
 			className={`btn ${contextClasses}`}
 		>
