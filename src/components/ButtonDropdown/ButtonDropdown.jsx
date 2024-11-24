@@ -29,7 +29,8 @@ function ButtonDropdown({ name, label, contextClasses, dropdownOptions }) {
 				className={`btn ${contextClasses}`}
 				name={name}
 			>
-				<span className="dropdown__label">{selectedOption}</span> <CaretDown />
+				<span className="dropdown__label">{selectedOption || "Select..."}</span>{" "}
+				<CaretDown />
 			</button>
 
 			<ul
@@ -40,14 +41,14 @@ function ButtonDropdown({ name, label, contextClasses, dropdownOptions }) {
 				{dropdownOptions?.map((option) => {
 					return (
 						<li
-							key={option.value}
+							key={option}
 							className="dropdown__option"
 							onClick={(e) => {
-								setSelectedOption(option.label);
+								setSelectedOption(option);
 								setIsOpen(false);
 							}}
 						>
-							{option.label}
+							{option}
 						</li>
 					);
 				})}
