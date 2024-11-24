@@ -5,86 +5,6 @@
 	@include section-padding;
 }
 
-.collection-games {
-	.game-card {
-		@include flex-col($spacing-16);
-
-		&__info-wrapper {
-			@include flex-row($spacing-16);
-		}
-
-		&__ownership-details {
-			@include flex-row($spacing-16);
-		}
-
-		&__genres {
-			@include flex-col($spacing-8);
-		}
-
-		&__chips {
-			@include flex-row($spacing-8);
-			flex-wrap: wrap;
-		}
-
-		&__chip {
-			list-style: none;
-			background-color: rgba($bg-dark, 0.07);
-			border: $bw-1 solid $primary-brand-500;
-			padding: $spacing-8 $spacing-12;
-			border-radius: $br-100;
-			font-size: $fs-reg;
-		}
-
-		&__collection-actions-wrapper {
-			border-top: $bw-1 solid rgba($primary-brand-50, 0.4);
-			padding-top: $spacing-16;
-			@include flex-col($spacing-16);
-		}
-
-		&__collection-actions {
-			@include flex-row($spacing-16);
-
-			& .btn--primary {
-				flex-grow: 1;
-			}
-		}
-	}
-}
-
-.dropdown {
-	position: relative;
-
-	&__options {
-		list-style: none;
-		background-color: $bg-light;
-		border-radius: $br-24;
-		font-size: $fs-reg;
-		color: $text-dark;
-		overflow: hidden;
-		position: absolute;
-		margin-top: $spacing-4;
-		max-width: 80%;
-		width: 100%;
-		z-index: 1;
-
-		&--hide {
-			display: none;
-		}
-
-		&--show {
-			display: block;
-		}
-	}
-
-	&__option {
-		padding: $spacing-12 $spacing-16;
-
-		&:hover {
-			background-color: $primary-brand-50;
-		}
-	}
-}
-
 .filter {
 	display: flex;
 	flex-direction: column;
@@ -95,9 +15,7 @@
 	}
 
 	&__options {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
+		@include flex-col($spacing-8);
 
 		&--checklist {
 			list-style: none;
