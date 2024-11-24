@@ -1,7 +1,13 @@
 import GameCard from "../GameCard/GameCard";
 import "./GameCardsList.scss";
 
-function GameCardsList({ gamesList, gameFormatOptions, gameStatusOptions }) {
+function GameCardsList({
+	gamesList,
+	gameFormatOptions,
+	gameStatusOptions,
+	handleDelete,
+	handleUpdate,
+}) {
 	return (
 		<div className="game-cards">
 			{gamesList.map((game) => {
@@ -12,6 +18,8 @@ function GameCardsList({ gamesList, gameFormatOptions, gameStatusOptions }) {
 						gameFormatOptions={gameFormatOptions}
 						gameStatusOptions={gameStatusOptions}
 						collectionData={game.collectionData}
+						handleDelete={handleDelete}
+						handleUpdate={handleUpdate}
 					/>
 				);
 			})}

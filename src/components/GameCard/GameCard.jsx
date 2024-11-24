@@ -11,6 +11,8 @@ function GameCard({
 	gameFormatOptions,
 	gameStatusOptions,
 	collectionData,
+	handleDelete,
+	handleUpdate,
 }) {
 	return (
 		<div className="game-card">
@@ -77,7 +79,9 @@ function GameCard({
 				<div className="game-card__collection-actions-wrapper">
 					<div className="game-card__platforms">
 						<h4 className="game-card__platforms-title">
-							Owned / Wishlisted On
+							{collectionData.gameStatus !== "Wishlist"
+								? "Owned on"
+								: "Wishlisted on"}
 						</h4>
 
 						<div className="game-card__ownership-details">
@@ -86,6 +90,9 @@ function GameCard({
 								label={collectionData.gameConsole}
 								contextClasses={"btn--outline btn--dropdown"}
 								dropdownOptions={game.platforms}
+								handleUpdate={(selectedOption) =>
+									handleUpdate(game.id, "gameConsole", selectedOption)
+								}
 							/>
 
 							<ButtonDropdown
@@ -93,6 +100,9 @@ function GameCard({
 								label={collectionData.gameFormat}
 								contextClasses={"btn--outline btn--dropdown"}
 								dropdownOptions={gameFormatOptions}
+								handleUpdate={(selectedOption) =>
+									handleUpdate(game.id, "gameFormat", selectedOption)
+								}
 							/>
 						</div>
 					</div>
@@ -103,9 +113,12 @@ function GameCard({
 							label={collectionData.gameStatus}
 							contextClasses={"btn--primary btn--dropdown"}
 							dropdownOptions={gameStatusOptions}
+							handleUpdate={(selectedOption) =>
+								handleUpdate(game.id, "gameStatus", selectedOption)
+							}
 						/>
 						<Button
-							handleBtnClick={() => console.log("DELETE")}
+							handleBtnClick={() => handleDelete(game.id)}
 							iconLeft={<Trash className="btn__icon" weight="bold" />}
 							contextClasses="btn--outline btn--warn"
 						/>

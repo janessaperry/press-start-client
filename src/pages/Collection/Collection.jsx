@@ -18,12 +18,34 @@ function Collection() {
 		"Wishlist",
 	];
 
+	const handleDelete = async (gameId) => {
+		try {
+			await axios.delete(`${baseApiUrl}/collection/${userId}/${gameId}`);
+			setGameCollection((prevGameCollection) =>
+				prevGameCollection.filter((game) => game.id !== gameId)
+			);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	const handleUpdate = async (gameId, updateCategory, updateContent) => {
+		try {
+			await axios.patch(`${baseApiUrl}/collection/${userId}/${gameId}`, {
+				[updateCategory]: updateContent,
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	const getGameCollection = async () => {
 		try {
 			const response = await axios.get(`${baseApiUrl}/collection/${userId}`);
-			console.log(response.data);
 			setGameCollection(response.data);
-		} catch (error) {}
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	useEffect(() => {
@@ -61,6 +83,8 @@ function Collection() {
 						gamesList={gameCollection}
 						gameFormatOptions={gameFormatOptions}
 						gameStatusOptions={gameStatusOptions}
+						handleDelete={handleDelete}
+						handleUpdate={handleUpdate}
 					/>
 				</div>
 			</section>

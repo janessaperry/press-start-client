@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { CaretDown } from "@phosphor-icons/react";
 import "./ButtonDropdown.scss";
 
-function ButtonDropdown({ name, label, contextClasses, dropdownOptions }) {
+function ButtonDropdown({
+	name,
+	label,
+	contextClasses,
+	dropdownOptions,
+	handleUpdate,
+}) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedOption, setSelectedOption] = useState(label);
 
@@ -24,7 +30,9 @@ function ButtonDropdown({ name, label, contextClasses, dropdownOptions }) {
 	return (
 		<div className="dropdown">
 			<button
-				onClick={() => setIsOpen((prevState) => !prevState)}
+				onClick={() => {
+					setIsOpen((prevState) => !prevState);
+				}}
 				type="button"
 				className={`btn ${contextClasses}`}
 				name={name}
@@ -43,9 +51,10 @@ function ButtonDropdown({ name, label, contextClasses, dropdownOptions }) {
 						<li
 							key={option}
 							className="dropdown__option"
-							onClick={(e) => {
+							onClick={() => {
 								setSelectedOption(option);
 								setIsOpen(false);
+								handleUpdate(option);
 							}}
 						>
 							{option}
