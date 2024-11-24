@@ -34,15 +34,15 @@
 	padding: $spacing-16;
 
 	@include tablet {
-		padding: $spacing-40;
+		padding: $spacing-24 $spacing-40;
 	}
 
 	@include desktop {
-		padding: 24px 8vw;
+		padding: $spacing-24 8vw;
 	}
 
 	@include large-desktop {
-		padding: 24px 16vw;
+		padding: $spacing-24 16vw;
 	}
 }
 
