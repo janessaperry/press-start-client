@@ -35,6 +35,36 @@
 		}
 	}
 
+	&__search-results-list {
+		list-style: none;
+		overflow: hidden;
+		background-color: $bg-light;
+		border-radius: $br-24;
+		margin-top: $spacing-8;
+		position: absolute;
+		width: 100%;
+		z-index: 1;
+	}
+
+	&__search-result-link {
+		@include flex-row($spacing-8);
+		align-items: center;
+		padding: $spacing-16;
+		color: $text-dark;
+
+		&:hover {
+			text-decoration: none;
+			background-color: $primary-brand-50;
+		}
+	}
+
+	&__search-result-cover {
+		width: 2.5rem;
+		aspect-ratio: 3/4;
+		object-fit: cover;
+		border-radius: $br-4;
+	}
+
 	&__nav-list {
 		list-style: none;
 		padding-inline-start: 0;
