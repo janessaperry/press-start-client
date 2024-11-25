@@ -3,10 +3,10 @@ import "./GameCardsList.scss";
 
 function GameCardsList({
 	gamesList,
-	gameFormatOptions,
 	gameStatusOptions,
-	handleDelete,
-	handleUpdate,
+	handleDeleteGame,
+	handlePatchUpdate,
+	setGameCollection,
 }) {
 	return (
 		<div className="game-cards">
@@ -15,11 +15,11 @@ function GameCardsList({
 					<GameCard
 						key={game.id}
 						game={game}
-						gameFormatOptions={gameFormatOptions}
 						gameStatusOptions={gameStatusOptions}
 						collectionData={game.collectionData}
-						handleDelete={handleDelete}
-						handleUpdate={handleUpdate}
+						handleDeleteGame={handleDeleteGame}
+						handlePatchUpdate={handlePatchUpdate}
+						setGameCollection={setGameCollection}
 					/>
 				);
 			})}

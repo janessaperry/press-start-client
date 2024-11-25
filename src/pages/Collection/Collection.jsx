@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 import GameCardsList from "../../components/GameCardsList/GameCardsList.jsx";
 import "./Collection.scss";
+import {
+	handlePatchUpdate,
+	handleDeleteGame,
+} from "../../utils/collectionDataUtils/collectionDataUtils.js";
 
 function Collection() {
-	const { userId } = useParams();
+	const accessToken = localStorage.getItem("accessToken");
 	const baseApiUrl = import.meta.env.VITE_API_URL;
 	const [gameCollection, setGameCollection] = useState([]);
 
-	const gameFormatOptions = ["Digital", "Physical"];
 	const gameStatusOptions = [
 		"Want to play",
 		"Playing",
@@ -18,30 +20,13 @@ function Collection() {
 		"Wishlist",
 	];
 
-	const handleDelete = async (gameId) => {
-		try {
-			await axios.delete(`${baseApiUrl}/collection/${userId}/${gameId}`);
-			setGameCollection((prevGameCollection) =>
-				prevGameCollection.filter((game) => game.id !== gameId)
-			);
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
-	const handleUpdate = async (gameId, updateCategory, updateContent) => {
-		try {
-			await axios.patch(`${baseApiUrl}/collection/${userId}/${gameId}`, {
-				[updateCategory]: updateContent,
-			});
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
 	const getGameCollection = async () => {
 		try {
-			const response = await axios.get(`${baseApiUrl}/collection/${userId}`);
+			const response = await axios.get(`${baseApiUrl}/collection`, {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			});
 			setGameCollection(response.data);
 		} catch (error) {
 			console.error(error);
@@ -81,10 +66,10 @@ function Collection() {
 				<div className="collection-games">
 					<GameCardsList
 						gamesList={gameCollection}
-						gameFormatOptions={gameFormatOptions}
 						gameStatusOptions={gameStatusOptions}
-						handleDelete={handleDelete}
-						handleUpdate={handleUpdate}
+						handleDeleteGame={handleDeleteGame}
+						handlePatchUpdate={handlePatchUpdate}
+						setGameCollection={setGameCollection}
 					/>
 				</div>
 			</section>

@@ -7,10 +7,15 @@ function ButtonDropdown({
 	label,
 	contextClasses,
 	dropdownOptions,
-	handleUpdate,
+	handlePatchUpdate,
+	handleDropdownChange,
 }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedOption, setSelectedOption] = useState(label);
+
+	useEffect(() => {
+		setSelectedOption(label);
+	}, [label]);
 
 	useEffect(() => {
 		const handleDropdown = (e) => {
@@ -54,7 +59,12 @@ function ButtonDropdown({
 							onClick={() => {
 								setSelectedOption(option);
 								setIsOpen(false);
-								handleUpdate(option);
+								{
+									handlePatchUpdate && handlePatchUpdate(option);
+								}
+								{
+									handleDropdownChange && handleDropdownChange(option);
+								}
 							}}
 						>
 							{option}

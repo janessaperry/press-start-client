@@ -8,12 +8,13 @@ import Button from "../Button/Button";
 
 function GameCard({
 	game,
-	gameFormatOptions,
 	gameStatusOptions,
 	collectionData,
-	handleDelete,
-	handleUpdate,
+	handleDeleteGame,
+	handlePatchUpdate,
+	setGameCollection,
 }) {
+	// console.log(game);
 	return (
 		<div className="game-card">
 			<Link className="game-card__link" to={`/game-details/${game.id}`}>
@@ -86,22 +87,20 @@ function GameCard({
 
 						<div className="game-card__ownership-details">
 							<ButtonDropdown
-								name="game-console"
-								label={collectionData.gameConsole}
+								label={collectionData.gameConsole || "Select console..."}
 								contextClasses={"btn--outline btn--dropdown"}
 								dropdownOptions={game.platforms}
-								handleUpdate={(selectedOption) =>
-									handleUpdate(game.id, "gameConsole", selectedOption)
+								handlePatchUpdate={(selectedOption) =>
+									handlePatchUpdate(game.id, "gameConsole", selectedOption)
 								}
 							/>
 
 							<ButtonDropdown
-								name="game-format"
-								label={collectionData.gameFormat}
+								label={collectionData.gameFormat || "Select format..."}
 								contextClasses={"btn--outline btn--dropdown"}
-								dropdownOptions={gameFormatOptions}
-								handleUpdate={(selectedOption) =>
-									handleUpdate(game.id, "gameFormat", selectedOption)
+								dropdownOptions={game.gameFormats}
+								handlePatchUpdate={(selectedOption) =>
+									handlePatchUpdate(game.id, "gameFormat", selectedOption)
 								}
 							/>
 						</div>
@@ -109,16 +108,20 @@ function GameCard({
 
 					<div className="game-card__collection-actions">
 						<ButtonDropdown
-							name="game-status"
-							label={collectionData.gameStatus}
+							label={collectionData.gameStatus || "Select status..."}
 							contextClasses={"btn--primary btn--dropdown"}
 							dropdownOptions={gameStatusOptions}
-							handleUpdate={(selectedOption) =>
-								handleUpdate(game.id, "gameStatus", selectedOption)
+							handlePatchUpdate={(selectedOption) =>
+								handlePatchUpdate(game.id, "gameStatus", selectedOption)
 							}
 						/>
 						<Button
-							handleBtnClick={() => handleDelete(game.id)}
+							handleBtnClick={() => {
+								handleDeleteGame(game.id);
+								setGameCollection((prevGameCollection) =>
+									prevGameCollection.filter((item) => item.id !== game.id)
+								);
+							}}
 							iconLeft={<Trash className="btn__icon" weight="bold" />}
 							contextClasses="btn--outline btn--warn"
 						/>

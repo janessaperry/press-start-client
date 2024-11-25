@@ -16,12 +16,12 @@
 
 	@include tablet {
 		padding: $spacing-24;
-		@include flex-row($spacing-24);
-		align-items: stretch;
 	}
 
 	@include desktop {
-		padding: $spacing-64;
+		padding: $spacing-40;
+		@include flex-row($spacing-40);
+		align-items: stretch;
 	}
 
 	&__wrapper {
@@ -31,13 +31,22 @@
 			align-items: center;
 
 			@include tablet {
-				flex-basis: 25%;
+				@include flex-row($spacing-24);
 				align-items: stretch;
+			}
+
+			@include desktop {
+				@include flex-col($spacing-24);
+				flex-basis: 40%;
+			}
+
+			@include large-desktop {
+				align-items: center;
 			}
 		}
 
 		&--info {
-			@include tablet {
+			@include desktop {
 				flex-basis: 75%;
 			}
 		}
@@ -50,12 +59,16 @@
 		border-radius: $br-16;
 
 		@include tablet {
+			width: 40%;
+		}
+
+		@include desktop {
 			width: 100%;
 		}
-	}
 
-	&__library-actions {
-		@include flex-row($spacing-16);
+		@include large-desktop {
+			width: 80%;
+		}
 	}
 
 	&__header-section {
@@ -71,12 +84,16 @@
 		border: $bw-2 solid $accent-bright;
 		border-radius: $br-100;
 		padding: $spacing-8;
-	}
-
-	&__rating-label {
 		color: $accent-bright;
 		font-size: $fs-xl;
 		font-weight: $fw-black;
+
+		&--na {
+			color: rgba($text-light-50, 0.6);
+			border-color: rgba($text-light-50, 0.6);
+			font-weight: 400;
+			opacity: 0.2;
+		}
 	}
 
 	&__content-section {
@@ -90,10 +107,34 @@
 
 .similar-games {
 	padding: $spacing-40 0;
-	// @include section-padding;
 }
 
 .franchise-games {
 	padding: $spacing-40 0;
-	// @include section-padding;
+}
+
+.collection-card {
+	background-color: $primary-brand-700;
+	padding: $spacing-16;
+	border-radius: $br-16;
+	@include flex-col($spacing-16);
+
+	&__description {
+		font-size: $fs-sm;
+		font-style: italic;
+		color: $text-light-300;
+	}
+
+	&__ownership-details {
+		@include flex-row($spacing-8);
+	}
+
+	&__actions {
+		@include flex-row($spacing-8);
+
+		& .btn--primary,
+		.dropdown {
+			flex-grow: 1;
+		}
+	}
 }
