@@ -14,7 +14,7 @@ function GameCard({
 	handlePatchUpdate,
 	setGameCollection,
 }) {
-	// console.log(game);
+	// console.log(game.releaseDate);
 	return (
 		<div className="game-card">
 			<Link className="game-card__link" to={`/game-details/${game.id}`}>
@@ -38,7 +38,7 @@ function GameCard({
 
 									<div
 										className={`game-card__time-to-beat ${
-											game.timeToBeat === "n/a" && "game-card__time-to-beat--na"
+											game.timeToBeat === "TBD" && "game-card__time-to-beat--na"
 										}`}
 									>
 										<GameController
@@ -46,7 +46,6 @@ function GameCard({
 											className="game-card__icon game-card__icon--controller"
 										/>
 										{game.timeToBeat}
-										{game.timeToBeat !== "n/a" && " hours"}
 									</div>
 								</div>
 							)}
