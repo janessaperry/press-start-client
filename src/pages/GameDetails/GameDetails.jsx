@@ -221,10 +221,12 @@ function GameDetails() {
 				</div>
 			</section>
 
-			<section className="similar-games">
-				<h2 className="similar-games__title">Similar Games</h2>
-				<GameCardsList gamesList={similarGames} />
-			</section>
+			{similarGames && (
+				<section className="similar-games">
+					<h2 className="similar-games__title">Similar Games</h2>
+					<GameCardsList gamesList={similarGames} />
+				</section>
+			)}
 
 			<section className="franchise-games">
 				<h2 className="franchise-games__title">Other Games in Franchise</h2>
