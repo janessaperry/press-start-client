@@ -1,5 +1,4 @@
 import axios from "axios";
-
 const baseApiUrl = import.meta.env.VITE_API_URL;
 const accessToken = localStorage.getItem("accessToken");
 
