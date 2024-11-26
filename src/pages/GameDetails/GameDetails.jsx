@@ -1,12 +1,12 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { Heart, PlusCircle, Trash } from "@phosphor-icons/react";
 import {
 	handleAddGameToCollection,
 	handlePatchUpdate,
 	handleDeleteGame,
 } from "../../utils/collectionDataUtils/collectionDataUtils.js";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Heart, PlusCircle, Trash } from "@phosphor-icons/react";
-import axios from "axios";
 import GameCardsList from "../../components/GameCardsList/GameCardsList.jsx";
 import ChipList from "../../components/ChipList/ChipList.jsx";
 import Button from "../../components/Button/Button.jsx";
