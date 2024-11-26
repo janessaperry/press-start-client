@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import ChipList from "../ChipList/ChipList";
 import { GameController, Trash } from "@phosphor-icons/react";
-import "./GameCard.scss";
+import ChipList from "../ChipList/ChipList";
 import ButtonDropdown from "../ButtonDropdown/ButtonDropdown";
 import Button from "../Button/Button";
+import "./GameCard.scss";
 
 function GameCard({
 	game,
@@ -12,9 +11,18 @@ function GameCard({
 	collectionData,
 	handleDeleteGame,
 	handlePatchUpdate,
-	setGameCollection,
+	getGameCollection,
+	page,
 }) {
-	// console.log(game.releaseDate);
+	const handleDeleteClick = async () => {
+		await handleDeleteGame(game.id);
+		await getGameCollection(page);
+	};
+
+	const handlePatchClick = async (field, selectedOption) => {
+		await handlePatchUpdate(game.id, field, selectedOption);
+	};
+
 	return (
 		<div className="game-card">
 			<Link className="game-card__link" to={`/game-details/${game.id}`}>
@@ -30,6 +38,7 @@ function GameCard({
 					<div className="game-card__header-wrapper">
 						<div className="game-card__title-wrapper">
 							<p className="game-card__title">{game.name}</p>
+
 							{collectionData && (
 								<div className="game-card__meta-wrapper">
 									<p className="game-card__meta">
@@ -38,7 +47,9 @@ function GameCard({
 
 									<div
 										className={`game-card__time-to-beat ${
-											game.timeToBeat === "TBD" && "game-card__time-to-beat--na"
+											game.timeToBeat === "TBD"
+												? "game-card__time-to-beat--na"
+												: ""
 										}`}
 									>
 										<GameController
@@ -52,7 +63,7 @@ function GameCard({
 						</div>
 						<div
 							className={`game-card__rating-chip ${
-								game.rating === "n/a" && "game-card__rating-chip--na"
+								game.rating === "n/a" ? "game-card__rating-chip--na" : ""
 							}`}
 						>
 							<span className="game-card__rating-label">{game.rating}</span>
@@ -86,20 +97,20 @@ function GameCard({
 
 						<div className="game-card__ownership-details">
 							<ButtonDropdown
-								label={collectionData.gameConsole || "Select console..."}
+								label={collectionData.gameConsole || "Console..."}
 								contextClasses={"btn--outline btn--dropdown"}
 								dropdownOptions={game.platforms}
 								handlePatchUpdate={(selectedOption) =>
-									handlePatchUpdate(game.id, "gameConsole", selectedOption)
+									handlePatchClick("gameConsole", selectedOption)
 								}
 							/>
 
 							<ButtonDropdown
-								label={collectionData.gameFormat || "Select format..."}
+								label={collectionData.gameFormat || "Format..."}
 								contextClasses={"btn--outline btn--dropdown"}
 								dropdownOptions={game.gameFormats}
 								handlePatchUpdate={(selectedOption) =>
-									handlePatchUpdate(game.id, "gameFormat", selectedOption)
+									handlePatchClick("gameFormat", selectedOption)
 								}
 							/>
 						</div>
@@ -107,20 +118,15 @@ function GameCard({
 
 					<div className="game-card__collection-actions">
 						<ButtonDropdown
-							label={collectionData.gameStatus || "Select status..."}
+							label={collectionData.gameStatus || "Collection status..."}
 							contextClasses={"btn--primary btn--dropdown"}
 							dropdownOptions={gameStatusOptions}
 							handlePatchUpdate={(selectedOption) =>
-								handlePatchUpdate(game.id, "gameStatus", selectedOption)
+								handlePatchClick("gameStatus", selectedOption)
 							}
 						/>
 						<Button
-							handleBtnClick={() => {
-								handleDeleteGame(game.id);
-								setGameCollection((prevGameCollection) =>
-									prevGameCollection.filter((item) => item.id !== game.id)
-								);
-							}}
+							handleBtnClick={handleDeleteClick}
 							iconLeft={<Trash className="btn__icon" weight="bold" />}
 							contextClasses="btn--outline btn--warn"
 						/>

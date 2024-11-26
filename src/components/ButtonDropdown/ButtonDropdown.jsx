@@ -13,14 +13,20 @@ function ButtonDropdown({
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedOption, setSelectedOption] = useState(label);
 
+	const handleDropdownSelection = (option) => {
+		setSelectedOption(option);
+		setIsOpen(false);
+		handlePatchUpdate && handlePatchUpdate(option);
+		handleDropdownChange && handleDropdownChange(option);
+	};
+
 	useEffect(() => {
 		setSelectedOption(label);
 	}, [label]);
 
 	useEffect(() => {
 		const handleDropdown = (e) => {
-			const classList = e.target.classList;
-			if (isOpen && !classList.value.includes("dropdown")) {
+			if (isOpen && !e.target.closest(".dropdown")) {
 				console.log("close");
 				setIsOpen(false);
 			}
@@ -56,16 +62,7 @@ function ButtonDropdown({
 						<li
 							key={option}
 							className="dropdown__option"
-							onClick={() => {
-								setSelectedOption(option);
-								setIsOpen(false);
-								{
-									handlePatchUpdate && handlePatchUpdate(option);
-								}
-								{
-									handleDropdownChange && handleDropdownChange(option);
-								}
-							}}
+							onClick={() => handleDropdownSelection(option)}
 						>
 							{option}
 						</li>

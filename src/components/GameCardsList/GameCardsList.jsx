@@ -6,11 +6,12 @@ function GameCardsList({
 	gameStatusOptions,
 	handleDeleteGame,
 	handlePatchUpdate,
-	setGameCollection,
+	getGameCollection,
+	page,
 }) {
 	return (
 		<div className="game-cards">
-			{gamesList.map((game) => {
+			{gamesList?.map((game) => {
 				return (
 					<GameCard
 						key={game.id}
@@ -19,7 +20,8 @@ function GameCardsList({
 						collectionData={game.collectionData}
 						handleDeleteGame={handleDeleteGame}
 						handlePatchUpdate={handlePatchUpdate}
-						setGameCollection={setGameCollection}
+						getGameCollection={getGameCollection}
+						page={page}
 					/>
 				);
 			})}
