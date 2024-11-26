@@ -20,13 +20,16 @@ function App() {
 			>
 				<Header />
 				<Routes>
-					{/* <Route path="/" element={<Collection />}></Route> */}
-					<Route path="/" element={<Navigate to="/collection" />}></Route>
+					<Route path="/" element={<Navigate to="/collection/1" />}></Route>
+					<Route
+						path="/collection"
+						element={<Navigate to="/collection/1" />}
+					></Route>
 					<Route path="/explore" element={<Explore />}></Route>
 					<Route path="/explore/:platform" element={<Explore />}></Route>
-					<Route path="/collection" element={<Collection />}></Route>
+					<Route path="/collection/:page" element={<Collection />}></Route>
 					<Route path="/game-details/:gameId" element={<GameDetails />}></Route>
-					<Route path="/settings" element={<GameDetails />}></Route>
+					{/* <Route path="/settings" element={<Settings />}></Route> */}
 				</Routes>
 				<Footer />
 			</BrowserRouter>
