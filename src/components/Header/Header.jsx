@@ -28,7 +28,7 @@ function Header() {
 					</li>
 					<li className="header__nav-item">
 						<NavLink className="header__nav-link" to="/collection">
-							My Collection
+							Collection
 						</NavLink>
 					</li>
 					<li className="header__nav-item">
