@@ -17,62 +17,11 @@
 		position: relative;
 	}
 
-	&__search-input {
-		width: 100%;
-		padding: $spacing-12 $spacing-16;
-		border-radius: $br-100;
-		border: $bw-1 solid $text-light-50;
-		outline: none;
-		background-color: rgba($bg-light, 0.04);
-		color: $text-light-50;
-
-		&::placeholder {
-			color: $text-light-300;
-		}
-
-		&:focus {
-			border-color: $accent-callout;
-		}
-	}
-
-	&__search-results-list {
-		list-style: none;
-		overflow: hidden;
-		background-color: $bg-light;
-		border-radius: $br-24;
-		margin-top: $spacing-8;
-		position: absolute;
-		width: 100%;
-		z-index: 1;
-	}
-
-	&__search-result-link {
-		@include flex-row($spacing-8);
-		align-items: center;
-		padding: $spacing-16;
-		color: $text-dark;
-
-		&:hover {
-			text-decoration: none;
-			background-color: $primary-brand-50;
-		}
-	}
-
-	&__search-result-cover {
-		width: 2.5rem;
-		aspect-ratio: 3/4;
-		object-fit: cover;
-		border-radius: $br-4;
-	}
-
 	&__nav-list {
 		list-style: none;
 		padding-inline-start: 0;
 		@include flex-row($spacing-16);
 		align-items: center;
-	}
-
-	&__nav-link {
 	}
 
 	&__nav-avatar {
