@@ -48,10 +48,18 @@
 
 //todo this is for inner padding for containers.. maybe section padding is better?
 @mixin section-padding {
-	padding: $spacing-40 $spacing-16;
+	padding: $spacing-40 0;
 
 	@include tablet {
-		padding: $spacing-64 $spacing-40;
+		padding: $spacing-64 0;
+	}
+}
+
+@mixin section-margin {
+	margin: $spacing-40 0;
+
+	@include tablet {
+		margin: $spacing-64 0;
 	}
 }
 

@@ -20,6 +20,7 @@ $fs-xl: 24px;
 //todo clean up color vars
 $primary-brand-50: #bfafbe;
 $primary-brand-100: #f5b9eb;
+$primary-brand-300: #91007a;
 $primary-brand-500: #730962;
 $primary-brand-700: #3d0233;
 $primary-brand-900: #2e0026;
@@ -35,6 +36,8 @@ $text-light-300: $primary-brand-50;
 $text-dark: $accent-dark-500;
 
 $bg-light: $text-light-50;
+$bg-neutral: #eadce9;
+$bg-neutral-hover: #d2b2cd;
 $bg-dark: $accent-dark-500;
 
 $info: $accent-callout;
@@ -57,7 +60,7 @@ $bw-2: 0.125rem;
 
 $br-2: 0.125rem;
 $br-4: 0.25rem;
-$br-8: 0.5rem;
+$br-8: 0.25rem;
 $br-16: 1rem;
 $br-24: 24px;
 $br-100: 100px;
