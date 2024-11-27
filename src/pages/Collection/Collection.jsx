@@ -11,18 +11,15 @@ import InputCheckbox from "../../components/InputCheckbox/InputCheckbox.jsx";
 import "./Collection.scss";
 
 function Collection() {
+	const { page } = useParams();
+	const navigate = useNavigate();
 	const accessToken = localStorage.getItem("accessToken");
 	const baseApiUrl = import.meta.env.VITE_API_URL;
-	const [collectionStats, setCollectionStats] = useState([]);
-	const [totalPages, setTotalPages] = useState([]);
-	const [gameCollection, setGameCollection] = useState([]);
-	const [allData, setAllData] = useState([]);
-	const [filters, setFilters] = useState({});
-	const [isLoading, setIsLoading] = useState(false);
-	const { page } = useParams();
 	const gamesPerPage = 10;
-
-	const navigate = useNavigate();
+	const [filters, setFilters] = useState({});
+	const [collectionData, setCollectionData] = useState([]);
+	const [totalPages, setTotalPages] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const gameStatusOptions = [
 		"Want to play",
@@ -35,12 +32,9 @@ function Collection() {
 	const handleInputChange = (e, category) => {
 		setFilters((prevFilters) => {
 			const newFilters = { ...prevFilters };
+			newFilters[category] ||= [];
 
 			if (e.target.checked) {
-				if (!newFilters[category]) {
-					newFilters[category] = [];
-				}
-
 				newFilters[category] = [...newFilters[category], e.target.value];
 			} else {
 				newFilters[category] = newFilters[category].filter(
@@ -50,6 +44,7 @@ function Collection() {
 
 			return newFilters;
 		});
+
 		if (page !== 1) {
 			navigate("/collection/1");
 		}
@@ -70,9 +65,7 @@ function Collection() {
 				}
 			);
 
-			setGameCollection(response?.data.gameData);
-			setCollectionStats(response?.data.collectionStats);
-			setAllData(response?.data);
+			setCollectionData(response?.data);
 
 			if (response.data.filteredCount) {
 				setTotalPages(
@@ -83,13 +76,16 @@ function Collection() {
 			}
 			setIsLoading(false);
 		} catch (error) {
-			console.error(error);
+			console.error("Error fetching game collection", error);
 		}
 	};
 
 	useEffect(() => {
-		getGameCollection();
-		window.scrollTo(0, 0);
+		const fetchCollectionData = async () => {
+			await getGameCollection();
+			window.scrollTo(0, 0);
+		};
+		fetchCollectionData();
 	}, [page, handleDeleteGame, filters]);
 
 	return (
@@ -102,12 +98,12 @@ function Collection() {
 				<div className="collection__stats">
 					<div className="stats__header">
 						<h2 className="stats__title">
-							Stats • {collectionStats?.totalGames} Games Total
+							Stats • {collectionData.collectionStats?.totalGames} Games Total
 						</h2>
 					</div>
 
 					<div className="stats__cards">
-						{collectionStats?.gameStatusStats?.map((stat) => {
+						{collectionData.collectionStats?.gameStatusStats.map((stat) => {
 							return (
 								<div key={stat.status} className="stats__card">
 									<h4 className="stats__card-title">{stat.status}</h4>
@@ -242,7 +238,7 @@ function Collection() {
 						</div>
 
 						<div className="filter">
-							<p className="filter__title">Console</p>
+							<p className="filter__title">Format</p>
 							<ul className="filter__options filter__options--checklist">
 								<li className="filter__option filter__option--checkbox">
 									<InputCheckbox
@@ -270,9 +266,7 @@ function Collection() {
 					</div>
 
 					<div className="collection-games">
-						<h3>
-							{allData?.filteredCount ? allData?.filteredCount : "No"} Results
-						</h3>
+						<h3>{collectionData?.filteredCount || "No"} Results</h3>
 
 						{isLoading ? (
 							<div className="loading-games">
@@ -281,7 +275,7 @@ function Collection() {
 							</div>
 						) : (
 							<GameCardsList
-								gamesList={gameCollection}
+								gamesList={collectionData?.gameData}
 								gameStatusOptions={gameStatusOptions}
 								handleDeleteGame={handleDeleteGame}
 								handlePatchUpdate={handlePatchUpdate}
