@@ -2,30 +2,59 @@
 @use "../../styles/partials/mixins" as *;
 
 .collection {
-	@include page-layout;
 	@include flex-col($spacing-40);
+	@include page-layout;
 
 	@include large-desktop {
 		padding: $spacing-64 16vw;
 	}
 
+	&__stats {
+		padding: $spacing-16;
+		border: $bw-1 solid rgba($primary-brand-50, 0.4);
+		border-radius: $br-16;
+		@include flex-col($spacing-8);
+	}
+
 	&__wrapper {
+		@include flex-col($spacing-40);
+
 		@include desktop {
 			@include flex-row($spacing-24);
 		}
 	}
 }
 
+.stats {
+	&__header {
+		@include flex-row($spacing-8);
+		align-items: center;
+	}
+
+	&__cards {
+		@include flex-row($spacing-8);
+	}
+
+	&__card {
+		flex: 1 1 0;
+		padding: $spacing-16;
+		background-color: rgba($primary-brand-50, 0.1);
+		border-radius: $br-8;
+		@include flex-col;
+		justify-content: space-between;
+	}
+}
+
 .filters {
+	@include flex-col($spacing-16);
+
 	@include desktop {
 		flex-basis: 25%;
 	}
 }
 
 .filter {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
+	@include flex-col($spacing-8);
 
 	&__title {
 		font-weight: 500;
@@ -54,41 +83,6 @@
 
 	@include desktop {
 		flex-basis: 75%;
-	}
-}
-
-.input-checkbox {
-	z-index: -1;
-	opacity: 0;
-	width: 0;
-	height: 0;
-
-	&__custom {
-		width: 18px;
-		height: 18px;
-		display: inline-block;
-		border: $bw-1 solid $primary-brand-50;
-		z-index: 1;
-		position: relative;
-		top: 0;
-		left: 0;
-		margin-right: $spacing-8;
-		border-radius: $br-4;
-		transition: background-color 0.2s, border-color 0.2s;
-	}
-
-	&:checked + .input-checkbox__custom {
-		&::after {
-			content: "";
-			width: 12px;
-			height: 12px;
-			display: inline-block;
-			position: absolute;
-			top: 2px;
-			left: 2px;
-			background-color: $accent-callout;
-			border-radius: $br-2;
-		}
 	}
 }
 
