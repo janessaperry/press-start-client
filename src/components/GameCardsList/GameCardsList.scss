@@ -10,3 +10,34 @@
 		align-items: stretch;
 	}
 }
+
+.no-games {
+	flex-grow: 1;
+	@include flex-col($spacing-16);
+	align-items: center;
+
+	&__title {
+		color: $primary-brand-50;
+	}
+
+	&__message {
+		color: $primary-brand-50;
+		font-style: italic;
+	}
+
+	&__icon {
+		font-size: 80px;
+		color: $primary-brand-50;
+		position: relative;
+		animation: floatUpAndDown 1s infinite ease-in-out alternate;
+	}
+}
+
+@keyframes floatUpAndDown {
+	from {
+		top: 1rem;
+	}
+	to {
+		top: 0;
+	}
+}

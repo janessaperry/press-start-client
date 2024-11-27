@@ -1,3 +1,4 @@
+import { Ghost } from "@phosphor-icons/react";
 import GameCard from "../GameCard/GameCard";
 import "./GameCardsList.scss";
 
@@ -11,8 +12,8 @@ function GameCardsList({
 }) {
 	return (
 		<div className="game-cards">
-			{gamesList?.map((game) => {
-				return (
+			{gamesList ? (
+				gamesList.map((game) => (
 					<GameCard
 						key={game.id}
 						game={game}
@@ -23,8 +24,16 @@ function GameCardsList({
 						getGameCollection={getGameCollection}
 						page={page}
 					/>
-				);
-			})}
+				))
+			) : (
+				<div className="no-games">
+					<h2 className="no-games__title">Whoops.. no games here</h2>
+					<p className="no-games__message">
+						Try adjusting your filters or adding games to your collection.
+					</p>
+					<Ghost className="no-games__icon" />
+				</div>
+			)}
 		</div>
 	);
 }
