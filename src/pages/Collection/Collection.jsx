@@ -55,7 +55,6 @@ function Collection() {
 
 	const getGameCollection = async () => {
 		try {
-			console.log(filters);
 			const response = await axios.post(
 				`${baseApiUrl}/collection/page/${page}`,
 				{
@@ -67,12 +66,11 @@ function Collection() {
 					},
 				}
 			);
-			// console.log(response.data.gameData);
+
 			setGameCollection(response?.data.gameData);
 			setCollectionStats(response?.data.collectionStats);
 			setAllData(response?.data);
 
-			//todo this throws error if no results
 			if (response.data.filteredCount) {
 				setTotalPages(
 					Array(Math.ceil(response.data.filteredCount / gamesPerPage))

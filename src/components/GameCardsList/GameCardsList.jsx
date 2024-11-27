@@ -12,7 +12,7 @@ function GameCardsList({
 }) {
 	return (
 		<div className="game-cards">
-			{gamesList ? (
+			{gamesList && gamesList.length > 0 ? (
 				gamesList.map((game) => (
 					<GameCard
 						key={game.id}
