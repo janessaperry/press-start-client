@@ -1,16 +1,43 @@
 import { Link } from "react-router-dom";
 import "./Explore.scss";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Sword } from "@phosphor-icons/react";
+
+import GameCardsList from "../../components/GameCardsList/GameCardsList";
+import SearchGames from "../../components/SearchGames/SearchGames";
 
 function Explore() {
+	const baseUrl = import.meta.env.VITE_API_URL;
+	const [newReleases, setNewReleases] = useState([]);
+	const [comingSoon, setComingSoon] = useState([]);
+	const [isLoading, setIsLoading] = useState([false]);
+
+	const getGames = async () => {
+		setIsLoading(true);
+		try {
+			const response = await axios.get(`${baseUrl}/explore`);
+			console.log(response.data);
+			setNewReleases(response.data.newReleaseGames);
+			setComingSoon(response.data.comingSoonGames);
+			setIsLoading(false);
+		} catch (error) {
+			console.error("Error fetching games", error);
+		}
+	};
+
+	useEffect(() => {
+		getGames();
+	}, []);
 	return (
 		<main className="main">
-			<section className="explore-search">
-				<h1 className="explore-search__title">Find your next game</h1>
-				<input
-					className="explore-search__input"
-					type="text"
-					placeholder="Search games..."
-				/>
+			<section className="explore">
+				<div className="explore__content-wrapper">
+					<h1 className="explore__title">Find your next game</h1>
+					<div className="explore__search-wrapper">
+						<SearchGames contextClasses="search__input--large" />
+					</div>
+				</div>
 			</section>
 
 			<section className="browse-platforms">
@@ -39,13 +66,28 @@ function Explore() {
 				</div>
 			</section>
 
-			<section className="browse-new-releases">
-				<h2 className="browse-new-releases__title">New Releases</h2>
-			</section>
+			{isLoading ? (
+				<div className="loading-games">
+					<h2 className="loading-games__title">Gearing up...</h2>
+					<Sword className="loading-games__icon" />
+				</div>
+			) : (
+				<>
+					<section className="browse-new-releases">
+						<div className="browse-new-releases__content-wrapper">
+							<h2 className="browse-new-releases__title">New Releases</h2>
+							{newReleases && <GameCardsList gamesList={newReleases} />}
+						</div>
+					</section>
 
-			<section className="browse-coming-soon">
-				<h2 className="browse-coming-soon__title">Coming Soon</h2>
-			</section>
+					<section className="browse-coming-soon">
+						<div className="browse-coming-soon__content-wrapper">
+							<h2 className="browse-coming-soon__title">Coming Soon</h2>
+							{comingSoon && <GameCardsList gamesList={comingSoon} />}
+						</div>
+					</section>
+				</>
+			)}
 		</main>
 	);
 }

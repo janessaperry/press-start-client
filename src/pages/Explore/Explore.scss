@@ -1,17 +1,33 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixins" as *;
 
-.explore-search {
+.explore {
 	background-color: $primary-brand-700;
 	@include flex-col($spacing-16);
-	@include section-padding;
+	@include page-layout;
+
+	&__content-wrapper {
+		padding: $spacing-64 0;
+		@include flex-col($spacing-24);
+		align-items: center;
+	}
+
+	&__search-wrapper {
+		width: 100%;
+
+		@include tablet {
+			max-width: 80%;
+			width: 100%;
+		}
+	}
 }
 
 .browse-platforms {
-	@include section-padding;
+	@include page-layout;
+	@include section-margin;
 
 	&__content-wrapper {
-		@include flex-col($spacing-16);
+		@include flex-col($spacing-24);
 	}
 
 	&__cards {
@@ -40,13 +56,32 @@
 			font-size: $fs-xl;
 			padding: $spacing-40 $spacing-24;
 		}
+
+		&:hover {
+			text-decoration: none;
+			background: linear-gradient(
+				rgba($primary-brand-300, 100%) 0%,
+				$primary-brand-500 100%
+			);
+			box-shadow: 0px 1px 0px 0px rgba($primary-brand-100, 0.4) inset;
+		}
 	}
 }
 
 .browse-new-releases {
-	@include section-padding;
+	@include page-layout;
+	@include section-margin;
+
+	&__content-wrapper {
+		@include flex-col($spacing-24);
+	}
 }
 
 .browse-coming-soon {
-	@include section-padding;
+	@include page-layout;
+	@include section-margin;
+
+	&__content-wrapper {
+		@include flex-col($spacing-24);
+	}
 }
