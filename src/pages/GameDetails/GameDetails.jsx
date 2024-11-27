@@ -81,10 +81,7 @@ function GameDetails() {
 
 						<div className="collection-card__ownership-details">
 							<ButtonDropdown
-								label={
-									currentGame?.collectionData?.gameConsole ||
-									"Select console..."
-								}
+								label={currentGame?.collectionData?.gameConsole || "Console..."}
 								contextClasses={"btn--outline btn--dropdown"}
 								dropdownOptions={currentGame?.platforms}
 								handlePatchUpdate={
@@ -103,9 +100,7 @@ function GameDetails() {
 							/>
 
 							<ButtonDropdown
-								label={
-									currentGame?.collectionData?.gameFormat || "Select format..."
-								}
+								label={currentGame?.collectionData?.gameFormat || "Format..."}
 								contextClasses={"btn--outline btn--dropdown"}
 								dropdownOptions={currentGame?.gameFormats}
 								handlePatchUpdate={
