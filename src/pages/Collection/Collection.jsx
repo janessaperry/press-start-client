@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
 	handlePatchUpdate,
 	handleDeleteGame,
 } from "../../utils/collectionDataUtils/collectionDataUtils.js";
+import { Sword } from "@phosphor-icons/react";
 import GameCardsList from "../../components/GameCardsList/GameCardsList.jsx";
 import InputCheckbox from "../../components/InputCheckbox/InputCheckbox.jsx";
 import "./Collection.scss";
@@ -16,9 +17,10 @@ function Collection() {
 	const [totalPages, setTotalPages] = useState([]);
 	const [gameCollection, setGameCollection] = useState([]);
 	const [allData, setAllData] = useState([]);
+	const [filters, setFilters] = useState({});
+	const [isLoading, setIsLoading] = useState(false);
 	const { page } = useParams();
 	const gamesPerPage = 10;
-	const [filters, setFilters] = useState({});
 
 	const navigate = useNavigate();
 
@@ -54,6 +56,7 @@ function Collection() {
 	};
 
 	const getGameCollection = async () => {
+		setIsLoading(true);
 		try {
 			const response = await axios.post(
 				`${baseApiUrl}/collection/page/${page}`,
@@ -78,6 +81,7 @@ function Collection() {
 						.map((page, index) => index + 1)
 				);
 			}
+			setIsLoading(false);
 		} catch (error) {
 			console.error(error);
 		}
@@ -269,14 +273,22 @@ function Collection() {
 						<h3>
 							{allData?.filteredCount ? allData?.filteredCount : "No"} Results
 						</h3>
-						<GameCardsList
-							gamesList={gameCollection}
-							gameStatusOptions={gameStatusOptions}
-							handleDeleteGame={handleDeleteGame}
-							handlePatchUpdate={handlePatchUpdate}
-							getGameCollection={getGameCollection}
-							page={page}
-						/>
+
+						{isLoading ? (
+							<div className="loading-games">
+								<h2 className="loading-games__title">Gearing up...</h2>
+								<Sword className="loading-games__icon" />
+							</div>
+						) : (
+							<GameCardsList
+								gamesList={gameCollection}
+								gameStatusOptions={gameStatusOptions}
+								handleDeleteGame={handleDeleteGame}
+								handlePatchUpdate={handlePatchUpdate}
+								getGameCollection={getGameCollection}
+								page={page}
+							/>
+						)}
 
 						<div className="pagination">
 							{totalPages?.map((page) => {

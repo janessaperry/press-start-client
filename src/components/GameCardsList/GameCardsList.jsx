@@ -27,7 +27,9 @@ function GameCardsList({
 				))
 			) : (
 				<div className="no-games">
-					<h2 className="no-games__title">Whoops.. no games here</h2>
+					<h2 className="no-games__title">
+						Achievement unlocked! No results found.
+					</h2>
 					<p className="no-games__message">
 						Try adjusting your filters or adding games to your collection.
 					</p>

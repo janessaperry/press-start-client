@@ -110,3 +110,32 @@
 		}
 	}
 }
+
+.loading-games {
+	flex-grow: 1;
+	@include flex-col($spacing-16);
+	align-items: center;
+
+	&__title {
+		color: $primary-brand-50;
+	}
+
+	&__icon {
+		font-size: 80px;
+		color: $primary-brand-50;
+		position: relative;
+		animation: rotateLeftAndRight 2s infinite ease-in-out alternate;
+		transform-origin: bottom left;
+		left: 2.5rem;
+		top: 1.25rem;
+	}
+}
+
+@keyframes rotateLeftAndRight {
+	from {
+		transform: rotate(-60deg);
+	}
+	to {
+		transform: rotate(-15deg);
+	}
+}

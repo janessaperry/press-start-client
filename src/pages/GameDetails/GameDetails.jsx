@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Heart, PlusCircle, Trash } from "@phosphor-icons/react";
+import { Heart, PlusCircle, Trash, Sword } from "@phosphor-icons/react";
 import {
 	handleAddGameToCollection,
 	handlePatchUpdate,
@@ -20,6 +20,8 @@ function GameDetails() {
 	const [similarGames, setSimilarGames] = useState([]);
 	const [franchises, setFranchises] = useState([]);
 	const [collectionOptions, setCollectionOptions] = useState({});
+	const [isLoading, setIsLoading] = useState(false);
+
 	const { gameId } = useParams();
 
 	const gameStatusOptions = [
@@ -39,6 +41,7 @@ function GameDetails() {
 	};
 
 	const getGameDetails = async () => {
+		setIsLoading(true);
 		try {
 			const response = await axios.get(`${baseApiUrl}/game-details/${gameId}`, {
 				headers: {
@@ -49,7 +52,10 @@ function GameDetails() {
 			setSimilarGames(response.data.similarGames);
 			window.scrollTo(0, 0);
 			console.log(response.data);
-		} catch (error) {}
+			setIsLoading(false);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	useEffect(() => {
@@ -223,8 +229,17 @@ function GameDetails() {
 
 			{similarGames && (
 				<section className="similar-games">
-					<h2 className="similar-games__title">Similar Games</h2>
-					<GameCardsList gamesList={similarGames} />
+					{isLoading ? (
+						<div className="loading-games">
+							<h2 className="loading-games__title">Gearing up...</h2>
+							<Sword className="loading-games__icon" />
+						</div>
+					) : (
+						<>
+							<h2 className="similar-games__title">Similar Games</h2>
+							<GameCardsList gamesList={similarGames} />
+						</>
+					)}
 				</section>
 			)}
 
