@@ -106,11 +106,13 @@
 }
 
 .similar-games {
-	padding: $spacing-40 0;
+	@include flex-col($spacing-24);
+	@include section-margin;
 }
 
 .franchise-games {
-	padding: $spacing-40 0;
+	@include flex-col($spacing-24);
+	@include section-margin;
 }
 
 .collection-card {
