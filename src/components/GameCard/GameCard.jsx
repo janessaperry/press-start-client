@@ -8,12 +8,14 @@ import "./GameCard.scss";
 function GameCard({
 	game,
 	gameStatusOptions,
-	collectionData,
+	// collectionData,
 	handleDeleteGame,
 	handlePatchUpdate,
 	getGameCollection,
 	page,
 }) {
+	const collectionData = game.collectionData;
+
 	const handleDeleteClick = async () => {
 		await handleDeleteGame(game.id);
 		await getGameCollection(page);
