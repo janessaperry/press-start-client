@@ -3,6 +3,7 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Collection from "./pages/Collection/Collection";
 import Explore from "./pages/Explore/Explore";
+import Results from "./pages/Results/Results";
 import GameDetails from "./pages/GameDetails/GameDetails";
 import "./App.scss";
 
@@ -26,7 +27,7 @@ function App() {
 						element={<Navigate to="/collection/1" />}
 					></Route>
 					<Route path="/explore" element={<Explore />}></Route>
-					<Route path="/explore/:platform" element={<Explore />}></Route>
+					<Route path="/explore/:platform/:page" element={<Results />}></Route>
 					<Route path="/collection/:page" element={<Collection />}></Route>
 					<Route path="/game-details/:gameId" element={<GameDetails />}></Route>
 					{/* <Route path="/settings" element={<Settings />}></Route> */}
