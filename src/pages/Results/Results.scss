@@ -1,0 +1,58 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.results {
+	@include flex-col($spacing-40);
+	@include page-layout;
+
+	@include large-desktop {
+		padding: $spacing-64 16vw;
+	}
+
+	&__wrapper {
+		@include flex-col($spacing-24);
+
+		@include desktop {
+			@include flex-row($spacing-24);
+		}
+	}
+
+	&__filters {
+		@include desktop {
+			flex-basis: 25%;
+		}
+	}
+
+	&__games-section {
+		@include flex-col($spacing-40);
+
+		@include desktop {
+			max-width: 75%;
+		}
+	}
+
+	&__content-wrapper {
+		@include flex-col($spacing-24);
+	}
+}
+
+.pagination {
+	@include flex-row($spacing-8);
+	padding-bottom: 8px;
+
+	&--overflow {
+		overflow-x: auto;
+		justify-content: flex-start;
+	}
+
+	&::-webkit-scrollbar {
+		display: inline-block;
+		height: 0.5rem;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		cursor: pointer;
+		background-color: rgba($accent-callout, 0.4);
+		border-radius: $br-100;
+	}
+}
