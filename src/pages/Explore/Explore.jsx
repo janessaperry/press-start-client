@@ -17,7 +17,6 @@ function Explore() {
 		setIsLoading(true);
 		try {
 			const response = await axios.get(`${baseUrl}/explore`);
-			console.log(response.data);
 			setNewReleases(response.data.newReleaseGames);
 			setComingSoon(response.data.comingSoonGames);
 			setIsLoading(false);
@@ -29,6 +28,7 @@ function Explore() {
 	useEffect(() => {
 		getGames();
 	}, []);
+
 	return (
 		<main className="main">
 			<section className="explore">
@@ -44,22 +44,22 @@ function Explore() {
 				<div className="browse-platforms__content-wrapper">
 					<h2 className="browse-platforms__title">Browse by Platform</h2>
 					<div className="browse-platforms__cards">
-						<Link className="browse-platforms__card-link" to={`/explore/xbox`}>
+						<Link className="browse-platforms__card-link" to="/explore/xbox/1">
 							<div className="browse-platforms__card">XBOX</div>
 						</Link>
 						<Link
 							className="browse-platforms__card-link"
-							to="/explore/playstation"
+							to="/explore/playstation/1"
 						>
 							<div className="browse-platforms__card">PlayStation</div>
 						</Link>
 						<Link
 							className="browse-platforms__card-link"
-							to="/explore/nintendo"
+							to="/explore/nintendo/1"
 						>
 							<div className="browse-platforms__card">Nintendo</div>
 						</Link>
-						<Link className="browse-platforms__card-link" to="/explore/pc">
+						<Link className="browse-platforms__card-link" to="/explore/pc/1">
 							<div className="browse-platforms__card">PC</div>
 						</Link>
 					</div>
