@@ -1,4 +1,4 @@
-import { useState, useEffect, useDeferredValue } from "react";
+import { useState, useEffect, useDeferredValue, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./SearchGames.scss";
@@ -8,6 +8,8 @@ function SearchGames({ contextClasses }) {
 	const [queryValue, setQueryValue] = useState("");
 	const deferredQueryString = useDeferredValue(queryValue);
 	const [searchResults, setSearchResults] = useState([]);
+	const searchResultsList = useRef(null);
+	const [isOpen, setIsOpen] = useState(false);
 
 	const getSearchResults = async (queryString) => {
 		try {
@@ -15,6 +17,7 @@ function SearchGames({ contextClasses }) {
 				query: queryString,
 			});
 			setSearchResults(response.data);
+			setIsOpen(true);
 		} catch (error) {
 			console.error("Error getting search results", error);
 		}
@@ -31,6 +34,20 @@ function SearchGames({ contextClasses }) {
 		}
 	}, [deferredQueryString]);
 
+	useEffect(() => {
+		const handleSearchResultsList = (e) => {
+			if (isOpen && !searchResultsList.current?.contains(e.target)) {
+				setQueryValue("");
+				setIsOpen(false);
+			}
+		};
+
+		document.addEventListener("mousedown", handleSearchResultsList);
+		return () => {
+			document.removeEventListener("mousedown", handleSearchResultsList);
+		};
+	}, [isOpen]);
+
 	return (
 		<div className="search__wrapper">
 			<input
@@ -40,8 +57,9 @@ function SearchGames({ contextClasses }) {
 				onChange={(e) => setQueryValue(e.target.value)}
 				value={queryValue}
 			/>
+
 			{searchResults.length > 0 && (
-				<ul className="search__results-list">
+				<ul className="search__results-list" ref={searchResultsList}>
 					{searchResults?.map((result) => {
 						return (
 							<li key={result.id} className="search__result-item">
