@@ -152,7 +152,6 @@ function Results() {
 								</div>
 
 								<div className="pagination">
-									{console.log(totalPages.length)}
 									{totalPages.length <= 5 ? (
 										totalPages.map((page) => {
 											return (
