@@ -18,7 +18,6 @@ function GameDetails() {
 	const accessToken = localStorage.getItem("accessToken");
 	const [currentGame, setCurrentGame] = useState([]);
 	const [similarGames, setSimilarGames] = useState([]);
-	const [franchises, setFranchises] = useState([]);
 	const [collectionOptions, setCollectionOptions] = useState({});
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -36,7 +35,6 @@ function GameDetails() {
 		setCollectionOptions((prevCollectionOptions) => ({
 			...prevCollectionOptions,
 			[field]: selectedOption,
-			gameStatus: "Want to play", //todo this isnt doing anything cause add to collection is not dropdown
 		}));
 	};
 
@@ -237,10 +235,6 @@ function GameDetails() {
 					)}
 				</section>
 			)}
-
-			<section className="franchise-games">
-				<h2 className="franchise-games__title">Other Games in Franchise</h2>
-			</section>
 		</main>
 	);
 }

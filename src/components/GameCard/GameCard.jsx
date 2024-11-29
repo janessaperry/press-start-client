@@ -8,7 +8,6 @@ import "./GameCard.scss";
 function GameCard({
 	game,
 	gameStatusOptions,
-	// collectionData,
 	handleDeleteGame,
 	handlePatchUpdate,
 	getGameCollection,
