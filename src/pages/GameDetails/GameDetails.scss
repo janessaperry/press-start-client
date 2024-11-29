@@ -26,6 +26,7 @@
 
 	&__wrapper {
 		@include flex-col($spacing-16);
+		width: 100%;
 
 		&--cover-actions {
 			align-items: center;

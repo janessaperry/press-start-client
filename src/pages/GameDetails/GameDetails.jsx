@@ -49,7 +49,6 @@ function GameDetails() {
 			setCurrentGame(response.data);
 			setSimilarGames(response.data.similarGames);
 			window.scrollTo(0, 0);
-			console.log(response.data);
 			setIsLoading(false);
 		} catch (error) {
 			console.error(error);
