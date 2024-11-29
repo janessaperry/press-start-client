@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CaretDown } from "@phosphor-icons/react";
 import "./ButtonDropdown.scss";
 
 function ButtonDropdown({
-	name,
 	label,
 	contextClasses,
 	dropdownOptions,
@@ -12,6 +11,7 @@ function ButtonDropdown({
 }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedOption, setSelectedOption] = useState(label);
+	const dropdownRef = useRef(null);
 
 	const handleDropdownSelection = (option) => {
 		setSelectedOption(option);
@@ -26,8 +26,7 @@ function ButtonDropdown({
 
 	useEffect(() => {
 		const handleDropdown = (e) => {
-			if (isOpen && !e.target.closest(".dropdown")) {
-				console.log("close");
+			if (isOpen && !dropdownRef.current.contains(e.target)) {
 				setIsOpen(false);
 			}
 		};
@@ -39,14 +38,13 @@ function ButtonDropdown({
 	}, [isOpen]);
 
 	return (
-		<div className="dropdown">
+		<div className="dropdown" ref={dropdownRef}>
 			<button
 				onClick={() => {
 					setIsOpen((prevState) => !prevState);
 				}}
 				type="button"
 				className={`btn ${contextClasses}`}
-				name={name}
 			>
 				<span className="dropdown__label">{selectedOption || "Select..."}</span>{" "}
 				<CaretDown />
