@@ -12,10 +12,10 @@ function Results() {
 	const [gamesData, setGamesData] = useState([]);
 	const [totalPages, setTotalPages] = useState([]);
 	const [filters, setFilters] = useState({});
-	const [isLoading, setIsLoading] = useState([false]);
-	const gamesPerPage = 40;
 	const [filterOptions, setFilterOptions] = useState({});
+	const [isLoading, setIsLoading] = useState([false]);
 	const navigate = useNavigate();
+	const gamesPerPage = 40;
 
 	const pageTitleMap = {
 		xbox: "Xbox",
@@ -55,6 +55,7 @@ function Results() {
 					filters,
 				}
 			);
+
 			setGamesData(response.data.games);
 			setTotalPages(
 				Array(Math.ceil(response.data.count / gamesPerPage))
@@ -150,18 +151,68 @@ function Results() {
 									{gamesData && <GameCardsList gamesList={gamesData} />}
 								</div>
 
-								<div className="pagination pagination--overflow">
-									{totalPages?.map((page) => {
-										return (
-											<NavLink
-												key={`${page}`}
-												to={`/explore/${platform}/${page}`}
-												className="pagination__link"
-											>
-												{page}
-											</NavLink>
-										);
-									})}
+								<div className="pagination">
+									{console.log(totalPages.length)}
+									{totalPages.length <= 5 ? (
+										totalPages.map((page) => {
+											return (
+												<NavLink
+													key={`${page}`}
+													to={`/explore/${platform}/${page}`}
+													className="pagination__link"
+												>
+													{page}
+												</NavLink>
+											);
+										})
+									) : (
+										<>
+											{page > 1 && (
+												<>
+													<NavLink
+														key="1"
+														to={`/explore/${platform}/1`}
+														className="pagination__link"
+													>
+														1
+													</NavLink>
+													<span className="pagination__truncation">...</span>
+												</>
+											)}
+
+											{totalPages
+												.slice(
+													totalPages.length - 4 <= page
+														? totalPages.length - 5
+														: parseInt(page) - 1,
+													totalPages.length - 4 <= parseInt(page)
+														? totalPages.length
+														: parseInt(page) + 4
+												)
+												.map((currentPage) => (
+													<NavLink
+														key={currentPage}
+														to={`/explore/${platform}/${currentPage}`}
+														className="pagination__link"
+													>
+														{currentPage}
+													</NavLink>
+												))}
+
+											{page < totalPages.length - 4 && (
+												<>
+													<span className="pagination__truncation">...</span>
+													<NavLink
+														key={totalPages.length}
+														to={`/explore/${platform}/${totalPages.length}`}
+														className="pagination__link"
+													>
+														{totalPages.length}
+													</NavLink>
+												</>
+											)}
+										</>
+									)}
 								</div>
 							</section>
 						</>
