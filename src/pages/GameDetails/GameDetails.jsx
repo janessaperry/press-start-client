@@ -69,7 +69,11 @@ function GameDetails() {
 
 					<div className="collection-card">
 						<div className="collection-card__header">
-							<h2 className="collection-card__title">Add to Collection</h2>
+							<h2 className="collection-card__title">
+								{currentGame?.collectionData
+									? "Manage Collection"
+									: "Add to Collection"}
+							</h2>
 							<p className="collection-card__description">
 								Select the console and format you own the game in and add to you
 								collection, or just add it to your wishlist.
