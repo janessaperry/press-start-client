@@ -22,14 +22,6 @@ function Collection() {
 	const navigate = useNavigate();
 	const gamesPerPage = 10;
 
-	const gameStatusOptions = [
-		"Want to play",
-		"Playing",
-		"Played",
-		"On pause",
-		"Wishlist",
-	];
-
 	const handleInputChange = (e, category) => {
 		setFilters((prevFilters) => {
 			const newFilters = { ...prevFilters };
@@ -74,7 +66,10 @@ function Collection() {
 						.fill(0)
 						.map((page, index) => index + 1)
 				);
+			} else {
+				setTotalPages(null);
 			}
+
 			setIsLoading(false);
 		} catch (error) {
 			console.error("Error fetching game collection", error);
@@ -102,7 +97,7 @@ function Collection() {
 					<div className="collection__stats stats">
 						<div className="stats__header">
 							<h3 className="stats__title">
-								Stats • {collectionData.collectionStats?.totalGames} Games Total
+								Stats • {collectionData.collectionStats?.totalGames} Games
 							</h3>
 						</div>
 
@@ -151,147 +146,80 @@ function Collection() {
 						<div className="filter">
 							<h4 className="filter__title">Status</h4>
 							<ul className="filter__options filter__options--checklist">
-								<li className="filter__option filter__option--checkbox">
-									<InputCheckbox
-										id="status-want-to-play"
-										name="status-want-to-play"
-										value="Want to play"
-										handleChange={(e) => {
-											handleInputChange(e, "gameStatus");
-										}}
-									/>
-								</li>
-
-								<li className="filter__option filter__option--checkbox">
-									<InputCheckbox
-										id="status-playing"
-										name="status-playing"
-										value="Playing"
-										handleChange={(e) => {
-											handleInputChange(e, "gameStatus");
-										}}
-									/>
-								</li>
-
-								<li className="filter__option filter__option--checkbox">
-									<InputCheckbox
-										id="status-played"
-										name="status-played"
-										value="Played"
-										handleChange={(e) => {
-											handleInputChange(e, "gameStatus");
-										}}
-									/>
-								</li>
-
-								<li className="filter__option filter__option--checkbox">
-									<InputCheckbox
-										id="status-on-pause"
-										name="status-on-pause"
-										value="On pause"
-										handleChange={(e) => {
-											handleInputChange(e, "gameStatus");
-										}}
-									/>
-								</li>
-
-								<li className="filter__option filter__option--checkbox">
-									<InputCheckbox
-										id="status-wishlist"
-										name="status-wishlist"
-										value="Wishlist"
-										handleChange={(e) => {
-											handleInputChange(e, "gameStatus");
-										}}
-									/>
-								</li>
+								{collectionData &&
+									collectionData.collectionOptions?.gameStatus.map(
+										(option, index) => {
+											return (
+												<li
+													key={`status-${index}`}
+													className="filter__option filter__option--checkbox"
+												>
+													<InputCheckbox
+														id={`status-${index}`}
+														name={`status-${index}`}
+														value={option}
+														handleChange={(e) => {
+															handleInputChange(e, "gameStatus");
+														}}
+													/>
+												</li>
+											);
+										}
+									)}
 							</ul>
 						</div>
 
 						<div className="filter">
 							<h4 className="filter__title">Console</h4>
 							<ul className="filter__options filter__options--checklist">
-								<li className="filter__option filter__option--checkbox">
-									<InputCheckbox
-										id="console-PS4"
-										name="console-PS4"
-										value="PS4"
-										handleChange={(e) => {
-											handleInputChange(e, "gameConsole");
-										}}
-									/>
-								</li>
-
-								<li className="filter__option filter__option--checkbox">
-									<InputCheckbox
-										id="console-PS5"
-										name="console-PS5"
-										value="PS5"
-										handleChange={(e) => {
-											handleInputChange(e, "gameConsole");
-										}}
-									/>
-								</li>
-
-								<li className="filter__option filter__option--checkbox">
-									<InputCheckbox
-										id="console-xbox-one"
-										name="console-xbox-one"
-										value="Xbox One"
-										handleChange={(e) => {
-											handleInputChange(e, "gameConsole");
-										}}
-									/>
-								</li>
-
-								<li className="filter__option filter__option--checkbox">
-									<InputCheckbox
-										id="console-xbox-xs"
-										name="console-xbox-xs"
-										value="Xbox X|S"
-										handleChange={(e) => {
-											handleInputChange(e, "gameConsole");
-										}}
-									/>
-								</li>
-
-								<li className="filter__option filter__option--checkbox">
-									<InputCheckbox
-										id="console-switch"
-										name="console-switch"
-										value="Switch"
-										handleChange={(e) => {
-											handleInputChange(e, "gameConsole");
-										}}
-									/>
-								</li>
+								{collectionData &&
+									collectionData.collectionOptions?.gameConsole.map(
+										(platform) => {
+											return platform.consoles.map((console, index) => {
+												return (
+													<li
+														key={index}
+														className="filter__option filter__option--checkbox"
+													>
+														<InputCheckbox
+															id={`console-${index}`}
+															name={`console-${index}`}
+															value={console}
+															handleChange={(e) => {
+																handleInputChange(e, "gameConsole");
+															}}
+														/>
+													</li>
+												);
+											});
+										}
+									)}
 							</ul>
 						</div>
 
 						<div className="filter">
 							<h4 className="filter__title">Format</h4>
 							<ul className="filter__options filter__options--checklist">
-								<li className="filter__option filter__option--checkbox">
-									<InputCheckbox
-										id="format-digital"
-										name="format-digital"
-										value="Digital"
-										handleChange={(e) => {
-											handleInputChange(e, "gameFormat");
-										}}
-									/>
-								</li>
-
-								<li className="filter__option filter__option--checkbox">
-									<InputCheckbox
-										id="format-physical"
-										name="format-physical"
-										value="Physical"
-										handleChange={(e) => {
-											handleInputChange(e, "gameFormat");
-										}}
-									/>
-								</li>
+								{collectionData &&
+									collectionData.collectionOptions?.gameFormat.map(
+										(option, index) => {
+											return (
+												<li
+													key={`format-${index}`}
+													className="filter__option filter__option--checkbox"
+												>
+													<InputCheckbox
+														id={`format-${index}`}
+														name={`format-${index}`}
+														value={option}
+														handleChange={(e) => {
+															handleInputChange(e, "gameFormat");
+														}}
+													/>
+												</li>
+											);
+										}
+									)}
 							</ul>
 						</div>
 					</div>
@@ -307,7 +235,7 @@ function Collection() {
 						) : (
 							<GameCardsList
 								gamesList={collectionData?.gameData}
-								gameStatusOptions={gameStatusOptions}
+								gameStatusOptions={collectionData.collectionOptions?.gameStatus}
 								handleDeleteGame={handleDeleteGame}
 								handlePatchUpdate={handlePatchUpdate}
 								getGameCollection={getGameCollection}
