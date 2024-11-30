@@ -5,7 +5,16 @@
 	background-color: $accent-dark-900;
 	@include page-layout;
 
+	&__content-wrapper {
+		@include flex-row($spacing-24);
+		justify-content: space-between;
+	}
+
 	&__data-attribution {
+		@include fs-small;
+	}
+
+	&__self-attribution {
 		@include fs-small;
 	}
 }

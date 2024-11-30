@@ -10,6 +10,12 @@ function Footer() {
 						IGDB
 					</a>
 				</p>
+				<p className="footer__self-attribution">
+					Designed and developed by{" "}
+					<a href="https://janessaperry.com" target="_blank">
+						Janessa Perry
+					</a>
+				</p>
 			</div>
 		</div>
 	);
