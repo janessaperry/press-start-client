@@ -86,7 +86,7 @@ function Results() {
 						<div className="filters">
 							<h2>Filters</h2>
 							<div className="filter">
-								<p className="filter__title">Console</p>
+								<h4 className="filter__title">Console</h4>
 								<ul className="filter__options filter__options--checklist">
 									{filterOptions.console &&
 										Object.entries(filterOptions.console[platform]).map(
@@ -110,7 +110,7 @@ function Results() {
 							</div>
 
 							<div className="filter">
-								<p className="filter__title">Genres</p>
+								<h4 className="filter__title">Genres</h4>
 								<ul className="filter__options filter__options--checklist">
 									{filterOptions.genres &&
 										Object.entries(filterOptions.genres).map(

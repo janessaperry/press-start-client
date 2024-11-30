@@ -118,7 +118,7 @@ function Collection() {
 					<div className="filters">
 						<h2 className="filters__title">Filters</h2>
 						<div className="filter">
-							<p className="filter__title">Status</p>
+							<h4 className="filter__title">Status</h4>
 							<ul className="filter__options filter__options--checklist">
 								<li className="filter__option filter__option--checkbox">
 									<InputCheckbox
@@ -178,7 +178,7 @@ function Collection() {
 						</div>
 
 						<div className="filter">
-							<p className="filter__title">Console</p>
+							<h4 className="filter__title">Console</h4>
 							<ul className="filter__options filter__options--checklist">
 								<li className="filter__option filter__option--checkbox">
 									<InputCheckbox
@@ -238,7 +238,7 @@ function Collection() {
 						</div>
 
 						<div className="filter">
-							<p className="filter__title">Format</p>
+							<h4 className="filter__title">Format</h4>
 							<ul className="filter__options filter__options--checklist">
 								<li className="filter__option filter__option--checkbox">
 									<InputCheckbox
