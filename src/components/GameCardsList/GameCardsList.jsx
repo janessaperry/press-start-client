@@ -18,7 +18,6 @@ function GameCardsList({
 						key={game.id}
 						game={game}
 						gameStatusOptions={gameStatusOptions}
-						// collectionData={game.collectionData}
 						handleDeleteGame={handleDeleteGame}
 						handlePatchUpdate={handlePatchUpdate}
 						getGameCollection={getGameCollection}
