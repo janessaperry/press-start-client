@@ -12,7 +12,6 @@ import ChipList from "../../components/ChipList/ChipList.jsx";
 import Button from "../../components/Button/Button.jsx";
 import ButtonDropdown from "../../components/ButtonDropdown/ButtonDropdown.jsx";
 import "./GameDetails.scss";
-import NotFound from "../NotFound/NotFound.jsx";
 
 function GameDetails() {
 	const baseApiUrl = import.meta.env.VITE_API_URL;
@@ -22,7 +21,6 @@ function GameDetails() {
 	const [collectionOptions, setCollectionOptions] = useState({});
 	const [isLoading, setIsLoading] = useState(false);
 	const navigate = useNavigate();
-
 	const { gameId } = useParams();
 
 	const gameStatusOptions = [
@@ -236,7 +234,7 @@ function GameDetails() {
 					) : (
 						<>
 							<h2 className="similar-games__title">Similar Games</h2>
-							<GameCardsList gamesList={similarGames} />
+							<GameCardsList gamesList={similarGames} isLoading={isLoading} />
 						</>
 					)}
 				</section>
