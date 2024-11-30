@@ -67,6 +67,7 @@ function Results() {
 			setIsLoading(false);
 		} catch (error) {
 			console.error("Error fetching games by platform:", error);
+			navigate("/not-found");
 		}
 	};
 

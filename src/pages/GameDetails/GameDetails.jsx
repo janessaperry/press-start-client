@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Heart, PlusCircle, Trash, Sword } from "@phosphor-icons/react";
 import {
@@ -12,6 +12,7 @@ import ChipList from "../../components/ChipList/ChipList.jsx";
 import Button from "../../components/Button/Button.jsx";
 import ButtonDropdown from "../../components/ButtonDropdown/ButtonDropdown.jsx";
 import "./GameDetails.scss";
+import NotFound from "../NotFound/NotFound.jsx";
 
 function GameDetails() {
 	const baseApiUrl = import.meta.env.VITE_API_URL;
@@ -20,6 +21,7 @@ function GameDetails() {
 	const [similarGames, setSimilarGames] = useState([]);
 	const [collectionOptions, setCollectionOptions] = useState({});
 	const [isLoading, setIsLoading] = useState(false);
+	const navigate = useNavigate();
 
 	const { gameId } = useParams();
 
@@ -51,7 +53,8 @@ function GameDetails() {
 			window.scrollTo(0, 0);
 			setIsLoading(false);
 		} catch (error) {
-			console.error(error);
+			console.error("Error fetching game details:", error);
+			navigate("/not-found");
 		}
 	};
 

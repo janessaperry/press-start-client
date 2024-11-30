@@ -5,6 +5,7 @@ import Collection from "./pages/Collection/Collection";
 import Explore from "./pages/Explore/Explore";
 import Results from "./pages/Results/Results";
 import GameDetails from "./pages/GameDetails/GameDetails";
+import NotFound from "./pages/NotFound/NotFound.jsx";
 import "./App.scss";
 
 function App() {
@@ -30,7 +31,8 @@ function App() {
 					<Route path="/explore/:platform/:page" element={<Results />}></Route>
 					<Route path="/collection/:page" element={<Collection />}></Route>
 					<Route path="/game-details/:gameId" element={<GameDetails />}></Route>
-					{/* <Route path="/settings" element={<Settings />}></Route> */}
+					<Route path="/not-found" element={<NotFound />}></Route>
+					<Route path="*" element={<NotFound />}></Route>
 				</Routes>
 				<Footer />
 			</BrowserRouter>

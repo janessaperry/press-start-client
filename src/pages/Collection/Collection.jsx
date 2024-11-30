@@ -77,6 +77,7 @@ function Collection() {
 			setIsLoading(false);
 		} catch (error) {
 			console.error("Error fetching game collection", error);
+			navigate("/not-found");
 		}
 	};
 
