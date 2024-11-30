@@ -12,8 +12,8 @@
 	}
 
 	&__custom {
-		width: 18px;
-		height: 18px;
+		width: 1.125rem;
+		height: 1.125rem;
 		display: inline-block;
 		border: $bw-1 solid $primary-brand-50;
 		z-index: 1;
@@ -28,12 +28,12 @@
 	&:checked + .input-checkbox__custom {
 		&::after {
 			content: "";
-			width: 12px;
-			height: 12px;
+			width: 0.75rem;
+			height: 0.75rem;
 			display: inline-block;
 			position: absolute;
-			top: 2px;
-			left: 2px;
+			top: 0.125rem;
+			left: 0.125rem;
 			background-color: $accent-callout;
 			border-radius: $br-2;
 		}
