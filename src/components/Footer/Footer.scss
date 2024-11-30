@@ -10,11 +10,7 @@
 		justify-content: space-between;
 	}
 
-	&__data-attribution {
-		@include fs-small;
-	}
-
-	&__self-attribution {
+	&__attribution {
 		@include fs-small;
 	}
 }
