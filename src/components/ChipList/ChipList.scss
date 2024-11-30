@@ -5,8 +5,4 @@
 	list-style: none;
 	@include flex-row($spacing-8);
 	flex-wrap: wrap;
-
-	@include tablet {
-		@include flex-row($spacing-8);
-	}
 }
