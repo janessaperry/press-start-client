@@ -234,7 +234,7 @@ function GameDetails() {
 					) : (
 						<>
 							<h2 className="similar-games__title">Similar Games</h2>
-							<GameCardsList gamesList={similarGames} isLoading={isLoading} />
+							<GameCardsList gamesList={similarGames} />
 						</>
 					)}
 				</section>
