@@ -1,0 +1,30 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.pagination {
+	@include flex-row($spacing-8);
+	justify-content: center;
+
+	&__link {
+		padding: $spacing-8 $spacing-12;
+		border-radius: $br-100;
+		text-decoration: none;
+
+		&.active {
+			text-decoration: none;
+			background-color: rgba($accent-callout, 0.2);
+			color: $accent-callout;
+			font-weight: $fw-semibold;
+		}
+
+		&:hover {
+			background-color: rgba($accent-callout, 0.2);
+			text-decoration: none;
+			color: $accent-callout;
+		}
+	}
+
+	&__truncation {
+		align-self: center;
+	}
+}

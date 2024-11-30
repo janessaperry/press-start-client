@@ -9,6 +9,7 @@ import { Sword } from "@phosphor-icons/react";
 import GameCardsList from "../../components/GameCardsList/GameCardsList.jsx";
 import InputCheckbox from "../../components/InputCheckbox/InputCheckbox.jsx";
 import "./Collection.scss";
+import Pagination from "../../components/Pagination/Pagination.jsx";
 
 function Collection() {
 	const baseApiUrl = import.meta.env.VITE_API_URL;
@@ -285,19 +286,13 @@ function Collection() {
 							/>
 						)}
 
-						<div className="pagination">
-							{totalPages?.map((page) => {
-								return (
-									<NavLink
-										key={`${page}`}
-										to={`/collection/${page}`}
-										className="pagination__link"
-									>
-										{page}
-									</NavLink>
-								);
-							})}
-						</div>
+						{totalPages && (
+							<Pagination
+								currentPage={page}
+								totalPages={totalPages}
+								onPageChange={(clickedPage) => `/collection/${clickedPage}`}
+							/>
+						)}
 					</div>
 				</div>
 			</section>

@@ -31,11 +31,3 @@
 		@include flex-col($spacing-24);
 	}
 }
-
-.pagination {
-	@include flex-row($spacing-8);
-
-	&__truncation {
-		align-self: center;
-	}
-}

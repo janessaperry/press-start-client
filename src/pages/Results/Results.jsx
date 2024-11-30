@@ -5,6 +5,7 @@ import { Sword } from "@phosphor-icons/react";
 import GameCardsList from "../../components/GameCardsList/GameCardsList";
 import InputCheckbox from "../../components/InputCheckbox/InputCheckbox.jsx";
 import "./Results.scss";
+import Pagination from "../../components/Pagination/Pagination.jsx";
 
 function Results() {
 	const baseUrl = import.meta.env.VITE_API_URL;
@@ -153,68 +154,15 @@ function Results() {
 									{gamesData && <GameCardsList gamesList={gamesData} />}
 								</div>
 
-								<div className="pagination">
-									{totalPages.length <= 5 ? (
-										totalPages.map((page) => {
-											return (
-												<NavLink
-													key={`${page}`}
-													to={`/explore/${platform}/${page}`}
-													className="pagination__link"
-												>
-													{page}
-												</NavLink>
-											);
-										})
-									) : (
-										<>
-											{page > 1 && (
-												<>
-													<NavLink
-														key="1"
-														to={`/explore/${platform}/1`}
-														className="pagination__link"
-													>
-														1
-													</NavLink>
-													<span className="pagination__truncation">...</span>
-												</>
-											)}
-
-											{totalPages
-												.slice(
-													totalPages.length - 4 <= page
-														? totalPages.length - 5
-														: parseInt(page) - 1,
-													totalPages.length - 4 <= parseInt(page)
-														? totalPages.length
-														: parseInt(page) + 4
-												)
-												.map((currentPage) => (
-													<NavLink
-														key={currentPage}
-														to={`/explore/${platform}/${currentPage}`}
-														className="pagination__link"
-													>
-														{currentPage}
-													</NavLink>
-												))}
-
-											{page < totalPages.length - 4 && (
-												<>
-													<span className="pagination__truncation">...</span>
-													<NavLink
-														key={totalPages.length}
-														to={`/explore/${platform}/${totalPages.length}`}
-														className="pagination__link"
-													>
-														{totalPages.length}
-													</NavLink>
-												</>
-											)}
-										</>
-									)}
-								</div>
+								{totalPages && (
+									<Pagination
+										currentPage={page}
+										totalPages={totalPages}
+										onPageChange={(clickedPage) =>
+											`/explore/${platform}/${clickedPage}`
+										}
+									/>
+								)}
 							</section>
 						</>
 					)}
