@@ -4,6 +4,7 @@
 .results {
 	@include flex-col($spacing-40);
 	@include page-layout;
+	@include section-margin;
 
 	&__wrapper {
 		@include flex-col($spacing-24);
