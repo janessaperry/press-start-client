@@ -11,15 +11,15 @@ import InputCheckbox from "../../components/InputCheckbox/InputCheckbox.jsx";
 import "./Collection.scss";
 
 function Collection() {
-	const { page } = useParams();
-	const navigate = useNavigate();
-	const accessToken = localStorage.getItem("accessToken");
 	const baseApiUrl = import.meta.env.VITE_API_URL;
-	const gamesPerPage = 10;
+	const accessToken = localStorage.getItem("accessToken");
 	const [filters, setFilters] = useState({});
 	const [collectionData, setCollectionData] = useState([]);
 	const [totalPages, setTotalPages] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const { page } = useParams();
+	const navigate = useNavigate();
+	const gamesPerPage = 10;
 
 	const gameStatusOptions = [
 		"Want to play",
