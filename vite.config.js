@@ -7,7 +7,7 @@ export default defineConfig({
 	css: {
 		preprocessorOptions: {
 			scss: {
-				quietDeps: true,
+				api: "modern-compiler",
 			},
 		},
 	},
