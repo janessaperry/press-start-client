@@ -5,10 +5,6 @@
 	@include flex-col($spacing-40);
 	@include page-layout;
 
-	@include large-desktop {
-		padding: $spacing-64 16vw;
-	}
-
 	&__wrapper {
 		@include flex-col($spacing-24);
 
@@ -38,7 +34,6 @@
 
 .pagination {
 	@include flex-row($spacing-8);
-	padding-bottom: 8px;
 
 	&__truncation {
 		align-self: center;

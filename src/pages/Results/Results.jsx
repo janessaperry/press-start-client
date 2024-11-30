@@ -11,6 +11,7 @@ function Results() {
 	const { platform, page } = useParams();
 	const [gamesData, setGamesData] = useState([]);
 	const [totalPages, setTotalPages] = useState([]);
+	const [resultsCount, setResultsCount] = useState([]);
 	const [filters, setFilters] = useState({});
 	const [filterOptions, setFilterOptions] = useState({});
 	const [isLoading, setIsLoading] = useState([false]);
@@ -56,6 +57,7 @@ function Results() {
 				}
 			);
 
+			setResultsCount(response.data.count);
 			setGamesData(response.data.games);
 			setTotalPages(
 				Array(Math.ceil(response.data.count / gamesPerPage))
@@ -79,7 +81,7 @@ function Results() {
 		<main className="main">
 			<section className="results">
 				<div className="results__header">
-					<h1 className="results__title">Results</h1>
+					<h1 className="results__title">{pageTitleMap[platform]} Games</h1>
 				</div>
 
 				<div className="results__wrapper">
@@ -134,7 +136,6 @@ function Results() {
 								</ul>
 							</div>
 						</div>
-						<div className="results__games-list-wrapper"></div>
 					</div>
 
 					{isLoading ? (
@@ -146,9 +147,9 @@ function Results() {
 						<>
 							<section className="results__games-section">
 								<div className="results__content-wrapper">
-									<h2 className="results__title">
-										{pageTitleMap[platform]} Games
-									</h2>
+									<h3 className="results__title">
+										{resultsCount.toLocaleString()} Results
+									</h3>
 									{gamesData && <GameCardsList gamesList={gamesData} />}
 								</div>
 
