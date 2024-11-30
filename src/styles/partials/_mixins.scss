@@ -27,7 +27,10 @@
 @mixin flex-col($gap: 0) {
 	display: flex;
 	flex-direction: column;
-	gap: $gap;
+
+	& {
+		gap: $gap;
+	}
 }
 
 @mixin page-layout {
@@ -46,7 +49,6 @@
 	}
 }
 
-//todo this is for inner padding for containers.. maybe section padding is better?
 @mixin section-padding {
 	padding: $spacing-40 0;
 
