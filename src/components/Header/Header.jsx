@@ -32,13 +32,11 @@ function Header() {
 						</NavLink>
 					</li>
 					<li className="header__nav-item">
-						<NavLink className="header__nav-link" to="/settings">
-							<img
-								className="header__nav-avatar"
-								src={AvatarPlaceholder}
-								alt="User avatar placholder"
-							/>
-						</NavLink>
+						<img
+							className="header__nav-avatar"
+							src={AvatarPlaceholder}
+							alt="User avatar placholder"
+						/>
 					</li>
 				</ul>
 			</nav>
