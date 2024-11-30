@@ -18,22 +18,14 @@ function GameDetails() {
 	const accessToken = localStorage.getItem("accessToken");
 	const [currentGame, setCurrentGame] = useState([]);
 	const [similarGames, setSimilarGames] = useState([]);
-	const [collectionOptions, setCollectionOptions] = useState({});
+	const [collectionSelections, setCollectionSelections] = useState({});
 	const [isLoading, setIsLoading] = useState(false);
 	const navigate = useNavigate();
 	const { gameId } = useParams();
 
-	const gameStatusOptions = [
-		"Want to play",
-		"Playing",
-		"Played",
-		"On pause",
-		"Wishlist",
-	];
-
 	const handleDropdownChange = (field, selectedOption) => {
-		setCollectionOptions((prevCollectionOptions) => ({
-			...prevCollectionOptions,
+		setCollectionSelections((prevCollectionSelections) => ({
+			...prevCollectionSelections,
 			[field]: selectedOption,
 		}));
 	};
@@ -85,7 +77,7 @@ function GameDetails() {
 							<ButtonDropdown
 								label={currentGame?.collectionData?.gameConsole || "Console..."}
 								contextClasses={"btn--outline btn--dropdown"}
-								dropdownOptions={currentGame?.platforms}
+								dropdownOptions={currentGame.collectionOptions?.gameConsole}
 								handlePatchUpdate={
 									currentGame?.collectionData
 										? (selectedOption) =>
@@ -104,7 +96,7 @@ function GameDetails() {
 							<ButtonDropdown
 								label={currentGame?.collectionData?.gameFormat || "Format..."}
 								contextClasses={"btn--outline btn--dropdown"}
-								dropdownOptions={currentGame?.gameFormats}
+								dropdownOptions={currentGame.collectionOptions?.gameFormat}
 								handlePatchUpdate={
 									currentGame?.collectionData
 										? (selectedOption) =>
@@ -129,7 +121,7 @@ function GameDetails() {
 											currentGame.collectionData.gameStatus || "Want to play"
 										}
 										contextClasses={"btn--primary btn--dropdown"}
-										dropdownOptions={gameStatusOptions}
+										dropdownOptions={currentGame.collectionOptions?.gameStatus}
 										handlePatchUpdate={(selectedOption) =>
 											handlePatchUpdate(
 												currentGame.id,
@@ -145,7 +137,7 @@ function GameDetails() {
 												...currentGame,
 												collectionData: null,
 											});
-											setCollectionOptions({});
+											setCollectionSelections({});
 										}}
 										iconLeft={<Trash className="btn__icon" weight="bold" />}
 										contextClasses="btn--outline btn--warn"
@@ -159,12 +151,12 @@ function GameDetails() {
 										handleBtnClick={() => {
 											handleAddGameToCollection(
 												currentGame?.id,
-												collectionOptions
+												collectionSelections
 											);
 
 											setCurrentGame({
 												...currentGame,
-												collectionData: collectionOptions,
+												collectionData: collectionSelections,
 											});
 										}}
 										contextClasses={"btn--primary"}
