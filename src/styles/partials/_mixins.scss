@@ -27,10 +27,7 @@
 @mixin flex-col($gap: 0) {
 	display: flex;
 	flex-direction: column;
-
-	& {
-		gap: $gap;
-	}
+	gap: $gap;
 }
 
 @mixin page-layout {

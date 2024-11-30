@@ -66,7 +66,7 @@ function Collection() {
 				}
 			);
 
-			setCollectionData(response?.data);
+			setCollectionData(response.data);
 
 			if (response.data.filteredCount) {
 				setTotalPages(
@@ -87,6 +87,7 @@ function Collection() {
 			await getGameCollection();
 			window.scrollTo(0, 0);
 		};
+
 		fetchCollectionData();
 	}, [page, handleDeleteGame, filters]);
 
@@ -97,28 +98,56 @@ function Collection() {
 					<h1 className="title">Collection</h1>
 				</div>
 
-				<div className="collection__stats">
-					<div className="stats__header">
-						<h2 className="stats__title">
-							Stats • {collectionData.collectionStats?.totalGames} Games Total
-						</h2>
+				<div className="collection__overview-wrapper">
+					<div className="collection__stats stats">
+						<div className="stats__header">
+							<h3 className="stats__title">
+								Stats • {collectionData.collectionStats?.totalGames} Games Total
+							</h3>
+						</div>
+
+						<div className="stats__cards">
+							{collectionData.collectionStats?.gameStatusStats.map((stat) => {
+								return (
+									<div key={stat.status} className="stats__card">
+										<h4 className="stats__card-title">{stat.status}</h4>
+										<p className="stats__card-content">{stat.count}</p>
+									</div>
+								);
+							})}
+						</div>
 					</div>
 
-					<div className="stats__cards">
-						{collectionData.collectionStats?.gameStatusStats.map((stat) => {
-							return (
-								<div key={stat.status} className="stats__card">
-									<h4 className="stats__card-title">{stat.status}</h4>
-									<p className="stats__card-content">{stat.count}</p>
+					<div className="collection__currently-playing currently-playing">
+						{collectionData.currentlyPlaying &&
+						collectionData.currentlyPlaying.length > 0 ? (
+							<>
+								<h2 className="currently-playing__title">Currently Playing</h2>
+								<div className="currently-playing__covers">
+									{collectionData.currentlyPlaying.map((coverUrl, index) => (
+										<img
+											key={index}
+											src={coverUrl}
+											alt="Currently playing cover"
+											className="currently-playing__cover"
+										/>
+									))}
 								</div>
-							);
-						})}
+							</>
+						) : (
+							<>
+								<h2 className="currently-playing__title">Currently playing</h2>
+								<p className="currently-playing__message">
+									No quests underway.
+								</p>
+							</>
+						)}
 					</div>
 				</div>
 
-				<div className="collection__wrapper">
+				<div className="collection__content-wrapper">
 					<div className="filters">
-						<h2 className="filters__title">Filters</h2>
+						<h3 className="filters__title">Filters</h3>
 						<div className="filter">
 							<h4 className="filter__title">Status</h4>
 							<ul className="filter__options filter__options--checklist">

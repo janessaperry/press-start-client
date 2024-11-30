@@ -2,21 +2,27 @@
 @use "../../styles/partials/mixins" as *;
 
 .collection {
-	@include flex-col($spacing-40);
 	@include page-layout;
+	@include section-margin;
+	@include flex-col($spacing-40);
 
-	@include large-desktop {
-		padding: $spacing-64 16vw;
+	&__overview-wrapper {
+		@include flex-col($spacing-24);
+
+		@include tablet {
+			@include flex-row($spacing-24);
+		}
 	}
 
 	&__stats {
-		padding: $spacing-16;
-		border: $bw-1 solid rgba($primary-brand-50, 0.4);
-		border-radius: $br-16;
-		@include flex-col($spacing-8);
+		flex-basis: 25%;
 	}
 
-	&__wrapper {
+	&__currently-playing {
+		flex-basis: 75%;
+	}
+
+	&__content-wrapper {
 		@include flex-col($spacing-40);
 
 		@include desktop {
@@ -26,22 +32,54 @@
 }
 
 .stats {
+	padding: $spacing-16;
+
+	border: $bw-1 solid rgba($primary-brand-50, 0.2);
+	border-radius: $br-16;
+	@include flex-col($spacing-16);
+
 	&__header {
 		@include flex-row($spacing-8);
 		align-items: center;
 	}
 
 	&__cards {
-		@include flex-row($spacing-8);
+		@include flex-col($spacing-8);
 	}
 
 	&__card {
-		flex: 1 1 0;
-		padding: $spacing-16;
-		background-color: rgba($primary-brand-50, 0.1);
-		border-radius: $br-8;
-		@include flex-col;
+		@include flex-row($spacing-16);
 		justify-content: space-between;
+	}
+}
+
+.currently-playing {
+	padding: $spacing-16;
+	border: $bw-1 solid rgba($primary-brand-50, 0.2);
+	border-radius: $br-16;
+	@include flex-col($spacing-16);
+
+	&__message {
+		color: $text-light-300;
+	}
+
+	&__covers {
+		@include flex-row($spacing-16);
+		flex-wrap: wrap;
+		align-items: flex-start;
+	}
+
+	&__cover {
+		width: 100%;
+		max-width: 80px;
+		aspect-ratio: 3 / 4;
+		border-radius: $br-8;
+
+		@include tablet {
+			width: 100%;
+			max-width: 140px;
+			border-radius: $br-16;
+		}
 	}
 }
 
@@ -90,7 +128,9 @@
 .loading-games {
 	flex-grow: 1;
 	@include flex-col($spacing-16);
-	align-items: center;
+	& {
+		align-items: center;
+	}
 
 	&__title {
 		color: $primary-brand-50;
