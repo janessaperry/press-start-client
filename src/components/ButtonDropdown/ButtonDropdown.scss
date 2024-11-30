@@ -4,6 +4,7 @@
 .dropdown {
 	position: relative;
 	flex-basis: 50%;
+	@include fs-regular;
 
 	& > .btn--dropdown {
 		width: 100%;
@@ -19,13 +20,13 @@
 		list-style: none;
 		background-color: $bg-neutral;
 		border-radius: $br-24;
-		font-size: $fs-reg;
 		color: $text-dark;
 		overflow: hidden;
 		position: absolute;
 		margin-top: $spacing-4;
 		width: 100%;
 		z-index: 1;
+		@include fs-regular;
 
 		&--hide {
 			display: none;

@@ -6,6 +6,6 @@
 	@include page-layout;
 
 	&__data-attribution {
-		font-size: $fs-sm;
+		@include fs-small;
 	}
 }

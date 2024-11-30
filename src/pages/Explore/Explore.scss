@@ -44,16 +44,15 @@
 		flex-basis: calc(50% - $spacing-8);
 		border-radius: $br-16;
 		color: $text-light-50;
-		font-size: $fs-lg;
 		font-weight: $fw-semibold;
 		background-color: $primary-brand-500;
+		@include fs-large;
 
 		@include flex-row;
 		justify-content: center;
 		align-items: center;
 
 		@include tablet {
-			font-size: $fs-xl;
 			padding: $spacing-40 $spacing-24;
 		}
 

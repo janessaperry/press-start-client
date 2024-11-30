@@ -6,7 +6,7 @@
 	border: $bw-1 solid #9c1386;
 	padding: $spacing-8 $spacing-12;
 	border-radius: $br-100;
-	font-size: $fs-reg;
+	@include fs-regular;
 
 	@include tablet {
 		padding: $spacing-8 $spacing-16;

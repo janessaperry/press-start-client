@@ -54,8 +54,7 @@ h4 {
 
 p {
 	color: $text-light-50;
-	font-size: $fs-reg;
-	line-height: 24px;
+	@include fs-regular;
 }
 
 a {
@@ -67,6 +66,7 @@ a {
 		text-decoration: underline;
 	}
 }
+
 #root {
 	display: flex;
 	flex-direction: column;
@@ -75,5 +75,4 @@ a {
 
 .main {
 	flex-grow: 1;
-	// @include page-layout; //don't want this because it interferes with full width color blocks
 }

@@ -8,6 +8,7 @@
 	padding: $spacing-12 $spacing-16;
 	@include flex-row($spacing-8);
 	align-items: center;
+	@include fs-regular;
 
 	&__icon {
 		color: inherit;

@@ -86,8 +86,9 @@
 		border-radius: $br-100;
 		padding: $spacing-8;
 		color: $accent-bright;
-		font-size: $fs-xl;
+		// font-size: $fs-xl;
 		font-weight: $fw-black;
+		@include fs-xlarge;
 
 		&--na {
 			color: rgba($text-light-50, 0.6);
@@ -123,9 +124,9 @@
 	@include flex-col($spacing-16);
 
 	&__description {
-		font-size: $fs-sm;
 		font-style: italic;
 		color: $text-light-300;
+		@include fs-small;
 	}
 
 	&__ownership-details {

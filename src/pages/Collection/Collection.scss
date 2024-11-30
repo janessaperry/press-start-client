@@ -70,7 +70,8 @@
 
 	&__option {
 		position: relative;
-		display: flex;
+		@include flex-row;
+		align-items: center;
 
 		& > * {
 			cursor: pointer;

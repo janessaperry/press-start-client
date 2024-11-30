@@ -12,7 +12,9 @@ function InputCheckbox({ id, name, value, handleChange }) {
 				className="input-checkbox"
 			/>
 			<div className="input-checkbox__custom"></div>
-			<label htmlFor={name}>{value}</label>
+			<label htmlFor={name} className="input-checkbox__label">
+				{value}
+			</label>
 		</>
 	);
 }

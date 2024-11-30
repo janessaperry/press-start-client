@@ -62,8 +62,7 @@
 	}
 
 	&__title {
-		font-size: $fs-xl;
-		line-height: 32px;
+		@include fs-xlarge;
 	}
 
 	&__rating-chip {
@@ -71,8 +70,8 @@
 		border-radius: $br-100;
 		padding: $spacing-4;
 		color: $accent-bright;
-		font-size: $fs-lg;
 		font-weight: $fw-semibold;
+		@include fs-large;
 
 		&--na {
 			color: rgba($text-light-50, 0.6);
@@ -131,7 +130,8 @@
 		border: $bw-1 solid $primary-brand-500;
 		padding: $spacing-8 $spacing-12;
 		border-radius: $br-100;
-		font-size: $fs-reg;
+		// font-size: $fs-reg;
+		@include fs-regular;
 	}
 
 	&__collection-actions-wrapper {

@@ -7,6 +7,10 @@
 	width: 0;
 	height: 0;
 
+	&__label {
+		@include fs-regular;
+	}
+
 	&__custom {
 		width: 18px;
 		height: 18px;
