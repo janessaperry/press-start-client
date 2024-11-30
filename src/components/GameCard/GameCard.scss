@@ -5,7 +5,6 @@
 	flex-basis: calc(50% - $spacing-8);
 	background: $primary-brand-700;
 	border-radius: $br-24;
-	// @include flex-row($spacing-16);
 	@include flex-col;
 
 	@include tablet {
@@ -24,7 +23,7 @@
 				rgba($primary-brand-500, 0.6) 0%,
 				$primary-brand-700 100%
 			);
-			box-shadow: 0px 1px 0px 0px rgba($primary-brand-100, 0.4) inset;
+			box-shadow: 0 1px 0 0 rgba($primary-brand-100, 0.4) inset;
 		}
 
 		& > * {
@@ -59,6 +58,7 @@
 
 	&__title-wrapper {
 		flex-grow: 1;
+		@include flex-col($spacing-12);
 	}
 
 	&__title {
@@ -79,10 +79,10 @@
 			font-weight: 400;
 			opacity: 0.2;
 		}
-	}
 
-	&__info-wrapper {
-		@include flex-row($spacing-16);
+		@include tablet {
+			padding: $spacing-8;
+		}
 	}
 
 	&__ownership-details {
@@ -95,10 +95,11 @@
 
 	&__meta {
 		color: $text-light-300;
+		@include fs-small;
 	}
 
 	&__time-to-beat {
-		@include flex-row($spacing-4);
+		@include flex-row($spacing-8);
 		align-items: center;
 		color: $accent-bright;
 		font-weight: $fw-semibold;
@@ -110,28 +111,13 @@
 
 	&__icon {
 		&--controller {
-			font-size: 18px;
+			@include fs-large;
 		}
 	}
 
 	&__platforms,
 	&__genres {
 		@include flex-col($spacing-8);
-	}
-
-	&__chips {
-		@include flex-row($spacing-8);
-		flex-wrap: wrap;
-	}
-
-	&__chip {
-		list-style: none;
-		background-color: rgba($bg-dark, 0.07);
-		border: $bw-1 solid $primary-brand-500;
-		padding: $spacing-8 $spacing-12;
-		border-radius: $br-100;
-		// font-size: $fs-reg;
-		@include fs-regular;
 	}
 
 	&__collection-actions-wrapper {

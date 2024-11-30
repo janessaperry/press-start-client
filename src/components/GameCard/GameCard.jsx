@@ -62,6 +62,7 @@ function GameCard({
 								</div>
 							)}
 						</div>
+
 						<div
 							className={`game-card__rating-chip ${
 								game.rating === "n/a" ? "game-card__rating-chip--na" : ""
