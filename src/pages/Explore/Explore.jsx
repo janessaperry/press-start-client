@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import "./Explore.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Sword } from "@phosphor-icons/react";
-
 import GameCardsList from "../../components/GameCardsList/GameCardsList";
 import SearchGames from "../../components/SearchGames/SearchGames";
+import "./Explore.scss";
 
 function Explore() {
 	const baseUrl = import.meta.env.VITE_API_URL;
