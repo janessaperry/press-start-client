@@ -1,5 +1,8 @@
-![Press Start Logo](./public/press-start-logo-tagline-dark.svg#gh-dark-mode-only)
-![Press Start Logo](./public/press-start-logo-tagline-light.svg#gh-light-mode-only)
+<picture>
+  <source srcset="./public/press-start-logo-tagline-dark.svg" media="(prefers-color-scheme: light)">
+  <source srcset="./public/press-start-logo-tagline-light.svg" media="(prefers-color-scheme: dark)">
+  <img src="./public/press-start-logo-tagline-light.svg" alt="Press Start Logo">
+</picture>
 
 ## Getting Started
 
