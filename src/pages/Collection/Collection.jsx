@@ -8,8 +8,8 @@ import {
 import { Sword } from "@phosphor-icons/react";
 import GameCardsList from "../../components/GameCardsList/GameCardsList.jsx";
 import InputCheckbox from "../../components/InputCheckbox/InputCheckbox.jsx";
-import "./Collection.scss";
 import Pagination from "../../components/Pagination/Pagination.jsx";
+import "./Collection.scss";
 
 function Collection() {
 	const baseApiUrl = import.meta.env.VITE_API_URL;
@@ -174,7 +174,7 @@ function Collection() {
 							<ul className="filter__options filter__options--checklist">
 								{collectionData &&
 									collectionData.collectionOptions?.gameConsole.map(
-										(platform) => {
+										(platform, platformIndex) => {
 											return platform.consoles.map((console, index) => {
 												return (
 													<li
@@ -182,8 +182,8 @@ function Collection() {
 														className="filter__option filter__option--checkbox"
 													>
 														<InputCheckbox
-															id={`console-${index}`}
-															name={`console-${index}`}
+															id={`p${platformIndex}-c${index}`}
+															name={`p${platformIndex}-c${index}`}
 															value={console}
 															handleChange={(e) => {
 																handleInputChange(e, "gameConsole");
@@ -235,7 +235,7 @@ function Collection() {
 						) : (
 							<GameCardsList
 								gamesList={collectionData?.gameData}
-								gameStatusOptions={collectionData.collectionOptions?.gameStatus}
+								collectionOptions={collectionData?.collectionOptions}
 								handleDeleteGame={handleDeleteGame}
 								handlePatchUpdate={handlePatchUpdate}
 								getGameCollection={getGameCollection}

@@ -7,7 +7,7 @@ import "./GameCard.scss";
 
 function GameCard({
 	game,
-	gameStatusOptions,
+	collectionOptions,
 	handleDeleteGame,
 	handlePatchUpdate,
 	getGameCollection,
@@ -110,7 +110,7 @@ function GameCard({
 							<ButtonDropdown
 								label={collectionData.gameFormat || "Format..."}
 								contextClasses={"btn--outline btn--dropdown"}
-								dropdownOptions={game.gameFormats}
+								dropdownOptions={collectionOptions.gameFormat}
 								handlePatchUpdate={(selectedOption) =>
 									handlePatchClick("gameFormat", selectedOption)
 								}
@@ -122,7 +122,7 @@ function GameCard({
 						<ButtonDropdown
 							label={collectionData.gameStatus || "Collection status..."}
 							contextClasses={"btn--primary btn--dropdown"}
-							dropdownOptions={gameStatusOptions}
+							dropdownOptions={collectionOptions.gameStatus}
 							handlePatchUpdate={(selectedOption) =>
 								handlePatchClick("gameStatus", selectedOption)
 							}

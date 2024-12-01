@@ -4,7 +4,7 @@ import "./GameCardsList.scss";
 
 function GameCardsList({
 	gamesList,
-	gameStatusOptions,
+	collectionOptions,
 	handleDeleteGame,
 	handlePatchUpdate,
 	getGameCollection,
@@ -17,7 +17,7 @@ function GameCardsList({
 					<GameCard
 						key={game.id}
 						game={game}
-						gameStatusOptions={gameStatusOptions}
+						collectionOptions={collectionOptions}
 						handleDeleteGame={handleDeleteGame}
 						handlePatchUpdate={handlePatchUpdate}
 						getGameCollection={getGameCollection}
