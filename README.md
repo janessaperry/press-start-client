@@ -17,11 +17,11 @@
 
 3. Set up .env with necessary environment variables
 
-   - example .env files included in repos
+   - Example .env files included in repos
 
 4. Configure databases
 
-   - Create a local databse named press_start (or however you have named it in your server side .env file)
+   - Create a local database named press_start (or however you have named it in your server side .env file)
    - Run migration and seeds
      - npm run db:migrate
      - npm run db:seed
@@ -95,7 +95,7 @@ Alert users about new game releases in franchises they own.
 Continue to add sorting and filtering options to enhanced user experience.
 
 **:iphone: Responsive Enhancments**
-Work towards making the site fully responsive.
+Make the site fully responsive.
 
 ## Implementation
 
