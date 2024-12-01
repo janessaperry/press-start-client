@@ -1,9 +1,55 @@
 ![Press Start Logo](./public/press-start-logo-tagline-dark.svg#gh-dark-mode-only)
 ![Press Start Logo](./public/press-start-logo-tagline-light.svg#gh-light-mode-only)
 
+## Getting Started
+
+1. Clone repositories
+
+   - https://github.com/janessaperry/press-start-client.git
+   - https://github.com/janessaperry/press-start-server.git
+
+2. Install dependencies in both client and server repos
+
+   - npm install
+
+3. Set up .env with necessary environment variables
+
+   - example .env files included in repos
+
+4. Configure databases
+
+   - Create a local databse named press_start (or however you have named it in your server side .env file)
+   - Run migration and seeds
+     - npm run db:migrate
+     - npm run db:seed
+
+5. Configure IGDB API
+   - Sign up for IGDB API (https://api-docs.igdb.com/#getting-started)
+   - Create an application with the following settings
+     - OAuth Redirect URLs: http://localhost
+     - Category: Website Integration
+     - Client Type: Confidential
+     - Generate Client Secret
+   - Using your Client ID and Client Secret, make a POST request to the endpoint below to obtain an access token
+     - https://id.twitch.tv/oauth2/token?client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&grant_type=client_credentials
+   - Add your Client ID and Access Token to the .env file as outline in example .env files
+
+#### Still In the Works
+
+- **Collection**
+  - need to re-render stats, currently playing, and results if a user changes their collection options on this page
+  - would like to refine console filters on this page so they are applicable to a user's collection
+  - would like to add more filters such as Genre and Time to Beat
+- **Explore**
+  - would like to add more filters
+- **Search Feature**
+  - add "Search for [query string]" and direct users to a page of results if they select this option
+- **Mobile Enhancements**
+  - page header and filters need to be optimized for mobile
+
 ## Overview
 
-Press Start is an app that helps users build and manage a personal library of the video games they own. It allows them to track which games they have, what platform they’re on, and whether they are physical or digital. This MVP is designed for personal use, with user registration and authentication being added later if there is time.
+Press Start is an app that helps users build and manage a personal collection of the video games they own. It allows them to track which games they have, what platform they’re on, and whether they are physical or digital. This MVP is designed for personal use, with user registration and authentication being added later if there is time.
 
 ### Problem Space
 
@@ -15,23 +61,23 @@ Gamers often find themselves stuck when deciding what to play next, especially w
 
 - Gamers with collections spanning multiple platforms (consoles, PC, etc.).
 - Players who need an efficient way to organize both physical and digital games.
-- Users who want to quickly browse their libraries to decide what to play next.
+- Users who want to quickly browse their game collection to decide what to play next.
 
 ### Features
 
 **:mag: Browsing & Search**
-Explore games by platform, release date, or popularity, or searching by title.
+Explore games by platform, release date, or searching by title.
 
-**:gear: Library Filters**
-Sort and filter games by platform, genre, time to beat, etc.
+**:gear: Collection Filters**
+Filter games by status, platform, and format.
 
 **:video_game: Game Management**
-Users can add, edit, and delete games in their library, specifying platform, format, and status.
+Users can add, edit, and delete games in their collection, specifying platform, format, and status.
 
-**:iphone: Responsive Design**
-Fully responsive for use across all device sizes.
+**:desktop_computer: Responsive Design**
+Largely responsive but best viewed on a desktop for now.
 
-#### Optional Future Enhancements
+#### Future Enhancements
 
 **:lock: User Registration & Login**
 Allow users to create accounts to save their libraries and wishlists.
@@ -42,11 +88,17 @@ Suggest titles based on a user’s preferences and collection.
 **:bell: Notifications**
 Alert users about new game releases in franchises they own.
 
+**:point_right: More Sorting and Filtering**
+Continue to add sorting and filtering options to enhanced user experience.
+
+**:iphone: Responsive Enhancments**
+Work towards making the site fully responsive.
+
 ## Implementation
 
 ### Tech Stack
 
-**Front-end:** React, Sass, Axios, React Router
+**Front-end:** React, Sass, Axios, React Router, Phosphor
 **Back-end:** Node.js, Express.js
 **Database:** MySQL, Knex
 **Authentication _(optional future enhancement)_:** Firebase
@@ -61,8 +113,8 @@ IGDB (https://www.igdb.com/api)
 - **Login/Register _(optional future enhancement)_:** User authentication.
 - **Explore:** Users can search for games, or browse by platform, release date, etc.
 - **Search Results:** List of games with pagination at the bottom and filters along the side for console, genre, etc.
-- **Game Details:** Show details of a specific game along with Similar Games and Other Games in Franchise.
-- **Dashboard:** User's library of games where they can see everything they own and filter for what to play for next.
+- **Game Details:** Show details of a specific game along with Similar Games.
+- **Collection:** User's collection of games where they can see everything they own and filter for what to play for next.
 - **User Settings _(optional future enhancement)_:** Manage personal settings including avatar, email, and password.
 
 ### Mockups
@@ -92,11 +144,11 @@ Represents each registered user.
 - id _(primary key)_
 - email
 - password
-- name / username
+- username
 
-#### Library
+#### Collection
 
-Represents relationship between a user and their game library.
+Represents relationship between a user and their game collection.
 
 - id: _(primary key)_
 - userId: _(foreign key)_
@@ -121,10 +173,9 @@ Represents relationship between a user and their game library.
 
 #### Proxy Server Endpoints
 
-**GET /api/games/:platform**
+**GET /api/explore**
 
-- Get list of games based on gaming Platform.
-  _Note, this endpoint could switch out Platform for Release Date._
+- Get list of games based on release date.
 
 Response _(Status 200 OK)_
 
@@ -134,19 +185,62 @@ Response _(Status 200 OK)_
 		"id": 217554,
 		"cover": "cover-url.png",
 		"name": "Octopath Traveller II",
-		"platforms": ["PC", "PS4", "Xbox One", "Switch", "PS5", "Xbox X|S"],
+		"releaseDate": "Feb 23, 2023",
+		"rating": "89",
 		"genres": ["Role-playing (RPG)", "Turn-based strategy (TBS)"],
+		"platforms": ["PC", "PS4", "Xbox One", "Switch", "PS5", "Xbox X|S"],
 	},
 	{...}
 ]
 ```
 
-Response _(Status 404 Not Found)_
+Response _(Status 500 Server Error)_
 
 ```
 [
 	{
-		"message": "Error fetching games",
+		"message": "Error fetching new releases and coming soon games"
+	}
+]
+```
+
+**POST /api/explore/:platform/:page**
+
+- Get list of games based on gaming Platform using Limit and Offset for pagination.
+- POST request is being used to pass in filter options for Console and Genres.
+
+Request Body
+
+```
+{
+	"console": "(167,48)"
+	"genres": "(4,5)"
+}
+```
+
+Response _(Status 200 OK)_
+
+```
+
+[
+	{
+		"id": 217554,
+		"cover": "cover-url.png",
+		"name": "Octopath Traveller II",
+		"rating": "89",
+		"genres": ["Role-playing (RPG)", "Turn-based strategy (TBS)"],
+		"platforms": ["PC", "PS4", "Xbox One", "Switch", "PS5", "Xbox X|S"],
+	},
+	{...}
+]
+```
+
+Response _(Status 500 Server Error)_
+
+```
+[
+	{
+		"message": "Error fetching game data",
 	}
 ]
 ```
@@ -161,8 +255,7 @@ Response _(Status 200 OK)_
 {
 	"id": 217554,
 	"cover": "cover-url.png",
-	"esrbRating": ["Mild Blood", "Use of Alcohol & Tobacco",
-	"Fantasy Violence", "Suggestive Themes", "Mild Language"],
+	"esrbRating": ["Mild Blood", "Use of Alcohol & Tobacco", "Fantasy Violence", "Suggestive Themes", "Mild Language"],
 	"name": "Octopath Traveller II",
 	"developer": "Square Enix",
 	"releaseDate": "Feb 24, 2023",
@@ -170,17 +263,6 @@ Response _(Status 200 OK)_
 	"rating": 89,
 	"platforms": ["PC", "PS4", "Xbox One", "Switch", "PS5", "Xbox X|S"],
 	"genres": ["Role-playing (RPG)", "Turn-based strategy (TBS)"],
-	"franchises": [
-		{
-			"id": 123,
-			"cover": "cover-url.png",
-			"name": "Title of Game",
-			"rating": 86,
-			"platforms": ["PC", "PS4", "Xbox One", "Switch", "PS5", "Xbox X|S"],
-			"releaseDate": "Feb 24, 2023",
-		},
-		{...},
-	],
 	"similarGames": [
 		{
 			"id": 123,
@@ -215,25 +297,24 @@ Response _(Status 200 OK)_
 		"id": 217554,
 		"cover": "cover-url.png",
 		"name": "Octopath Traveller II",
-		"platforms": ["PC", "PS4", "Xbox One", "Switch", "PS5", "Xbox X|S"],
 	},
 	{...}
 ]
 ```
 
-Response _(Status 404 Not Found)_
+Response _(Status 500 Server Error)_
 
 ```
 [
 	{
-		"message": "No games found for query string",
+		"message": "Error fetching search results",
 	}
 ]
 ```
 
 #### Database Endpoints
 
-**GET /library**
+**POST /collection/page/:page**
 
 - Gets list of games from users library
 
@@ -246,39 +327,41 @@ Authorization: Bearer <access-token>
 Response _(Status 200 OK)_
 
 ```
-[{
-	"id": 1,
-	"userId": 1,
-	"gameId": 26765,
-	"gameName": "Octopath Traveler II",
-	"gameCover": "octopath-cover.png",
-	"gameStatus": "Want to play",
-	"gameConsole": "Switch",
-	"gameFormat": "Digital",
-},
-{
-	"id": 2,
-	"userId": 1,
-	"gameId": 152202,
-	"gameName": "Avatar: Frontiers of Pandora",
-	"gameCover": "avatar-fop-cover.png",
-	"gameStatus": "Played",
-	"gameConsole": "PS5",
-	"gameFormat": "Physical",
-}]
+[
+	{
+		"id": 1,
+		"userId": 1,
+		"gameId": 26765,
+		"gameName": "Octopath Traveler II",
+		"gameCover": "octopath-cover.png",
+		"gameStatus": "Want to play",
+		"gameConsole": "Switch",
+		"gameFormat": "Digital",
+	},
+	{
+		"id": 2,
+		"userId": 1,
+		"gameId": 152202,
+		"gameName": "Avatar: Frontiers of Pandora",
+		"gameCover": "avatar-fop-cover.png",
+		"gameStatus": "Played",
+		"gameConsole": "PS5",
+		"gameFormat": "Physical",
+	}
+]
 ```
 
-Response _(Status 400 Bad Request)_
+Response _(Status 500 Server Error)_
 
 ```
 {
-	"message": "Error fetching library data"
+	"message": "Error fetching collection data"
 }
 ```
 
-**POST /library**
+**POST /collection/:gameId**
 
-- Adds game to user's library
+- Adds game to user's collection
 
 Request Header
 
@@ -303,6 +386,7 @@ Response _(Status 201 Created)_
 
 ```
 {
+	"message": "Added game 1942 to collection"
 	"id": 3,
 	"userId": 1,
 	"gameId": 1942,
@@ -314,7 +398,7 @@ Response _(Status 201 Created)_
 }
 ```
 
-Response _(Status 400 Bad Request)_
+Response _(Status 500 Server Error)_
 
 ```
 {
@@ -328,9 +412,9 @@ Response _(Status 400 Bad Request)_
 }
 ```
 
-**PATCH /library/:id**
+**PATCH /collection/:gameId**
 
-- Updates a game in user's library. Users can update Status, Platform, and Format. The example below demonstrates an update to game Status.
+- Updates a game in user's collection. Users can update Status, Platform, and Format. The example below demonstrates an update to Game Status.
 
 Request Header
 
@@ -350,28 +434,22 @@ Response _(Status 200 OK)_
 
 ```
 {
-	"id": 3,
-	"userId": 1,
-	"gameId": 1942,
-	"gameName": "The Witcher 3: Wild Hunt",
-	"gameCover": "the-witcher-3.png",
-	"gameStatus": "Playing",
-	"gameConsole": "Xbox X|S",
-	"gameFormat": "Physical",
+	"message": "Updated game 1942 successfully",
 }
+
 ```
 
-Response _(Status 400 Bad Request)_
+Response _(Status 500 Server Error)_
 
 ```
 {
-	"message": "Error updating game",
+	"message": "Error updating game 1942",
 }
 ```
 
-**DELETE /library/:id**
+**DELETE /collection/:gameId**
 
-- Removes game from user's library by id.
+- Removes game from user's collection by game id.
 
 Request Header
 
@@ -382,11 +460,11 @@ Authorization: Bearer <access-token>
 Response _(Status 204 No Content)_
 No response body for status 204.
 
-Response _(Status 400 Bad Request)_
+Response _(Status 500 Server Error)_
 
 ```
 {
-	"message": "Error deleting game",
+	"message": "Error deleting game 1942",
 }
 ```
 
@@ -400,17 +478,17 @@ Response _(Status 400 Bad Request)_
 
 **2. Front-end: Setup**
 
-- Create basic layouts for dashboard, explore, game results, and game details.
+- Create basic layouts for collection, explore, game results, and game details.
 
 **3. Backend: API & Database Setup**
 
 - Set up database (MySQL, Knex).
-- Build endpoints for user data and library.
+- Build endpoints for user data and collection.
 
 **4. Front-end: Game Details**
 
 - Create a page for viewing individual game details (title, description, platform, etc.) using IGDB data.
-- Ensure users can navigate back to search or the dashboard easily.
+- Ensure users can navigate back to search or their collection easily.
 
 **5. Front-end: Game Browsing**
 
@@ -418,10 +496,10 @@ Response _(Status 400 Bad Request)_
 - Integrate IGDB API to fetch and display game data based on query.
 - Display results and allow users to filter and view game details.
 
-**6. Front-end: Dashboard**
+**6. Front-end: Collection**
 
-- Create user dashboard to display user's game library.
-- Add basic sorting and filtering (e.g., by platform or genre) for games in the library.
+- Create page to display user's game collection.
+- Add basic sorting and filtering (e.g., by platform or genre) for games in the collection.
 
 **7. Styling & Responsive Design**
 
@@ -447,5 +525,7 @@ Response _(Status 400 Bad Request)_
 ## Future Implementations
 
 **User Registration / Authentication:** Allow others to sign up for site.
-**Notifications:** Let user's know when a new game is released from a franchise that is in their library.
-**Game Recommendations:** Suggest games based on the user’s library and preferences.
+
+**Notifications:** Let user's know when a new game is released from a franchise that is in their collection.
+
+**Game Recommendations:** Suggest games based on the user’s collection and preferences.
