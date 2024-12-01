@@ -1,0 +1,41 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.input-checkbox {
+	z-index: -1;
+	opacity: 0;
+	width: 0;
+	height: 0;
+
+	&__label {
+		@include fs-regular;
+	}
+
+	&__custom {
+		width: 1.125rem;
+		height: 1.125rem;
+		display: inline-block;
+		border: $bw-1 solid $primary-brand-50;
+		z-index: 1;
+		position: relative;
+		top: 0;
+		left: 0;
+		margin-right: $spacing-8;
+		border-radius: $br-4;
+		transition: background-color 0.2s, border-color 0.2s;
+	}
+
+	&:checked + .input-checkbox__custom {
+		&::after {
+			content: "";
+			width: 0.75rem;
+			height: 0.75rem;
+			display: inline-block;
+			position: absolute;
+			top: 0.125rem;
+			left: 0.125rem;
+			background-color: $accent-callout;
+			border-radius: $br-2;
+		}
+	}
+}

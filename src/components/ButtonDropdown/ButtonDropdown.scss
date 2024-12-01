@@ -1,0 +1,47 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.dropdown {
+	position: relative;
+	flex-basis: 50%;
+	@include fs-regular;
+
+	& > .btn--dropdown {
+		width: 100%;
+	}
+
+	&__label {
+		flex-grow: 1;
+		text-align: left;
+	}
+
+	&__options {
+		cursor: pointer;
+		list-style: none;
+		background-color: $bg-neutral;
+		border-radius: $br-24;
+		color: $text-dark;
+		overflow: hidden;
+		position: absolute;
+		margin-top: $spacing-4;
+		width: 100%;
+		z-index: 1;
+		@include fs-regular;
+
+		&--hide {
+			display: none;
+		}
+
+		&--show {
+			display: inline-block;
+		}
+	}
+
+	&__option {
+		padding: $spacing-12 $spacing-16;
+
+		&:hover {
+			background-color: $bg-neutral-hover;
+		}
+	}
+}

@@ -1,0 +1,8 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.chips {
+	list-style: none;
+	@include flex-row($spacing-8);
+	flex-wrap: wrap;
+}

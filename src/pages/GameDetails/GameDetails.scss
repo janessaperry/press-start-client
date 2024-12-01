@@ -1,0 +1,144 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.main--backdrop {
+	background: linear-gradient($primary-brand-700 25vh, transparent 25vh);
+	@include page-layout;
+}
+
+.game-details {
+	min-height: 30vh;
+	padding: $spacing-16;
+	background-color: $primary-brand-500;
+	border-radius: $br-24;
+	@include flex-col($spacing-24);
+	align-items: center;
+
+	@include tablet {
+		padding: $spacing-24;
+	}
+
+	@include desktop {
+		padding: $spacing-40;
+		@include flex-row($spacing-40);
+		align-items: stretch;
+	}
+
+	&__wrapper {
+		@include flex-col($spacing-16);
+		width: 100%;
+
+		&--cover-actions {
+			align-items: center;
+
+			@include tablet {
+				@include flex-row($spacing-24);
+				align-items: stretch;
+			}
+
+			@include desktop {
+				@include flex-col($spacing-24);
+				flex-basis: 40%;
+			}
+
+			@include large-desktop {
+				align-items: center;
+			}
+		}
+
+		&--info {
+			@include desktop {
+				flex-basis: 75%;
+			}
+		}
+	}
+
+	&__cover {
+		background-color: $primary-brand-700;
+		width: 180px;
+		aspect-ratio: 3/4;
+		border-radius: $br-16;
+
+		@include tablet {
+			width: 40%;
+		}
+
+		@include desktop {
+			width: 100%;
+		}
+
+		@include large-desktop {
+			width: 80%;
+		}
+	}
+
+	&__header-section {
+		@include flex-row($spacing-16);
+		align-items: center;
+	}
+
+	&__title-wrapper {
+		flex: 1 1 0;
+	}
+
+	&__rating-chip {
+		border: $bw-2 solid $accent-bright;
+		border-radius: $br-100;
+		padding: $spacing-8;
+		color: $accent-bright;
+		// font-size: $fs-xl;
+		font-weight: $fw-black;
+		@include fs-xlarge;
+
+		&--na {
+			color: rgba($text-light-50, 0.6);
+			border-color: rgba($text-light-50, 0.6);
+			font-weight: 400;
+			opacity: 0.2;
+		}
+	}
+
+	&__content-section {
+		@include flex-col($spacing-24);
+	}
+
+	&__content-wrapper {
+		@include flex-col($spacing-8);
+	}
+}
+
+.similar-games {
+	@include flex-col($spacing-24);
+	@include section-margin;
+}
+
+.franchise-games {
+	@include flex-col($spacing-24);
+	@include section-margin;
+}
+
+.collection-card {
+	background-color: $primary-brand-700;
+	padding: $spacing-16;
+	border-radius: $br-16;
+	@include flex-col($spacing-16);
+
+	&__description {
+		font-style: italic;
+		color: $text-light-300;
+		@include fs-small;
+	}
+
+	&__ownership-details {
+		@include flex-row($spacing-8);
+	}
+
+	&__actions {
+		@include flex-row($spacing-8);
+
+		& .btn--primary,
+		.dropdown {
+			flex-grow: 1;
+		}
+	}
+}

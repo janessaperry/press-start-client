@@ -1,0 +1,43 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.game-cards {
+	@include flex-col($spacing-16);
+
+	@include tablet {
+		@include flex-row($spacing-24);
+		flex-wrap: wrap;
+		align-items: stretch;
+	}
+}
+
+.no-games {
+	flex-grow: 1;
+	@include flex-col($spacing-16);
+	align-items: center;
+
+	&__title {
+		color: $primary-brand-50;
+	}
+
+	&__message {
+		color: $primary-brand-50;
+		font-style: italic;
+	}
+
+	&__icon {
+		font-size: 5rem;
+		color: $primary-brand-50;
+		position: relative;
+		animation: floatUpAndDown 1s infinite ease-in-out alternate;
+	}
+}
+
+@keyframes floatUpAndDown {
+	from {
+		top: 1rem;
+	}
+	to {
+		top: 0;
+	}
+}

@@ -1,0 +1,16 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.footer {
+	background-color: $accent-dark-900;
+	@include page-layout;
+
+	&__content-wrapper {
+		@include flex-row($spacing-24);
+		justify-content: space-between;
+	}
+
+	&__attribution {
+		@include fs-small;
+	}
+}

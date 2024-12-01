@@ -1,0 +1,141 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.game-card {
+	flex-basis: calc(50% - $spacing-8);
+	background: $primary-brand-700;
+	border-radius: $br-24;
+	@include flex-col;
+
+	@include tablet {
+		flex-basis: calc(50% - $spacing-12);
+	}
+
+	&__link {
+		border-radius: $br-24;
+		flex-grow: 1;
+		padding: $spacing-16;
+		@include flex-row($spacing-16);
+
+		&:hover {
+			text-decoration: none;
+			background: linear-gradient(
+				rgba($primary-brand-500, 0.6) 0%,
+				$primary-brand-700 100%
+			);
+			box-shadow: 0 1px 0 0 rgba($primary-brand-100, 0.4) inset;
+		}
+
+		& > * {
+			text-decoration: inherit;
+		}
+
+		@include tablet {
+			padding: $spacing-24;
+		}
+	}
+
+	&__cover-wrapper {
+		flex-basis: 25%;
+	}
+
+	&__cover {
+		width: 100%;
+		background-color: $bg-dark;
+		aspect-ratio: 3/4;
+		border-radius: $br-16;
+	}
+
+	&__content-wrapper {
+		flex-basis: 75%;
+		@include flex-col($spacing-16);
+	}
+
+	&__header-wrapper {
+		@include flex-row($spacing-16);
+		align-items: flex-start;
+	}
+
+	&__title-wrapper {
+		flex-grow: 1;
+		@include flex-col($spacing-12);
+	}
+
+	&__title {
+		@include fs-xlarge;
+	}
+
+	&__rating-chip {
+		border: $bw-2 solid $accent-bright;
+		border-radius: $br-100;
+		padding: $spacing-4;
+		color: $accent-bright;
+		font-weight: $fw-semibold;
+		@include fs-large;
+
+		&--na {
+			color: rgba($text-light-50, 0.6);
+			border-color: rgba($text-light-50, 0.6);
+			font-weight: 400;
+			opacity: 0.2;
+		}
+
+		@include tablet {
+			padding: $spacing-8;
+		}
+	}
+
+	&__ownership-details {
+		@include flex-row($spacing-16);
+	}
+
+	&__meta-wrapper {
+		@include flex-col($spacing-4);
+	}
+
+	&__meta {
+		color: $text-light-300;
+		@include fs-small;
+	}
+
+	&__time-to-beat {
+		@include flex-row($spacing-8);
+		align-items: center;
+		color: $accent-bright;
+		font-weight: $fw-semibold;
+
+		&--na {
+			color: rgba($text-light-50, 0.6);
+		}
+	}
+
+	&__icon {
+		&--controller {
+			@include fs-large;
+		}
+	}
+
+	&__platforms,
+	&__genres {
+		@include flex-col($spacing-8);
+	}
+
+	&__collection-actions-wrapper {
+		padding: $spacing-16;
+		border-top: $bw-1 solid rgba($primary-brand-50, 0.4);
+		padding-top: $spacing-16;
+		@include flex-col($spacing-16);
+
+		@include tablet {
+			padding: $spacing-24;
+		}
+	}
+
+	&__collection-actions {
+		@include flex-row($spacing-16);
+
+		& .dropdown {
+			flex-grow: 1;
+		}
+	}
+}

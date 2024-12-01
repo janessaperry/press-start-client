@@ -1,0 +1,78 @@
+@use "./variables" as *;
+@use "./mixins" as *;
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: $ff-headings;
+	font-weight: $fw-reg;
+	color: $text-light-50;
+}
+
+h1 {
+	font-size: 32px;
+	line-height: 40px;
+
+	@include tablet {
+		font-size: 48px;
+		line-height: 56px;
+	}
+}
+
+h2 {
+	font-size: 24px;
+	line-height: 32px;
+
+	@include tablet {
+		font-size: 32px;
+		line-height: 40px;
+	}
+}
+
+h3 {
+	font-size: 20px;
+	line-height: 24px;
+
+	@include tablet {
+		font-size: 24px;
+		line-height: 32px;
+	}
+}
+
+h4 {
+	font-size: 16px;
+	line-height: 20px;
+	text-transform: uppercase;
+	color: $text-light-300;
+
+	@include tablet {
+		font-size: 18px;
+		line-height: 24px;
+	}
+}
+
+p {
+	color: $text-light-50;
+	@include fs-regular;
+}
+
+a {
+	color: #eae9ed;
+	text-decoration: none;
+
+	&:hover,
+	&.active {
+		text-decoration: underline;
+	}
+}
+
+#root {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.main {
+	flex-grow: 1;
+}
