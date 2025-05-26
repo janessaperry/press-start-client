@@ -11,16 +11,38 @@
 }
 
 .logo {
-  width: 3rem;
+  max-width: 16rem;
 }
 
 .navLink {
+  position: relative;
   text-decoration: none;
-  color: var(--text-light);
+  color: var(--text-link-secondary);
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
   transition: color var(--transition-fast) ease;
 }
 
 .navLink:hover {
-  color: var(--text-light);
+  color: var(--text-link-secondary-hover);
+}
+
+.navLinkActive {
+  color: var(--text-link-secondary-active);
+}
+
+.navLinkActiveIcon {
+  color: var(--text-link-secondary-hover);
+  position: absolute;
+  bottom: -1rem;
+}
+
+.avatar {
+  max-width: 3rem;
+  width: 100%;
+  aspect-ratio: 1/1;
 }

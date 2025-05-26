@@ -1,23 +1,51 @@
 import React from 'react';
+import { NavLink } from "react-router-dom";
+import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
+import AvatarPlaceholder from "../../assets/images/avatar-placeholder.png"
 import styles from './Header.module.css';
-import ReactLogo from '../../assets/react.svg';
+import { GhostIcon } from "@phosphor-icons/react";
 
 const Header: React.FC = () => {
+  const getNavLinkClass = ({ isActive }: { isActive: boolean }): string => {
+    return `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
+  }
+
   return (
     <header className="bg-dark">
       <div className={styles.container}>
         <nav className="flex items-center justify-between">
-          <img src={ReactLogo} alt="React Logo" className={styles.logo}/>
+          <NavLink to="/" className={styles.logoLink}>
+            <img src={PressStartLogo} alt="Press Start Logo" className={styles.logo}/>
+          </NavLink>
 
           <ul className="flex items-center gap-8 m-0 p-0">
             <li className="m-0 p-0">
-              <a href="/" className={styles.navLink}>Home</a>
+              <NavLink to="/explore"
+                       className={({ isActive }) =>
+                         `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}>
+                {({ isActive }) => (
+                  <>
+                    Explore
+                    {isActive && <GhostIcon weight="fill" size={12} className={styles.navLinkActiveIcon}/>}
+                  </>
+                )}
+              </NavLink>
             </li>
             <li className="m-0 p-0">
-              <a href="/about" className={styles.navLink}>About</a>
+              <NavLink to="/collection"
+                       className={getNavLinkClass}>
+                {({ isActive }) => (
+                  <>
+                    Collection
+                    {isActive && <GhostIcon weight="fill" size={12} className={styles.navLinkActiveIcon}/>}
+                  </>
+                )}
+              </NavLink>
             </li>
             <li className="m-0 p-0">
-              <a href="/contact" className={styles.navLink}>Contact</a>
+              <a href="/settings" className={styles.navLink}>
+                <img className={`${styles.avatar}`} src={AvatarPlaceholder} alt="User avatar"/>
+              </a>
             </li>
           </ul>
         </nav>
