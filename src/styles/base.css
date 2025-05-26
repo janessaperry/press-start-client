@@ -22,7 +22,7 @@ body {
   line-height: var(--line-height-normal);
   font-weight: var(--font-weight-normal);
   color: var(--text-primary);
-  background-color: var(--bg-dark);
+  background-color: var(--bg-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -88,12 +88,13 @@ p {
 a {
   color: var(--text-link);
   text-decoration: none;
-  font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-semibold);
   transition: color var(--transition-fast) ease;
 }
 
 a:hover {
   color: var(--text-link-hover);
+  font-weight: var(--font-weight-semibold);
 }
 
 /* Lists */
@@ -112,7 +113,7 @@ button {
   cursor: pointer;
   display: inline-block;
   background-color: var(--color-primary-500);
-  color: var(--color-white);
+  color: var(--color-light);
   font-weight: var(--font-weight-semibold);
   padding: var(--spacing-2) var(--spacing-4);
   border-radius: var(--border-radius-md);

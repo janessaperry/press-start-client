@@ -6,14 +6,16 @@
   --color-primary-500: #730962;
   --color-primary-700: #3D0233;
   --color-primary-900: #2E0026;
+  --color-secondary-900: #110D27;
   --color-success: #8BC106;
   --color-danger: #FD5B76;
   --color-warning: #FFC107; /*todo update*/
-  --color-info: #20C1C7;
+  --color-info-300: #5DD5DA;
+  --color-info-500: #20C1C7;
 
   /* Neutral colors */
   /*todo update*/
-  --color-white: #FFFFFF;
+  --color-light: #EAE9ED;
   --color-gray-100: #F8F9FA;
   --color-gray-200: #E9ECEF;
   --color-gray-300: #DEE2E6;
@@ -28,15 +30,17 @@
   --text-primary: var(--color-gray-900);
   --text-secondary: var(--color-gray-700);
   --text-tertiary: var(--color-gray-600);
-  --text-light: var(--color-white);
+  --text-light: var(--color-light);
   --text-link: var(--color-primary-500);
   --text-link-hover: var(--color-primary-700);
+  --text-link-secondary: var(--color-light);
+  --text-link-secondary-hover: var(--color-info-500);
+  --text-link-secondary-active: var(--color-info-300);
 
   /* Background colors */
-  --bg-primary: var(--color-white);
+  --bg-primary: var(--color-secondary-900);
   --bg-secondary: var(--color-gray-100);
   --bg-tertiary: var(--color-gray-200);
-  --bg-dark: #242424;
 
   /* Typography */
   --font-family-heading: 'Exo 2';
@@ -55,6 +59,7 @@
   --font-weight-light: 300;
   --font-weight-normal: 400;
   --font-weight-semibold: 600;
+  --font-weight-bold: 700;
   --font-weight-black: 900;
 
   /* Line heights */
