@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header/Header.tsx";
+import Footer from "./components/Footer/Footer.tsx";
 import CollectionPage from "./pages/CollectionPage.tsx";
 import './App.css'
 
@@ -13,6 +14,7 @@ function App () {
           <Route path="/collection" element={<CollectionPage/>}/>
           <Route path="/explore" element={<CollectionPage/>}/>
         </Routes>
+        <Footer/>
       </BrowserRouter>
     </>
   )
