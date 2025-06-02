@@ -11,7 +11,6 @@
 // Pages
 
 // Styles
-import './CollectionPage.module.css';
 
 const CollectionPage = () => {
   return (
