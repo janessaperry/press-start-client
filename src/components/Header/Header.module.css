@@ -17,7 +17,7 @@
 .navLink {
   position: relative;
   text-decoration: none;
-  color: var(--text-link-secondary);
+  color: var(--text-link-tertiary);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   display: flex;
@@ -28,15 +28,15 @@
 }
 
 .navLink:hover {
-  color: var(--text-link-secondary-hover);
+  color: var(--text-link-tertiary-hover);
 }
 
 .navLinkActive {
-  color: var(--text-link-secondary-active);
+  color: var(--text-link-tertiary-active);
 }
 
 .navLinkActiveIcon {
-  color: var(--text-link-secondary-hover);
+  color: var(--text-link-tertiary-hover);
   position: absolute;
   bottom: -1rem;
 }

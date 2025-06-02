@@ -11,7 +11,7 @@ const Header: React.FC = () => {
   }
 
   return (
-    <header className="bg-dark">
+    <header className="bg-primary">
       <div className={styles.container}>
         <nav className="flex items-center justify-between">
           <NavLink to="/" className={styles.logoLink}>
