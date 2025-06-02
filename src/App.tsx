@@ -1,11 +1,20 @@
+// Libraries
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import CollectionPage from "./pages/CollectionPage.tsx";
-import './App.css'
-import SignUpPage from "./pages/SignUpPage/SignUpPage.tsx";
+
+// Layouts
 import AuthLayout from "./layouts/AuthLayout.tsx";
-import ProtectedRoute from "./routes/ProtectedRoute.tsx";
-import LogInPage from "./pages/LogInPage/LogInPage.tsx";
 import PageLayout from "./layouts/PageLayout.tsx";
+
+// Route Logic
+import ProtectedRoute from "./routes/ProtectedRoute.tsx";
+
+// Pages
+import SignUpPage from "./pages/SignUpPage/SignUpPage.tsx";
+import LogInPage from "./pages/LogInPage/LogInPage.tsx";
+import CollectionPage from "./pages/CollectionPage/CollectionPage.tsx";
+
+// Styles
+import './App.css'
 
 function App () {
   return (

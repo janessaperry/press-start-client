@@ -1,8 +1,22 @@
-import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
+// Libraries
 import { Link } from "react-router-dom";
 import { Button, Description, Field, Fieldset, Input, Label } from "@headlessui/react";
 
-function LogInPage () {
+// Layouts
+
+// Route Logic
+
+// Components & Assets
+import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
+
+// Utils
+
+// Pages
+
+// Styles
+
+
+const LogInPage = () => {
   return (
     <>
       <main className="h-screen">

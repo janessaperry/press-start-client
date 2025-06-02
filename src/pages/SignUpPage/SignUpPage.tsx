@@ -1,9 +1,22 @@
-import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
-import styles from "./SignUpPage.module.css"
+// Libraries
 import { Link } from "react-router-dom";
 import { Button, Description, Field, Fieldset, Input, Label } from "@headlessui/react";
 
-function SignUpPage () {
+// Layouts
+
+// Route Logic
+
+// Components & Assets
+import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
+
+// Utils
+
+// Pages
+
+// Styles
+import styles from "./SignUpPage.module.css"
+
+const SignUpPage = () => {
   return (
     <>
       <main className="h-screen">
