@@ -2,6 +2,7 @@
   /* Color palette */
   --color-primary-50: #BFAFBE;
   --color-primary-100: #F5B9EB;
+  --color-primary-100-rgb: 245, 185, 235;
   --color-primary-300: #91007A;
   --color-primary-500: #730962;
   --color-primary-700: #3D0233;
@@ -16,6 +17,7 @@
   /* Neutral colors */
   /*todo update*/
   --color-light: #EAE9ED;
+  --color-light-rgb: 234, 233, 237;
   --color-gray-100: #F8F9FA;
   --color-gray-200: #E9ECEF;
   --color-gray-300: #DEE2E6;
@@ -27,20 +29,24 @@
   --color-gray-900: #212529;
 
   /* Text colors */
-  --text-primary: var(--color-gray-900);
+  --text-primary: var(--color-light);
   --text-secondary: var(--color-gray-700);
   --text-tertiary: var(--color-gray-600);
   --text-light: var(--color-light);
-  --text-link: var(--color-primary-500);
-  --text-link-hover: var(--color-primary-700);
-  --text-link-secondary: var(--color-light);
-  --text-link-secondary-hover: var(--color-info-500);
+  --text-link-primary: var(--color-primary-500);
+  --text-link-primary-hover: var(--color-primary-700);
+  --text-link-secondary: var(--color-info-500);
+  --text-link-secondary-hover: var(--color-info-300);
   --text-link-secondary-active: var(--color-info-300);
+  --text-link-tertiary: var(--color-light);
+  --text-link-tertiary-hover: var(--color-info-500);
+  --text-link-tertiary-active: var(--color-info-300);
 
   /* Background colors */
   --bg-primary: var(--color-secondary-900);
-  --bg-secondary: var(--color-gray-100);
-  --bg-tertiary: var(--color-gray-200);
+  --bg-secondary: var(--color-primary-700);
+  --bg-tertiary: var(--color-primary-500);
+  --bg-light: var(--color-light);
 
   /* Typography */
   --font-family-heading: 'Exo 2';

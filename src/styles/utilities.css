@@ -534,26 +534,54 @@
   color: var(--text-light);
 }
 
-.text-link {
-  color: var(--text-link);
+.text-link-primary {
+  color: var(--text-link-primary);
+
+  &:hover {
+    color: var(--text-link-primary-hover);
+
+  }
+}
+
+.text-link-secondary {
+  color: var(--text-link-secondary);
+
+  &:hover {
+    color: var(--text-link-secondary-hover);
+  }
+}
+
+
+.text-link-tertiary {
+  color: var(--text-link-tertiary);
+
+  &:hover {
+    color: var(--text-link-tertiary-hover);
+
+  }
 }
 
 /* Background colors */
 /*todo update*/
 .bg-primary {
-  background-color: var(--bg-dark);
+  background-color: var(--bg-primary);
 }
 
 .bg-secondary {
-  background-color: var(--bg-dark);
+  background-color: var(--bg-secondary);
 }
 
 .bg-tertiary {
-  background-color: var(--bg-dark);
+  background-color: var(--bg-tertiary);
 }
 
-.bg-dark {
-  background-color: var(--bg-dark);
+.bg-light {
+  background-color: var(--bg-light);
+}
+
+/* Border */
+.border-none {
+  border: none;
 }
 
 /* Border radius */
