@@ -13,7 +13,7 @@ function SignUpPage () {
           </div>
 
           <section className="bg-secondary flex-1 p-12">
-            <p>Already have an account? <Link to="/collection" className={styles.link}>Sign in (update
+            <p>Already have an account? <Link to="/log-in" className={styles.link}>Sign in (update
               link)</Link></p>
 
             <form>
