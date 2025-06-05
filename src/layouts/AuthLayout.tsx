@@ -4,7 +4,7 @@ import useAuth from "../hooks/useAuth.tsx";
 const AuthLayout = () => {
 
   const { isAuthenticated } = useAuth();
-  console.log(isAuthenticated);
+  console.log("isAuthenticated", isAuthenticated);
 
   if ( isAuthenticated ) {
     return <Navigate to="/"/>;
