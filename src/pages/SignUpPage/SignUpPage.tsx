@@ -1,5 +1,5 @@
 // Libraries
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -8,11 +8,12 @@ import axios from "axios";
 // Route Logic
 
 // Components & Assets
-import { Button, Description, Field, Fieldset, Input, Label } from "@headlessui/react";
 import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
+import { Button, Description, Field, Fieldset, Input, Label } from "@headlessui/react";
 
 // Utils
 import useAuth from "../../hooks/useAuth.tsx";
+import { validateEmail, validatePassword } from "../../utils/validators.ts";
 
 // Pages
 
@@ -21,15 +22,6 @@ import styles from "./SignUpPage.module.css"
 
 const SignUpPage = () => {
   const { login } = useAuth();
-  /**
-   * validate form fields
-   * if valid:
-   *    - send post request to backend with sign up info
-   *    - set token in local storage
-   *    - call login to set context
-   * if not valid:
-   *    - show error message
-   */
   const [ formData, setFormData ] = useState({
     email: "",
     password: "",
@@ -44,15 +36,6 @@ const SignUpPage = () => {
     )
   }
 
-  const validateEmail = (email: string) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  }
-
-  const validatePassword = (password: string) => {
-    const regex = /^(?=.*[a-z])(?=.*\d).{8,}$/;
-    return regex.test(password);
-  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,24 +56,15 @@ const SignUpPage = () => {
 
   const createUser = async (email: string, password: string) => {
     //todo move this to correct folder after working
-    const response = await axios.post("http://localhost:8080/users", {
+    const response = await axios.post("http://localhost:8080/users/sign-up", {
       email,
       password
     });
+
     const token = response.data.token;
     localStorage.setItem('token', token);
     login(token);
   }
-
-  const testing = async () => {
-    const response = await axios.get("http://localhost:8080");
-    console.log(response.data);
-    return response.data;
-  }
-
-  useEffect(() => {
-    testing();
-  }, [])
 
 
   return (
