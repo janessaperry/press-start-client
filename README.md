@@ -1,50 +1,16 @@
-# React + TypeScript + Vite
+# Press Start
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+Press Start is an app that helps users build and manage a personal collection of the video games they own. It allows
+them to track which games they have, what platform they’re on, and whether they are physical or digital. This MVP is
+designed for personal use, with user registration and authentication being added later if there is time.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Problem Space
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Gamers often find themselves stuck when deciding what to play next, especially when they can’t remember which games
+they already own. Managing a collection of games across multiple consoles and formats (digital and physical) makes it
+easy to forget about titles purchased during sales or lost in the shuffle. Press Start addresses this pain point by
+offering a centralized platform where users can organize all their games in one place, making it easy to see their
+collection and decide on their next adventure. Whether you’re in the mood for a quick puzzle game or an expansive RPG,
+Press Start helps you quickly identify which games are ready to play.
