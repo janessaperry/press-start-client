@@ -13,7 +13,7 @@ import { Button, Description, Field, Fieldset, Input, Label } from "@headlessui/
 
 // Utils
 import useAuth from "../../hooks/useAuth.tsx";
-import { validateEmail, validatePassword } from "../../utils/validators.ts";
+import { validateEmail, validatePasswordFormat } from "../../utils/validators.ts";
 
 // Pages
 
@@ -42,7 +42,7 @@ const SignUpPage = () => {
     let formValid = false;
 
     const emailValid = validateEmail(formData.email);
-    const passwordValid = validatePassword(formData.password);
+    const passwordValid = validatePasswordFormat(formData.password);
     const confirmPasswordValid = !!formData.confirmPassword && formData.password === formData.confirmPassword;
     formValid = emailValid && passwordValid && confirmPasswordValid;
 
