@@ -7,11 +7,12 @@ import axios from "axios";
 // Route Logic
 // Components & Assets
 import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
-import { Button, Field, Fieldset, Input, Label } from "@headlessui/react";
+import { Button, Fieldset } from "@headlessui/react";
 
 // Utils
 import useAuth from "../../hooks/useAuth.tsx";
 import { validateEmail, validatePasswordFormat } from "../../utils/validators.ts";
+import TextInput from "../../components/TextInput/TextInput.tsx";
 
 // Styles
 
@@ -71,24 +72,20 @@ const LogInPage = () => {
               <h1>Sign in</h1>
 
               <Fieldset className="flex flex-col gap-8 border-none">
-                <Field className={`flex flex-col gap-1`}>
-                  <Label htmlFor="email"
-                  >Email <span>*</span></Label>
-                  <Input id="email" name="email" placeholder="Email"
-                         value={formData.email}
-                         onChange={(e) => handleInputChange(e)}/>
-                </Field>
+                <TextInput id="email"
+                           label="Email"
+                           placeholder="Email"
+                           required={true}
+                           value={formData.email}
+                           onChange={(e) => handleInputChange(e)}/>
 
-                <Field className={`flex flex-col gap-1`}>
-                  <Label htmlFor="password"
-                  >Password <span>*</span></Label>
-                  <Input id="password"
-                         name="password"
-                         type="password"
-                         placeholder="Password"
-                         value={formData.password}
-                         onChange={(e) => handleInputChange(e)}/>
-                </Field>
+                <TextInput id="password"
+                           label="Password"
+                           type="password"
+                           placeholder="Password"
+                           required={true}
+                           value={formData.password}
+                           onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
 
               <Button className="mt-6" type="submit">Sign In</Button>
