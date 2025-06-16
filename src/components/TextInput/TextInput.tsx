@@ -1,11 +1,12 @@
 // Libraries
+import React from "react";
 
 // Layouts
 
 // Route Logic
 
 // Components
-import { Field, Input, Label } from "@headlessui/react";
+import { Description, Field, Input, Label } from "@headlessui/react";
 
 // Utils
 
@@ -18,17 +19,18 @@ import styles from './TextInput.module.css';
 type TextInputProps = {
   id: string;
   label: string;
-  type?: string;
-  placeholder?: string;
-  required?: boolean;
-}
+  description?: string;
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
-const TextInput = ({ id, label, type = "text", placeholder, required = false }: TextInputProps) => {
+const TextInput = ({ id, label, description, type = "text", required = false, ...inputProps }: TextInputProps) => {
   return (
     <Field className={`${styles.formField} flex flex-col gap-1`}>
       <Label htmlFor={id}
              className={styles.formLabel}>{label} {required && <span className={styles.required}>*</span>}</Label>
-      <Input id={id} type={type} placeholder={placeholder} className={styles.formInput}/>
+      <Input id={id} type={type} className={styles.formInput} {...inputProps}/>
+
+      {description && <Description className="mb-0 text-sm text-secondary">{description}</Description>}
+
     </Field>
   );
 };
