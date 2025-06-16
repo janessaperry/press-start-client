@@ -9,7 +9,7 @@ import axios from "axios";
 
 // Components & Assets
 import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
-import { Button, Description, Field, Fieldset, Input, Label } from "@headlessui/react";
+import { Button, Fieldset } from "@headlessui/react";
 
 // Utils
 import useAuth from "../../hooks/useAuth.tsx";
@@ -19,6 +19,7 @@ import { validateEmail, validatePasswordFormat } from "../../utils/validators.ts
 
 // Styles
 import styles from "./SignUpPage.module.css"
+import TextInput from "../../components/TextInput/TextInput.tsx";
 
 const SignUpPage = () => {
   const { login } = useAuth();
@@ -39,17 +40,14 @@ const SignUpPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let formValid = false;
+    console.log(formData);
 
     const emailValid = validateEmail(formData.email);
     const passwordValid = validatePasswordFormat(formData.password);
     const confirmPasswordValid = !!formData.confirmPassword && formData.password === formData.confirmPassword;
-    formValid = emailValid && passwordValid && confirmPasswordValid;
+    const formValid = emailValid && passwordValid && confirmPasswordValid;
 
-
-    if ( !formValid ) {
-      return;
-    }
+    if ( !formValid ) return;
 
     await createUser(formData.email, formData.password);
   }
@@ -83,45 +81,33 @@ const SignUpPage = () => {
               <h1>Sign up</h1>
 
               <Fieldset className="flex flex-col gap-8 border-none">
-                <Field className={`${styles.formField} flex flex-col gap-1`}>
-                  <Label htmlFor="email"
-                         className={styles.formLabel}>Email <span className={styles.required}>*</span></Label>
-                  <Input id="email"
-                         name="email"
-                         type="email"
-                         placeholder="Email"
-                         className={styles.formInput}
-                         value={formData.email}
-                         onChange={(e) => handleInputChange(e)}/>
-                </Field>
+                <TextInput
+                  id="email"
+                  label="Email"
+                  placeholder="Email"
+                  required={true}
+                  value={formData.email}
+                  onChange={(e) => handleInputChange(e)}/>
 
-                <Field className={`${styles.formField} flex flex-col gap-1`}>
-                  <Label htmlFor="password"
-                         className={styles.formLabel}>Password <span className={styles.required}>*</span></Label>
-                  <Input id="password"
-                         name="password"
-                         type="password"
-                         placeholder="Password"
-                         className={styles.formInput}
-                         value={formData.password}
-                         onChange={(e) => handleInputChange(e)}/>
-                  <Description className="mb-0 text-sm text-secondary">Password should be at least 8 characters
-                    including a number and a lowercase letter.</Description>
-                </Field>
+                <TextInput
+                  id="password"
+                  label="Password"
+                  description="Password should be at least 8 characters including a number and a lowercase letter."
+                  type="password"
+                  placeholder="Password"
+                  required={true}
+                  value={formData.password}
+                  onChange={(e) => handleInputChange(e)}/>
 
-                <Field className={`${styles.formField} flex flex-col gap-1`}>
-                  <Label htmlFor="confirmPassword"
-                         className={styles.formLabel}>Confirm
-                    Password <span className={styles.required}>*</span></Label>
-                  <Input id="confirmPassword"
-                         name="confirmPassword"
-                         type="password"
-                         placeholder="Password"
-                         className={styles.formInput}
-                         value={formData.confirmPassword}
-                         onChange={(e) => handleInputChange(e)}/>
-                  <Description className="mb-0 text-sm text-secondary">Enter a password update message.</Description>
-                </Field>
+                <TextInput
+                  id="confirmPassword"
+                  label="Confirm Password"
+                  description="Re-enter your password to confirm."
+                  type="password"
+                  placeholder="Password"
+                  required={true}
+                  value={formData.confirmPassword}
+                  onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
 
               <Button className="mt-6" type="submit">Create Account</Button>
