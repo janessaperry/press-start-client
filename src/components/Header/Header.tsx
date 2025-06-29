@@ -1,11 +1,13 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
+import { Button, Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
-import AvatarPlaceholder from "../../assets/images/avatar-placeholder.png"
+import { GhostIcon, UserCircleIcon } from "@phosphor-icons/react";
 import styles from './Header.module.css';
-import { GhostIcon } from "@phosphor-icons/react";
+import useAuth from "../../hooks/useAuth.tsx";
 
 const Header: React.FC = () => {
+  const { logout } = useAuth();
   const getNavLinkClass = ({ isActive }: { isActive: boolean }): string => {
     return `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
   }
@@ -43,9 +45,16 @@ const Header: React.FC = () => {
               </NavLink>
             </li>
             <li className="m-0 p-0">
-              <a href="/settings" className={styles.navLink}>
-                <img className={`${styles.avatar}`} src={AvatarPlaceholder} alt="User avatar"/>
-              </a>
+              <Popover className={styles.popover}>
+                <PopoverButton className={styles.popoverButton}>
+                  <UserCircleIcon weight="duotone"
+                                  className={styles.popoverButtonIcon}/>
+                </PopoverButton>
+                <PopoverPanel className={styles.popoverPanel} anchor={{ to: 'bottom end', gap: 'var(--spacing-1)' }}>
+                  <NavLink to="/settings" className={styles.popoverLink}>Settings</NavLink>
+                  <Button className={styles.popoverLink} onClick={logout}>Log out</Button>
+                </PopoverPanel>
+              </Popover>
             </li>
           </ul>
         </nav>
