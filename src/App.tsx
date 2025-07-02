@@ -15,6 +15,7 @@ import CollectionPage from "./pages/CollectionPage/CollectionPage.tsx";
 
 // Styles
 import './App.css'
+import ExplorePage from "./pages/ExplorePage/ExplorePage.tsx";
 
 function App () {
   return (
@@ -29,7 +30,7 @@ function App () {
 
           <Route element={<PageLayout/>}>
             <Route path="/" element={<CollectionPage/>}/>
-            <Route path="/explore" element={<CollectionPage/>}/>
+            <Route path="/explore" element={<ExplorePage/>}/>
 
             <Route element={<ProtectedRoute/>}>
               <Route path="/collection" element={<CollectionPage/>}/>

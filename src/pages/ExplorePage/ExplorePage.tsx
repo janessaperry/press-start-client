@@ -6,12 +6,12 @@
 // Pages
 // Styles
 
-const CollectionPage = () => {
+const ExplorePage = () => {
   return (
     <>
-      <h1>Collection</h1>
+      <h1>Explore</h1>
     </>
   );
 };
 
-export default CollectionPage;
+export default ExplorePage;
