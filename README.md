@@ -13,8 +13,14 @@ the games they own (and what system and format each game is).
 
 ## Technologies Used
 
-- **Frontend**: React, TypeScript, Vite
-- **UI Components**: Headless UI
-- **Routing**: React Router
-- **HTTP Client**: Axios
-- **Icons**: Phosphor Icons
+#### Front-End
+
+[![My Skills](https://skillicons.dev/icons?i=react,ts,vite)](https://skillicons.dev)
+
+#### Back-End
+
+[![My Skills](https://skillicons.dev/icons?i=nodejs,express,postgresql,prisma)](https://skillicons.dev)
+
+> [👉🏻 Backend Repo](https://github.com/janessaperry/press-start-server-v2)
+ 
+
