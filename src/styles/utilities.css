@@ -499,6 +499,11 @@
   font-size: var(--font-size-5xl);
 }
 
+/* Line Height */
+.leading-none {
+  line-height: 1;
+}
+
 /* Font weights */
 .font-light {
   font-weight: var(--font-weight-light);
