@@ -6,6 +6,7 @@ import React from "react";
 // Route Logic
 
 // Components
+import { WarningCircleIcon } from "@phosphor-icons/react";
 import { Description, Field, Input, Label } from "@headlessui/react";
 
 // Utils
@@ -40,8 +41,10 @@ const TextInput = ({
 
       {description && <Description className="mb-0 text-sm text-secondary">{description}</Description>}
       {errorMessage &&
-        <Description className={`mb-0 text-sm text-error ${styles.errorToast}`}>{errorMessage}</Description>}
-
+        <Description className={`flex flex-row items-center gap-1 leading-none mb-0 mt-2 text-sm text-error ${styles.errorToast}`}>
+          <WarningCircleIcon weight="duotone" size={18}/>
+          {errorMessage}
+        </Description>}
     </Field>
   );
 };
