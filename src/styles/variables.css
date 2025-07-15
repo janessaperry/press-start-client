@@ -9,7 +9,7 @@
   --color-primary-900: #2E0026;
   --color-secondary-900: #110D27;
   --color-success: #8BC106;
-  --color-danger: #FD5B76;
+  --color-danger-500: #FD5B76;
   --color-warning: #FFC107; /*todo update*/
   --color-info-300: #5DD5DA;
   --color-info-500: #20C1C7;
@@ -33,6 +33,8 @@
   --text-secondary: var(--color-gray-700);
   --text-tertiary: var(--color-gray-600);
   --text-light: var(--color-light);
+  --text-error: var(--color-danger-500);
+  --text-required: var(--color-danger-500);
   --text-link-primary: var(--color-primary-500);
   --text-link-primary-hover: var(--color-primary-700);
   --text-link-secondary: var(--color-info-500);
