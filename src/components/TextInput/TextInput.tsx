@@ -20,9 +20,18 @@ type TextInputProps = {
   id: string;
   label: string;
   description?: string;
+  errorMessage?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-const TextInput = ({ id, label, description, type = "text", required = false, ...inputProps }: TextInputProps) => {
+const TextInput = ({
+  id,
+  label,
+  description,
+  errorMessage,
+  type = "text",
+  required = false,
+  ...inputProps
+}: TextInputProps) => {
   return (
     <Field className={`${styles.formField} flex flex-col gap-1`}>
       <Label htmlFor={id}
@@ -30,6 +39,8 @@ const TextInput = ({ id, label, description, type = "text", required = false, ..
       <Input id={id} type={type} className={styles.formInput} {...inputProps}/>
 
       {description && <Description className="mb-0 text-sm text-secondary">{description}</Description>}
+      {errorMessage &&
+        <Description className={`mb-0 text-sm text-error ${styles.errorToast}`}>{errorMessage}</Description>}
 
     </Field>
   );

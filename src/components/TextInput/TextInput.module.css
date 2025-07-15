@@ -1,5 +1,5 @@
 .required {
-  color: var(--color-danger);
+  color: var(--text-required);
 }
 
 .formField {
