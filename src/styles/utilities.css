@@ -534,6 +534,10 @@
   color: var(--text-light);
 }
 
+.text-error {
+  color: var(--text-error);
+}
+
 .text-link-primary {
   color: var(--text-link-primary);
 
