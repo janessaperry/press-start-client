@@ -28,6 +28,11 @@ const SignUpPage = () => {
     password: "",
     confirmPassword: ""
   });
+  const [ formErrors, setFormErrors ] = useState({
+    email: "",
+    password: "",
+    confirmPassword: ""
+  })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -40,13 +45,20 @@ const SignUpPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
 
     const emailValid = validateEmail(formData.email);
     const passwordValid = validatePasswordFormat(formData.password);
-    const confirmPasswordValid = !!formData.confirmPassword && formData.password === formData.confirmPassword;
-    const formValid = emailValid && passwordValid && confirmPasswordValid;
+    const confirmPasswordValid = formData.password === formData.confirmPassword;
 
+    const newErrors = {
+      email: emailValid ? "" : "Please enter a valid email address.",
+      password: passwordValid ? "" : "Password does not match criteria.",
+      confirmPassword: confirmPasswordValid ? "" : "Passwords do not match."
+    }
+
+    setFormErrors(newErrors);
+
+    const formValid = emailValid && passwordValid && confirmPasswordValid;
     if ( !formValid ) return;
 
     await createUser(formData.email, formData.password);
@@ -86,6 +98,7 @@ const SignUpPage = () => {
                   label="Email"
                   placeholder="Email"
                   required={true}
+                  errorMessage={formErrors.email}
                   value={formData.email}
                   onChange={(e) => handleInputChange(e)}/>
 
@@ -96,6 +109,7 @@ const SignUpPage = () => {
                   type="password"
                   placeholder="Password"
                   required={true}
+                  errorMessage={formErrors.password}
                   value={formData.password}
                   onChange={(e) => handleInputChange(e)}/>
 
@@ -106,6 +120,7 @@ const SignUpPage = () => {
                   type="password"
                   placeholder="Password"
                   required={true}
+                  errorMessage={formErrors.confirmPassword}
                   value={formData.confirmPassword}
                   onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
