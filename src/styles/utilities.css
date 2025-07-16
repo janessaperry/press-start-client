@@ -517,6 +517,10 @@
   font-weight: var(--font-weight-semibold);
 }
 
+.font-bold {
+  font-weight: var(--font-weight-bold);
+}
+
 .font-black {
   font-weight: var(--font-weight-black);
 }
@@ -587,6 +591,11 @@
 .bg-light {
   background-color: var(--bg-light);
 }
+
+.bg-error {
+  background-color: var(--bg-error);
+}
+
 
 /* Border */
 .border-none {

@@ -9,6 +9,7 @@
   --color-primary-900: #2E0026;
   --color-secondary-900: #110D27;
   --color-success: #8BC106;
+  --color-danger-50: #FDD9E6;
   --color-danger-500: #FD5B76;
   --color-warning: #FFC107; /*todo update*/
   --color-info-300: #5DD5DA;
@@ -49,6 +50,7 @@
   --bg-secondary: var(--color-primary-700);
   --bg-tertiary: var(--color-primary-500);
   --bg-light: var(--color-light);
+  --bg-error: var(--color-danger-50);
 
   /* Typography */
   --font-family-heading: 'Exo 2';
