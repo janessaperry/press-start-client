@@ -49,7 +49,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-size: var(--font-size-3xl);
-  margin-bottom: var(--spacing-6);
+  /*margin-bottom: var(--spacing-6);*/
 
   @media screen and (min-width: 768px) {
     font-size: var(--font-size-5xl);
@@ -58,42 +58,42 @@ h1 {
 
 h2 {
   font-size: var(--font-size-4xl);
-  margin-bottom: var(--spacing-5);
+  /*margin-bottom: var(--spacing-5);*/
 }
 
 h3 {
   font-size: var(--font-size-3xl);
-  margin-bottom: var(--spacing-4);
+  /*margin-bottom: var(--spacing-4);*/
 }
 
 h4 {
   font-size: var(--font-size-2xl);
-  margin-bottom: var(--spacing-3);
+  /*margin-bottom: var(--spacing-3);*/
 }
 
 h5 {
   font-size: var(--font-size-xl);
-  margin-bottom: var(--spacing-2);
+  /*margin-bottom: var(--spacing-2);*/
 }
 
 h6 {
   font-size: var(--font-size-lg);
-  margin-bottom: var(--spacing-2);
+  /*margin-bottom: var(--spacing-2);*/
 }
 
 p {
-  margin-bottom: var(--spacing-4);
+  /*margin-bottom: var(--spacing-4);*/
 }
 
 a {
-  color: var(--text-link);
+  color: var(--text-link-primary);
   text-decoration: none;
   font-weight: var(--font-weight-semibold);
   transition: color var(--transition-fast) ease;
 }
 
 a:hover {
-  color: var(--text-link-hover);
+  color: var(--text-link-primary-hover);
   font-weight: var(--font-weight-semibold);
 }
 
