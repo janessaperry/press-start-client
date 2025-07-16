@@ -6,13 +6,14 @@ import axios from "axios";
 // Layouts
 // Route Logic
 // Components & Assets
-import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
 import { Button, Fieldset } from "@headlessui/react";
+import { WarningCircleIcon } from "@phosphor-icons/react";
+import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
+import TextInput from "../../components/TextInput/TextInput.tsx";
 
 // Utils
 import useAuth from "../../hooks/useAuth.tsx";
-import { validateEmail, validatePasswordFormat } from "../../utils/validators.ts";
-import TextInput from "../../components/TextInput/TextInput.tsx";
+import { validateEmail } from "../../utils/validators.ts";
 
 // Styles
 
@@ -23,6 +24,11 @@ const LogInPage = () => {
     email: "",
     password: ""
   })
+  const [ formErrors, setFormErrors ] = useState({
+    email: "",
+    password: ""
+  })
+  const [ authError, setAuthError ] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -37,24 +43,41 @@ const LogInPage = () => {
     const { email, password } = formData;
 
     const emailValid = validateEmail(email);
-    const passwordFormatValid = validatePasswordFormat(password);
-    const formValid = emailValid && passwordFormatValid;
+    const isPasswordFilled = password !== "";
 
+    const newErrors = {
+      email: emailValid ? "" : "Please enter a valid email address.",
+      password: isPasswordFilled ? "" : "Password is required."
+    }
+    setFormErrors(newErrors);
+
+    const formValid = emailValid && isPasswordFilled;
     if ( !formValid ) {
       return;
     }
 
     const response = await logIn(email, password);
+    if ( !response ) {
+      setAuthError(true);
+      return;
+    }
+    setAuthError(false);
+
     const token = response.data.token;
     localStorage.setItem('token', token);
     login(token);
   }
 
   const logIn = async (email: string, password: string) => {
-    return await axios.post("http://localhost:8080/users/log-in", {
-      email,
-      password
-    });
+    try {
+      return await axios.post("http://localhost:8080/users/log-in", {
+        email,
+        password
+      });
+    }
+    catch (e) {
+      console.error(`Login failed: ${e}`);
+    }
   }
 
   return (
@@ -68,14 +91,25 @@ const LogInPage = () => {
           <section className="bg-secondary flex-1 p-12">
             <p>No account? <Link to="/sign-up" className="text-link-tertiary">Create account</Link></p>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-8">
               <h1>Sign in</h1>
+
+              {authError && (
+                <div className={`text-error bg-error px-4 py-2 rounded-md flex items-center gap-2`}
+                     role="alert"
+                     aria-live="assertive"
+                     aria-atomic="true">
+                  <WarningCircleIcon weight="bold" size={18}/>
+                  <p className={`font-bold`}>Email or password is incorrect.</p>
+                </div>
+              )}
 
               <Fieldset className="flex flex-col gap-8 border-none">
                 <TextInput id="email"
                            label="Email"
                            placeholder="Email"
                            required={true}
+                           errorMessage={formErrors.email}
                            value={formData.email}
                            onChange={(e) => handleInputChange(e)}/>
 
@@ -84,11 +118,12 @@ const LogInPage = () => {
                            type="password"
                            placeholder="Password"
                            required={true}
+                           errorMessage={formErrors.password}
                            value={formData.password}
                            onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
 
-              <Button className="mt-6" type="submit">Sign In</Button>
+              <Button className="" type="submit">Sign In</Button>
             </form>
           </section>
         </div>
