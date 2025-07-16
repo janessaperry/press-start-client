@@ -1,0 +1,38 @@
+.imageContainer {
+  background: url("../../assets/images/sign-up-bg-v2.jpg") no-repeat right;
+  background-size: cover;
+}
+
+/*.link {*/
+/*  color: var(--text-link-secondary);*/
+
+/*  &:hover {*/
+/*    color: var(--text-link-secondary-hover);*/
+/*  }*/
+/*}*/
+
+/*.required {*/
+/*  color: var(--color-danger);*/
+/*}*/
+
+/*.formField {*/
+
+/*}*/
+
+/*.formLabel {*/
+/*  font-size: var(--font-size-lg);*/
+/*}*/
+
+/*.formInput {*/
+/*  font-size: var(--font-size-md);*/
+/*  border: 2px solid var(--color-primary-300);*/
+/*  border-radius: var(--border-radius-full);*/
+/*  padding: var(--spacing-2) var(--spacing-4);*/
+/*  background-color: var(--color-light);*/
+/*  transition: outline 0.1s ease-out;*/
+
+/*  &:focus {*/
+/*    border-color: var(--color-primary-700);*/
+/*    outline: 2px solid var(--color-info-300);*/
+/*  }*/
+/*}*/

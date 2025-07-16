@@ -16,7 +16,7 @@ import useAuth from "../../hooks/useAuth.tsx";
 import { validateEmail } from "../../utils/validators.ts";
 
 // Styles
-
+import styles from "./LogInPage.module.css"
 
 const LogInPage = () => {
   const { login } = useAuth();
@@ -84,7 +84,7 @@ const LogInPage = () => {
     <>
       <main className="h-screen">
         <div className="h-full flex">
-          <div className={`flex-1 p-12`}>
+          <div className={`hidden md:inline-block flex-1 p-12 ${styles.imageContainer}`}>
             <img src={PressStartLogo} alt="Press Start logo"/>
           </div>
 
