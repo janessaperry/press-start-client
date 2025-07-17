@@ -10,7 +10,7 @@ import ProtectedRoute from "./routes/ProtectedRoute.tsx";
 
 // Pages
 import SignUpPage from "./pages/SignUpPage/SignUpPage.tsx";
-import LogInPage from "./pages/LogInPage/LogInPage.tsx";
+import SignInPage from "./pages/SignInPage/SignInPage.tsx";
 import CollectionPage from "./pages/CollectionPage/CollectionPage.tsx";
 
 // Styles
@@ -24,7 +24,7 @@ function App () {
         <Routes>
           <Route element={<AuthLayout/>}>
             <Route path="/sign-up" element={<SignUpPage/>}/>
-            <Route path="/log-in" element={<LogInPage/>}/>
+            <Route path="/sign-in" element={<SignInPage/>}/>
           </Route>
 
 
