@@ -66,7 +66,7 @@ const SignUpPage = () => {
 
   const createUser = async (email: string, password: string) => {
     //todo move this to correct folder after working
-    const response = await axios.post("http://localhost:8080/users/sign-up", {
+    const response = await axios.post("http://localhost:8080/auth/login", {
       email,
       password
     });

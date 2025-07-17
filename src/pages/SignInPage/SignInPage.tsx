@@ -70,7 +70,7 @@ const SignInPage = () => {
 
   const logIn = async (email: string, password: string) => {
     try {
-      return await axios.post("http://localhost:8080/users/log-in", {
+      return await axios.post("http://localhost:8080/auth/login", {
         email,
         password
       });
