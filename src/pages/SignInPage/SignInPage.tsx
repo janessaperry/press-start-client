@@ -16,9 +16,9 @@ import useAuth from "../../hooks/useAuth.tsx";
 import { validateEmail } from "../../utils/validators.ts";
 
 // Styles
-import styles from "./LogInPage.module.css"
+import styles from "./SignInPage.module.css"
 
-const LogInPage = () => {
+const SignInPage = () => {
   const { login } = useAuth();
   const [ formData, setFormData ] = useState({
     email: "",
@@ -89,8 +89,7 @@ const LogInPage = () => {
           </div>
 
           <section className="bg-secondary flex-1 p-12">
-            <p>No account? <Link to="/sign-up" className="text-link-tertiary">Create account</Link></p>
-
+            <p>Don't have an account? <Link to="/sign-up" className="text-link-secondary">Sign up</Link></p>
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
               <h1>Sign in</h1>
 
@@ -123,7 +122,7 @@ const LogInPage = () => {
                            onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
 
-              <Button className="" type="submit">Sign In</Button>
+              <Button className="" type="submit">Continue</Button>
             </form>
           </section>
         </div>
@@ -132,4 +131,4 @@ const LogInPage = () => {
   )
 }
 
-export default LogInPage;
+export default SignInPage;
