@@ -86,10 +86,9 @@ const SignUpPage = () => {
           </div>
 
           <section className="bg-secondary flex-1 p-12">
-            <p>Already have an account? <Link to="/log-in" className={styles.link}>Sign in (update
-              link)</Link></p>
+            <p>Already have an account? <Link to="/sign-in" className={styles.link}>Sign in</Link></p>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-8">
               <h1>Sign up</h1>
 
               <Fieldset className="flex flex-col gap-8 border-none">
@@ -125,7 +124,7 @@ const SignUpPage = () => {
                   onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
 
-              <Button className="mt-6" type="submit">Create Account</Button>
+              <Button className="" type="submit">Continue</Button>
             </form>
           </section>
 
