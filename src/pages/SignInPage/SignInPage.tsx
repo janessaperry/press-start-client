@@ -99,7 +99,9 @@ const SignInPage = () => {
                      aria-live="assertive"
                      aria-atomic="true">
                   <WarningCircleIcon weight="bold" size={18}/>
-                  <p className={`font-bold`}>Email or password is incorrect.</p>
+                  <p className={`font-bold`}>Email or password is incorrect. <Link to="/forgot-password"
+                                                                                   className="text-link-secondary">Forgot
+                    password?</Link></p>
                 </div>
               )}
 
