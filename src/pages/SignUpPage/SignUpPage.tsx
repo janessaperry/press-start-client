@@ -20,6 +20,7 @@ import { validateEmail, validatePasswordFormat } from "../../utils/validators.ts
 // Styles
 import styles from "./SignUpPage.module.css"
 import TextInput from "../../components/TextInput/TextInput.tsx";
+import { ArrowRightIcon, WarningCircleIcon } from "@phosphor-icons/react";
 
 const SignUpPage = () => {
   const { login } = useAuth();
@@ -33,6 +34,7 @@ const SignUpPage = () => {
     password: "",
     confirmPassword: ""
   })
+  const [ authError, setAuthError ] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -65,15 +67,22 @@ const SignUpPage = () => {
   }
 
   const createUser = async (email: string, password: string) => {
-    //todo move this to correct folder after working
-    const response = await axios.post("http://localhost:8080/auth/login", {
-      email,
-      password
-    });
+    try {
+      //todo move this to correct folder after working
+      const response = await axios.post("http://localhost:8080/auth/register", {
+        email,
+        password
+      });
 
-    const token = response.data.token;
-    localStorage.setItem('token', token);
-    login(token);
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      login(token);
+    }
+    catch (e) {
+      setAuthError(true);
+      console.error(`Sign up failed: ${e}`);
+    }
+
   }
 
 
@@ -90,6 +99,22 @@ const SignUpPage = () => {
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
               <h1>Sign up</h1>
+
+              {authError && (
+                <div className={`text-error bg-error px-4 py-2 rounded-md flex flex-col gap-1`}
+                     role="alert"
+                     aria-live="assertive"
+                     aria-atomic="true">
+                  <div className={`flex items-center gap-2`}>
+                    <WarningCircleIcon weight="bold" size={18}/>
+                    <p className={`font-bold`}>An account already exists for that email
+                      address. <Link to="/sign-in"
+                                     className={`inline-flex gap-1 items-center ${styles.link}`}>Sign
+                        in <ArrowRightIcon weight="bold"/></Link>
+                    </p>
+                  </div>
+                </div>
+              )}
 
               <Fieldset className="flex flex-col gap-8 border-none">
                 <TextInput
