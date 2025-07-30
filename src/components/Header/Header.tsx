@@ -16,7 +16,7 @@ const Header: React.FC = () => {
     <header className="bg-primary">
       <div className={styles.container}>
         <nav className="flex items-center justify-between">
-          <NavLink to="/" className={styles.logoLink}>
+          <NavLink to="/" className={`${styles.logoLink}`}>
             <img src={PressStartLogo} alt="Press Start Logo" className={styles.logo}/>
           </NavLink>
 
@@ -51,7 +51,7 @@ const Header: React.FC = () => {
                                   className={styles.popoverButtonIcon}/>
                 </PopoverButton>
                 <PopoverPanel className={styles.popoverPanel} anchor={{ to: 'bottom end', gap: 'var(--spacing-1)' }}>
-                  <NavLink to="/settings" className={styles.popoverLink}>Settings</NavLink>
+                  <NavLink to="/settings" className={`${styles.popoverLink}`}>Settings</NavLink>
                   <Button className={styles.popoverLink} onClick={logout}>Log out</Button>
                 </PopoverPanel>
               </Popover>
