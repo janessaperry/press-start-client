@@ -187,6 +187,10 @@
   flex: none;
 }
 
+.shrink-0 {
+  flex-shrink: 0;
+}
+
 /* Flex alignment */
 .items-start {
   align-items: flex-start;
@@ -671,6 +675,10 @@
   color: var(--text-error);
 }
 
+.text-info {
+  color: var(--text-info);
+}
+
 .text-link-primary {
   color: var(--text-link-primary);
 
@@ -717,6 +725,10 @@
 
 .bg-error {
   background-color: var(--bg-error);
+}
+
+.bg-info {
+  background-color: var(--bg-info);
 }
 
 
