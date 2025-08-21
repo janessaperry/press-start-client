@@ -1,5 +1,5 @@
 // Libraries
-import React from "react";
+import { InputHTMLAttributes } from "react";
 
 // Layouts
 
@@ -22,7 +22,7 @@ type TextInputProps = {
   label: string;
   description?: string;
   errorMessage?: string;
-} & React.InputHTMLAttributes<HTMLInputElement>;
+} & InputHTMLAttributes<HTMLInputElement>;
 
 const TextInput = ({
   id,
@@ -41,7 +41,7 @@ const TextInput = ({
 
       {description && <Description className="mb-0 text-sm text-secondary">{description}</Description>}
       {errorMessage &&
-        <Description className={`flex flex-row items-center gap-1 leading-none mb-0 mt-2 text-sm text-error ${styles.errorToast}`}>
+        <Description className={`flex flex-row items-center gap-1 leading-none mb-0 mt-2 text-sm text-error`}>
           <WarningCircleIcon weight="duotone" size={18}/>
           {errorMessage}
         </Description>}

@@ -13,7 +13,7 @@ import { Button, Fieldset } from "@headlessui/react";
 
 // Utils
 import useAuth from "../../hooks/useAuth.tsx";
-import { validateEmail, validatePasswordFormat } from "../../utils/validators.ts";
+import { validateEmailFormat, validatePasswordFormat } from "../../utils/validators.ts";
 
 // Pages
 
@@ -48,7 +48,7 @@ const SignUpPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const emailValid = validateEmail(formData.email);
+    const emailValid = validateEmailFormat(formData.email);
     const passwordValid = validatePasswordFormat(formData.password);
     const confirmPasswordValid = formData.password === formData.confirmPassword;
 

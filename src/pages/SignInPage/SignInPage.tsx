@@ -13,7 +13,7 @@ import TextInput from "../../components/TextInput/TextInput.tsx";
 
 // Utils
 import useAuth from "../../hooks/useAuth.tsx";
-import { validateEmail } from "../../utils/validators.ts";
+import { validateEmailFormat } from "../../utils/validators.ts";
 
 // Styles
 import styles from "./SignInPage.module.css"
@@ -42,7 +42,7 @@ const SignInPage = () => {
     e.preventDefault();
     const { email, password } = formData;
 
-    const emailValid = validateEmail(email);
+    const emailValid = validateEmailFormat(email);
     const isPasswordFilled = password !== "";
 
     const newErrors = {
