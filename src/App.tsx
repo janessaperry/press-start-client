@@ -11,11 +11,13 @@ import ProtectedRoute from "./routes/ProtectedRoute.tsx";
 // Pages
 import SignUpPage from "./pages/SignUpPage/SignUpPage.tsx";
 import SignInPage from "./pages/SignInPage/SignInPage.tsx";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage/ForgotPasswordPage.tsx";
+import ResetPasswordPage from "./pages/ResetPasswordPage/ResetPasswordPage.tsx";
 import CollectionPage from "./pages/CollectionPage/CollectionPage.tsx";
+import ExplorePage from "./pages/ExplorePage/ExplorePage.tsx";
 
 // Styles
 import './App.css'
-import ExplorePage from "./pages/ExplorePage/ExplorePage.tsx";
 
 function App () {
   return (
@@ -25,6 +27,8 @@ function App () {
           <Route element={<AuthLayout/>}>
             <Route path="/sign-up" element={<SignUpPage/>}/>
             <Route path="/sign-in" element={<SignInPage/>}/>
+            <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
+            <Route path="/reset-password" element={<ResetPasswordPage/>}/>
           </Route>
 
 
