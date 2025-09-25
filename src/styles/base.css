@@ -1,140 +1,106 @@
 /* CSS reset & base styles */
-@import './variables.css';
-
-html {
-  box-sizing: border-box;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  min-height: 100vh;
-  scroll-behavior: smooth;
-  text-rendering: optimizeSpeed;
-  font-family: var(--font-family-body, 'Mulish'), system-ui, Avenir, Helvetica, Arial, sans-serif;
-  font-size: var(--font-size-md);
-  line-height: var(--line-height-normal);
-  font-weight: var(--font-weight-normal);
-  color: var(--text-primary);
-  background-color: var(--bg-primary);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-img {
-  max-width: 100%;
-  display: block;
-}
-
-input,
-button,
-textarea,
-select {
-  font: inherit;
-}
-
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-  color: var(--text-light);
-  font-family: var(--font-family-heading, 'Exo 2'), system-ui, Avenir, Helvetica, Arial, sans-serif;
-  font-weight: var(--font-weight-normal);
-  line-height: var(--line-height-normal);
-}
-
-h1 {
-  font-size: var(--font-size-3xl);
-  /*margin-bottom: var(--spacing-6);*/
-
-  @media screen and (min-width: 768px) {
-    font-size: var(--font-size-5xl);
+@layer base {
+  html {
+    @apply box-border;
   }
-}
 
-h2 {
-  font-size: var(--font-size-4xl);
-  /*margin-bottom: var(--spacing-5);*/
-}
+  *,
+  *::before,
+  *::after {
+    @apply box-border m-0 p-0;
+  }
 
-h3 {
-  font-size: var(--font-size-3xl);
-  /*margin-bottom: var(--spacing-4);*/
-}
+  body {
+    @apply font-body text-base font-normal antialiased
+    text-grey-50 bg-secondary-900
+    min-h-screen
+    scroll-smooth;
+    text-rendering: optimizeSpeed;
+  }
 
-h4 {
-  font-size: var(--font-size-2xl);
-  /*margin-bottom: var(--spacing-3);*/
-}
+  img {
+    @apply max-w-full block;
+  }
 
-h5 {
-  font-size: var(--font-size-xl);
-  /*margin-bottom: var(--spacing-2);*/
-}
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
 
-h6 {
-  font-size: var(--font-size-lg);
-  /*margin-bottom: var(--spacing-2);*/
-}
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-grey-50 font-heading font-normal;
+  }
 
-p {
-  /*margin-bottom: var(--spacing-4);*/
-}
+  h1 {
+    @apply text-3xl md:text-5xl;
+  }
 
-a {
-  color: var(--text-link-primary);
-  text-decoration: none;
-  font-weight: var(--font-weight-semibold);
-  transition: color var(--transition-fast) ease;
-}
+  h2 {
+    @apply text-4xl;
+  }
 
-a:hover {
-  color: var(--text-link-primary-hover);
-  font-weight: var(--font-weight-semibold);
-}
+  h3 {
+    @apply text-3xl;
+  }
 
-/* Lists */
-ul, ol {
-  list-style: none;
-  /*padding-left: var(--spacing-6);*/
-  /*margin-bottom: var(--spacing-4);*/
-}
+  h4 {
+    @apply text-2xl;
+  }
 
-li {
-  /*margin-bottom: var(--spacing-2);*/
-}
+  h5 {
+    @apply text-xl;
+  }
 
-/* Buttons */
-button {
-  cursor: pointer;
-  display: inline-block;
-  background-color: var(--color-primary-500);
-  color: var(--color-light);
-  font-weight: var(--font-weight-semibold);
-  padding: var(--spacing-2) var(--spacing-4);
-  border-radius: var(--border-radius-md);
-  border: none;
-  transition: background-color var(--transition-fast) ease;
-}
+  h6 {
+    @apply text-lg;
+  }
 
-button:hover {
-  background-color: var(--color-primary-700);
-}
+  p {
 
-button:focus {
-  outline: none;
-}
+  }
 
-/* Remove animations for people who've turned them off */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  a {
+    @apply no-underline font-semibold
+    text-interactive-primary hover:text-interactive-primary-hover
+    focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-accent-300 rounded-sm
+    transition-colors ease-in duration-150;
+  }
+
+  /* Lists */
+  ul, ol {
+    list-style: none;
+    /*padding-left: var(--spacing-6);*/
+    /*margin-bottom: var(--spacing-4);*/
+  }
+
+  li {
+    /*margin-bottom: var(--spacing-2);*/
+  }
+
+  /* Buttons */
+  button {
+    @apply cursor-pointer
+    inline-block px-4 py-2 rounded-full
+    border-none
+    font-semibold
+    bg-interactive-primary hover:bg-interactive-primary-hover text-secondary-900
+    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-300
+    transition-colors ease-in duration-150
+  }
+
+  /* Inputs */
+  input {
+    @apply rounded-full
+    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
+  }
+
+  /* Remove animations for people who've turned them off */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      @apply animate-none transition-none scroll-auto;
+    }
   }
 }

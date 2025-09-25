@@ -94,22 +94,23 @@ const SignUpPage = () => {
             <img src={PressStartLogo} alt="Press Start logo"/>
           </div>
 
-          <section className="bg-secondary flex-1 p-12">
-            <p>Already have an account? <Link to="/sign-in" className={styles.link}>Sign in</Link></p>
+          <section className="bg-primary-700 flex-1 p-12">
+            <p>Already have an account? <Link to="/sign-in"
+              className="">Sign in</Link></p>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
               <h1>Sign up</h1>
 
               {authError && (
-                <div className={`text-error bg-error px-4 py-2 rounded-md flex flex-col gap-1`}
+                <div className={`text-error-50 bg-error-900 px-4 py-2 rounded-md flex flex-col gap-1`}
                   role="alert"
                   aria-live="assertive"
                   aria-atomic="true">
-                  <div className={`flex items-center gap-2`}>
+                  <div className="flex items-center gap-2">
                     <WarningCircleIcon weight="bold" size={18}/>
-                    <p className={`font-bold`}>An account already exists for that email
+                    <p className="font-bold">An account already exists for that email
                       address. <Link to="/sign-in"
-                        className={`inline-flex gap-1 items-center ${styles.link}`}>Sign
+                        className="inline-flex gap-1 items-center text-interactive-primary hover:text-interactive-primary-hover">Sign
                         in <ArrowRightIcon weight="bold"/></Link>
                     </p>
                   </div>
@@ -149,7 +150,8 @@ const SignUpPage = () => {
                   onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
 
-              <Button className="" type="submit">Continue</Button>
+              <Button className="bg-interactive-secondary hover:bg-interactive-secondary-hover text-grey-50 "
+                type="submit">Continue</Button>
             </form>
           </section>
 

@@ -3,56 +3,64 @@ import { NavLink } from "react-router-dom";
 import { Button, Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
 import { GhostIcon, UserCircleIcon } from "@phosphor-icons/react";
-import styles from './Header.module.css';
 import useAuth from "../../hooks/useAuth.tsx";
 
 const Header: React.FC = () => {
   const { logout } = useAuth();
   const getNavLinkClass = ({ isActive }: { isActive: boolean }): string => {
-    return `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
+    return `relative text-lg flex flex-col justify-start items-center 
+    ${isActive ?
+      "text-accent-300" :
+      "text-grey-50 hover:text-interactive-primary-hover"
+    }`
   }
 
   return (
-    <header className="bg-primary">
-      <div className={styles.container}>
+    <header className="">
+      <div className="max-w-xl mx-auto my-0 py-4 md:px-8 md:py-4">
         <nav className="flex items-center justify-between">
-          <NavLink to="/" className={`${styles.logoLink}`}>
-            <img src={PressStartLogo} alt="Press Start Logo" className={styles.logo}/>
+          <NavLink to="/" className="">
+            <img src={PressStartLogo} alt="Press Start Logo" className="max-w-[16rem]"/>
           </NavLink>
 
           <ul className="flex items-center gap-8 m-0 p-0">
             <li className="m-0 p-0">
               <NavLink to="/explore"
-                       className={({ isActive }) =>
-                         `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}>
+                className={getNavLinkClass}>
                 {({ isActive }) => (
                   <>
                     Explore
-                    {isActive && <GhostIcon weight="fill" size={12} className={styles.navLinkActiveIcon}/>}
+                    {isActive && <GhostIcon weight="fill" size={12} className="absolute -bottom-3"/>}
                   </>
                 )}
               </NavLink>
             </li>
             <li className="m-0 p-0">
               <NavLink to="/collection"
-                       className={getNavLinkClass}>
+                className={getNavLinkClass}>
                 {({ isActive }) => (
                   <>
                     Collection
-                    {isActive && <GhostIcon weight="fill" size={12} className={styles.navLinkActiveIcon}/>}
+                    {isActive && <GhostIcon weight="fill" size={12} className="absolute -bottom-3"/>}
                   </>
                 )}
               </NavLink>
             </li>
+
             <li className="m-0 p-0">
-              <Popover className={styles.popover}>
-                <PopoverButton className={styles.popoverButton}>
+              <Popover className="">
+                <PopoverButton className="text-grey-50 bg-interactive-secondary hover:bg-interactive-secondary-hover">
                   <UserCircleIcon weight="duotone"
-                                  className={styles.popoverButtonIcon}/>
+                    className=""/>
                 </PopoverButton>
-                <PopoverPanel className={styles.popoverPanel} anchor={{ to: 'bottom end', gap: 'var(--spacing-1)' }}>
-                  <NavLink to="/settings" className={`${styles.popoverLink}`}>Settings</NavLink>
-                  <Button className={styles.popoverLink} onClick={logout}>Log out</Button>
+
+                <PopoverPanel className="bg-primary-500 p-2 mt-1 flex flex-col gap-1 rounded-xl shadow-md shadow-primary-900"
+                  anchor='bottom end'>
+
+                  <NavLink to="/settings"
+                    className="px-4 py-2 rounded-md text-grey-50 hover:bg-primary-700">Settings</NavLink>
+
+                  <Button className="" onClick={logout}>Log out</Button>
                 </PopoverPanel>
               </Popover>
             </li>
