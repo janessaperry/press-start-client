@@ -8,7 +8,7 @@ import axios from "axios";
 // Components & Assets
 import { Button, Fieldset } from "@headlessui/react";
 import { WarningCircleIcon } from "@phosphor-icons/react";
-import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
+import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import TextInput from "../../components/TextInput/TextInput.tsx";
 
 // Utils
@@ -88,44 +88,48 @@ const SignInPage = () => {
             <img src={PressStartLogo} alt="Press Start logo"/>
           </div>
 
-          <section className="bg-secondary flex-1 p-12">
+          <section className="bg-secondary flex-1 p-12 flex flex-col gap-4">
             <p>Don't have an account? <Link to="/sign-up" className="text-link-secondary">Sign up</Link></p>
+
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
               <h1>Sign in</h1>
 
               {authError && (
                 <div className={`text-error bg-error px-4 py-2 rounded-md flex items-center gap-2`}
-                     role="alert"
-                     aria-live="assertive"
-                     aria-atomic="true">
+                  role="alert"
+                  aria-live="assertive"
+                  aria-atomic="true">
                   <WarningCircleIcon weight="bold" size={18}/>
                   <p className={`font-bold`}>Email or password is incorrect. <Link to="/forgot-password"
-                                                                                   className="text-link-secondary">Forgot
+                    className="text-link-secondary">Forgot
                     password?</Link></p>
                 </div>
               )}
 
               <Fieldset className="flex flex-col gap-8 border-none">
                 <TextInput id="email"
-                           label="Email"
-                           placeholder="Email"
-                           required={true}
-                           errorMessage={formErrors.email}
-                           value={formData.email}
-                           onChange={(e) => handleInputChange(e)}/>
+                  label="Email"
+                  placeholder="Email"
+                  required={true}
+                  errorMessage={formErrors.email}
+                  value={formData.email}
+                  onChange={(e) => handleInputChange(e)}/>
 
                 <TextInput id="password"
-                           label="Password"
-                           type="password"
-                           placeholder="Password"
-                           required={true}
-                           errorMessage={formErrors.password}
-                           value={formData.password}
-                           onChange={(e) => handleInputChange(e)}/>
+                  label="Password"
+                  type="password"
+                  placeholder="Password"
+                  required={true}
+                  errorMessage={formErrors.password}
+                  value={formData.password}
+                  onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
 
               <Button className="" type="submit">Continue</Button>
             </form>
+
+            <p className={`font-bold`}>Forgot password? <Link to="/forgot-password"
+              className="text-link-secondary">Reset it here</Link></p>
           </section>
         </div>
       </main>

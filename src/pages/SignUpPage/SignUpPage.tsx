@@ -1,5 +1,5 @@
 // Libraries
-import React, { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -8,7 +8,7 @@ import axios from "axios";
 // Route Logic
 
 // Components & Assets
-import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
+import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import { Button, Fieldset } from "@headlessui/react";
 
 // Utils
@@ -36,7 +36,7 @@ const SignUpPage = () => {
   })
   const [ authError, setAuthError ] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
         ...formData,
         [ e.target.id ]: e.target.value
@@ -45,7 +45,7 @@ const SignUpPage = () => {
   }
 
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const emailValid = validateEmailFormat(formData.email);
@@ -102,14 +102,14 @@ const SignUpPage = () => {
 
               {authError && (
                 <div className={`text-error bg-error px-4 py-2 rounded-md flex flex-col gap-1`}
-                     role="alert"
-                     aria-live="assertive"
-                     aria-atomic="true">
+                  role="alert"
+                  aria-live="assertive"
+                  aria-atomic="true">
                   <div className={`flex items-center gap-2`}>
                     <WarningCircleIcon weight="bold" size={18}/>
                     <p className={`font-bold`}>An account already exists for that email
                       address. <Link to="/sign-in"
-                                     className={`inline-flex gap-1 items-center ${styles.link}`}>Sign
+                        className={`inline-flex gap-1 items-center ${styles.link}`}>Sign
                         in <ArrowRightIcon weight="bold"/></Link>
                     </p>
                   </div>
