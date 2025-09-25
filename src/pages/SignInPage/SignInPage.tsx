@@ -88,7 +88,7 @@ const SignInPage = () => {
             <img src={PressStartLogo} alt="Press Start logo"/>
           </div>
 
-          <section className="bg-secondary-900 flex-1 p-12">
+          <section className="bg-primary-700 flex-1 p-12">
             <p>Don't have an account? <Link to="/sign-up">Sign up</Link></p>
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
               <h1>Sign in</h1>

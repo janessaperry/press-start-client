@@ -65,7 +65,7 @@
   a {
     @apply no-underline font-semibold
     text-interactive-primary hover:text-interactive-primary-hover
-    focus:outline-1 focus:outline-offset-2 focus:outline-accent-300 rounded-sm
+    focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-accent-300 rounded-sm
     transition-colors ease-in duration-150;
   }
 
@@ -87,14 +87,14 @@
     border-none
     font-semibold
     bg-interactive-primary hover:bg-interactive-primary-hover text-secondary-900
-    focus:outline-2 focus:outline-offset-2 focus:outline-accent-300
+    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-300
     transition-colors ease-in duration-150
   }
 
   /* Inputs */
   input {
     @apply rounded-full
-    focus:outline-2 focus:outline-offset-2 focus:outline-interactive-primary;
+    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
   }
 
   /* Remove animations for people who've turned them off */

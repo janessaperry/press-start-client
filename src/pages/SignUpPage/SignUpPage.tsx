@@ -94,7 +94,7 @@ const SignUpPage = () => {
             <img src={PressStartLogo} alt="Press Start logo"/>
           </div>
 
-          <section className="bg-secondary-900 flex-1 p-12">
+          <section className="bg-primary-700 flex-1 p-12">
             <p>Already have an account? <Link to="/sign-in"
               className="">Sign in</Link></p>
 
