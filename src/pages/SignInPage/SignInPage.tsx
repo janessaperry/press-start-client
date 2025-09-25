@@ -88,43 +88,43 @@ const SignInPage = () => {
             <img src={PressStartLogo} alt="Press Start logo"/>
           </div>
 
-          <section className="bg-secondary flex-1 p-12">
-            <p>Don't have an account? <Link to="/sign-up" className="text-link-secondary">Sign up</Link></p>
+          <section className="bg-secondary-900 flex-1 p-12">
+            <p>Don't have an account? <Link to="/sign-up">Sign up</Link></p>
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
               <h1>Sign in</h1>
 
               {authError && (
-                <div className={`text-error bg-error px-4 py-2 rounded-md flex items-center gap-2`}
-                     role="alert"
-                     aria-live="assertive"
-                     aria-atomic="true">
+                <div className="text-error-500 bg-error-900 px-4 py-2 rounded-md flex items-center gap-2"
+                  role="alert"
+                  aria-live="assertive"
+                  aria-atomic="true">
                   <WarningCircleIcon weight="bold" size={18}/>
-                  <p className={`font-bold`}>Email or password is incorrect. <Link to="/forgot-password"
-                                                                                   className="text-link-secondary">Forgot
+                  <p className="font-bold">Email or password is incorrect. <Link to="/forgot-password">Forgot
                     password?</Link></p>
                 </div>
               )}
 
               <Fieldset className="flex flex-col gap-8 border-none">
                 <TextInput id="email"
-                           label="Email"
-                           placeholder="Email"
-                           required={true}
-                           errorMessage={formErrors.email}
-                           value={formData.email}
-                           onChange={(e) => handleInputChange(e)}/>
+                  label="Email"
+                  placeholder="Email"
+                  required={true}
+                  errorMessage={formErrors.email}
+                  value={formData.email}
+                  onChange={(e) => handleInputChange(e)}/>
 
                 <TextInput id="password"
-                           label="Password"
-                           type="password"
-                           placeholder="Password"
-                           required={true}
-                           errorMessage={formErrors.password}
-                           value={formData.password}
-                           onChange={(e) => handleInputChange(e)}/>
+                  label="Password"
+                  type="password"
+                  placeholder="Password"
+                  required={true}
+                  errorMessage={formErrors.password}
+                  value={formData.password}
+                  onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
 
-              <Button className="" type="submit">Continue</Button>
+              <Button className="bg-interactive-secondary hover:bg-interactive-secondary-hover text-grey-50"
+                type="submit">Continue</Button>
             </form>
           </section>
         </div>

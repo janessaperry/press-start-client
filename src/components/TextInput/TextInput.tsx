@@ -13,9 +13,6 @@ import { Description, Field, Input, Label } from "@headlessui/react";
 
 // Pages
 
-// Styles
-import styles from './TextInput.module.css';
-
 // Types
 type TextInputProps = {
   id: string;
@@ -34,14 +31,16 @@ const TextInput = ({
   ...inputProps
 }: TextInputProps) => {
   return (
-    <Field className={`${styles.formField} flex flex-col gap-1`}>
+    <Field className="flex flex-col gap-1">
       <Label htmlFor={id}
-             className={styles.formLabel}>{label} {required && <span className={styles.required}>*</span>}</Label>
-      <Input id={id} type={type} className={styles.formInput} {...inputProps}/>
+        className="text-lg">{label} {required && <span className="text-required">*</span>}</Label>
+      <Input id={id}
+        type={type}
+        className="text-md text-secondary-900 border-2 border-primary-300 px-4 py-2 bg-grey-50" {...inputProps}/>
 
       {description && <Description className="mb-0 text-sm text-secondary">{description}</Description>}
       {errorMessage &&
-        <Description className={`flex flex-row items-center gap-1 leading-none mb-0 mt-2 text-sm text-error ${styles.errorToast}`}>
+        <Description className="flex flex-row items-center gap-1 leading-none mb-0 mt-2 text-sm text-error-500">
           <WarningCircleIcon weight="duotone" size={18}/>
           {errorMessage}
         </Description>}
