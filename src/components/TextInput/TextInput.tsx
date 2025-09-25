@@ -7,7 +7,7 @@ import { InputHTMLAttributes } from "react";
 
 // Components
 import { WarningCircleIcon } from "@phosphor-icons/react";
-import { Description, Field, Input, Label } from "@headlessui/react";
+import { Description, Field, Label } from "@headlessui/react";
 
 // Utils
 
@@ -36,8 +36,8 @@ const TextInput = ({
   return (
     <Field className={`${styles.formField} flex flex-col gap-1`}>
       <Label htmlFor={id}
-             className={styles.formLabel}>{label} {required && <span className={styles.required}>*</span>}</Label>
-      <Input id={id} type={type} className={styles.formInput} {...inputProps}/>
+        className={styles.formLabel}>{label} {required && <span className={styles.required}>*</span>}</Label>
+      <input id={id} type={type} className={styles.formInput} {...inputProps}/>
 
       {description && <Description className="mb-0 text-sm text-secondary">{description}</Description>}
       {errorMessage &&
