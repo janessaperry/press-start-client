@@ -1,0 +1,18 @@
+@layer utilities {
+  /* Icon Sizes widths */
+  .icon-sm {
+    width: 18px;
+  }
+
+  .icon-md {
+    width: 24px;
+  }
+
+  .icon-lg {
+    width: 32px;
+  }
+
+  .icon-xl {
+    width: 40px;
+  }
+}

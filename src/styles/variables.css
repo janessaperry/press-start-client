@@ -1,39 +1,66 @@
 @theme {
-  /* Color palette */
-  /*--color-primary-50: #BFAFBE;*/
-  --color-primary-50: #F1E6EF;
-  --color-primary-100: #F5B9EB;
-  --color-primary-100-rgb: 245, 185, 235;
-  --color-primary-300: #91007A;
-  --color-primary-500: #730962;
-  --color-primary-700: #3D0233;
-  --color-primary-900: #2E0026;
-  --color-secondary-900: #110D27;
-  --color-accent-300: #5DD5DA;
-  --color-accent-500: #20C1C7;
-  --color-success: #8BC106;
-  --color-danger-50: #FDD9E6;
-  --color-danger-500: #FD5B76;
-  --color-danger-900: #581033;
-  --color-warning: #FFC107; /*todo update*/
-  --color-info-300: var(--color-accent-300);
-  --color-info-500: var(--color-accent-500);
+  /* Color Tokens */
+  /*--color-purple-50: #BFAFBE;*/
+  --color-*: initial;
+  --color-purple-50: #F1E6EF;
+  --color-purple-100: #F5B9EB;
+  --color-purple-300: #91007A;
+  --color-purple-500: #730962;
+  --color-purple-700: #3D0233;
+  --color-purple-900: #2E0026;
+
+  --color-blue-900: #110D27;
+
+  --color-teal-300: #5DD5DA;
+  --color-teal-500: #20C1C7;
+
+  --color-green-500: #8BC106;
+
+  --color-red-50: #FDD9E6;
+  --color-red-500: #FD5B76;
+  --color-red-900: #581033;
+
+  --color-yellow-500: #FFC107;
 
   /* Neutral colors */
-  /*todo update*/
-  --color-light: #EAE9ED;
-  --color-light-rgb: 234, 233, 237;
-  --color-neutral-100: #F8F9FA;
-  --color-neutral-200: #E9ECEF;
-  --color-neutral-300: #DEE2E6;
-  --color-neutral-400: #CED4DA;
-  --color-neutral-500: #ADB5BD;
-  --color-neutral-600: #6C757D;
-  --color-neutral-700: #495057;
-  --color-neutral-800: #343A40;
-  --color-neutral-900: #212529;
+  --color-grey-50: #EAE9ED;
+  --color-grey-100: #F8F9FA;
+  --color-grey-200: #E9ECEF;
+  --color-grey-300: #DEE2E6;
+  --color-grey-400: #CED4DA;
+  --color-grey-500: #ADB5BD;
+  --color-grey-600: #6C757D;
+  --color-grey-700: #495057;
+  --color-grey-800: #343A40;
+  --color-grey-900: #212529;
+
 
   /* Semantic Colors */
+  --color-primary-50: var(--color-purple-50);
+  --color-primary-100: var(--color-purple-100);
+  --color-primary-300: var(--color-purple-300);
+  --color-primary-500: var(--color-purple-500);
+  --color-primary-700: var(--color-purple-700);
+  --color-primary-900: var(--color-purple-900);
+
+  --color-secondary-900: var(--color-blue-900);
+
+  --color-accent-300: var(--color-teal-300);
+  --color-accent-500: var(--color-teal-500);
+
+  --color-success: var(--color-green-500);
+  --color-danger-50: var(--color-red-50);
+  --color-danger-500: var(--color-red-500);
+  --color-danger-900: var(--color-red-900);
+  --color-error-50: var(--color-red-50);
+  --color-error-500: var(--color-red-500);
+  --color-error-900: var(--color-red-900);
+  --color-required: var(--color-red-500);
+  --color-warning: var(--color-yellow-500);
+  --color-info-300: var(--color-teal-300);
+  --color-info-500: var(--color-teal-500);
+
+  /* Interactive Colors */
   --color-interactive-primary: var(--color-accent-300);
   --color-interactive-primary-hover: var(--color-accent-500);
   --color-interactive-secondary: var(--color-primary-500);
@@ -43,9 +70,9 @@
   --font-heading: 'Exo 2', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-body: 'Mulish', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-  /* Icon Sizes widths */
-  --icon-sm: 18px;
-  --icon-md: 24px;
-  --icon-lg: 32px;
-  --icon-xl: 40px;
+  /* Containers */
+  --container-sm: 40rem;
+  --container-md: 48rem;
+  --container-lg: 64rem;
+  --container-xl: 80rem;
 }

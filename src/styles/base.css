@@ -1,99 +1,106 @@
 /* CSS reset & base styles */
-@import './variables.css';
+@layer base {
+  html {
+    @apply box-border;
+  }
 
-html {
-  @apply box-border;
-}
+  *,
+  *::before,
+  *::after {
+    @apply box-border m-0 p-0;
+  }
 
-*,
-*::before,
-*::after {
-  @apply box-border m-0 p-0;
-}
+  body {
+    @apply font-body text-base font-normal antialiased
+    text-grey-50 bg-secondary-900
+    min-h-screen
+    scroll-smooth;
+    text-rendering: optimizeSpeed;
+  }
 
-body {
-  @apply font-body text-base font-normal antialiased
-  text-light bg-secondary-900
-  min-h-screen
-  scroll-smooth;
-  text-rendering: optimizeSpeed;
-}
+  img {
+    @apply max-w-full block;
+  }
 
-img {
-  @apply max-w-full block;
-}
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
 
-input,
-button,
-textarea,
-select {
-  font: inherit;
-}
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-grey-50 font-heading font-normal;
+  }
 
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-  @apply text-light font-heading font-normal;
-}
+  h1 {
+    @apply text-3xl md:text-5xl;
+  }
 
-h1 {
-  @apply text-3xl md:text-5xl;
-}
+  h2 {
+    @apply text-4xl;
+  }
 
-h2 {
-  @apply text-4xl;
-}
+  h3 {
+    @apply text-3xl;
+  }
 
-h3 {
-  @apply text-3xl;
-}
+  h4 {
+    @apply text-2xl;
+  }
 
-h4 {
-  @apply text-2xl;
-}
+  h5 {
+    @apply text-xl;
+  }
 
-h5 {
-  @apply text-xl;
-}
+  h6 {
+    @apply text-lg;
+  }
 
-h6 {
-  @apply text-lg;
-}
+  p {
 
-p {
+  }
 
-}
+  a {
+    @apply no-underline font-semibold
+    text-interactive-primary hover:text-interactive-primary-hover
+    focus:outline-1 focus:outline-offset-2 focus:outline-accent-300 rounded-sm
+    transition-colors ease-in duration-150;
+  }
 
-a {
-  @apply text-interactive-primary hover:text-interactive-primary-hover no-underline
-  font-semibold
-  transition-colors ease-in duration-150;
-}
+  /* Lists */
+  ul, ol {
+    list-style: none;
+    /*padding-left: var(--spacing-6);*/
+    /*margin-bottom: var(--spacing-4);*/
+  }
 
-/* Lists */
-ul, ol {
-  list-style: none;
-  /*padding-left: var(--spacing-6);*/
-  /*margin-bottom: var(--spacing-4);*/
-}
+  li {
+    /*margin-bottom: var(--spacing-2);*/
+  }
 
-li {
-  /*margin-bottom: var(--spacing-2);*/
-}
+  /* Buttons */
+  button {
+    @apply cursor-pointer
+    inline-block px-4 py-2 rounded-full
+    border-none
+    font-semibold
+    bg-interactive-primary hover:bg-interactive-primary-hover text-secondary-900
+    focus:outline-2 focus:outline-offset-2 focus:outline-accent-300
+    transition-colors ease-in duration-150
+  }
 
-/* Buttons */
-button {
-  @apply cursor-pointer
-  inline-block px-4 py-2 rounded-full
-  text-secondary-900 font-semibold
-  bg-interactive-primary hover:bg-interactive-primary-hover
-  border-none
-  transition-colors ease-in duration-150
-  focus:outline-2 focus:outline-interactive-primary focus:outline-offset-2
-}
+  /* Inputs */
+  input {
+    @apply rounded-full
+    focus:outline-2 focus:outline-offset-2 focus:outline-interactive-primary;
+  }
 
-/* Remove animations for people who've turned them off */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    @apply animate-none transition-none scroll-auto;
+  /* Remove animations for people who've turned them off */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      @apply animate-none transition-none scroll-auto;
+    }
   }
 }
