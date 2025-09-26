@@ -7,7 +7,7 @@ import axios from "axios";
 // Route Logic
 // Components & Assets
 import { Button, Fieldset } from "@headlessui/react";
-import { WarningCircleIcon } from "@phosphor-icons/react";
+import { ArrowRightIcon, WarningCircleIcon } from "@phosphor-icons/react";
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import TextInput from "../../components/TextInput/TextInput.tsx";
 
@@ -88,19 +88,23 @@ const SignInPage = () => {
             <img src={PressStartLogo} alt="Press Start logo"/>
           </div>
 
-          <section className="bg-primary-700 flex-1 p-12">
+          <section className="bg-primary-700 flex-1 p-12 flex flex-col gap-4">
             <p>Don't have an account? <Link to="/sign-up">Sign up</Link></p>
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
               <h1>Sign in</h1>
 
               {authError && (
-                <div className="text-error-500 bg-error-900 px-4 py-2 rounded-md flex items-center gap-2"
+                <div className="text-error-500 bg-error-500/20 px-4 py-2 rounded-md flex items-baseline gap-2"
                   role="alert"
                   aria-live="assertive"
                   aria-atomic="true">
-                  <WarningCircleIcon weight="bold" size={18}/>
-                  <p className="font-bold">Email or password is incorrect. <Link to="/forgot-password">Forgot
-                    password?</Link></p>
+                  <div className="flex gap-2">
+                    <WarningCircleIcon weight="bold" size={18} className="relative top-1 shrink-0"/>
+                    <p className="font-bold">Email or password is incorrect. <Link to="/forgot-password">Forgot
+                      password?</Link>
+                    </p>
+                  </div>
+
                 </div>
               )}
 

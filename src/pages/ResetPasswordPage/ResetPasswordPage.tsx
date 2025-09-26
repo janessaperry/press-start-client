@@ -16,7 +16,7 @@ import TextInput from "../../components/TextInput/TextInput.tsx";
 import { validatePasswordFormat } from "../../utils/validators.ts";
 
 // Styles
-import styles from "./ResetPasswordPage.module.css"
+// import styles from "./ResetPasswordPage.module.css"
 
 const ResetPasswordPage = () => {
   const baseServerUrl = import.meta.env.VITE_SERVER_URL;
@@ -85,15 +85,14 @@ const ResetPasswordPage = () => {
     <>
       <main className="h-screen">
         <div className="h-full flex">
-          <div className={`hidden md:inline-block flex-1 p-12 ${styles.imageContainer}`}>
+          <div className="hidden md:inline-block flex-1 p-12 bg-[url(/src/assets/images/sign-up-bg-v2.jpg)] bg-cover bg-no-repeat bg-right">
             <img src={PressStartLogo} alt="Press Start logo"/>
           </div>
 
-          <section className="bg-secondary flex-1 p-12">
-            <p>Don't have an account?
-              <Link to="/sign-up" className="text-link-secondary">
-                Sign up
-              </Link>
+          <section className="bg-primary-700 flex-1 p-12 flex flex-col gap-4">
+            <p>Don't have an account? <Link to="/sign-up" className="text-link-secondary">
+              Sign up
+            </Link>
             </p>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
@@ -114,7 +113,8 @@ const ResetPasswordPage = () => {
                   onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
 
-              <Button className="" type="submit">Submit</Button>
+              <Button className="bg-interactive-secondary hover:bg-interactive-secondary-hover text-grey-50"
+                type="submit">Submit</Button>
             </form>
           </section>
         </div>

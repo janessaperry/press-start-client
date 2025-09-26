@@ -94,7 +94,7 @@ const SignUpPage = () => {
             <img src={PressStartLogo} alt="Press Start logo"/>
           </div>
 
-          <section className="bg-primary-700 flex-1 p-12">
+          <section className="bg-primary-700 flex-1 p-12 flex flex-col gap-4">
             <p>Already have an account? <Link to="/sign-in"
               className="">Sign in</Link></p>
 
@@ -102,16 +102,18 @@ const SignUpPage = () => {
               <h1>Sign up</h1>
 
               {authError && (
-                <div className={`text-error-50 bg-error-900 px-4 py-2 rounded-md flex flex-col gap-1`}
+                <div className="text-error-500 bg-error-500/20 px-4 py-2 rounded-md flex flex-col gap-1"
                   role="alert"
                   aria-live="assertive"
                   aria-atomic="true">
-                  <div className="flex items-center gap-2">
-                    <WarningCircleIcon weight="bold" size={18}/>
+
+                  <div className="flex gap-2">
+                    <WarningCircleIcon weight="bold" size={18} className="relative top-1 shrink-0"/>
                     <p className="font-bold">An account already exists for that email
                       address. <Link to="/sign-in"
-                        className="inline-flex gap-1 items-center text-interactive-primary hover:text-interactive-primary-hover">Sign
-                        in <ArrowRightIcon weight="bold"/></Link>
+                        className="inline-flex gap-1 items-center text-interactive-primary hover:text-interactive-primary-hover">
+                        Sign in <ArrowRightIcon weight="bold"/>
+                      </Link>
                     </p>
                   </div>
                 </div>

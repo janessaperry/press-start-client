@@ -16,7 +16,7 @@ import TextInput from "../../components/TextInput/TextInput.tsx";
 import { validateEmailFormat } from "../../utils/validators.ts";
 
 // Styles
-import styles from "./ForgotPasswordPage.module.css"
+// import styles from "./ForgotPasswordPage.module.css"
 
 const ForgotPasswordPage = () => {
   // const { login } = useAuth();
@@ -59,11 +59,11 @@ const ForgotPasswordPage = () => {
     <>
       <main className="h-screen">
         <div className="h-full flex">
-          <div className={`hidden md:inline-block flex-1 p-12 ${styles.imageContainer}`}>
+          <div className="hidden md:inline-block flex-1 p-12 bg-[url(/src/assets/images/sign-up-bg-v2.jpg)] bg-cover bg-no-repeat bg-right">
             <img src={PressStartLogo} alt="Press Start logo"/>
           </div>
 
-          <section className="bg-secondary flex-1 p-12 flex flex-col gap-4">
+          <section className="bg-primary-700 flex-1 p-12 flex flex-col gap-4">
             <p>Don't have an account? <Link to="/sign-up" className="text-link-secondary">Sign up</Link></p>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
@@ -73,12 +73,12 @@ const ForgotPasswordPage = () => {
               </p>
 
               {linkSent && (
-                <div className={`text-info bg-info px-4 py-2 rounded-md flex items-center gap-2`}
+                <div className="text-info-500 bg-info-900/50 px-4 py-2 rounded-md flex gap-2"
                   role="status"
                   aria-live="polite"
                   aria-atomic="true">
-                  <CheckCircleIcon weight="bold" size={18} className="shrink-0"/>
-                  <p className={`font-bold`}>If an account exists for that email, we’ve sent a password reset link.
+                  <CheckCircleIcon weight="bold" size={18} className="relative top-1 shrink-0"/>
+                  <p className="font-bold">If an account exists for that email, we’ve sent a password reset link.
                     Check your inbox to continue.
                   </p>
                 </div>
@@ -94,7 +94,8 @@ const ForgotPasswordPage = () => {
                   onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
 
-              <Button className="" type="submit">Submit</Button>
+              <Button className="bg-interactive-secondary hover:bg-interactive-secondary-hover text-grey-50"
+                type="submit">Submit</Button>
             </form>
           </section>
         </div>
