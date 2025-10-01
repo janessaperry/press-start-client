@@ -1,5 +1,5 @@
 // Libraries
-import React, { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -15,8 +15,6 @@ import TextInput from "../../components/TextInput/TextInput.tsx";
 import useAuth from "../../hooks/useAuth.tsx";
 import { validateEmailFormat } from "../../utils/validators.ts";
 
-// Styles
-import styles from "./SignInPage.module.css"
 
 const SignInPage = () => {
   const { login } = useAuth();
@@ -30,7 +28,7 @@ const SignInPage = () => {
   })
   const [ authError, setAuthError ] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
         ...formData,
         [ e.target.id ]: e.target.value
@@ -38,7 +36,7 @@ const SignInPage = () => {
     )
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { email, password } = formData;
 
@@ -84,7 +82,7 @@ const SignInPage = () => {
     <>
       <main className="h-screen">
         <div className="h-full flex">
-          <div className={`hidden md:inline-block flex-1 p-12 ${styles.imageContainer}`}>
+          <div className="hidden md:inline-block flex-1 p-12 bg-[url(/src/assets/images/sign-up-bg-v2.jpg)] bg-cover bg-no-repeat bg-right">
             <img src={PressStartLogo} alt="Press Start logo"/>
           </div>
 
