@@ -110,6 +110,7 @@ const ResetPasswordPage = () => {
                   required={true}
                   errorMessage={passwordError}
                   value={password}
+                  type="password"
                   onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
 
