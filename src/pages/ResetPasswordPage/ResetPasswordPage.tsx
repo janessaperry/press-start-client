@@ -47,9 +47,7 @@ const ResetPasswordPage = () => {
 
     try {
       const response = await updatePassword(token, password);
-      console.log("STATUS", response.status);
       if ( response.status === 200 ) {
-        // todo add loading animation here
         navigate("/sign-in")
       }
       else if ( response.status === 401 ) {
@@ -63,8 +61,6 @@ const ResetPasswordPage = () => {
       console.error(e);
       setPasswordError("Unable to reset password. Please try again later.");
     }
-
-
   }
 
   const updatePassword = async (plainToken: string, newPassword: string) => {
