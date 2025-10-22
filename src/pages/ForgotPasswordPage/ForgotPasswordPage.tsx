@@ -23,6 +23,7 @@ const ForgotPasswordPage = () => {
   const [ email, setEmail ] = useState("")
   const [ emailError, setEmailError ] = useState("")
   const [ linkSent, setLinkSent ] = useState(false);
+  const [ rateLimitHit, setRateLimitHit ] = useState(false);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -36,6 +37,7 @@ const ForgotPasswordPage = () => {
       setEmailError("Please enter a valid email address.");
       return;
     }
+
 
     const response = await requestReset(email);
     if ( response && response.status === 200 ) {
@@ -51,7 +53,12 @@ const ForgotPasswordPage = () => {
       });
     }
     catch (e) {
-      console.error(`Login failed: ${e}`);
+      console.error(`Request failed: ${e}`);
+
+      if ( e.response?.status === 429 ) {
+        console.log("Please wait ")
+        setRateLimitHit(true)
+      }
     }
   }
 
@@ -80,6 +87,17 @@ const ForgotPasswordPage = () => {
                   <CheckCircleIcon weight="bold" size={18} className="relative top-1 shrink-0"/>
                   <p className="font-bold">If an account exists for that email, we’ve sent a password reset link.
                     Check your inbox to continue.
+                  </p>
+                </div>
+              )}
+
+              {rateLimitHit && (
+                <div className="text-error-500 bg-error-900/50 px-4 py-2 rounded-md flex gap-2"
+                  role="status"
+                  aria-live="polite"
+                  aria-atomic="true">
+                  <CheckCircleIcon weight="bold" size={18} className="relative top-1 shrink-0"/>
+                  <p className="font-bold">Please wait at least 60 seconds before requesting another reset link.
                   </p>
                 </div>
               )}
