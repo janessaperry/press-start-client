@@ -1,5 +1,5 @@
 // Libraries
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -24,6 +24,7 @@ const ForgotPasswordPage = () => {
   const [ emailError, setEmailError ] = useState("")
   const [ linkSent, setLinkSent ] = useState(false);
   const [ rateLimitHit, setRateLimitHit ] = useState(false);
+  const [ countdown, setCountdown ] = useState<number | null>(null);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -37,7 +38,6 @@ const ForgotPasswordPage = () => {
       setEmailError("Please enter a valid email address.");
       return;
     }
-
 
     const response = await requestReset(email);
     if ( response && response.status === 200 ) {
@@ -56,11 +56,25 @@ const ForgotPasswordPage = () => {
       console.error(`Request failed: ${e}`);
 
       if ( e.response?.status === 429 ) {
-        console.log("Please wait ")
-        setRateLimitHit(true)
+        setRateLimitHit(true);
+        const retryAfter = e.response.data.retryAfter || 60;
+        if ( !countdown ) setCountdown(retryAfter);
       }
     }
   }
+
+  useEffect(() => {
+    if ( !countdown || countdown <= 0 ) {
+      if ( countdown === 0 ) setRateLimitHit(false);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setCountdown(prevState => prevState - 1);
+    }, 1000);
+
+    return () => clearInterval(interval)
+  }, [ countdown ])
 
   return (
     <>
@@ -97,7 +111,8 @@ const ForgotPasswordPage = () => {
                   aria-live="polite"
                   aria-atomic="true">
                   <CheckCircleIcon weight="bold" size={18} className="relative top-1 shrink-0"/>
-                  <p className="font-bold">Please wait at least 60 seconds before requesting another reset link.
+                  <p className="font-bold">Please wait {countdown} seconds before requesting another reset
+                    link.
                   </p>
                 </div>
               )}
