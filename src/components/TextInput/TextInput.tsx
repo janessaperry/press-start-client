@@ -36,7 +36,7 @@ const TextInput = ({
         className="text-lg">{label} {required && <span className="text-required">*</span>}</Label>
       <input id={id}
         type={type}
-        className="text-md text-secondary-900 border-2 border-primary-300 px-4 py-2 bg-grey-50" {...inputProps}/>
+        {...inputProps}/>
 
       {description && <Description className="mb-0 text-sm text-secondary">{description}</Description>}
       {errorMessage &&

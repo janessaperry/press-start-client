@@ -92,8 +92,11 @@
   }
 
   /* Inputs */
-  input {
-    @apply rounded-full
+  input[type="text"], input[type="password"], input[type="search"] {
+    @apply px-4 py-2 rounded-full
+    text-secondary-900
+    bg-grey-50
+    border-2 border-primary-300
     focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
   }
 
