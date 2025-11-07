@@ -3,7 +3,7 @@ import { GithubLogoIcon, LinkedinLogoIcon } from "@phosphor-icons/react";
 
 const Footer = () => {
   return (
-    <footer className="max-w-xl mx-auto p-4 text-grey-50 flex flex-col gap-4 items-center md:flex-row md:justify-between md:px-8 md:py-4">
+    <footer className="container p-4 text-grey-50 flex flex-col gap-4 items-center md:flex-row md:justify-between md:px-8 md:py-4">
       <div>
         Designed & developed by <a href="https://janessaperry.com"
         target="_blank"

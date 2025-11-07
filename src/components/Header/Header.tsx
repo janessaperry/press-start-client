@@ -1,11 +1,10 @@
-import React from 'react';
 import { NavLink } from "react-router-dom";
 import { Button, Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import PressStartLogo from "../../assets/logos/press-start-logo--dark.svg"
+import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import { GhostIcon, UserCircleIcon } from "@phosphor-icons/react";
 import useAuth from "../../hooks/useAuth.tsx";
 
-const Header: React.FC = () => {
+const Header = () => {
   const { logout } = useAuth();
   const getNavLinkClass = ({ isActive }: { isActive: boolean }): string => {
     return `relative text-lg flex flex-col justify-start items-center 
@@ -16,7 +15,7 @@ const Header: React.FC = () => {
   }
 
   return (
-    <header className="">
+    <header className="container">
       <div className="max-w-xl mx-auto my-0 py-4 md:px-8 md:py-4">
         <nav className="flex items-center justify-between">
           <NavLink to="/" className="">

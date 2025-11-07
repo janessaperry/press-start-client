@@ -75,8 +75,8 @@
   --font-body: 'Mulish', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   /* Containers */
-  --container-sm: 40rem;
-  --container-md: 48rem;
-  --container-lg: 64rem;
-  --container-xl: 80rem;
+  --container-sm: 40rem; /* 640px */
+  --container-md: 48rem; /* 768px */
+  --container-lg: 64rem; /* 1024px */
+  --container-xl: 80rem; /* 1280px */
 }

@@ -1,4 +1,9 @@
 @layer utilities {
+  .container {
+    margin-inline: auto;
+    padding-inline: 2rem;
+  }
+
   /* Icon Sizes widths */
   .icon-sm {
     width: 18px;
