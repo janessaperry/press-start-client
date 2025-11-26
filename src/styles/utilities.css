@@ -4,20 +4,47 @@
     padding-inline: 2rem;
   }
 
+  button {
+    &.secondary {
+    }
+
+    &.ghost {
+      @apply text-grey-50
+      border border-solid border-interactive-primary hover:border-interactive-primary-hover
+      bg-transparent hover:bg-interactive-primary-hover/10
+    }
+  }
+
+  /* Embla Carousel */
+  .embla {
+    overflow: hidden;
+  }
+
+  .embla__container {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .embla__slide {
+    flex: 0 0 calc(50% - (1rem / 2));
+    min-width: 0;
+  }
+
+
   /* Icon Sizes widths */
   .icon-sm {
-    width: 18px;
+    @apply w-5 h-5;
   }
 
   .icon-md {
-    width: 24px;
+    @apply w-6 h-6;
   }
 
   .icon-lg {
-    width: 32px;
+    @apply w-8 h-8;
   }
 
   .icon-xl {
-    width: 40px;
+    @apply w-10 h-10;
   }
 }
