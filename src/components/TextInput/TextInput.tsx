@@ -1,25 +1,12 @@
-// Libraries
-import { InputHTMLAttributes } from "react";
-
-// Layouts
-
-// Route Logic
-
-// Components
+import { ComponentPropsWithoutRef } from "react";
 import { WarningCircleIcon } from "@phosphor-icons/react";
 import { Description, Field, Label } from "@headlessui/react";
 
-// Utils
-
-// Pages
-
-// Types
 type TextInputProps = {
-  id: string;
   label: string;
   description?: string;
   errorMessage?: string;
-} & InputHTMLAttributes<HTMLInputElement>;
+} & ComponentPropsWithoutRef<'input'>;
 
 const TextInput = ({
   id,
