@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button, Input } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
-import GameCard from "../../components/GameCard.tsx";
+import GameCarousel from "../../components/GameCarousel.tsx";
 
 export type GameOverview = {
   id: number,
@@ -16,13 +16,14 @@ export type GameOverview = {
     id: number,
     abbreviation: string
   }[],
+  gameType: string
 }
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const ExplorePage = () => {
-  const [ searchQuery, setSearchQuery ] = useState('');
-  const [ newRelease, setNewRelease ] = useState<GameOverview[]>([]);
-  const [ comingSoon, setComingSoon ] = useState<GameOverview[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [newRelease, setNewRelease] = useState<GameOverview[]>([]);
+  const [comingSoon, setComingSoon] = useState<GameOverview[]>([]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -47,7 +48,7 @@ const ExplorePage = () => {
         console.error(`Error fetching games: ${e}`)
       }
       finally {
-        console.log("done loading")
+        console.log("done loading");
       }
     }
     void fetchGames();
@@ -87,25 +88,14 @@ const ExplorePage = () => {
 
       <section className="container px-4 py-20 flex flex-col gap-10">
         <h2>New Releases</h2>
-
-        <div className="grid grid-cols-2 gap-4">
-          {newRelease?.map((game: GameOverview) => {
-              return <GameCard key={game.id} gameOverview={game} colSpanClass="col-span-1"/>
-            }
-          )}
-        </div>
+        <GameCarousel games={newRelease}/>
       </section>
 
 
       {comingSoon &&
         <section className="container px-4 py-20 flex flex-col gap-10">
           <h2>Coming Soon</h2>
-
-          <div className="grid grid-cols-2 gap-4">
-            {comingSoon?.map((game: GameOverview) => {
-              return <GameCard key={game.id} gameOverview={game} colSpanClass="col-span-1"/>
-            })}
-          </div>
+          <GameCarousel games={comingSoon}/>
         </section>
       }
     </>
