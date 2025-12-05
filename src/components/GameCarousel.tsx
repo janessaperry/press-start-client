@@ -2,10 +2,10 @@ import { useCallback, useState, useEffect } from "react";
 import useEmblaCarousel from 'embla-carousel-react';
 import { EmblaCarouselType } from 'embla-carousel'
 import { CaretLeftIcon, CaretRightIcon, CircleIcon } from "@phosphor-icons/react";
+import { PacmanIcon } from "@/components/icons";
 import { GameOverview } from "../pages/ExplorePage/ExplorePage.tsx";
 import GameCard from "./GameCard.tsx";
 import ButtonIcon from "./ButtonIcon.tsx";
-import { PacmanIcon } from "@/components/icons";
 
 type GameOverviewData = {
   games: GameOverview[]
@@ -52,16 +52,15 @@ const GameCarousel = ({games}: GameOverviewData) => {
   }, [emblaApi, onInit, onSelect]);
 
   return (
-    <div className="embla flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <div className="flex gap-4">
-        <div className="embla__dots">
+        <div className="grow flex flex-wrap items-center gap-1">
           {scrollSnaps.map((_, index) => (
             <button
               key={index}
               onClick={() => onDotButtonClick(index)}
-              className={'embla__dot'.concat(
-                index === selectedIndex ? ' embla__dot--selected' : ''
-              )}
+              className={`bg-transparent p-0 flex items-center justify-center rounded-full touch-manipulation 
+              ${index === selectedIndex ? `text-success` : `text-interactive-primary/20 hover:text-interactive-primary-hover/60`}`}
             >
               {index === selectedIndex ?
                 <PacmanIcon className="icon-md"/> :
@@ -79,14 +78,19 @@ const GameCarousel = ({games}: GameOverviewData) => {
         </div>
       </div>
 
-      <div className="embla__viewport" ref={emblaRef}>
-        <div className="embla__container">
+      <div className="overflow-hidden relative"
+        ref={emblaRef}>
+        <div className="flex gap-4">
           {games.map(game => {
               return (
-                <GameCard key={game.id} gameOverview={game} className="embla__slide"/> )
+                <GameCard key={game.id} gameOverview={game} className="flex-[0_0_42%] min-w-0"/>)
             }
           )}
         </div>
+
+        {/* gradient overlay */}
+        <span className="block absolute top-0 right-0 h-full w-1/5
+        bg-linear-to-r from-blue-900/0 to-blue-900/60" aria-hidden="true"></span>
       </div>
     </div>
   )
