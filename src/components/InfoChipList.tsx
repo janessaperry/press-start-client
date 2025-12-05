@@ -1,10 +1,18 @@
-const InfoChipList = ({ data }) => {
+import InfoChip from "./InfoChip.tsx";
+import { ComponentPropsWithoutRef } from "react";
+
+type Props = {
+  data: {
+    id: number,
+    label: string
+  }[]
+} & ComponentPropsWithoutRef<'article'>;
+
+const InfoChipList = ({data}: Props) => {
   return (
     <div className="flex flex-wrap gap-2">
-      {data.map(item => {
-        return <p key={item.id}
-          className="py-1 px-2 text-base leading-none text-grey-50 border border-primary-300 rounded-full"
-          id={item.id}>{item.abbreviation}</p>
+      {data.map((item) => {
+        return <InfoChip key={item.id} label={item.label}/>
       })}
     </div>
   )
