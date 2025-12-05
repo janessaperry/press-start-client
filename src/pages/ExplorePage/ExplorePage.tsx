@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button, Input } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 import GameCarousel from "../../components/GameCarousel.tsx";
+import SearchResultsDropdown from "../../components/SearchResultsDropdown.tsx";
 
 export type GameOverview = {
   id: number,
@@ -22,20 +23,44 @@ export type GameOverview = {
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const ExplorePage = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchResults, setSearchResults] = useState<[]>([]);
+  const [showSearchResults, setShowSearchResults] = useState<boolean>(false);
   const [newRelease, setNewRelease] = useState<GameOverview[]>([]);
   const [comingSoon, setComingSoon] = useState<GameOverview[]>([]);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
+  const fetchSearchResults = async (query: string) => {
     try {
-      const response = await axios.get(`${baseServerUrl}/games?search=${searchQuery}`);
-      console.log(response.data);
-      
+      const response = await axios.get(`${baseServerUrl}/games?search=${query}`);
+      return response.data.searchResults;
     }
     catch (e) {
-      console.error(`Error searching games: ${e}`)
+      console.error(`Error searching games: ${e}`);
     }
   }
+
+  const handleSearchInput = async (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+  }
+
+  useEffect(() => {
+    const timeoutId: number = setTimeout(async () => {
+      if (searchQuery.length >= 3) {
+        const results = await fetchSearchResults(searchQuery);
+        setSearchResults(results);
+        setShowSearchResults(true);
+      }
+      else {
+        setShowSearchResults(false);
+        setSearchResults([]);
+      }
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    }
+  }, [searchQuery]);
+
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -62,17 +87,24 @@ const ExplorePage = () => {
         <div className="container flex flex-col gap-10">
           <h1 className="text-center">Find your next game</h1>
 
-          <form className="self-center w-full md:max-w-3/4 lg:max-w-1/2 flex gap-3" onSubmit={handleSearch}>
-            <Input name="search"
-              type="search"
-              placeholder="Search..."
-              onChange={e => setSearchQuery(e.target.value)}
-              value={searchQuery}
-              className="grow"/>
-            <Button type="submit">
-              <MagnifyingGlassIcon/>
-            </Button>
-          </form>
+          <search className="flex flex-col gap-4">
+            <form className="self-center w-full md:max-w-3/4 lg:max-w-1/2 flex gap-3"
+              onSubmit={() => console.log("submit - go to full results page")}>
+              <Input name="search"
+                type="search"
+                placeholder="Search..."
+                onChange={e => handleSearchInput(e)}
+                value={searchQuery}
+                className="grow"/>
+              <Button type="button" onClick={() => console.log("submit - go to full results page")}>
+                <MagnifyingGlassIcon/>
+              </Button>
+            </form>
+            {showSearchResults &&
+              <SearchResultsDropdown results={searchResults}/>
+            }
+          </search>
+
         </div>
       </section>
 
@@ -86,12 +118,12 @@ const ExplorePage = () => {
         </div>
       </section>
 
-
-      <section className="container px-4 py-20 flex flex-col gap-10">
-        <h2>New Releases</h2>
-        <GameCarousel games={newRelease}/>
-      </section>
-
+      {newRelease &&
+        <section className="container px-4 py-20 flex flex-col gap-10">
+          <h2>New Releases</h2>
+          <GameCarousel games={newRelease}/>
+        </section>
+      }
 
       {comingSoon &&
         <section className="container px-4 py-20 flex flex-col gap-10">

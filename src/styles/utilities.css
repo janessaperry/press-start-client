@@ -30,4 +30,22 @@
   .icon-xl {
     @apply w-10 h-10;
   }
+
+  /* Scrollbar */
+  .scrollbar-on-light::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  .scrollbar-on-light::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .scrollbar-on-light::-webkit-scrollbar-thumb {
+    @apply bg-primary-300 rounded-full my-4;
+  }
+
+  .scrollbar-on-light {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary-300) transparent;
+  }
 }
