@@ -19,27 +19,27 @@ import { validateEmailFormat, validatePasswordFormat } from "../../utils/validat
 
 // Styles
 import styles from "./SignUpPage.module.css"
-import TextInput from "../../components/TextInput/TextInput.tsx";
+import TextInput from "../../components/TextInput.tsx";
 import { ArrowRightIcon, WarningCircleIcon } from "@phosphor-icons/react";
 
 const SignUpPage = () => {
-  const { login } = useAuth();
-  const [ formData, setFormData ] = useState({
+  const {login} = useAuth();
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
     confirmPassword: ""
   });
-  const [ formErrors, setFormErrors ] = useState({
+  const [formErrors, setFormErrors] = useState({
     email: "",
     password: "",
     confirmPassword: ""
   })
-  const [ authError, setAuthError ] = useState(false);
+  const [authError, setAuthError] = useState(false);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
         ...formData,
-        [ e.target.id ]: e.target.value
+        [e.target.id]: e.target.value
       }
     )
   }
@@ -61,7 +61,7 @@ const SignUpPage = () => {
     setFormErrors(newErrors);
 
     const formValid = emailValid && passwordValid && confirmPasswordValid;
-    if ( !formValid ) return;
+    if (!formValid) return;
 
     await createUser(formData.email, formData.password);
   }

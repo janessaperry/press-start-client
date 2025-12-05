@@ -2,11 +2,11 @@ import { NavLink } from "react-router-dom";
 import { Button, Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import { GhostIcon, UserCircleIcon } from "@phosphor-icons/react";
-import useAuth from "../../hooks/useAuth.tsx";
+import useAuth from "../hooks/useAuth.tsx";
 
 const Header = () => {
-  const { logout } = useAuth();
-  const getNavLinkClass = ({ isActive }: { isActive: boolean }): string => {
+  const {logout} = useAuth();
+  const getNavLinkClass = ({isActive}: {isActive: boolean}): string => {
     return `relative text-lg flex flex-col justify-start items-center 
     ${isActive ?
       "text-accent-300" :
@@ -26,7 +26,7 @@ const Header = () => {
             <li className="m-0 p-0">
               <NavLink to="/explore"
                 className={getNavLinkClass}>
-                {({ isActive }) => (
+                {({isActive}) => (
                   <>
                     Explore
                     {isActive && <GhostIcon weight="fill" size={12} className="absolute -bottom-3"/>}
@@ -37,7 +37,7 @@ const Header = () => {
             <li className="m-0 p-0">
               <NavLink to="/collection"
                 className={getNavLinkClass}>
-                {({ isActive }) => (
+                {({isActive}) => (
                   <>
                     Collection
                     {isActive && <GhostIcon weight="fill" size={12} className="absolute -bottom-3"/>}

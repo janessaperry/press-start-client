@@ -28,8 +28,9 @@ const ExplorePage = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`${baseServerUrl}/games?search=${searchQuery}`)
+      const response = await axios.get(`${baseServerUrl}/games?search=${searchQuery}`);
       console.log(response.data);
+      
     }
     catch (e) {
       console.error(`Error searching games: ${e}`)

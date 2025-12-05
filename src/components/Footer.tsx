@@ -1,4 +1,4 @@
-import JpLogo from "../../assets/logos/jp-logo.svg"
+import JpLogo from "../assets/logos/jp-logo.svg"
 import { GithubLogoIcon, LinkedinLogoIcon } from "@phosphor-icons/react";
 
 const Footer = () => {

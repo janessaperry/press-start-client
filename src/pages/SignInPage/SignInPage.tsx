@@ -9,7 +9,7 @@ import axios from "axios";
 import { Button, Fieldset } from "@headlessui/react";
 import { ArrowRightIcon, WarningCircleIcon } from "@phosphor-icons/react";
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
-import TextInput from "../../components/TextInput/TextInput.tsx";
+import TextInput from "../../components/TextInput.tsx";
 
 // Utils
 import useAuth from "../../hooks/useAuth.tsx";
@@ -17,28 +17,28 @@ import { validateEmailFormat } from "../../utils/validators.ts";
 
 
 const SignInPage = () => {
-  const { login } = useAuth();
-  const [ formData, setFormData ] = useState({
+  const {login} = useAuth();
+  const [formData, setFormData] = useState({
     email: "",
     password: ""
   })
-  const [ formErrors, setFormErrors ] = useState({
+  const [formErrors, setFormErrors] = useState({
     email: "",
     password: ""
   })
-  const [ authError, setAuthError ] = useState(false);
+  const [authError, setAuthError] = useState(false);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
         ...formData,
-        [ e.target.id ]: e.target.value
+        [e.target.id]: e.target.value
       }
     )
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { email, password } = formData;
+    const {email, password} = formData;
 
     const emailValid = validateEmailFormat(email);
     const isPasswordFilled = password !== "";
@@ -50,12 +50,12 @@ const SignInPage = () => {
     setFormErrors(newErrors);
 
     const formValid = emailValid && isPasswordFilled;
-    if ( !formValid ) {
+    if (!formValid) {
       return;
     }
 
     const response = await logIn(email, password);
-    if ( !response ) {
+    if (!response) {
       setAuthError(true);
       return;
     }

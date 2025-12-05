@@ -9,7 +9,7 @@ import axios from "axios";
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import { Button, Fieldset } from "@headlessui/react";
 import { CheckCircleIcon } from "@phosphor-icons/react";
-import TextInput from "../../components/TextInput/TextInput.tsx";
+import TextInput from "../../components/TextInput.tsx";
 
 // Utils
 // import useAuth from "../../hooks/useAuth.tsx";
@@ -20,11 +20,11 @@ import { validateEmailFormat } from "../../utils/validators.ts";
 
 const ForgotPasswordPage = () => {
   // const { login } = useAuth();
-  const [ email, setEmail ] = useState("")
-  const [ emailError, setEmailError ] = useState("")
-  const [ linkSent, setLinkSent ] = useState(false);
-  const [ rateLimitHit, setRateLimitHit ] = useState(false);
-  const [ countdown, setCountdown ] = useState<number | null>(null);
+  const [email, setEmail] = useState("")
+  const [emailError, setEmailError] = useState("")
+  const [linkSent, setLinkSent] = useState(false);
+  const [rateLimitHit, setRateLimitHit] = useState(false);
+  const [countdown, setCountdown] = useState<number | null>(null);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -34,13 +34,13 @@ const ForgotPasswordPage = () => {
     e.preventDefault();
 
     const emailValid = validateEmailFormat(email);
-    if ( !emailValid ) {
+    if (!emailValid) {
       setEmailError("Please enter a valid email address.");
       return;
     }
 
     const response = await requestReset(email);
-    if ( response && response.status === 200 ) {
+    if (response && response.status === 200) {
       setLinkSent(true);
       return;
     }
@@ -55,17 +55,17 @@ const ForgotPasswordPage = () => {
     catch (e) {
       console.error(`Request failed: ${e}`);
 
-      if ( e.response?.status === 429 ) {
+      if (e.response?.status === 429) {
         setRateLimitHit(true);
         const retryAfter = e.response.data.retryAfter || 60;
-        if ( !countdown ) setCountdown(retryAfter);
+        if (!countdown) setCountdown(retryAfter);
       }
     }
   }
 
   useEffect(() => {
-    if ( !countdown || countdown <= 0 ) {
-      if ( countdown === 0 ) setRateLimitHit(false);
+    if (!countdown || countdown <= 0) {
+      if (countdown === 0) setRateLimitHit(false);
       return;
     }
 
@@ -74,7 +74,7 @@ const ForgotPasswordPage = () => {
     }, 1000);
 
     return () => clearInterval(interval)
-  }, [ countdown ])
+  }, [countdown])
 
   return (
     <>

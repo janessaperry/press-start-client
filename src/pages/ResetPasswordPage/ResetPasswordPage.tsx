@@ -9,7 +9,7 @@ import axios from "axios";
 // Components & Assets
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import { Button, Fieldset } from "@headlessui/react";
-import TextInput from "../../components/TextInput/TextInput.tsx";
+import TextInput from "../../components/TextInput.tsx";
 
 // Utils
 // import useAuth from "../../hooks/useAuth.tsx";
@@ -20,12 +20,12 @@ import { validatePasswordFormat } from "../../utils/validators.ts";
 
 const ResetPasswordPage = () => {
   const baseServerUrl = import.meta.env.VITE_SERVER_URL;
-  const [ searchParams ] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const token = searchParams.get("token") || null;
   const navigate = useNavigate();
 
-  const [ password, setPassword ] = useState("");
-  const [ passwordError, setPasswordError ] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
@@ -35,22 +35,22 @@ const ResetPasswordPage = () => {
     e.preventDefault();
 
     const passwordValid = validatePasswordFormat(password);
-    if ( !passwordValid ) {
+    if (!passwordValid) {
       setPasswordError("Password does not match criteria.");
       return;
     }
 
-    if ( !token ) {
+    if (!token) {
       console.error("Invalid token");
       return;
     }
 
     try {
       const response = await updatePassword(token, password);
-      if ( response.status === 200 ) {
+      if (response.status === 200) {
         navigate("/sign-in")
       }
-      else if ( response.status === 401 ) {
+      else if (response.status === 401) {
         setPasswordError("The reset link has expired. Request a new link and try again.");
       }
       else {
@@ -72,7 +72,7 @@ const ResetPasswordPage = () => {
     }
     catch (e) {
       console.error(`Reset password failed: ${e}`);
-      if ( e.response ) return e.response;
+      if (e.response) return e.response;
       throw e;
     }
   }
