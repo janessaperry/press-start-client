@@ -12,8 +12,6 @@ const GameCard = ({gameOverview, className = "", ...rest}: GameCardProps) => {
     <article className={`p-4 bg-primary-700 rounded-2xl flex gap-4 overflow-hidden ${className}`} {...rest}>
       <div className="basis-1/4 shrink-0 flex flex-col gap-2">
         <img className="rounded-xl" src={gameOverview.coverUrl} alt={`${gameOverview.name} cover`}/>
-
-        {/*todo add game type here*/}
         <InfoChip label={gameOverview.gameType}/>
       </div>
 
