@@ -54,7 +54,7 @@ const ExplorePage = () => {
         setShowSearchResults(false);
         setSearchResults([]);
       }
-    }, 1000);
+    }, 400);
 
     return () => {
       clearTimeout(timeoutId);
