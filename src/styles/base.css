@@ -18,6 +18,14 @@
     text-rendering: optimizeSpeed;
   }
 
+  #root {
+    @apply flex flex-col min-h-screen;
+  }
+
+  main {
+    @apply grow;
+  }
+
   img {
     @apply max-w-full block;
   }

@@ -1,6 +1,6 @@
 @layer utilities {
   .container {
-    @apply m-auto p-8;
+    @apply m-auto;
   }
 
   button {
