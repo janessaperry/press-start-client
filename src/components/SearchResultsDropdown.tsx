@@ -1,16 +1,12 @@
-import { ComponentPropsWithoutRef } from "react";
+import { Result } from "../pages/ExplorePage/ExplorePage.tsx";
 
 type Props = {
-  results: {
-    id: number,
-    name: string,
-    coverUrl: string
-  }[],
-} & ComponentPropsWithoutRef<'div'>
+  results: Result[],
+}
 
 const SearchResultsDropdown = ({results}: Props) => {
   return (
-    <div className={`p-1 bg-grey-50 w-full max-h-80 overflow-y-auto scrollbar-on-light rounded-2xl`}>
+    <div className="p-1 bg-grey-50 w-full max-h-80 overflow-y-auto scrollbar-on-light rounded-2xl">
       {results.map(result => {
         return (
           <div key={result.id} className="p-2 flex items-center gap-4 rounded-lg hover:bg-grey-100">

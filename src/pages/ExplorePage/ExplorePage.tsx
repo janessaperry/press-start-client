@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Button, Input } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 import GameCarousel from "../../components/GameCarousel.tsx";
@@ -20,10 +20,16 @@ export type GameOverview = {
   gameType: string
 }
 
+export type Result = {
+  id: number,
+  name: string,
+  coverUrl: string
+}
+
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const ExplorePage = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<[]>([]);
+  const [searchResults, setSearchResults] = useState<Result[]>([]);
   const [showSearchResults, setShowSearchResults] = useState<boolean>(false);
   const [newRelease, setNewRelease] = useState<GameOverview[]>([]);
   const [comingSoon, setComingSoon] = useState<GameOverview[]>([]);
@@ -38,13 +44,13 @@ const ExplorePage = () => {
     }
   }
 
-  const handleSearchInput = async (e) => {
+  const handleSearchInput = async (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
   }
 
   useEffect(() => {
-    const timeoutId: number = setTimeout(async () => {
+    const timeoutId = setTimeout(async () => {
       if (searchQuery.length >= 3) {
         const results = await fetchSearchResults(searchQuery);
         setSearchResults(results);
