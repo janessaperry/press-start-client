@@ -4,15 +4,17 @@ import { ComponentPropsWithoutRef } from "react";
 type Props = {
   data: {
     id: number,
-    label: string
-  }[]
+    label: string,
+  }[],
+  variant?: "primary" | "secondary",
+  size?: "sm" | "md"
 } & ComponentPropsWithoutRef<'article'>;
 
-const InfoChipList = ({data}: Props) => {
+const InfoChipList = ({data, variant = "primary", size = "md"}: Props) => {
   return (
     <div className="flex flex-wrap gap-2">
       {data.map((item) => {
-        return <InfoChip key={item.id} label={item.label}/>
+        return <InfoChip key={item.id} label={item.label} variant={variant} size={size}/>
       })}
     </div>
   )
