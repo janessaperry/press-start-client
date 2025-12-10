@@ -52,14 +52,21 @@ const ForgotPasswordPage = () => {
         email
       });
     }
-    catch (e) {
-      console.error(`Request failed: ${e}`);
+    catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        const status = e.response?.status;
 
-      if (e.response?.status === 429) {
-        setRateLimitHit(true);
-        const retryAfter = e.response.data.retryAfter || 60;
-        if (!countdown) setCountdown(retryAfter);
+        if (status === 429) {
+          setRateLimitHit(true);
+
+          const retryAfter = e.response?.data?.retryAfter || 60;
+          if (!countdown) setCountdown(retryAfter);
+        }
+
+        return;
       }
+
+      console.error(`Request failed:`, e);
     }
   }
 
@@ -70,7 +77,7 @@ const ForgotPasswordPage = () => {
     }
 
     const interval = setInterval(() => {
-      setCountdown(prevState => prevState - 1);
+      setCountdown(prevState => prevState > 0 ? prevState - 1 : 0);
     }, 1000);
 
     return () => clearInterval(interval)

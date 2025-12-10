@@ -47,10 +47,10 @@ const ResetPasswordPage = () => {
 
     try {
       const response = await updatePassword(token, password);
-      if (response.status === 200) {
+      if (response?.status === 200) {
         navigate("/sign-in")
       }
-      else if (response.status === 401) {
+      else if (response?.status === 401) {
         setPasswordError("The reset link has expired. Request a new link and try again.");
       }
       else {
@@ -70,10 +70,11 @@ const ResetPasswordPage = () => {
         newPassword,
       });
     }
-    catch (e) {
+    catch (e: unknown) {
+      if (axios.isAxiosError(e) && e.response) {
+        return e.response;
+      }
       console.error(`Reset password failed: ${e}`);
-      if (e.response) return e.response;
-      throw e;
     }
   }
 

@@ -26,7 +26,7 @@ const GameCarousel = ({games}: GameOverviewData) => {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi])
 
-  const [scrollSnaps, setScrollSnaps] = useState([]);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const onInit = useCallback((emblaApi: EmblaCarouselType) => {

@@ -7,7 +7,7 @@ import axios from "axios";
 // Route Logic
 // Components & Assets
 import { Button, Fieldset } from "@headlessui/react";
-import { ArrowRightIcon, WarningCircleIcon } from "@phosphor-icons/react";
+import { WarningCircleIcon } from "@phosphor-icons/react";
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import TextInput from "../../components/TextInput.tsx";
 
