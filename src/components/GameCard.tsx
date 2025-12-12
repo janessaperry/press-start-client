@@ -21,13 +21,13 @@ const GameCard = ({gameOverview, className = "", ...rest}: GameCardProps) => {
           <BadgeNumber label={gameOverview.totalRating} size="sm"/>
         </div>
 
-        {gameOverview.platforms &&
+        {gameOverview.consoles &&
           <div className="flex flex-col gap-2">
             <p className="text-sm font-semibold uppercase text-primary-50/80">
-              Platforms
+              Available on
             </p>
             <div className="flex flex-wrap gap-3">
-              <InfoChipList data={gameOverview.platforms.map(p => ({id: p.id, label: p.abbreviation}))} size="sm"/>
+              <InfoChipList data={gameOverview.consoles.map(c => ({id: c.id, label: c.label}))} size="sm"/>
             </div>
           </div>
         }

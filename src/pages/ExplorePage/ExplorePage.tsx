@@ -13,9 +13,9 @@ export type GameOverview = {
   releaseDate: string,
   slug: string,
   totalRating: string,
-  platforms: {
+  consoles: {
     id: number,
-    abbreviation: string
+    label: string
   }[],
   gameType: string
 }
