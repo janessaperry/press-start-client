@@ -10,14 +10,16 @@ export type GameOverview = {
   id: number,
   name: string,
   coverUrl: string,
-  releaseDate: string,
   slug: string,
-  totalRating: string,
+  totalRating: number | null,
   consoles: {
     id: number,
     label: string
   }[],
-  gameType: string
+  gameType: {
+    id: number,
+    label: string
+  }
 }
 
 export type Result = {
