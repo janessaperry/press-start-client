@@ -24,7 +24,7 @@ const ForgotPasswordPage = () => {
   const [emailError, setEmailError] = useState("")
   const [linkSent, setLinkSent] = useState(false);
   const [rateLimitHit, setRateLimitHit] = useState(false);
-  const [countdown, setCountdown] = useState<number | null>(null);
+  const [countdown, setCountdown] = useState<number>(0);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -60,7 +60,7 @@ const ForgotPasswordPage = () => {
           setRateLimitHit(true);
 
           const retryAfter = e.response?.data?.retryAfter || 60;
-          if (!countdown) setCountdown(retryAfter);
+          if (countdown <= 0) setCountdown(retryAfter);
         }
 
         return;
@@ -71,8 +71,8 @@ const ForgotPasswordPage = () => {
   }
 
   useEffect(() => {
-    if (!countdown || countdown <= 0) {
-      if (countdown === 0) setRateLimitHit(false);
+    if (countdown <= 0) {
+      setRateLimitHit(false);
       return;
     }
 
