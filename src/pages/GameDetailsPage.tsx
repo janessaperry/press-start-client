@@ -70,17 +70,6 @@ const GameDetailsPage = () => {
   const [selectedFormat, setSelectedFormat] = useState<ListboxOption>({id: 0, label: "Select a format"});
   const [gameDetails, setGameDetails] = useState<GameDetails | null>(null);
 
-  const fetchGameDetails = async () => {
-    try {
-      const response = await axios.get(`${baseServerUrl}/games/${gameId}`);
-      setGameDetails(response.data.gameDetails);
-      console.log(response.data);
-    }
-    catch (e) {
-      console.error(e)
-    }
-  }
-
   function formatReleaseDate (dateIso: string | null): string {
     if (!dateIso) return 'Release date unknown';
     return new Date(dateIso).toLocaleDateString("en-US", {
@@ -91,11 +80,22 @@ const GameDetailsPage = () => {
   }
 
   function formatReleaseYear (dateIso: string | null): string {
-    if (!dateIso) return 'Release TBA';
+    if (!dateIso) return 'Release date unknown';
     return new Date(dateIso).getFullYear().toString();
   }
 
   useEffect(() => {
+    const fetchGameDetails = async () => {
+      try {
+        const response = await axios.get(`${baseServerUrl}/games/${gameId}`);
+        setGameDetails(response.data.gameDetails);
+        console.log(response.data);
+      }
+      catch (e) {
+        console.error(e)
+      }
+    }
+
     void fetchGameDetails();
   }, [gameId]);
 
@@ -131,9 +131,14 @@ const GameDetailsPage = () => {
               <div className="grow space-y-3">
                 <h1>{gameDetails.name}</h1>
 
+
                 <div className="text-secondary-100 flex items-center gap-2">
-                  <p>{gameDetails.publishers[0]}</p>
-                  <CircleIcon weight="fill" size="6"/>
+                  {gameDetails.publishers.length > 0 && (
+                    <>
+                      <p>{gameDetails.publishers[0]}</p>
+                      <CircleIcon weight="fill" size="6"/>
+                    </>
+                  )}
                   <p>{formatReleaseYear(gameDetails.releaseDate)}</p>
                 </div>
 
@@ -287,9 +292,9 @@ const GameDetailsPage = () => {
                 <ArrowRightIcon className="icon-sm"/>
               </div>
 
-              <div className="">
+              <div className="flex flex-wrap gap-3">
                 {gameDetails.relatedContent.expansions.map(game => (
-                  <Link to={`/game/${game.id}/${game.slug}`}>
+                  <Link key={`expansion-${game.id}`} to={`/game/${game.id}/${game.slug}`}>
                     <img className="max-w-16 rounded-sm"
                       src={game.coverUrl || NO_COVER_PLACEHOLDER_URL}
                       alt={`${game.name} cover`}/>
@@ -306,9 +311,9 @@ const GameDetailsPage = () => {
                 <ArrowRightIcon className="icon-sm"/>
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex flex-wrap gap-3">
                 {gameDetails.relatedContent.dlcs.map(game => (
-                  <Link to={`/game/${game.id}/${game.slug}`}>
+                  <Link key={`dlc-${game.id}`} to={`/game/${game.id}/${game.slug}`}>
                     <img className="max-w-16 rounded-sm"
                       src={game.coverUrl || NO_COVER_PLACEHOLDER_URL}
                       alt={`${game.name} cover`}/>
@@ -318,7 +323,6 @@ const GameDetailsPage = () => {
             </section>
           )}
         </div>
-
 
         <div className="flex-1 space-y-12">
           <section className="space-y-3">
