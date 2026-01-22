@@ -9,7 +9,7 @@ import SearchResultsDropdown from "../../components/SearchResultsDropdown.tsx";
 export type GameOverview = {
   id: number,
   name: string,
-  coverUrl: string | null,
+  coverId: string | null,
   slug: string,
   totalRating: number | null,
   consoles: {
@@ -25,7 +25,7 @@ export type GameOverview = {
 export type Result = {
   id: number,
   name: string,
-  coverUrl: string | null
+  coverId: string | null
 }
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;

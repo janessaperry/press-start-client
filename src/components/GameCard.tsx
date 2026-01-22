@@ -3,7 +3,7 @@ import { ComponentProps } from "react";
 import { GameOverview } from "../pages/ExplorePage/ExplorePage.tsx";
 import InfoChipList from "./InfoChipList.tsx";
 import { BadgeNumber, BadgeText } from "./Badge.tsx";
-import { NO_COVER_PLACEHOLDER_URL } from "../constants/placeholders.ts";
+import { getCoverUrl } from "../utils/images.ts";
 
 type GameCardProps = {
   gameOverview: GameOverview,
@@ -29,8 +29,8 @@ const GameCard = ({gameOverview, className = ""}: GameCardProps) => {
       <article className="flex gap-4">
         <div className="basis-1/4 shrink-0 flex flex-col gap-3">
           <img className="rounded-lg"
-            src={gameOverview.coverUrl || NO_COVER_PLACEHOLDER_URL}
-            alt={`${gameOverview.name} cover`}/>
+            src={getCoverUrl(gameOverview.coverId, 'cover_small')}
+            alt={`${gameOverview.name} cover art`}/>
 
           {showGameTypeBadge[gameOverview.gameType.id] &&
             <BadgeText label={gameOverview.gameType.label}/>

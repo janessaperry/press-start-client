@@ -5,7 +5,7 @@ import { Button, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@
 import { ArrowRightIcon, CaretDownIcon, CircleIcon } from "@phosphor-icons/react";
 import InfoChipList from "../components/InfoChipList.tsx";
 import { BadgeNumber, BadgeText } from "../components/Badge.tsx";
-import { NO_COVER_PLACEHOLDER_URL } from "../constants/placeholders.ts";
+import { getCoverUrl, getEsrbThumbnailUrl } from "../utils/images.ts";
 
 type ListboxOption = {
   id: number,
@@ -15,7 +15,7 @@ type ListboxOption = {
 type GameDetails = {
   id: number,
   name: string,
-  coverUrl: string | null,
+  coverId: string | null,
   releaseDate: string | null,
   slug: string,
   summary: string[],
@@ -27,7 +27,7 @@ type GameDetails = {
   developers: string[],
   publishers: string[],
   esrbRating: string,
-  esrbThumbnailUrl: string,
+  esrbThumbnailId: string,
   esrbDescriptions: string[],
   platforms: {
     id: number,
@@ -38,19 +38,19 @@ type GameDetails = {
     id: number,
     name: string,
     slug: string,
-    coverUrl: string
+    coverId: string
   },
   relatedContent: {
     expansions: {
       id: number,
       name: string,
-      coverUrl: string | null,
+      coverId: string | null,
       slug: string
     }[],
     dlcs: {
       id: number,
       name: string,
-      coverUrl: string | null,
+      coverId: string | null,
       slug: string
     }[]
   }
@@ -106,12 +106,12 @@ const GameDetailsPage = () => {
       <div className="px-4 py-20 bg-purple-700">
         <section className="container p-12 bg-primary-500 flex gap-12 rounded-4xl">
           <div className="basis-1/4 flex flex-col gap-6">
-            <img src={gameDetails.coverUrl || NO_COVER_PLACEHOLDER_URL}
+            <img src={getCoverUrl(gameDetails.coverId)}
               alt={`${gameDetails.name} cover art`}
               className="rounded-2xl"/>
 
             <figure className="flex items-start gap-3">
-              <img src={gameDetails.esrbThumbnailUrl}
+              <img src={getEsrbThumbnailUrl(gameDetails.esrbThumbnailId)}
                 alt={`ESRB Rating: ${gameDetails.esrbRating}`}
                 className="w-10 rounded-xs"/>
               <figcaption className="leading-none space-y-1">
@@ -296,8 +296,8 @@ const GameDetailsPage = () => {
                 {gameDetails.relatedContent.expansions.map(game => (
                   <Link key={`expansion-${game.id}`} to={`/game/${game.id}/${game.slug}`}>
                     <img className="max-w-16 rounded-sm"
-                      src={game.coverUrl || NO_COVER_PLACEHOLDER_URL}
-                      alt={`${game.name} cover`}/>
+                      src={getCoverUrl(game.coverId, "cover_small")}
+                      alt={`${game.name} cover art`}/>
                   </Link>
                 ))}
               </div>
@@ -315,8 +315,8 @@ const GameDetailsPage = () => {
                 {gameDetails.relatedContent.dlcs.map(game => (
                   <Link key={`dlc-${game.id}`} to={`/game/${game.id}/${game.slug}`}>
                     <img className="max-w-16 rounded-sm"
-                      src={game.coverUrl || NO_COVER_PLACEHOLDER_URL}
-                      alt={`${game.name} cover`}/>
+                      src={getCoverUrl(game.coverId, "cover_small")}
+                      alt={`${game.name} cover art`}/>
                   </Link>
                 ))}
               </div>
@@ -356,8 +356,8 @@ const GameDetailsPage = () => {
                 <div className="flex items-center gap-4">
                   <Link to={`/game/${gameDetails.baseGame.id}/${gameDetails.baseGame.slug}`}>
                     <img className="max-w-16 rounded-sm"
-                      src={gameDetails.baseGame.coverUrl}
-                      alt={`${gameDetails.baseGame.name} cover`}/>
+                      src={getCoverUrl(gameDetails.baseGame.coverId, "cover_small")}
+                      alt={`${gameDetails.baseGame.name} cover art`}/>
                   </Link>
 
                   <div className="space-y-1">
