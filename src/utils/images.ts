@@ -1,6 +1,6 @@
 import { NO_COVER_PLACEHOLDER_URL } from "../constants/placeholders.ts";
 
-type ImageSize = 'cover_small' | 'cover_big' | '720p' | '1080p' | 'screenshot_big' | 'screenshot_huge';
+type ImageSize = 'thumb' | 'cover_small' | 'cover_big' | '720p' | '1080p' | 'screenshot_big' | 'screenshot_huge';
 
 export function getCoverUrl (coverId: string | null, size: ImageSize = '720p'): string {
   if (!coverId) return NO_COVER_PLACEHOLDER_URL;
