@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, NavLink, useParams } from "react-router-dom";
 import axios from "axios";
 import { Button, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 import { ArrowRightIcon, CaretDownIcon, CircleIcon } from "@phosphor-icons/react";
@@ -34,6 +34,16 @@ type GameDetails = {
     label: string,
   }[],
   genres: ListboxOption[],
+  collections: {
+    id: number,
+    name: string,
+    games: {
+      id: number,
+      name: string,
+      slug: string,
+      coverId: string | null
+    }[]
+  }[],
   baseGame: {
     id: number,
     name: string,
@@ -89,6 +99,8 @@ const GameDetailsPage = () => {
       try {
         const response = await axios.get(`${baseServerUrl}/games/${gameId}`);
         setGameDetails(response.data.gameDetails);
+        window.scrollTo(0, 0);
+
         console.log(response.data);
       }
       catch (e) {
@@ -130,7 +142,6 @@ const GameDetailsPage = () => {
             <div className="flex items-start gap-10">
               <div className="grow space-y-3">
                 <h1>{gameDetails.name}</h1>
-
 
                 <div className="text-secondary-100 flex items-center gap-2">
                   {gameDetails.publishers.length > 0 && (
@@ -271,10 +282,26 @@ const GameDetailsPage = () => {
         <div className="flex-1 space-y-12">
           <section>
             <h4>Series</h4>
-            <div className="">
-              <p>The Witcher <ArrowRightIcon/></p>
-              <div>image row</div>
-            </div>
+
+            {gameDetails.collections.length > 0 && (
+              gameDetails.collections.map(collection => (
+                <div key={collection.id} className="space-y-2">
+                  <p>{collection.name}</p>
+
+                  {collection.games.length > 0 && (
+                    <div className="flex gap-2 flex-wrap">
+                      {collection.games.map(game => (
+                        <NavLink to={`/game/${game.id}/${game.slug}`} className="max-w-16 rounded-lg">
+                          <img src={getCoverUrl(game.coverId, "cover_small")}
+                            alt={`${game.name} cover art`}
+                            className="rounded-lg"/>
+                        </NavLink>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
           </section>
 
           <section>

@@ -29,7 +29,7 @@ const GameCard = ({gameOverview, className = ""}: GameCardProps) => {
       <article className="flex gap-4">
         <div className="basis-1/4 shrink-0 flex flex-col gap-3">
           <img className="rounded-lg"
-            src={getCoverUrl(gameOverview.coverId, 'cover_small')}
+            src={getCoverUrl(gameOverview.coverId, 'cover_big')}
             alt={`${gameOverview.name} cover art`}/>
 
           {showGameTypeBadge[gameOverview.gameType.id] &&
