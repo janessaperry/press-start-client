@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Button, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 import { ArrowRightIcon, CaretDownIcon, CircleIcon } from "@phosphor-icons/react";
 import InfoChipList from "../components/InfoChipList.tsx";
+import GameCoverList from "../components/GameCoverList.tsx";
 import { BadgeNumber, BadgeText } from "../components/Badge.tsx";
 import { getCoverUrl, getEsrbThumbnailUrl } from "../utils/images.ts";
 
 type ListboxOption = {
   id: number,
   label: string
+}
+
+export type GameThumbnail = {
+  id: number,
+  name: string,
+  slug: string,
+  coverId: string | null
 }
 
 type GameDetails = {
@@ -37,32 +45,17 @@ type GameDetails = {
   collections: {
     id: number,
     name: string,
-    games: {
-      id: number,
-      name: string,
-      slug: string,
-      coverId: string | null
-    }[]
+    games: GameThumbnail[]
   }[],
-  baseGame: {
+  franchises: {
     id: number,
     name: string,
-    slug: string,
-    coverId: string
-  },
+    games: GameThumbnail[]
+  }[],
+  baseGame: GameThumbnail,
   relatedContent: {
-    expansions: {
-      id: number,
-      name: string,
-      coverId: string | null,
-      slug: string
-    }[],
-    dlcs: {
-      id: number,
-      name: string,
-      coverId: string | null,
-      slug: string
-    }[]
+    expansions: GameThumbnail[],
+    dlcs: GameThumbnail[]
   }
 }
 
@@ -280,37 +273,31 @@ const GameDetailsPage = () => {
         </section>
 
         <div className="flex-1 space-y-12">
-          <section>
-            <h4>Series</h4>
-
-            {gameDetails.collections.length > 0 && (
-              gameDetails.collections.map(collection => (
+          {gameDetails.collections.length > 0 && (
+            <section className="space-y-3">
+              <h4>Series</h4>
+              {gameDetails.collections.map(collection => (
                 <div key={collection.id} className="space-y-2">
                   <p>{collection.name}</p>
-
-                  {collection.games.length > 0 && (
-                    <div className="flex gap-2 flex-wrap">
-                      {collection.games.map(game => (
-                        <NavLink to={`/game/${game.id}/${game.slug}`} className="max-w-16 rounded-lg">
-                          <img src={getCoverUrl(game.coverId, "cover_small")}
-                            alt={`${game.name} cover art`}
-                            className="rounded-lg"/>
-                        </NavLink>
-                      ))}
-                    </div>
-                  )}
+                  <GameCoverList games={collection.games}/>
                 </div>
-              ))
-            )}
-          </section>
+              ))}
+            </section>
+          )}
 
-          <section>
-            <h4>Franchise</h4>
-            <div className="">
-              <p>The Witcher <ArrowRightIcon/></p>
-              <div>image row</div>
-            </div>
-          </section>
+          {gameDetails.franchises.length > 0 &&
+            <section className="space-y-3">
+              <h4>Franchise</h4>
+              {gameDetails.franchises.map(franchise => {
+                return (
+                  <div key={franchise.id} className="space-y-2">
+                    <p>{franchise.name}</p>
+                    <GameCoverList games={franchise.games}/>
+                  </div>
+                )
+              })}
+            </section>
+          }
 
           {gameDetails.relatedContent.expansions.length > 0 && (
             <section className="space-y-3">
@@ -320,13 +307,7 @@ const GameDetailsPage = () => {
               </div>
 
               <div className="flex flex-wrap gap-3">
-                {gameDetails.relatedContent.expansions.map(game => (
-                  <Link key={`expansion-${game.id}`} to={`/game/${game.id}/${game.slug}`}>
-                    <img className="max-w-16 rounded-sm"
-                      src={getCoverUrl(game.coverId, "cover_small")}
-                      alt={`${game.name} cover art`}/>
-                  </Link>
-                ))}
+                <GameCoverList games={gameDetails.relatedContent.expansions}/>
               </div>
             </section>
           )}
@@ -339,13 +320,7 @@ const GameDetailsPage = () => {
               </div>
 
               <div className="flex flex-wrap gap-3">
-                {gameDetails.relatedContent.dlcs.map(game => (
-                  <Link key={`dlc-${game.id}`} to={`/game/${game.id}/${game.slug}`}>
-                    <img className="max-w-16 rounded-sm"
-                      src={getCoverUrl(game.coverId, "cover_small")}
-                      alt={`${game.name} cover art`}/>
-                  </Link>
-                ))}
+                <GameCoverList games={gameDetails.relatedContent.dlcs}/>
               </div>
             </section>
           )}
