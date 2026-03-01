@@ -91,12 +91,7 @@
   /* Buttons */
   button {
     @apply cursor-pointer
-    inline-block px-4 py-2 rounded-full
-    border-none
-    font-semibold
-    bg-interactive-primary hover:bg-interactive-primary-hover text-secondary-900
-    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-300
-    transition-colors ease-in duration-150
+    inline-block px-4 py-2 rounded-full;
   }
 
   /* Inputs */

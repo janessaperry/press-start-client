@@ -3,20 +3,6 @@
     @apply m-auto;
   }
 
-  button {
-    @apply flex items-center justify-center gap-3;
-
-    &.secondary {
-    }
-
-    &.ghost {
-      @apply text-grey-50
-      border border-solid border-interactive-primary hover:border-interactive-primary-hover
-      bg-transparent hover:bg-interactive-primary-hover/10
-      ;
-    }
-  }
-
   /* Icon Sizes widths */
   .icon-sm {
     @apply w-5 h-5;

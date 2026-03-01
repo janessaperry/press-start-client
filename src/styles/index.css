@@ -1,5 +1,6 @@
 /* Main CSS entry point */
 @import "tailwindcss";
-@import './variables.css';
-@import './utilities.css';
+@import './theme.css';
 @import './base.css';
+@import './components.css';
+@import './utilities.css';

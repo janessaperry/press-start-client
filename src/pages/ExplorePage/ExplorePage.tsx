@@ -104,7 +104,8 @@ const ExplorePage = () => {
                 onChange={e => handleSearchInput(e)}
                 value={searchQuery}
                 className="grow"/>
-              <Button type="button" onClick={() => console.log("submit - go to full results page")}>
+              <Button type="button" className="button primary"
+                onClick={() => console.log("submit - go to full results page")}>
                 <MagnifyingGlassIcon/>
               </Button>
             </form>
@@ -112,7 +113,6 @@ const ExplorePage = () => {
               <SearchResultsDropdown results={searchResults}/>
             }
           </search>
-
         </div>
       </section>
 

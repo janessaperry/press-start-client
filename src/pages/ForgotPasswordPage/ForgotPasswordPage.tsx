@@ -134,8 +134,7 @@ const ForgotPasswordPage = () => {
                   onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
 
-              <Button className="bg-interactive-secondary hover:bg-interactive-secondary-hover text-grey-50"
-                type="submit">Submit</Button>
+              <Button className="button secondary" type="submit">Submit</Button>
             </form>
           </section>
         </div>

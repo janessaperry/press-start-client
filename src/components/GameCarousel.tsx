@@ -56,9 +56,7 @@ const GameCarousel = ({games}: GameOverviewData) => {
       <div className="flex gap-4">
         <div className="grow flex flex-wrap items-center gap-1">
           {scrollSnaps.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => onDotButtonClick(index)}
+            <button key={index} onClick={() => onDotButtonClick(index)}
               className={`bg-transparent p-0 flex items-center justify-center rounded-full touch-manipulation 
               ${index === selectedIndex ? `text-success` : `text-interactive-primary/20 hover:text-interactive-primary-hover/60`}`}
             >
@@ -71,15 +69,12 @@ const GameCarousel = ({games}: GameOverviewData) => {
 
 
         <div className="flex gap-2 self-end">
-          <ButtonIcon variant="ghost"
-            iconSize="md" icon={CaretLeftIcon} handleClick={scrollPrev}/>
-          <ButtonIcon variant="ghost"
-            iconSize="md" icon={CaretRightIcon} handleClick={scrollNext}/>
+          <ButtonIcon variant="ghost" iconSize="md" icon={CaretLeftIcon} handleClick={scrollPrev}/>
+          <ButtonIcon variant="ghost" iconSize="md" icon={CaretRightIcon} handleClick={scrollNext}/>
         </div>
       </div>
 
-      <div className="overflow-hidden relative"
-        ref={emblaRef}>
+      <div className="overflow-hidden relative" ref={emblaRef}>
         <div className="flex gap-4">
           {games.map(game => {
               return (
@@ -89,8 +84,8 @@ const GameCarousel = ({games}: GameOverviewData) => {
         </div>
 
         {/* gradient overlay */}
-        <span className="block absolute top-0 right-0 h-full w-1/5
-        bg-linear-to-r from-blue-900/0 to-blue-900/60" aria-hidden="true"></span>
+        <span className="block absolute top-0 right-0 h-full w-1/5 bg-linear-to-r from-blue-900/0 to-blue-900/60"
+          aria-hidden="true"></span>
       </div>
     </div>
   )

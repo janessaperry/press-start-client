@@ -48,9 +48,8 @@ const Header = () => {
 
             <li className="m-0 p-0">
               <Popover className="">
-                <PopoverButton className="text-grey-50 bg-interactive-secondary hover:bg-interactive-secondary-hover">
-                  <UserCircleIcon weight="duotone"
-                    className=""/>
+                <PopoverButton className="button secondary">
+                  <UserCircleIcon weight="duotone" className=""/>
                 </PopoverButton>
 
                 <PopoverPanel className="bg-primary-500 p-2 mt-1 flex flex-col gap-1 rounded-xl shadow-md shadow-primary-900"
@@ -59,7 +58,7 @@ const Header = () => {
                   <NavLink to="/settings"
                     className="px-4 py-2 rounded-md text-grey-50 hover:bg-primary-700">Settings</NavLink>
 
-                  <Button className="" onClick={logout}>Log out</Button>
+                  <Button className="button primary" onClick={logout}>Log out</Button>
                 </PopoverPanel>
               </Popover>
             </li>

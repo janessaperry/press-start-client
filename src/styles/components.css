@@ -1,0 +1,25 @@
+@layer components {
+  .button {
+    @apply flex items-center justify-center gap-3;
+
+    &.primary {
+      @apply
+      border-none
+      text-secondary-900 font-semibold
+      bg-interactive-primary hover:bg-interactive-primary-hover
+      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-300
+      transition-colors ease-in duration-150
+    }
+
+    &.secondary {
+      @apply bg-interactive-secondary hover:bg-interactive-secondary-hover text-grey-50;
+    }
+
+    &.ghost {
+      @apply text-grey-50
+      border border-solid border-interactive-primary hover:border-interactive-primary-hover
+      bg-transparent hover:bg-interactive-primary-hover/10
+      ;
+    }
+  }
+}

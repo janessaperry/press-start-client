@@ -1,20 +1,14 @@
-// Libraries
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
-// Layouts
-// Route Logic
-// Components & Assets
 import { Button, Fieldset } from "@headlessui/react";
 import { WarningCircleIcon } from "@phosphor-icons/react";
+
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import TextInput from "../../components/TextInput.tsx";
 
-// Utils
 import useAuth from "../../hooks/useAuth.tsx";
 import { validateEmailFormat } from "../../utils/validators.ts";
-
 
 const SignInPage = () => {
   const {login} = useAuth();
@@ -102,7 +96,6 @@ const SignInPage = () => {
                       password?</Link>
                     </p>
                   </div>
-
                 </div>
               )}
 
@@ -125,12 +118,12 @@ const SignInPage = () => {
                   onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
 
-              <Button className="bg-interactive-secondary hover:bg-interactive-secondary-hover text-grey-50"
-                type="submit">Continue</Button>
+              <Button className="button secondary" type="submit">Continue</Button>
             </form>
 
-            <p className={`font-bold`}>Forgot password? <Link to="/forgot-password"
-              className="text-link-secondary">Reset it here</Link></p>
+            <p className="font-bold">Forgot password? <Link to="/forgot-password" className="text-link-secondary">Reset
+              it here</Link>
+            </p>
           </section>
         </div>
       </main>
