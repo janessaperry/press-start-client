@@ -12,7 +12,7 @@ export type GameOverview = {
   coverId: string | null,
   slug: string,
   totalRating: number | null,
-  consoles: {
+  platforms: {
     id: number,
     label: string
   }[],
