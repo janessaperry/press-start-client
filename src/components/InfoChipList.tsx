@@ -7,7 +7,7 @@ type Props = {
     label: string,
   }[],
   variant?: "primary" | "secondary",
-  size?: "sm" | "md"
+  size?: "xs" | "sm" | "md"
 } & ComponentPropsWithoutRef<'article'>;
 
 const InfoChipList = ({data, variant = "primary", size = "md"}: Props) => {

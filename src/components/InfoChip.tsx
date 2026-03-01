@@ -3,7 +3,7 @@ import { ComponentPropsWithoutRef } from "react";
 type Props = {
   label: string,
   variant?: "primary" | "secondary",
-  size?: "sm" | "md"
+  size?: "xs" | "sm" | "md"
 } & ComponentPropsWithoutRef<'p'>;
 
 const InfoChip = ({label, variant = "primary", size = "md"}: Props) => {
@@ -13,6 +13,7 @@ const InfoChip = ({label, variant = "primary", size = "md"}: Props) => {
   }
 
   const sizeStyleMap = {
+    "xs": "py-1 px-2 text-sm",
     "sm": "py-1 px-2 text-base",
     "md": "py-2 px-3 text-lg"
   }
