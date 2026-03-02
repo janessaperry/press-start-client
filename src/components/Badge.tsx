@@ -26,6 +26,6 @@ export const BadgeText = ({label, size = "sm"}: Props) => {
     "md": "text-md"
   }
   return (
-    <span className={`px-1 text-secondary-100 text-center font-semibold uppercase border border-secondary-100 rounded-sm ${sizeStyleMap[size]}`}>{label}</span>
+    <span className={`inline-block px-1 text-secondary-100 text-center font-semibold uppercase border border-secondary-100 rounded-sm ${sizeStyleMap[size]}`}>{label}</span>
   )
 }
