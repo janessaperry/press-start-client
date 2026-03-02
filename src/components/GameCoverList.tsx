@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { getCoverUrl } from "../utils/images.ts";
-import { GameThumbnail } from "../pages/GameDetailsPage"
+import { GameThumbnail } from "../pages/GameDetailsPage.tsx"
 
 type Props = {
   games: GameThumbnail[]

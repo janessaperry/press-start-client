@@ -3,21 +3,21 @@
     @apply m-auto;
   }
 
-  /* Icon Sizes widths */
+  /* icon sizes */
   .icon-sm {
-    @apply w-5 h-5;
+    @apply size-5;
   }
 
   .icon-md {
-    @apply w-6 h-6;
+    @apply size-6;
   }
 
   .icon-lg {
-    @apply w-8 h-8;
+    @apply size-8;
   }
 
   .icon-xl {
-    @apply w-10 h-10;
+    @apply size-10;
   }
 
   /* Scrollbar */
