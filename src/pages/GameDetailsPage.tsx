@@ -73,6 +73,7 @@ const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const GameDetailsPage = () => {
   const {gameId} = useParams();
 
+  const [loading, setLoading] = useState<boolean>(true);
   const [selectedPlatform, setSelectedPlatform] = useState<ListboxOption>({id: 0, label: "Select a console"});
   const [selectedFormat, setSelectedFormat] = useState<ListboxOption>({id: 0, label: "Select a format"});
   const [gameDetails, setGameDetails] = useState<GameDetails | null>(null);
@@ -94,6 +95,7 @@ const GameDetailsPage = () => {
 
   useEffect(() => {
     const fetchGameDetails = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(`${baseServerUrl}/games/${gameId}`);
         setGameDetails(response.data.gameDetails);
@@ -102,20 +104,22 @@ const GameDetailsPage = () => {
         const relatedContent = response.data.gameDetails.relatedContent.dlcs.length > 0
           || response.data.gameDetails.relatedContent.expansions.length > 0
           || response.data.gameDetails.franchises.length > 0
-          || response.data.gameDetails.collection.length > 0;
+          || response.data.gameDetails.collections.length > 0;
         setHasRelatedContent(relatedContent);
-
-        console.log(response.data);
       }
       catch (e) {
         console.error(e)
+      }
+      finally {
+        setLoading(false);
       }
     }
 
     void fetchGameDetails();
   }, [gameId]);
 
-  if (!gameDetails) return <GameDetailsSkeleton/>;
+  if (loading) return <GameDetailsSkeleton/>;
+  if (!gameDetails) return <h1>404 - update</h1>
 
   return (
     <>
