@@ -5,9 +5,9 @@ type Props = {
 
 export const BadgeNumber = ({label, size = "sm"}: Props) => {
   const sizeStyleMap = {
-    "xs": "w-10 h-10 text-md",
-    "sm": "w-12 h-12 text-xl",
-    "md": "w-16 h-16 text-2xl",
+    "xs": "size-8 text-sm lg:size-10 lg:text-md",
+    "sm": "size-10 text-lg lg:size-12 lg:text-xl",
+    "md": "size-12 text-xl lg:size-16 lg:text-2xl",
   }
   const badgeColor: string = label === 'n/a' ? 'text-secondary-100/40 border-secondary-100/40' : "text-success" +
     " border-success"
@@ -26,6 +26,6 @@ export const BadgeText = ({label, size = "sm"}: Props) => {
     "md": "text-md"
   }
   return (
-    <p className={`px-1 text-secondary-100 text-center font-semibold uppercase border border-secondary-100 rounded-sm ${sizeStyleMap[size]}`}>{label}</p>
+    <span className={`px-1 text-secondary-100 text-center font-semibold uppercase border border-secondary-100 rounded-sm ${sizeStyleMap[size]}`}>{label}</span>
   )
 }
