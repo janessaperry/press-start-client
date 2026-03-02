@@ -13,9 +13,9 @@ const InfoChip = ({label, variant = "primary", size = "md"}: Props) => {
   }
 
   const sizeStyleMap = {
-    "xs": "py-1 px-2 text-sm",
-    "sm": "py-1 px-2 text-base",
-    "md": "py-2 px-3 text-lg"
+    "xs": "py-1 px-2 text-xs md:text-sm",
+    "sm": "py-1 px-2 text-sm md:text-base",
+    "md": "p-2 md:py-2 md:px-3 text-base md:text-lg"
   }
 
   return (
