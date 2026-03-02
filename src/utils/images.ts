@@ -11,3 +11,7 @@ export function getEsrbThumbnailUrl (esrbThumbnailId: string) {
   const baseServerUrl = import.meta.env.VITE_SERVER_URL;
   return `${baseServerUrl}/public/images/${esrbThumbnailId}.svg`;
 }
+
+export function getScreenshotUrl (imageId: string, size: ImageSize = 'screenshot_big') {
+  return `https://images.igdb.com/igdb/image/upload/t_${size}/${imageId}.jpg`;
+}

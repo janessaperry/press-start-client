@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Button, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 import { ArrowRightIcon, CaretDownIcon, CircleIcon } from "@phosphor-icons/react";
+import ImageCarousel from "../components/ImageCarousel.tsx";
 
 import { getCoverUrl, getEsrbThumbnailUrl } from "../utils/images.ts";
 
@@ -36,6 +37,7 @@ type GameDetails = {
   },
   developers: string[],
   publishers: string[],
+  screenshotIds: string[],
   esrbRating: string,
   esrbThumbnailId: string,
   esrbDescriptions: string[],
@@ -216,7 +218,7 @@ const GameDetailsPage = () => {
         </section>
       </div>
 
-      <section className="container px-4 md:px-10 pt-12 md:pt-24 pb-12 space-y-6">
+      <section className="container px-4 md:px-10 pt-12 md:pt-24 pb-6 md:pb-12 space-y-4 md:space-y-6">
         <h2>Description</h2>
 
         <div className="flex flex-col md:flex-row gap-6 md:gap-12">
@@ -247,7 +249,7 @@ const GameDetailsPage = () => {
         </div>
       </section>
 
-      <div className="container px-4 md:px-10 pb-12 md:pb-20 flex flex-col lg:flex-row gap-12">
+      <div className="container px-4 md:px-10 pb-12 md:pb-20 flex flex-col lg:flex-row gap-6 md:gap-12">
         <section className="flex-1 space-y-4">
           <h4>Time to beat</h4>
           <div className="grid grid-cols-3 gap-2">
@@ -269,7 +271,7 @@ const GameDetailsPage = () => {
         </section>
 
         {hasRelatedContent &&
-          <div className="flex-1 space-y-12">
+          <div className="flex-1 space-y-6 md:space-y-12">
             {gameDetails.collections.length > 0 && (
               <section className="space-y-3">
                 <h4>Series</h4>
@@ -324,7 +326,7 @@ const GameDetailsPage = () => {
           </div>
         }
 
-        <div className="flex-1 space-y-12">
+        <div className="flex-1 space-y-6 md:space-y-12">
           <section className="space-y-3">
             <h4>Release date</h4>
             <p>{formatReleaseDate(gameDetails.releaseDate)}</p>
@@ -370,6 +372,13 @@ const GameDetailsPage = () => {
           )}
         </div>
       </div>
+
+      {gameDetails.screenshotIds.length > 0 &&
+        <section className="container px-4 md:px-10 pb-12 md:pb-20 space-y-4 md:space-y-6">
+          <h4>Screenshots</h4>
+          <ImageCarousel imageIds={gameDetails.screenshotIds}/>
+        </section>
+      }
     </>
   )
 }

@@ -1,17 +1,15 @@
 import { useCallback, useState, useEffect } from "react";
 import useEmblaCarousel from 'embla-carousel-react';
 import { EmblaCarouselType } from 'embla-carousel'
-import { CaretLeftIcon, CaretRightIcon, CircleIcon } from "@phosphor-icons/react";
-import { PacmanIcon } from "@/components/icons";
-import { GameOverview } from "../pages/ExplorePage/ExplorePage.tsx";
-import GameCard from "./GameCard.tsx";
+import { CaretLeftIcon, CaretRightIcon, CircleIcon, GhostIcon } from "@phosphor-icons/react";
+import { getScreenshotUrl } from "../utils/images.ts";
 import ButtonIcon from "./ButtonIcon.tsx";
 
-type GameOverviewData = {
-  games: GameOverview[]
+type Props = {
+  imageIds: string[]
 }
 
-const GameCarousel = ({games}: GameOverviewData) => {
+const ImageCarousel = ({imageIds}: Props) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     slidesToScroll: 1,
@@ -52,7 +50,7 @@ const GameCarousel = ({games}: GameOverviewData) => {
   }, [emblaApi, onInit, onSelect]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="space-y-4">
       <div className="flex gap-4">
         <div className="grow flex flex-wrap items-center gap-1">
           {scrollSnaps.map((_, index) => (
@@ -61,13 +59,12 @@ const GameCarousel = ({games}: GameOverviewData) => {
               ${index === selectedIndex ? `text-success` : `text-interactive-primary/20 hover:text-interactive-primary-hover/60`}`}
             >
               {index === selectedIndex ?
-                <PacmanIcon className="icon-md"/> :
-                <CircleIcon className="icon-md"/>
+                <GhostIcon className="icon-lg"/> :
+                <CircleIcon className="icon-lg"/>
               }
             </button>
           ))}
         </div>
-
 
         <div className="flex gap-2 self-end">
           <ButtonIcon variant="ghost" iconSize="md" icon={CaretLeftIcon} handleClick={scrollPrev}/>
@@ -77,9 +74,13 @@ const GameCarousel = ({games}: GameOverviewData) => {
 
       <div className="overflow-hidden relative" ref={emblaRef}>
         <div className="flex gap-4">
-          {games.map(game => {
+          {imageIds.map(id => {
               return (
-                <GameCard key={game.id} gameOverview={game} className="flex-[0_0_42%] min-w-0"/>)
+                <img key={`screenshot-${id}`}
+                  src={getScreenshotUrl(id)}
+                  alt="Testing"
+                  className="flex-[0_0_86%] min-w-0 rounded-2xl"/>
+              )
             }
           )}
         </div>
@@ -92,4 +93,4 @@ const GameCarousel = ({games}: GameOverviewData) => {
   )
 }
 
-export default GameCarousel;
+export default ImageCarousel;
