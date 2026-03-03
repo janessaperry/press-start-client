@@ -3,10 +3,11 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Button, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 import { ArrowRightIcon, CaretDownIcon, CircleIcon } from "@phosphor-icons/react";
-import ImageCarousel from "../components/ImageCarousel.tsx";
 
 import { getCoverUrl, getEsrbThumbnailUrl } from "../utils/images.ts";
 
+import NotFoundPage from "./NotFoundPage.tsx";
+import ImageCarousel from "../components/ImageCarousel.tsx";
 import InfoChipList from "../components/InfoChipList.tsx";
 import GameCoverList from "../components/GameCoverList.tsx";
 import { BadgeNumber, BadgeText } from "../components/Badge.tsx";
@@ -119,19 +120,19 @@ const GameDetailsPage = () => {
   }, [gameId]);
 
   if (loading) return <GameDetailsSkeleton/>;
-  if (!gameDetails) return <h1>404 - update</h1>
+  if (!gameDetails) return <NotFoundPage/>;
 
   return (
     <>
       <div className="md:px-4 py-10 md:py-20 bg-purple-700">
         <section className="md:container md:mx-auto p-4 md:p-12 bg-primary-500 flex flex-col md:flex-row gap-6 md:gap-12 md:rounded-4xl">
-          <div className="md:basis-1/4 flex flex-col items-center gap-3 md:gap-6">
+          <div className="md:basis-1/4 flex flex-col items-stretch gap-3 md:gap-6">
             <img src={getCoverUrl(gameDetails.coverId)} alt={`${gameDetails.name} cover art`}
-              className="rounded-2xl max-w-1/2 w-full md:max-w-none"/>
+              className="self-center rounded-2xl max-w-1/2 w-full md:max-w-none"/>
 
             <figure className="flex items-start gap-2 md:gap-3">
               <img src={getEsrbThumbnailUrl(gameDetails.esrbThumbnailId)} alt={`ESRB Rating: ${gameDetails.esrbRating}`}
-                className="w-8 md:w-10 rounded-xs"/>
+                className="w-8 rounded-xs"/>
               <figcaption className="leading-none">
                 <p className="text-sm font-semibold">{gameDetails.esrbRating}</p>
 
@@ -392,9 +393,26 @@ export default GameDetailsPage;
 const GameDetailsSkeleton = () => {
   return (
     <div className="animate-pulse">
-      <div className="px-4 py-20 bg-purple-700">
-        <section className="container p-12 bg-primary-500 flex gap-12 rounded-4xl">
-          {/* skeleton content */}
+      <div className="md:px-4 py-10 md:py-20 bg-purple-700 md:h-[70vh]">
+        <section className="md:container md:mx-auto p-4 md:p-12 bg-primary-500/60 flex flex-col md:flex-row gap-6 md:gap-12 md:rounded-4xl md:h-full">
+          <div className="md:basis-1/4 shrink-0 flex flex-col items-stretch gap-6">
+            <div className="bg-purple-700/60 aspect-3/4 self-center rounded-2xl max-w-1/2 w-full md:max-w-none"></div>
+
+            <div className="flex gap-2 w-full h-12 rounded-xl">
+              <div className="bg-purple-700/60 w-16 aspect-3/4 rounded-lg"></div>
+              <div className="grow flex flex-col gap-2">
+                <div className="bg-secondary-100/40 w-1/3 h-3 rounded-full"/>
+                <div className="bg-secondary-100/40 w-1/6 h-3 rounded-full"/>
+              </div>
+            </div>
+          </div>
+          <div className="md:basis-3/4 shrink-0 flex flex-col gap-10">
+            <div className="flex flex-col gap-2">
+              <div className="bg-secondary-100/40 w-full h-8 rounded-full"/>
+              <div className="bg-secondary-100/40 w-1/4 h-8 rounded-full"/>
+            </div>
+            <div className="bg-purple-300/60 w-full grow rounded-xl"></div>
+          </div>
         </section>
       </div>
     </div>
