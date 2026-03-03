@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthLayout from "./layouts/AuthLayout.tsx";
 import PageLayout from "./layouts/PageLayout.tsx";
+import NotFoundPage from "./pages/NotFoundPage.tsx";
 import ProtectedRoute from "./routes/ProtectedRoute.tsx";
 import SignUpPage from "./pages/SignUpPage/SignUpPage.tsx";
 import SignInPage from "./pages/SignInPage/SignInPage.tsx";
@@ -28,12 +29,13 @@ function App () {
             <Route path="/" element={<CollectionPage/>}/>
             <Route path="/explore" element={<ExplorePage/>}/>
             <Route path="/game/:gameId/:gameSlug" element={<GameDetailsPage/>}/>
+            <Route path="/not-found" element={<NotFoundPage/>}/>
+            <Route path="*" element={<NotFoundPage/>}/>
 
             <Route element={<ProtectedRoute/>}>
               <Route path="/collection" element={<CollectionPage/>}/>
               <Route path="/account" element={<CollectionPage/>}/>
             </Route>
-
           </Route>
         </Routes>
       </BrowserRouter>
