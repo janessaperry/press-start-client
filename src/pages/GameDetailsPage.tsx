@@ -38,6 +38,14 @@ type GameDetails = {
   },
   developers: string[],
   publishers: string[],
+  timeToBeat: {
+    id: number,
+    gameId: number,
+    hastily: number | null,
+    normally: number | null,
+    completely: number | null,
+    count: number | null,
+  } | null,
   screenshotIds: string[],
   esrbRating: string,
   esrbThumbnailId: string,
@@ -118,6 +126,17 @@ const GameDetailsPage = () => {
 
     void fetchGameDetails();
   }, [gameId]);
+
+  console.log(gameDetails);
+
+  const convertSecondsToHours = (seconds: number) => {
+    return seconds / 60 / 60;
+  }
+
+  const formatTimeToBeat = (seconds: number | null): string => {
+    if (!seconds) return 'n/a';
+    return `${Math.round(convertSecondsToHours(seconds))}H`
+  }
 
   if (loading) return <GameDetailsSkeleton/>;
   if (!gameDetails) return <NotFoundPage/>;
@@ -255,25 +274,40 @@ const GameDetailsPage = () => {
       </section>
 
       <div className="container px-4 md:px-10 pb-12 md:pb-20 flex flex-col lg:flex-row gap-6 md:gap-12">
-        <section className="flex-1 space-y-4">
-          <h4>Time to beat</h4>
-          <div className="grid grid-cols-3 gap-2">
-            <div className="col-span-1 p-4 text-primary-50 bg-accent-700 flex flex-col items-center justify-center rounded-lg">
-              <p className="text-2xl font-semibold">90H</p>
-              <p className="text-sm font-semibold text-primary-50/80 uppercase">Hastily</p>
-            </div>
+        {gameDetails.timeToBeat ?
+          <section className="flex-1 space-y-4">
+            <h4>Time to beat</h4>
+            <div className="grid grid-cols-3 gap-2">
+              <div className="col-span-1 p-4 text-primary-50 bg-blue-500 border border-primary-300 flex flex-col items-center justify-center rounded-lg">
+                <p className="text-2xl font-semibold">{formatTimeToBeat(gameDetails.timeToBeat.hastily)}</p>
+                <p className="text-sm font-bold text-primary-50/80 uppercase">Hastily</p>
+              </div>
 
-            <div className="col-span-1 p-4 text-primary-50 bg-accent-700 flex flex-col items-center justify-center rounded-lg">
-              <p className="text-2xl font-semibold">90H</p>
-              <p className="text-sm font-semibold text-primary-50/80 uppercase">Normally</p>
-            </div>
+              <div className="col-span-1 p-4 text-primary-50 bg-blue-500 border border-primary-300 flex flex-col items-center justify-center rounded-lg">
+                <p className="text-2xl font-semibold">{formatTimeToBeat(gameDetails.timeToBeat.normally)}</p>
+                <p className="text-sm font-bold text-primary-50/80 uppercase">Normally</p>
+              </div>
 
-            <div className="col-span-1 p-4 text-primary-50 bg-accent-700 flex flex-col items-center justify-center rounded-lg">
-              <p className="text-2xl font-semibold">90H</p>
-              <p className="text-sm font-semibold text-primary-50/80 uppercase">Completely</p>
+              <div className="col-span-1 p-4 text-primary-50 bg-blue-500 border border-primary-300 flex flex-col items-center justify-center rounded-lg">
+                <p className="text-2xl font-semibold">{formatTimeToBeat(gameDetails.timeToBeat.completely)}</p>
+                <p className="text-sm font-bold text-primary-50/80 uppercase">Completely</p>
+              </div>
             </div>
-          </div>
-        </section>
+            <p className="text-xs italic text-secondary-100">
+              Want more accurate results? <a href={`https://igdb.com/games/${gameDetails.slug}`}
+              target="_blank" rel="noopener noreferrer" className="text-secondary-100 underline">Submit updates to
+              IGDB</a>.
+            </p>
+          </section>
+          :
+          <section className="flex-1 space-y-4">
+            <h4>Time to beat</h4>
+            <p>
+              No details available yet. Check back later or <a href={`https://igdb.com/games/${gameDetails.slug}`}
+              target="_blank" rel="noopener noreferrer">submit updates to IGDB</a>.
+            </p>
+          </section>
+        }
 
         {hasRelatedContent &&
           <div className="flex-1 space-y-6 md:space-y-12">
