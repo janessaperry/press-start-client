@@ -73,13 +73,15 @@ const ImageCarousel = ({imageIds}: Props) => {
       </div>
 
       <div className="overflow-hidden relative" ref={emblaRef}>
-        <div className="flex gap-4">
+        <div className="flex -ml-4">
           {imageIds.map(id => {
               return (
-                <img key={`screenshot-${id}`}
-                  src={getScreenshotUrl(id)}
-                  alt="Testing"
-                  className="flex-[0_0_86%] min-w-0 rounded-2xl"/>
+                <div className="flex-[0_0_86%] min-w-0 pl-4">
+                  <img key={`screenshot-${id}`}
+                    src={getScreenshotUrl(id)}
+                    alt="Testing"
+                    className="rounded-2xl"/>
+                </div>
               )
             }
           )}
