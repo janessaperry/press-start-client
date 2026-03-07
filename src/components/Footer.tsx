@@ -8,7 +8,7 @@ const Footer = () => {
         Designed & developed by <a href="https://janessaperry.com"
         target="_blank"
         rel="noopener noreferrer"
-        className="">Janessa Perry</a>
+        className="link-primary">Janessa Perry</a>
       </div>
 
       <div className="flex items-center gap-4">

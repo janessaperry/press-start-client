@@ -81,7 +81,7 @@ const SignInPage = () => {
           </div>
 
           <section className="bg-primary-700 flex-1 p-12 flex flex-col gap-4">
-            <p>Don't have an account? <Link to="/sign-up">Sign up</Link></p>
+            <p>Don't have an account? <Link to="/sign-up" className="link-primary">Sign up</Link></p>
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
               <h1>Sign in</h1>
 
@@ -92,7 +92,8 @@ const SignInPage = () => {
                   aria-atomic="true">
                   <div className="flex gap-2">
                     <WarningCircleIcon weight="bold" size={18} className="relative top-1 shrink-0"/>
-                    <p className="font-bold">Email or password is incorrect. <Link to="/forgot-password">Forgot
+                    <p className="font-bold">Email or password is incorrect. <Link to="/forgot-password"
+                      className="link-primary">Forgot
                       password?</Link>
                     </p>
                   </div>
@@ -121,7 +122,7 @@ const SignInPage = () => {
               <Button className="button secondary" type="submit">Continue</Button>
             </form>
 
-            <p className="font-bold">Forgot password? <Link to="/forgot-password" className="text-link-secondary">Reset
+            <p className="font-bold">Forgot password? <Link to="/forgot-password" className="link-primary">Reset
               it here</Link>
             </p>
           </section>

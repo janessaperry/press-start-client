@@ -96,7 +96,7 @@ const SignUpPage = () => {
 
           <section className="bg-primary-700 flex-1 p-12 flex flex-col gap-4">
             <p>Already have an account? <Link to="/sign-in"
-              className="">Sign in</Link></p>
+              className="link-primary">Sign in</Link></p>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
               <h1>Sign up</h1>
@@ -111,7 +111,7 @@ const SignUpPage = () => {
                     <WarningCircleIcon weight="bold" size={18} className="relative top-1 shrink-0"/>
                     <p className="font-bold">An account already exists for that email
                       address. <Link to="/sign-in"
-                        className="inline-flex gap-1 items-center text-interactive-primary hover:text-interactive-primary-hover">
+                        className="inline-flex gap-1 items-center link-primary">
                         Sign in <ArrowRightIcon weight="bold"/>
                       </Link>
                     </p>
