@@ -12,6 +12,7 @@
   --color-purple-900: #2E0026;
 
   --color-blue-100: #B5B4BC;
+  --color-blue-200: #A6A5B6;
   --color-blue-500: #1A1344;
   --color-blue-900: #110D27;
 
@@ -51,6 +52,7 @@
   --color-primary-900: var(--color-purple-900);
 
   --color-secondary-100: var(--color-blue-100);
+  --color-secondary-200: var(--color-blue-200);
   --color-secondary-900: var(--color-blue-900);
 
   --color-accent-300: var(--color-teal-300);
@@ -76,6 +78,8 @@
   --color-interactive-primary-hover: var(--color-accent-500);
   --color-interactive-secondary: var(--color-primary-500);
   --color-interactive-secondary-hover: var(--color-primary-600);
+  --color-interactive-neutral: var(--color-secondary-100);
+  --color-interactive-neutral-hover: var(--color-secondary-200);
 
   /* Typography */
   --font-heading: 'Exo 2', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";

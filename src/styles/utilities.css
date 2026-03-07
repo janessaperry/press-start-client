@@ -3,6 +3,22 @@
     @apply m-auto;
   }
 
+  /* links */
+  .link-primary {
+    @apply text-interactive-primary hover:text-interactive-primary-hover
+    focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
+  }
+
+  .link-secondary {
+    @apply text-interactive-secondary hover:text-interactive-secondary-hover
+    focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
+  }
+
+  .link-neutral {
+    @apply text-interactive-neutral hover:text-interactive-neutral-hover underline
+    focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
+  }
+
   /* icon sizes */
   .icon-sm {
     @apply size-4 md:size-5;
@@ -20,7 +36,7 @@
     @apply size-8 md:size-10;
   }
 
-  /* Scrollbar */
+  /* scrollbar */
   .scrollbar-on-light::-webkit-scrollbar {
     @apply w-2;
   }
