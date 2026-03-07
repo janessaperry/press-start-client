@@ -92,7 +92,7 @@ const ForgotPasswordPage = () => {
           </div>
 
           <section className="bg-primary-700 flex-1 p-12 flex flex-col gap-4">
-            <p>Don't have an account? <Link to="/sign-up" className="text-link-secondary">Sign up</Link></p>
+            <p>Don't have an account? <Link to="/sign-up" className="link-primary">Sign up</Link></p>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
               <h1>Reset your password</h1>
