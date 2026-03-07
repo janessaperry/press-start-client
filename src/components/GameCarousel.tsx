@@ -56,7 +56,7 @@ const GameCarousel = ({games}: GameOverviewData) => {
       <div className="flex gap-4">
         <div className="grow flex flex-wrap items-center gap-1">
           {scrollSnaps.map((_, index) => (
-            <button key={index} onClick={() => onDotButtonClick(index)}
+            <button key={index} onClick={() => onDotButtonClick(index)} tabIndex={-1}
               className={`bg-transparent p-0 flex items-center justify-center rounded-full touch-manipulation 
               ${index === selectedIndex ? `text-success` : `text-interactive-primary/20 hover:text-interactive-primary-hover/60`}`}
             >
@@ -68,7 +68,6 @@ const GameCarousel = ({games}: GameOverviewData) => {
           ))}
         </div>
 
-
         <div className="flex gap-2 self-end">
           <ButtonIcon variant="ghost" iconSize="md" icon={CaretLeftIcon} handleClick={scrollPrev}/>
           <ButtonIcon variant="ghost" iconSize="md" icon={CaretRightIcon} handleClick={scrollNext}/>
@@ -76,7 +75,7 @@ const GameCarousel = ({games}: GameOverviewData) => {
       </div>
 
       <div className="overflow-hidden relative" ref={emblaRef}>
-        <div className="flex -ml-4">
+        <div className="flex -ml-4 py-1">
           {games.map(game => {
             return (
               <div key={game.id} className="flex-[0_0_42%] min-w-0 pl-4 flex">

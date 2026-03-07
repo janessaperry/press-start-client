@@ -54,7 +54,7 @@ const ImageCarousel = ({imageIds}: Props) => {
       <div className="flex gap-4">
         <div className="grow flex flex-wrap items-center gap-1">
           {scrollSnaps.map((_, index) => (
-            <button key={index} onClick={() => onDotButtonClick(index)}
+            <button key={index} onClick={() => onDotButtonClick(index)} tabIndex={-1}
               className={`bg-transparent p-0 flex items-center justify-center rounded-full touch-manipulation 
               ${index === selectedIndex ? `text-success` : `text-interactive-primary/20 hover:text-interactive-primary-hover/60`}`}
             >
