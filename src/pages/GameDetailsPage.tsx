@@ -254,7 +254,7 @@ const GameDetailsPage = () => {
               :
               <p>
                 No details available yet. Check back later or <a href={`https://igdb.com/games/${gameDetails.slug}`}
-                target="_blank" rel="noopener noreferrer">submit updates to IGDB</a>.
+                target="_blank" rel="noopener noreferrer" className="link-primary">submit updates to IGDB</a>.
               </p>
             }
           </div>
@@ -273,7 +273,7 @@ const GameDetailsPage = () => {
         </div>
       </section>
 
-      <div className="container px-4 md:px-10 pb-12 md:pb-20 flex flex-col lg:flex-row gap-6 md:gap-12">
+      <div className="container px-4 md:px-10 pb-12 md:pb-20 flex flex-col md: lg:flex-row gap-6 md:gap-12">
         {gameDetails.timeToBeat ?
           <section className="flex-1 space-y-4">
             <h4>Time to beat</h4>
@@ -295,7 +295,7 @@ const GameDetailsPage = () => {
             </div>
             <p className="text-xs italic text-secondary-100">
               Want more accurate results? <a href={`https://igdb.com/games/${gameDetails.slug}`}
-              target="_blank" rel="noopener noreferrer" className="text-secondary-100 underline">Submit updates to
+              target="_blank" rel="noopener noreferrer" className="link-neutral">Submit updates to
               IGDB</a>.
             </p>
           </section>
@@ -304,7 +304,7 @@ const GameDetailsPage = () => {
             <h4>Time to beat</h4>
             <p>
               No details available yet. Check back later or <a href={`https://igdb.com/games/${gameDetails.slug}`}
-              target="_blank" rel="noopener noreferrer">submit updates to IGDB</a>.
+              target="_blank" rel="noopener noreferrer" className="link-primary">submit updates to IGDB</a>.
             </p>
           </section>
         }

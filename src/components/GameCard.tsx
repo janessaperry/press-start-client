@@ -24,7 +24,7 @@ const showGameTypeBadge: Record<number, boolean> = {
 const GameCard = ({gameOverview, className = ""}: GameCardProps) => {
 
   return (
-    <Link to={`/game/${gameOverview.id}/${gameOverview.slug}`}
+    <Link to={`/game/${gameOverview.id}/${gameOverview.slug}`} tabIndex={-1}
       className={`p-4 bg-primary-700 rounded-2xl overflow-hidden ${className}`}>
       <article className="flex gap-4">
         <div className="basis-1/4 flex flex-col items-start gap-3">
