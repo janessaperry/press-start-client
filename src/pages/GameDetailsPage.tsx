@@ -39,11 +39,10 @@ type GameDetails = {
   developers: string[],
   publishers: string[],
   timeToBeat: {
-    id: number,
-    gameId: number,
-    hastily: number | null,
-    normally: number | null,
-    completely: number | null,
+    times: {
+      label: string,
+      value: number | null
+    }[],
     count: number | null,
   } | null,
   screenshotIds: string[],
@@ -274,40 +273,36 @@ const GameDetailsPage = () => {
       </section>
 
       <div className="container px-4 md:px-10 pb-12 md:pb-20 flex flex-col md: lg:flex-row gap-6 md:gap-12">
-        {gameDetails.timeToBeat ?
-          <section className="flex-1 space-y-4">
-            <h4>Time to beat</h4>
-            <div className="grid grid-cols-3 gap-2">
-              <div className="col-span-1 p-4 text-primary-50 bg-blue-500 border border-primary-300 flex flex-col items-center justify-center rounded-lg">
-                <p className="text-2xl font-semibold">{formatTimeToBeat(gameDetails.timeToBeat.hastily)}</p>
-                <p className="text-sm font-bold text-primary-50/80 uppercase">Hastily</p>
+        <section className="flex-1 space-y-4">
+          <h4>Time to beat</h4>
+          {gameDetails.timeToBeat ?
+            <>
+              <div className="grid grid-cols-3 gap-2">
+                {gameDetails.timeToBeat.times.map(time => {
+                    return (
+                      <div key={time.label}
+                        className="col-span-1 p-4 text-primary-50 bg-blue-500 border border-primary-300 flex flex-col items-center justify-end rounded-lg">
+                        <p className={`${time.value === null ? 'opacity-50 text-lg' : 'text-2xl font-semibold'}`}>{formatTimeToBeat(time.value)}</p>
+                        <p className="text-sm font-bold text-primary-50/80 uppercase">{time.label}</p>
+                      </div>)
+                  }
+                )}
               </div>
-
-              <div className="col-span-1 p-4 text-primary-50 bg-blue-500 border border-primary-300 flex flex-col items-center justify-center rounded-lg">
-                <p className="text-2xl font-semibold">{formatTimeToBeat(gameDetails.timeToBeat.normally)}</p>
-                <p className="text-sm font-bold text-primary-50/80 uppercase">Normally</p>
-              </div>
-
-              <div className="col-span-1 p-4 text-primary-50 bg-blue-500 border border-primary-300 flex flex-col items-center justify-center rounded-lg">
-                <p className="text-2xl font-semibold">{formatTimeToBeat(gameDetails.timeToBeat.completely)}</p>
-                <p className="text-sm font-bold text-primary-50/80 uppercase">Completely</p>
-              </div>
-            </div>
-            <p className="text-xs italic text-secondary-100">
-              Want more accurate results? <a href={`https://igdb.com/games/${gameDetails.slug}`}
-              target="_blank" rel="noopener noreferrer" className="link-neutral">Submit updates to
-              IGDB</a>.
-            </p>
-          </section>
-          :
-          <section className="flex-1 space-y-4">
-            <h4>Time to beat</h4>
+              <p className="text-xs italic text-secondary-100">
+                Want more accurate results? <a href={`https://igdb.com/games/${gameDetails.slug}`}
+                target="_blank" rel="noopener noreferrer" className="link-neutral">Submit updates to
+                IGDB</a>.
+              </p>
+            </>
+            :
             <p>
               No details available yet. Check back later or <a href={`https://igdb.com/games/${gameDetails.slug}`}
-              target="_blank" rel="noopener noreferrer" className="link-primary">submit updates to IGDB</a>.
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-primary">submit updates to IGDB</a>.
             </p>
-          </section>
-        }
+          }
+        </section>
 
         {hasRelatedContent &&
           <div className="flex-1 space-y-6 md:space-y-12">
