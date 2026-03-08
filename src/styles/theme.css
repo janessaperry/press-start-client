@@ -2,44 +2,44 @@
   /* Color Tokens */
   /*--color-purple-50: #BFAFBE;*/
   --color-*: initial;
-  --color-purple-50: #F1E6EF;
-  --color-purple-100: #DFBDDA;
+  --color-purple-50: rgb(241, 230, 239);
+  --color-purple-100: rgb(223, 189, 218);
   /*--color-purple-300: #96067E;*/
-  --color-purple-300: #91007A;
-  --color-purple-500: #730962;
-  --color-purple-600: #690859;
-  --color-purple-700: #3D0233;
-  --color-purple-900: #2E0026;
+  --color-purple-300: rgb(145, 0, 122);
+  --color-purple-500: rgb(115, 9, 98);
+  --color-purple-600: rgb(105, 8, 89);
+  --color-purple-700: rgb(61, 2, 51);
+  --color-purple-900: rgb(46, 0, 38);
 
-  --color-blue-100: #B5B4BC;
-  --color-blue-200: #A6A5B6;
-  --color-blue-500: #1A1344;
-  --color-blue-900: #110D27;
+  --color-blue-100: rgb(181, 180, 188);
+  --color-blue-200: rgb(166, 165, 182);
+  --color-blue-500: rgb(26, 19, 68);
+  --color-blue-900: rgb(17, 13, 39);
 
-  --color-teal-300: #5DD5DA;
-  --color-teal-500: #20C1C7;
-  --color-teal-700: #2B8C90;
-  --color-teal-900: #0D5154;
+  --color-teal-300: rgb(93, 213, 218);
+  --color-teal-500: rgb(32, 193, 199);
+  --color-teal-700: rgb(43, 140, 144);
+  --color-teal-900: rgb(13, 81, 84);
 
-  --color-green-500: #8BC106;
+  --color-green-500: rgb(139, 193, 6);
 
-  --color-red-50: #FDD9E6;
-  --color-red-500: #FD5B76;
-  --color-red-900: #581033;
+  --color-red-50: rgb(253, 217, 230);
+  --color-red-500: rgb(253, 91, 118);
+  --color-red-900: rgb(88, 16, 51);
 
-  --color-yellow-500: #FFC107;
+  --color-yellow-500: rgb(255, 193, 7);
 
   /* Neutral colors */
-  --color-grey-50: #EAE9ED;
-  --color-grey-100: #DAD7DE;
-  --color-grey-200: #E9ECEF;
-  --color-grey-300: #DEE2E6;
-  --color-grey-400: #CED4DA;
-  --color-grey-500: #ADB5BD;
-  --color-grey-600: #6C757D;
-  --color-grey-700: #495057;
-  --color-grey-800: #343A40;
-  --color-grey-900: #212529;
+  --color-grey-50: rgb(234, 233, 237);
+  --color-grey-100: rgb(218, 215, 222);
+  --color-grey-200: rgb(233, 236, 239);
+  --color-grey-300: rgb(222, 226, 230);
+  --color-grey-400: rgb(206, 212, 218);
+  --color-grey-500: rgb(173, 181, 189);
+  --color-grey-600: rgb(108, 117, 125);
+  --color-grey-700: rgb(73, 80, 87);
+  --color-grey-800: rgb(52, 58, 64);
+  --color-grey-900: rgb(33, 37, 41);
 
 
   /* Semantic Colors */
