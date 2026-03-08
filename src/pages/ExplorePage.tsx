@@ -3,27 +3,13 @@ import { Link } from "react-router-dom";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Button, Input } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
+import { GameOverview } from "../components/GameCard.tsx";
 import GameCarousel from "../components/GameCarousel.tsx";
 import SearchResultsDropdown from "../components/SearchResultsDropdown.tsx";
 import NintendoLogo from "/src/assets/logos/platforms/nintendo-logo-white.svg";
 import XboxLogo from "/src/assets/logos/platforms/xbox-logo-white.svg"
 import PlaystationLogo from "/src/assets/logos/platforms/playstation-logo-white.svg"
 
-export type GameOverview = {
-  id: number,
-  name: string,
-  coverId: string | null,
-  slug: string,
-  totalRating: number | null,
-  platforms: {
-    id: number,
-    label: string
-  }[],
-  gameType: {
-    id: number,
-    label: string
-  }
-}
 
 export type Result = {
   id: number,

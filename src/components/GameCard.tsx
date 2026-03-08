@@ -1,9 +1,24 @@
 import { Link } from "react-router-dom";
 import { ComponentProps } from "react";
-import { GameOverview } from "../pages/ExplorePage.tsx";
 import InfoChipList from "./InfoChipList.tsx";
 import { BadgeNumber, BadgeText } from "./Badge.tsx";
 import { getCoverUrl } from "../utils/images.ts";
+
+export type GameOverview = {
+  id: number,
+  name: string,
+  coverId: string | null,
+  slug: string,
+  totalRating: number | null,
+  platforms: {
+    id: number,
+    label: string
+  }[],
+  gameType: {
+    id: number,
+    label: string
+  }
+}
 
 type GameCardProps = {
   gameOverview: GameOverview,
@@ -25,7 +40,7 @@ const GameCard = ({gameOverview, className = ""}: GameCardProps) => {
 
   return (
     <Link to={`/game/${gameOverview.id}/${gameOverview.slug}`} tabIndex={-1}
-      className={`p-4 bg-primary-700 rounded-2xl overflow-hidden ${className}`}>
+      className={`block p-4 bg-primary-700 hover:gradient-primary rounded-2xl overflow-hidden ${className}`}>
       <article className="flex gap-4">
         <div className="basis-1/4 flex flex-col items-start gap-3">
           <img className="rounded-lg"

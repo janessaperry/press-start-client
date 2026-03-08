@@ -9,6 +9,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage/ForgotPasswordPage.ts
 import ResetPasswordPage from "./pages/ResetPasswordPage/ResetPasswordPage.tsx";
 import CollectionPage from "./pages/CollectionPage/CollectionPage.tsx";
 import ExplorePage from "./pages/ExplorePage.tsx";
+import GameResultsPage from "./pages/GameResultsPage.tsx";
 import GameDetailsPage from "./pages/GameDetailsPage.tsx";
 import './App.css'
 
@@ -28,6 +29,7 @@ function App () {
           <Route element={<PageLayout/>}>
             <Route path="/" element={<CollectionPage/>}/>
             <Route path="/explore" element={<ExplorePage/>}/>
+            <Route path="/explore/:platform" element={<GameResultsPage/>}/>
             <Route path="/game/:gameId/:gameSlug" element={<GameDetailsPage/>}/>
             <Route path="/not-found" element={<NotFoundPage/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
