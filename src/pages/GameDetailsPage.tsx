@@ -261,12 +261,20 @@ const GameDetailsPage = () => {
           <div className="flex-1 flex flex-col md:flex-row gap-6">
             <section className="flex-1 space-y-2">
               <h3>Available on</h3>
-              <InfoChipList data={gameDetails.platforms} variant="secondary"/>
+              {gameDetails.platforms.length > 0 ? (
+                <InfoChipList data={gameDetails.platforms} variant="secondary"/>
+              ) : (
+                <p className="text-secondary-100">TDB</p>
+              )}
             </section>
 
             <section className="flex-1 space-y-2">
               <h3>Genres</h3>
-              <InfoChipList data={gameDetails.genres} variant="secondary"/>
+              {gameDetails.genres.length > 0 ? (
+                <InfoChipList data={gameDetails.genres} variant="secondary"/>
+              ) : (
+                <p className="text-secondary-100">TDB</p>
+              )}
             </section>
           </div>
         </div>
