@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ComponentProps } from "react";
-import { GameOverview } from "../pages/ExplorePage/ExplorePage.tsx";
+import { GameOverview } from "../pages/ExplorePage.tsx";
 import InfoChipList from "./InfoChipList.tsx";
 import { BadgeNumber, BadgeText } from "./Badge.tsx";
 import { getCoverUrl } from "../utils/images.ts";

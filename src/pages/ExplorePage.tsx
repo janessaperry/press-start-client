@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Button, Input } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
-import GameCarousel from "../../components/GameCarousel.tsx";
-import SearchResultsDropdown from "../../components/SearchResultsDropdown.tsx";
+import GameCarousel from "../components/GameCarousel.tsx";
+import SearchResultsDropdown from "../components/SearchResultsDropdown.tsx";
 
 export type GameOverview = {
   id: number,

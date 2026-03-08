@@ -1,4 +1,4 @@
-import { Result } from "../pages/ExplorePage/ExplorePage.tsx";
+import { Result } from "../pages/ExplorePage.tsx";
 import { getCoverUrl } from "../utils/images.ts";
 
 type Props = {
