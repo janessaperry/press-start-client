@@ -1,56 +1,66 @@
-@layer utilities {
-  .container {
-    @apply m-auto;
-  }
+@utility container {
+  @apply m-auto;
+}
 
-  /* links */
-  .link-primary {
-    @apply text-interactive-primary hover:text-interactive-primary-hover
-    focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
-  }
+/* links */
+@utility link-primary {
+  @apply text-interactive-primary hover:text-interactive-primary-hover
+  focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
+}
 
-  .link-secondary {
-    @apply text-interactive-secondary hover:text-interactive-secondary-hover
-    focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
-  }
+@utility link-secondary {
+  @apply text-interactive-secondary hover:text-interactive-secondary-hover
+  focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
+}
 
-  .link-neutral {
-    @apply text-interactive-neutral hover:text-interactive-neutral-hover underline
-    focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
-  }
+@utility link-neutral {
+  @apply text-interactive-neutral hover:text-interactive-neutral-hover underline
+  focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
+}
 
-  /* icon sizes */
-  .icon-sm {
-    @apply size-4 md:size-5;
-  }
+/* icon sizes */
+@utility icon-sm {
+  @apply size-4 md:size-5;
+}
 
-  .icon-md {
-    @apply size-5 md:size-6;
-  }
+@utility icon-md {
+  @apply size-5 md:size-6;
+}
 
-  .icon-lg {
-    @apply size-6 md:size-8;
-  }
+@utility icon-lg {
+  @apply size-6 md:size-8;
+}
 
-  .icon-xl {
-    @apply size-8 md:size-10;
-  }
+@utility icon-xl {
+  @apply size-8 md:size-10;
+}
 
-  /* scrollbar */
-  .scrollbar-on-light::-webkit-scrollbar {
+/*hover effects*/
+@utility gradient-primary {
+  @apply bg-linear-to-b from-primary-500/60 to-primary-700
+  inset-shadow-[0_1px_0_rgba(var(--color-primary-500),0.4)];
+}
+
+/* scrollbar */
+@utility scrollbar-on-light {
+  &::-webkit-scrollbar {
     @apply w-2;
   }
+}
 
-  .scrollbar-on-light::-webkit-scrollbar-track {
+@utility scrollbar-on-light {
+  &::-webkit-scrollbar-track {
     @apply bg-transparent;
   }
+}
 
-  .scrollbar-on-light::-webkit-scrollbar-thumb {
+@utility scrollbar-on-light {
+  &::-webkit-scrollbar-thumb {
     @apply bg-primary-300 rounded-full my-4;
   }
+}
 
-  .scrollbar-on-light {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-primary-300) transparent;
-  }
+@utility scrollbar-on-light {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary-300) transparent;
 }
