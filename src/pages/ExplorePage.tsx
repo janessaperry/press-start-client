@@ -5,6 +5,9 @@ import { Button, Input } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 import GameCarousel from "../components/GameCarousel.tsx";
 import SearchResultsDropdown from "../components/SearchResultsDropdown.tsx";
+import NintendoLogo from "/src/assets/logos/platforms/nintendo-logo-white.svg";
+import XboxLogo from "/src/assets/logos/platforms/xbox-logo-white.svg"
+import PlaystationLogo from "/src/assets/logos/platforms/playstation-logo-white.svg"
 
 export type GameOverview = {
   id: number,
@@ -118,11 +121,21 @@ const ExplorePage = () => {
 
       <section className="container px-4 py-20 flex flex-col gap-10">
         <h2>Explore by platform</h2>
-        <div>
-          <Link to="/explore/xbox">Xbox Logo</Link>
-          <Link to="/explore/playstation">Playstation Logo</Link>
-          <Link to="/explore/nintendo">Nintendo Logo</Link>
-          <Link to="/explore/pc">PC Logo</Link>
+        <div className="grid grid-cols-4 gap-6">
+          <Link to="/explore/xbox" className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
+            <img src={XboxLogo} alt="View Xbox games" className="w-full"/>
+          </Link>
+          <Link to="/explore/playstation"
+            className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
+            <img src={PlaystationLogo} alt="View Xbox games" className="w-full"/>
+          </Link>
+          <Link to="/explore/nintendo"
+            className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
+            <img src={NintendoLogo} alt="View Xbox games" className="w-full"/>
+          </Link>
+          <Link to="/explore/pc" className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
+            <div className="w-full text-center font-heading text-2xl">PC</div>
+          </Link>
         </div>
       </section>
 
