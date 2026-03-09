@@ -1,14 +1,16 @@
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { ChangeEvent, useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Button, Input } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
-import { GameOverview } from "../components/GameCard.tsx";
-import GameCarousel from "../components/GameCarousel.tsx";
-import SearchResultsDropdown from "../components/SearchResultsDropdown.tsx";
+
 import NintendoLogo from "/src/assets/logos/platforms/nintendo-logo-white.svg";
 import XboxLogo from "/src/assets/logos/platforms/xbox-logo-white.svg"
 import PlaystationLogo from "/src/assets/logos/platforms/playstation-logo-white.svg"
+
+import { GameOverview } from "../components/GameCard.tsx";
+import GameCarousel from "../components/GameCarousel.tsx";
+import SearchResultsDropdown from "../components/SearchResultsDropdown.tsx";
 
 
 export type Result = {
@@ -19,15 +21,33 @@ export type Result = {
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const ExplorePage = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchResults, setSearchResults] = useState<Result[]>([]);
   const [showSearchResults, setShowSearchResults] = useState<boolean>(false);
   const [newRelease, setNewRelease] = useState<GameOverview[]>([]);
   const [comingSoon, setComingSoon] = useState<GameOverview[]>([]);
 
-  const fetchSearchResults = async (query: string) => {
+  const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const params = new URLSearchParams({
+      ...Object.fromEntries(searchParams),
+      search: searchQuery
+    });
+
+    navigate({
+      pathname: "/games",
+      search: `?${params}`
+    });
+  }
+
+  const fetchSearchResults = async (searchQuery: string) => {
     try {
-      const response = await axios.get(`${baseServerUrl}/games?search=${query}`);
+      const response = await axios.get(`${baseServerUrl}/games/search/${searchQuery}`);
+      console.log(response);
       return response.data.searchResults;
     }
     catch (e) {
@@ -86,15 +106,14 @@ const ExplorePage = () => {
 
           <search className="flex flex-col gap-4">
             <form className="self-center w-full md:max-w-3/4 lg:max-w-1/2 flex gap-3"
-              onSubmit={() => console.log("submit - go to full results page")}>
+              onSubmit={handleSearchSubmit}>
               <Input name="search"
                 type="search"
                 placeholder="Search..."
                 onChange={e => handleSearchInput(e)}
                 value={searchQuery}
                 className="grow"/>
-              <Button type="button" className="button primary"
-                onClick={() => console.log("submit - go to full results page")}>
+              <Button type="submit" className="button primary">
                 <MagnifyingGlassIcon/>
               </Button>
             </form>

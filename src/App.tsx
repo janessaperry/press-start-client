@@ -29,7 +29,8 @@ function App () {
           <Route element={<PageLayout/>}>
             <Route path="/" element={<CollectionPage/>}/>
             <Route path="/explore" element={<ExplorePage/>}/>
-            <Route path="/explore/:platform" element={<GameResultsPage/>}/>
+            <Route path="/explore/:platformFamilySlug" element={<GameResultsPage/>}/>
+            <Route path="/games" element={<GameResultsPage/>}/>
             <Route path="/game/:gameId/:gameSlug" element={<GameDetailsPage/>}/>
             <Route path="/not-found" element={<NotFoundPage/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
