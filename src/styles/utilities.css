@@ -37,8 +37,8 @@
 
 /*hover effects*/
 @utility gradient-primary {
-  @apply bg-linear-to-b from-primary-500/60 to-primary-700
-  inset-shadow-[0_1px_0_rgba(var(--color-primary-500),0.4)];
+  @apply bg-linear-to-b from-primary-300/60 to-primary-700
+  inset-shadow-2xs inset-shadow-primary-100/20;
 }
 
 /* scrollbar */
