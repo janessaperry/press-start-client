@@ -41,8 +41,8 @@ const GameCard = ({gameOverview, className = ""}: GameCardProps) => {
   return (
     <Link to={`/game/${gameOverview.id}/${gameOverview.slug}`} tabIndex={-1}
       className={`block p-4 bg-primary-700 hover:gradient-primary rounded-2xl overflow-hidden ${className}`}>
-      <article className="flex gap-4">
-        <div className="basis-1/4 flex flex-col items-start gap-3">
+      <article className="grid grid-cols-4 gap-4">
+        <div className="col-span-1 flex flex-col items-start gap-3">
           <img className="rounded-lg"
             src={getCoverUrl(gameOverview.coverId, 'cover_big')}
             alt={`${gameOverview.name} cover art`}/>
@@ -52,9 +52,9 @@ const GameCard = ({gameOverview, className = ""}: GameCardProps) => {
           }
         </div>
 
-        <div className="basis-3/4 shrink-0 flex flex-col gap-4">
+        <div className="col-span-3 flex flex-col gap-4">
           <div className="flex items-start gap-3">
-            <h4 className="grow text-primary-50">{gameOverview.name}</h4>
+            <h4 className="grow text-primary-50 line-clamp-2">{gameOverview.name}</h4>
             <BadgeNumber
               label={gameOverview.totalRating !== null ? String(Math.round(gameOverview.totalRating)) : 'n/a'}
               size="xs"/>
@@ -73,7 +73,6 @@ const GameCard = ({gameOverview, className = ""}: GameCardProps) => {
         </div>
       </article>
     </Link>
-
   )
 }
 
