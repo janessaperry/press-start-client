@@ -24,4 +24,17 @@
       @apply bg-interactive-neutral hover:bg-interactive-neutral-hover;
     }
   }
+
+  .checkbox {
+    @apply flex items-center justify-center
+    size-5 rounded-md
+    ring-1 ring-grey-50/50 ring-inset
+    focus:not-data-focus:outline-none
+    data-checked:bg-primary-500
+    data-focus:outline data-focus:outline-offset-2 data-focus:outline-interactive-primary;
+
+    & > svg {
+      @apply fill-grey-50;
+    }
+  }
 }
