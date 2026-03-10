@@ -47,7 +47,6 @@ const ExplorePage = () => {
   const fetchSearchResults = async (searchQuery: string) => {
     try {
       const response = await axios.get(`${baseServerUrl}/games/search/${searchQuery}`);
-      console.log(response);
       return response.data.searchResults;
     }
     catch (e) {
