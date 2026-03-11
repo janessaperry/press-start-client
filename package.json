@@ -16,6 +16,7 @@
     "axios": "^1.9.0",
     "embla-carousel-react": "^8.6.0",
     "eslint-plugin-react": "^7.37.5",
+    "lodash": "^4.17.23",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "react-router-dom": "^7.6.0",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
+    "@types/lodash": "^4.17.24",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
