@@ -25,9 +25,10 @@
     }
   }
 
-  .checkbox {
-    @apply flex items-center justify-center
-    size-5 rounded-md
+
+  .checkbox-input {
+    @apply shrink-0 flex items-center justify-center
+    size-5 mt-0.5 rounded-md cursor-pointer
     ring-1 ring-grey-50/50 ring-inset
     focus:not-data-focus:outline-none
     data-checked:bg-primary-500
@@ -36,5 +37,10 @@
     & > svg {
       @apply fill-grey-50;
     }
+
+  }
+
+  .checkbox-label {
+    @apply cursor-pointer;
   }
 }
