@@ -1,5 +1,9 @@
 @utility container {
-  @apply m-auto;
+  @apply mx-auto
+  w-full
+  md:max-w-5xl
+  lg:max-w-7xl
+  ;
 }
 
 /* links */

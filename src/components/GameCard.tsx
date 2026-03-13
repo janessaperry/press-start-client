@@ -38,21 +38,22 @@ const showGameTypeBadge: Record<number, boolean> = {
 
 const GameCard = ({gameOverview, className = ""}: GameCardProps) => {
 
+  // todo tab index show only be -1 if in carousel
   return (
     <Link to={`/game/${gameOverview.id}/${gameOverview.slug}`} tabIndex={-1}
-      className={`block p-4 bg-primary-700 hover:gradient-primary rounded-2xl overflow-hidden ${className}`}>
-      <article className="grid grid-cols-4 gap-4">
+      className={`block p-2 md:p-4 bg-primary-700 hover:gradient-primary rounded-2xl overflow-hidden ${className}`}>
+      <article className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="col-span-1 flex flex-col items-start gap-3">
-          <img className="rounded-lg"
+          <img className="rounded-lg object-cover aspect-square md:aspect-auto"
             src={getCoverUrl(gameOverview.coverId, 'cover_big')}
             alt={`${gameOverview.name} cover art`}/>
 
           {showGameTypeBadge[gameOverview.gameType.id] &&
-            <BadgeText label={gameOverview.gameType.label} size="xs"/>
+            <BadgeText label={gameOverview.gameType.label} size="xs" className="hidden md:inline-block"/>
           }
         </div>
 
-        <div className="col-span-3 flex flex-col gap-4">
+        <div className="col-span-1 md:col-span-3 flex flex-col gap-2 md:gap-4">
           <div className="flex items-start gap-3">
             <h4 className="grow text-primary-50 line-clamp-2">{gameOverview.name}</h4>
             <BadgeNumber
@@ -65,9 +66,7 @@ const GameCard = ({gameOverview, className = ""}: GameCardProps) => {
               <p className="text-sm font-semibold uppercase text-primary-50/80">
                 Available on
               </p>
-              <div className="flex flex-wrap gap-3">
-                <InfoChipList data={gameOverview.platforms.map(c => ({id: c.id, label: c.label}))} size="xs"/>
-              </div>
+              <InfoChipList data={gameOverview.platforms.map(c => ({id: c.id, label: c.label}))} size="xs"/>
             </div>
           }
         </div>

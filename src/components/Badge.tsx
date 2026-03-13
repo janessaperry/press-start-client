@@ -1,6 +1,7 @@
 type Props = {
   label: string,
-  size?: "xs" | "sm" | "md"
+  size?: "xs" | "sm" | "md",
+  className?: string
 }
 
 export const BadgeNumber = ({label, size = "sm"}: Props) => {
@@ -19,13 +20,13 @@ export const BadgeNumber = ({label, size = "sm"}: Props) => {
   )
 }
 
-export const BadgeText = ({label, size = "sm"}: Props) => {
+export const BadgeText = ({label, size = "sm", className = "inline-block"}: Props) => {
   const sizeStyleMap = {
     "xs": "text-xs",
     "sm": "text-sm",
     "md": "text-md"
   }
   return (
-    <span className={`inline-block px-1 text-secondary-100 text-center font-semibold uppercase border border-secondary-100 rounded-sm ${sizeStyleMap[size]}`}>{label}</span>
+    <span className={`px-1 text-secondary-100 text-center font-semibold uppercase border border-secondary-100 rounded-sm ${sizeStyleMap[size]} ${className}`}>{label}</span>
   )
 }

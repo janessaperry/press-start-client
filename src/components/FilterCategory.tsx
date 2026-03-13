@@ -1,4 +1,4 @@
-import { Checkbox, Field, Label } from "@headlessui/react";
+import { Checkbox, Field, Fieldset, Label, Legend } from "@headlessui/react";
 import { CheckIcon } from "@phosphor-icons/react";
 
 type SelectOption = {
@@ -17,8 +17,8 @@ type Props = {
 const FilterCategory = ({title, filters, paramName, selectedFilters, handleChange}: Props) => {
   return (
     <>
-      <div className="space-y-2">
-        <h3>{title}</h3>
+      <Fieldset className="space-y-2">
+        <Legend className="font-bold">{title}</Legend>
         <div className="space-y-1">
           {filters.map((item: SelectOption) => {
             return (
@@ -33,7 +33,7 @@ const FilterCategory = ({title, filters, paramName, selectedFilters, handleChang
             )
           })}
         </div>
-      </div>
+      </Fieldset>
     </>
   )
 }
