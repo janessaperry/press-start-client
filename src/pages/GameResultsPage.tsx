@@ -1,10 +1,26 @@
-import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import FilterCategory from "../components/FilterCategory.tsx";
-import GameCard from "../components/GameCard.tsx";
-import { GameOverview } from "../components/GameCard.tsx";
+import axios from "axios";
 import { debounce } from "lodash";
+import { Button, Field, Label, Select } from "@headlessui/react";
+import { PencilSimpleLineIcon, SlidersIcon } from "@phosphor-icons/react";
+import { GameOverview } from "../components/GameCard.tsx";
+import GameCard from "../components/GameCard.tsx";
+import FilterCategory from "../components/FilterCategory.tsx";
+
+const PLATFORM_MAP = {
+  'playstation': {id: 1, name: 'PlayStation'},
+  'xbox': {id: 2, name: 'Xbox'},
+  'pc': {id: 4, name: 'PC'},
+  'nintendo': {id: 5, name: 'Nintendo'},
+}
+
+const PLATFORM_FAMILY_PLATFORMS = {
+  nintendo: {label: "Nintendo", platformIds: [130, 508]},
+  pc: {label: "PC", platformIds: [3, 14, 6]},
+  playstation: {label: "PlayStation", platformIds: [48, 167]},
+  xbox: {label: "Xbox", platformIds: [49, 169]},
+}
 
 type SelectOption = {
   id: number,
@@ -22,8 +38,11 @@ const GameResultsPage = () => {
   const {platformFamilySlug} = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const platformFamily = PLATFORM_FAMILY_PLATFORMS[platformFamilySlug as keyof typeof PLATFORM_FAMILY_PLATFORMS];
   const searchParams = new URLSearchParams(location.search);
-  const selectedPlatformFamilies = searchParams.get('platformFamily')?.split(',').map(id => Number(id.trim())) ?? [];
+  const searchQuery = searchParams.get('search') ?? undefined;
+  // const selectedPlatformFamilies = searchParams.get('platformFamily')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedPlatforms = searchParams.get('platform')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedGenres = searchParams.get('genres')?.split(',').map(id => Number(id.trim())) ?? [];
 
@@ -46,20 +65,30 @@ const GameResultsPage = () => {
   }
 
   useEffect(() => {
-    if (platformFamilySlug) searchParams.set('platformFamily', platformFamilySlug);
-    const params = searchParams.toString();
-    void getGames(params);
+    if (platformFamilySlug) {
+      searchParams.set('platformFamily', String(PLATFORM_MAP[platformFamilySlug as keyof typeof PLATFORM_MAP]?.id));
+    }
+    else {
+      searchParams.delete('platformFamily');
+    }
+
+    void getGames(searchParams.toString());
   }, [platformFamilySlug]);
 
   useEffect(() => {
-    const getFilters = async () => {
+    const getFilterCategories = async () => {
       const response = await axios.get(`${baseServerUrl}/filters`);
-      console.log("getFilters", response.data);
-      setFilterCategories(response.data);
+      const filtersData = response.data;
+      let platformFilters = filtersData.platform;
+
+      if (platformFamily) {
+        platformFilters = platformFilters.filter((p: SelectOption) => platformFamily.platformIds.includes(p.id));
+      }
+      setFilterCategories({...filtersData, platform: platformFilters});
     }
 
-    void getFilters();
-  }, []);
+    void getFilterCategories();
+  }, [platformFamilySlug]);
 
   const handleFilterChange = (category: string, id: number) => {
     const current = searchParams.get(category)?.split(',').filter(Boolean) ?? [];
@@ -70,7 +99,7 @@ const GameResultsPage = () => {
     else {
       searchParams.set(category, updated.toString());
     }
-    navigate(`/games?${searchParams}`, {replace: true});
+    navigate(`?${searchParams}`, {replace: true});
 
     handleFilter(searchParams);
   }
@@ -78,58 +107,105 @@ const GameResultsPage = () => {
   const handleFilter = useCallback(debounce((searchParams) => {
     console.log(`Send request to filter for ${searchParams.toString()}`);
     void getGames(searchParams);
-  }, 2000), []);
+  }, 1400), []);
 
-
-  // if (isLoading) return <h1>Loading</h1>;
-  if (games.length === 0) return <h1>No games</h1>;
+  const getTitle = () => {
+    if (platformFamily) {return `${platformFamily.label} games`;}
+    if (searchQuery) {return `Results for "${searchQuery}"`;}
+    return `Explore games`;
+  }
 
   return (
-    <div className="container grid grid-cols-4 gap-8 px-4 md:px-10 pt-12 md:pt-24 pb-6 md:pb-12 space-y-4 md:space-y-6">
-      <section className="col-span-1 p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl  space-y-4 md:space-y-6">
-        <h2>Filters</h2>
-        {filterCategories.platformFamily && (
-          <FilterCategory title="Platform Family"
-            filters={filterCategories.platformFamily}
-            selectedFilters={selectedPlatformFamilies}
-            paramName='platformFamily'
-            handleChange={handleFilterChange}/>
-        )}
+    <>
+      <div className="container px-4 md:px-10 pt-12 md:pt-24 pb-6 md:pb-12 space-y-4 md:space-y-16">
+        <header className="flex items-center gap-4">
+          <h1 className="">{getTitle()}</h1>
+          {searchQuery &&
+            <Button onClick={() => console.log("edit search query")} className="button ghost">
+              <PencilSimpleLineIcon weight="bold"/>Edit
+            </Button>
+          }
+        </header>
 
-        {filterCategories.platform && (
-          <FilterCategory title="Console"
-            filters={filterCategories.platform}
-            selectedFilters={selectedPlatforms}
-            paramName='platform'
-            handleChange={handleFilterChange}/>
-        )}
+        <section className="flex gap-6">
+          <Field className="grow flex items-center gap-2">
+            <Label>Sort by:</Label>
+            <Select className="grow">
+              <option>Recently added</option>
+              <option>Name (A-Z)</option>
+              <option>Name (Z-A)</option>
+              <option>Release Date (newest first)</option>
+              <option>Release Date (oldest first)</option>
+            </Select>
+          </Field>
 
-        {filterCategories.genres && (
-          <FilterCategory title="Genres"
-            filters={filterCategories.genres}
-            selectedFilters={selectedGenres}
-            paramName='genres'
-            handleChange={handleFilterChange}/>
-        )}
-      </section>
+          <Button onClick={() => console.log("open filters on mobile")} className="button ghost md:hidden">
+            <SlidersIcon weight="bold"/>Filters
+          </Button>
+        </section>
 
-      <section className="col-span-3 space-y-4 md:space-y-6">
-        <h1 className="">{platformFamilySlug} Games</h1>
-        {isLoading ? (
-          <><h1>Loading</h1></>
-        ) : (
-          <div className="grid grid-cols-2 gap-4">
-            {games.map((game: GameOverview) => {
-              return (
-                <GameCard key={game.id} gameOverview={game}/>
-              )
-            })}
-          </div>
-        )}
+        <div className="grid grid-cols-4 gap-8">
+          <section className="col-span-1 p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl  space-y-4 md:space-y-6">
+            <h4>Filters</h4>
+            {/*{!platformFamilySlug && filterCategories.platformFamily && (*/}
+            {/*  <FilterCategory title="Platform"*/}
+            {/*    filters={filterCategories.platformFamily}*/}
+            {/*    selectedFilters={selectedPlatformFamilies}*/}
+            {/*    paramName='platformFamily'*/}
+            {/*    handleChange={handleFilterChange}/>*/}
+            {/*)}*/}
 
-      </section>
-    </div>
+            {filterCategories.platform && (
+              <FilterCategory title="Console"
+                filters={filterCategories.platform}
+                selectedFilters={selectedPlatforms}
+                paramName='platform'
+                handleChange={handleFilterChange}/>
+            )}
+
+            {filterCategories.genres && (
+              <FilterCategory title="Genres"
+                filters={filterCategories.genres}
+                selectedFilters={selectedGenres}
+                paramName='genres'
+                handleChange={handleFilterChange}/>
+            )}
+          </section>
+
+          <section className="col-span-3 space-y-4 md:space-y-6">
+            {isLoading && <TestingLoading/>}
+            {games.length === 0 && <TestingNoGames/>}
+
+            <div className="grid grid-cols-2 gap-4">
+              {games.map((game: GameOverview) => {
+                return (
+                  <GameCard key={game.id} gameOverview={game}/>
+                )
+              })}
+            </div>
+          </section>
+        </div>
+      </div>
+    </>
   )
 }
 
 export default GameResultsPage;
+
+const TestingNoGames = () => {
+  return (
+    <div className="p-4 bg-blue-500/20 border border-accent-300/20 rounded-2xl">
+      <h2>No games</h2>
+      <p>Add no games message and button to clear filters or change search</p>
+    </div>
+  )
+}
+
+const TestingLoading = () => {
+  return (
+    <div className="p-4 bg-blue-500/20 border border-accent-300/20 rounded-2xl">
+      <h2>Loading games...</h2>
+      <p>Add loading message and animation</p>
+    </div>
+  )
+}
