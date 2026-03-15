@@ -44,7 +44,7 @@ const GameCard = ({gameOverview, className = ""}: GameCardProps) => {
       className={`block p-2 md:p-4 bg-primary-700 hover:gradient-primary rounded-2xl overflow-hidden ${className}`}>
       <article className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="col-span-1 flex flex-col items-start gap-3">
-          <img className="rounded-lg object-cover aspect-square md:aspect-auto"
+          <img className="self-stretch rounded-lg object-cover aspect-square md:aspect-auto"
             src={getCoverUrl(gameOverview.coverId, 'cover_big')}
             alt={`${gameOverview.name} cover art`}/>
 
