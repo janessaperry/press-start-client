@@ -11,7 +11,7 @@ type Props = {
   filters: SelectOption[],
   paramName: string,
   selectedFilters: number[],
-  handleChange: (paramName: string, id: number) => void
+  handleChange: (paramName: string, id: number, label: string) => void
 }
 
 const FilterCategory = ({title, filters, paramName, selectedFilters, handleChange}: Props) => {
@@ -25,7 +25,7 @@ const FilterCategory = ({title, filters, paramName, selectedFilters, handleChang
               <Field key={item.id} className="flex gap-2 checkbox-field">
                 <Checkbox className="group checkbox-input"
                   checked={selectedFilters.includes(item.id)}
-                  onChange={() => handleChange(paramName, item.id)}>
+                  onChange={() => handleChange(paramName, item.id, item.label)}>
                   <CheckIcon size={14} weight="bold" className="hidden group-data-checked:block"/>
                 </Checkbox>
                 <Label className="checkbox-label">{item.label}</Label>

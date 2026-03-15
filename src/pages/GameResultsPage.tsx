@@ -2,8 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { debounce } from "lodash";
-import { Button, Field, Label, Select } from "@headlessui/react";
-import { PencilSimpleLineIcon, SlidersIcon } from "@phosphor-icons/react";
+import {
+  Button, Field, Label,
+  Listbox, ListboxButton, ListboxOption, ListboxOptions,
+} from "@headlessui/react";
+import { CaretDownIcon, GridFourIcon, PencilSimpleLineIcon, RowsIcon, SlidersIcon } from "@phosphor-icons/react";
+import FilterChip from "../components/FilterChip.tsx";
 import { GameOverview } from "../components/GameCard.tsx";
 import GameCard from "../components/GameCard.tsx";
 import FilterCategory from "../components/FilterCategory.tsx";
@@ -33,6 +37,14 @@ type FilterCategories = {
   genres?: SelectOption[],
 }
 
+const sortOptions = [
+  {id: "recent", label: "Recently Added", dataSortBy: 'recent', dataSortOrder: 'desc'},
+  {id: "name-asc", label: "Name (a-z)", dataSortBy: 'name', dataSortOrder: 'asc'},
+  {id: "name-desc", label: "Name (z-a)", dataSortBy: 'name', dataSortOrder: 'desc'},
+  {id: "release-desc", label: "Release Date (newest first)", dataSortBy: 'releaseDate', dataSortOrder: 'desc'},
+  {id: "release-asc", label: "Release Date (oldest first)", dataSortBy: 'releaseDate', dataSortOrder: 'asc'},
+]
+
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const GameResultsPage = () => {
   const {platformFamilySlug} = useParams();
@@ -42,13 +54,15 @@ const GameResultsPage = () => {
   const platformFamily = PLATFORM_FAMILY_PLATFORMS[platformFamilySlug as keyof typeof PLATFORM_FAMILY_PLATFORMS];
   const searchParams = new URLSearchParams(location.search);
   const searchQuery = searchParams.get('search') ?? undefined;
-  // const selectedPlatformFamilies = searchParams.get('platformFamily')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedPlatforms = searchParams.get('platform')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedGenres = searchParams.get('genres')?.split(',').map(id => Number(id.trim())) ?? [];
 
   const [isLoading, setIsLoading] = useState(false);
   const [games, setGames] = useState([]);
   const [filterCategories, setFilterCategories] = useState<FilterCategories>({});
+  const [sortOrder, setSortOrder] = useState(sortOptions.find(option => option.id === "recent"));
+  const [resultsView, setResultsView] = useState<'rows' | 'grid'>('rows');
+  const [filterChips, setFilterChips] = useState<{category: string, id: number, label: string}[]>([]);
 
   const getGames = async (params: string) => {
     setIsLoading(true);
@@ -90,7 +104,7 @@ const GameResultsPage = () => {
     void getFilterCategories();
   }, [platformFamilySlug]);
 
-  const handleFilterChange = (category: string, id: number) => {
+  const handleFilterChange = (category: string, id: number, label: string) => {
     const current = searchParams.get(category)?.split(',').filter(Boolean) ?? [];
     const updated = current.includes(String(id)) ? current.filter(s => s !== String(id)) : [...current, String(id)];
     if (updated.length === 0) {
@@ -101,11 +115,20 @@ const GameResultsPage = () => {
     }
     navigate(`?${searchParams}`, {replace: true});
 
+    if (filterChips.find(chip => chip.id === id)) {
+      setFilterChips([...filterChips].filter(chip => chip.id !== id))
+    }
+    else {
+      setFilterChips([
+        {category, id, label},
+        ...filterChips
+      ]);
+    }
+
     handleFilter(searchParams);
   }
 
   const handleFilter = useCallback(debounce((searchParams) => {
-    console.log(`Send request to filter for ${searchParams.toString()}`);
     void getGames(searchParams);
   }, 1400), []);
 
@@ -127,34 +150,9 @@ const GameResultsPage = () => {
           }
         </header>
 
-        <section className="flex gap-6">
-          <Field className="grow flex items-center gap-2">
-            <Label>Sort by:</Label>
-            <Select className="grow">
-              <option>Recently added</option>
-              <option>Name (A-Z)</option>
-              <option>Name (Z-A)</option>
-              <option>Release Date (newest first)</option>
-              <option>Release Date (oldest first)</option>
-            </Select>
-          </Field>
-
-          <Button onClick={() => console.log("open filters on mobile")} className="button ghost md:hidden">
-            <SlidersIcon weight="bold"/>Filters
-          </Button>
-        </section>
-
-        <div className="grid grid-cols-4 gap-8">
-          <section className="col-span-1 p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl  space-y-4 md:space-y-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <section className="hidden md:block md:col-span-1 p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl space-y-4 md:space-y-6">
             <h4>Filters</h4>
-            {/*{!platformFamilySlug && filterCategories.platformFamily && (*/}
-            {/*  <FilterCategory title="Platform"*/}
-            {/*    filters={filterCategories.platformFamily}*/}
-            {/*    selectedFilters={selectedPlatformFamilies}*/}
-            {/*    paramName='platformFamily'*/}
-            {/*    handleChange={handleFilterChange}/>*/}
-            {/*)}*/}
-
             {filterCategories.platform && (
               <FilterCategory title="Console"
                 filters={filterCategories.platform}
@@ -172,18 +170,92 @@ const GameResultsPage = () => {
             )}
           </section>
 
-          <section className="col-span-3 space-y-4 md:space-y-6">
-            {isLoading && <TestingLoading/>}
-            {games.length === 0 && <TestingNoGames/>}
 
-            <div className="grid grid-cols-2 gap-4">
-              {games.map((game: GameOverview) => {
-                return (
-                  <GameCard key={game.id} gameOverview={game}/>
-                )
-              })}
+          <div className="col-span-2 md:col-span-3 space-y-4 md:space-y-6">
+            <div className="space-y-4">
+              <section className="flex md:justify-between gap-4">
+                <div className="hidden md:block">
+                  <h2>11,121 results</h2>
+                </div>
+
+                <Field className="grow md:grow-0 flex items-center gap-2">
+                  <Label>Sort by:</Label>
+                  <Listbox value={sortOrder} onChange={setSortOrder}>
+                    <ListboxButton className="grow md:grow-0 button ghost justify-between">
+                      {sortOrder?.label} <CaretDownIcon weight="bold"/>
+                    </ListboxButton>
+                    <ListboxOptions anchor="bottom" transition className="dropdown-options primary">
+                      {sortOptions.map((option) => {
+                        return (
+                          <ListboxOption key={option.id} value={option} className="dropdown-option ">
+                            {option.label}
+                          </ListboxOption>
+                        )
+                      })}
+                    </ListboxOptions>
+                  </Listbox>
+                </Field>
+
+                <Button onClick={() => console.log("open filters on mobile")} className="button ghost md:hidden">
+                  <SlidersIcon weight="bold"/>Filters
+                </Button>
+              </section>
+
+              <section className={`grid ${filterChips.length > 0 ? "[grid-template-rows:1fr]" : "[grid-template-rows:0fr]"} transition-[grid-template-rows] duration-250`}>
+                <div className="overflow-hidden min-h-0">
+                  <h3 className="sr-only">Selected Filters</h3>
+                  <div className="p-4 bg-blue-500 border border-accent-300/20 rounded-2xl">
+                    <ul className="flex gap-3 flex-wrap">
+                      {filterChips?.map(filter => (
+                        <FilterChip key={filter.id}
+                          category={filter.category}
+                          chipId={filter.id}
+                          label={filter.label}
+                          handleChange={handleFilterChange}/>
+                      ))}
+
+                      <li>
+                        <button onClick={() => console.log("clear all filters")} className="py-1 px-3 button danger">
+                          Clear all
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+
+              <section className="flex items-center justify-between md:hidden">
+                <h2>11,121 results</h2>
+
+                <div role="group"
+                  aria-label="View"
+                  className="flex items-stretch border border-accent-300/20 rounded-lg overflow-hidden">
+                  <button className={`p-1 aria-pressed:bg-accent-500/50`}
+                    onClick={() => setResultsView('grid')} aria-pressed={resultsView === 'grid'}>
+                    <GridFourIcon size={24}/>
+                  </button>
+                  <button className={`p-1 aria-pressed:bg-accent-500/50`}
+                    onClick={() => setResultsView('rows')} aria-pressed={resultsView === 'rows'}>
+                    <RowsIcon size={24}/>
+                  </button>
+                </div>
+              </section>
             </div>
-          </section>
+
+
+            <section className="col-span-2 md:col-span-3 space-y-4 md:space-y-6">
+              {isLoading && <TestingLoading/>}
+              {games.length === 0 && <TestingNoGames/>}
+
+              <div className="grid grid-cols-2 gap-4">
+                {games.map((game: GameOverview) => {
+                  return (
+                    <GameCard key={game.id} gameOverview={game}/>
+                  )
+                })}
+              </div>
+            </section>
+          </div>
         </div>
       </div>
     </>
