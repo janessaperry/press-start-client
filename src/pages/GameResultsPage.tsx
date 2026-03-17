@@ -105,11 +105,7 @@ const GameResultsPage = () => {
   // }, 750), []);
 
   const handleFilterChange = (compoundId: string) => {
-    console.log("compoundId", compoundId)
     const [ category, id ] = compoundId.split('-')
-
-    console.log("handleFilterChange", category, id);
-
 
     const params = new URLSearchParams(location.search);
     const current = params.get(category)?.split(',').filter(Boolean) ?? [];
@@ -146,8 +142,12 @@ const GameResultsPage = () => {
 
   }, [ filterCategories, location.search ]);
 
-  console.log("filterChips", filterChips)
-
+  const handleClearAll = () => {
+    const params = new URLSearchParams(location.search);
+    params.delete('genres');
+    params.delete('platform');
+    navigate(`?${params}`, { replace: true });
+  }
 
   const handleSortChange = (selectedOption: SelectOption<string>) => {
     const params = new URLSearchParams(location.search);
@@ -238,7 +238,7 @@ const GameResultsPage = () => {
                           handleChange={handleFilterChange}/>
                       ))}
                       <li>
-                        <button onClick={() => console.log("clear all filters")} className="py-1 px-3 button danger">
+                        <button onClick={handleClearAll} className="py-1 px-3 button danger">
                           Clear all
                         </button>
                       </li>
