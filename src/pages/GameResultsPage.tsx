@@ -60,6 +60,7 @@ const GameResultsPage = () => {
 
   const [ isLoading, setIsLoading ] = useState(false);
   const [ games, setGames ] = useState([]);
+  const [ resultsCount, setResultsCount ] = useState();
   const [ filterCategories, setFilterCategories ] = useState<FilterCategories>({});
   const [ resultsView, setResultsView ] = useState<'rows' | 'grid'>('rows');
 
@@ -71,7 +72,8 @@ const GameResultsPage = () => {
 
     try {
       const response = await axios.get(`${baseServerUrl}/games?${params}`);
-      setGames(response.data.filteredResults);
+      setGames(response.data.filteredResults.games);
+      setResultsCount(response.data.filteredResults.count)
     }
     catch (e) {
       console.error(e);
@@ -198,7 +200,7 @@ const GameResultsPage = () => {
             <div className="space-y-4">
               <section className="flex md:justify-between gap-4">
                 <div className="hidden md:block">
-                  <h2>11,121 results</h2>
+                  <h2>{resultsCount} results</h2>
                 </div>
 
                 <Field className="grow md:grow-0 flex items-center gap-2">
@@ -248,7 +250,7 @@ const GameResultsPage = () => {
               </section>
 
               <section className="flex items-center justify-between md:hidden">
-                <h2>11,121 results</h2>
+                <h2>{resultsCount} results</h2>
 
                 <div role="group"
                   aria-label="View"
