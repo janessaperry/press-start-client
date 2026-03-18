@@ -72,20 +72,20 @@ type GameDetails = {
 }
 
 const formats = [
-  {id: 1, label: "Digital"},
-  {id: 2, label: "Physical"},
+  { id: 1, label: "Digital" },
+  { id: 2, label: "Physical" },
 ]
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 
 const GameDetailsPage = () => {
-  const {gameId} = useParams();
+  const { gameId } = useParams();
 
-  const [loading, setLoading] = useState<boolean>(true);
-  const [selectedPlatform, setSelectedPlatform] = useState<ListboxOption>({id: 0, label: "Select a console"});
-  const [selectedFormat, setSelectedFormat] = useState<ListboxOption>({id: 0, label: "Select a format"});
-  const [gameDetails, setGameDetails] = useState<GameDetails | null>(null);
-  const [hasRelatedContent, setHasRelatedContent] = useState<boolean>(false);
+  const [ loading, setLoading ] = useState<boolean>(true);
+  const [ selectedPlatform, setSelectedPlatform ] = useState<ListboxOption>({ id: 0, label: "Select a console" });
+  const [ selectedFormat, setSelectedFormat ] = useState<ListboxOption>({ id: 0, label: "Select a format" });
+  const [ gameDetails, setGameDetails ] = useState<GameDetails | null>(null);
+  const [ hasRelatedContent, setHasRelatedContent ] = useState<boolean>(false);
 
   function formatReleaseDate (dateIso: string | null): string {
     if (!dateIso) return 'Release date unknown';
@@ -124,7 +124,7 @@ const GameDetailsPage = () => {
     }
 
     void fetchGameDetails();
-  }, [gameId]);
+  }, [ gameId ]);
 
   console.log(gameDetails);
 
@@ -418,7 +418,7 @@ const GameDetailsPage = () => {
       {gameDetails.screenshotIds.length > 0 &&
         <section className="container px-4 md:px-10 pb-12 md:pb-20 space-y-4 md:space-y-6">
           <h4>Screenshots</h4>
-          <ImageCarousel imageIds={gameDetails.screenshotIds}/>
+          <ImageCarousel gameTitle={gameDetails.name} imageIds={gameDetails.screenshotIds}/>
         </section>
       }
     </>

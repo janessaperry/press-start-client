@@ -6,11 +6,12 @@ import { getScreenshotUrl } from "../utils/images.ts";
 import ButtonIcon from "./ButtonIcon.tsx";
 
 type Props = {
+  gameTitle: string,
   imageIds: string[]
 }
 
-const ImageCarousel = ({imageIds}: Props) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
+const ImageCarousel = ({ gameTitle, imageIds }: Props) => {
+  const [ emblaRef, emblaApi ] = useEmblaCarousel({
     align: "start",
     slidesToScroll: 1,
     loop: true
@@ -18,14 +19,14 @@ const ImageCarousel = ({imageIds}: Props) => {
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi])
+  }, [ emblaApi ])
 
   const scrollNext = useCallback(() => {
     if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi])
+  }, [ emblaApi ])
 
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [ scrollSnaps, setScrollSnaps ] = useState<number[]>([]);
+  const [ selectedIndex, setSelectedIndex ] = useState(0);
 
   const onInit = useCallback((emblaApi: EmblaCarouselType) => {
     setScrollSnaps(emblaApi.scrollSnapList());
@@ -47,7 +48,7 @@ const ImageCarousel = ({imageIds}: Props) => {
     onSelect(emblaApi);
 
     emblaApi.on('reInit', onInit).on('reInit', onSelect).on('select', onSelect);
-  }, [emblaApi, onInit, onSelect]);
+  }, [ emblaApi, onInit, onSelect ]);
 
   return (
     <div className="space-y-4">
@@ -78,8 +79,8 @@ const ImageCarousel = ({imageIds}: Props) => {
               return (
                 <div key={`screenshot-${id}`} className="flex-[0_0_86%] min-w-0 pl-4">
                   <img src={getScreenshotUrl(id)}
-                    alt="Testing"
-                    className="rounded-2xl"/>
+                    alt={`Gameplay screenshots for ${gameTitle}`}
+                    className="w-full rounded-2xl"/>
                 </div>
               )
             }
