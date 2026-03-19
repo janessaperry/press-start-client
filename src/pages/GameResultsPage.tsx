@@ -10,6 +10,7 @@ import FilterChip from "../components/FilterChip.tsx";
 import { GameOverview } from "../components/GameCard.tsx";
 import GameCard from "../components/GameCard.tsx";
 import FilterCategory from "../components/FilterCategory.tsx";
+import Pagination from "../components/Pagination.tsx";
 
 const PLATFORM_BY_SLUG = {
   playstation: { id: 1, name: 'PlayStation' },
@@ -267,8 +268,7 @@ const GameResultsPage = () => {
               </section>
             </div>
 
-
-            <section className="col-span-2 md:col-span-3 space-y-4 md:space-y-6">
+            <section className="col-span-2 space-y-4 md:space-y-6">
               {isLoading && <TestingLoading/>}
               {games.length === 0 && <TestingNoGames/>}
 
@@ -279,6 +279,8 @@ const GameResultsPage = () => {
                   )
                 })}
               </div>
+
+              <Pagination className="justify-self-center"/>
             </section>
           </div>
         </div>
