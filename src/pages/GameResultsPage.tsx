@@ -61,7 +61,7 @@ const GameResultsPage = () => {
 
   const [ isLoading, setIsLoading ] = useState(false);
   const [ games, setGames ] = useState([]);
-  const [ resultsCount, setResultsCount ] = useState();
+  const [ resultsCount, setResultsCount ] = useState(undefined);
   const [ filterCategories, setFilterCategories ] = useState<FilterCategories>({});
   const [ resultsView, setResultsView ] = useState<'rows' | 'grid'>('rows');
 
@@ -280,7 +280,9 @@ const GameResultsPage = () => {
                 })}
               </div>
 
-              {resultsCount && <Pagination resultsCount={resultsCount} className="justify-self-center"/>}
+              {resultsCount !== undefined &&
+                <Pagination resultsCount={resultsCount} className="justify-self-center"/>
+              }
             </section>
           </div>
         </div>
