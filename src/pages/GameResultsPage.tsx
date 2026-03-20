@@ -119,11 +119,11 @@ const GameResultsPage = () => {
     else {
       params.set(category, updated.toString());
     }
+    params.delete('page');
     navigate(`?${params}`, { replace: true });
   }
 
   const firstRender = useRef(true);
-
   const filterChips: SelectOption<string>[] = useMemo(() => {
     const selectedFilters = new Set<SelectOption<string>>();
     const searchParams = new URLSearchParams(location.search);
@@ -142,7 +142,6 @@ const GameResultsPage = () => {
 
     firstRender.current = false
     return [ ...selectedFilters ];
-
   }, [ filterCategories, location.search ]);
 
   const handleClearAll = () => {
@@ -155,6 +154,7 @@ const GameResultsPage = () => {
   const handleSortChange = (selectedOption: SelectOption<string>) => {
     const params = new URLSearchParams(location.search);
     params.set('sorting', String(selectedOption.id));
+    params.delete('page');
     navigate(`?${params}`, { replace: true });
   }
 
