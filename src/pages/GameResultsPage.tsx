@@ -280,7 +280,7 @@ const GameResultsPage = () => {
                 })}
               </div>
 
-              <Pagination className="justify-self-center"/>
+              {resultsCount && <Pagination resultsCount={resultsCount} className="justify-self-center"/>}
             </section>
           </div>
         </div>

@@ -33,6 +33,10 @@
       bg-danger-500 hover:bg-danger-500
       focus-visible:outline-danger-500;
     }
+
+    &.disabled {
+      @apply opacity-50 pointer-events-none;
+    }
   }
 
   .checkbox-input {
