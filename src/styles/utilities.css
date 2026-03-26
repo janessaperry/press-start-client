@@ -46,25 +46,36 @@
 }
 
 /* scrollbar */
-@utility scrollbar-on-light {
+@utility scrollbar-on-dark {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-teal-900) transparent;
+
   &::-webkit-scrollbar {
     @apply w-2;
   }
-}
 
-@utility scrollbar-on-light {
   &::-webkit-scrollbar-track {
     @apply bg-transparent;
   }
-}
 
-@utility scrollbar-on-light {
   &::-webkit-scrollbar-thumb {
-    @apply bg-primary-300 rounded-full my-4;
+    @apply bg-accent-900 rounded-full my-4;
   }
 }
 
 @utility scrollbar-on-light {
   scrollbar-width: thin;
   scrollbar-color: var(--color-primary-300) transparent;
+
+  &::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  &::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply bg-primary-300 rounded-full my-4;
+  }
 }

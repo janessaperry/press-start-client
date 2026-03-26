@@ -183,7 +183,7 @@ const GameResultsPage = () => {
         </header>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <section className="hidden md:block md:col-span-1 p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl space-y-4 md:space-y-6">
+          <section className="hidden md:sticky md:top-4 md:max-h-[calc(100dvh-2rem)] md:overflow-y-scroll md:block md:col-span-1 p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl space-y-4 md:space-y-6 scrollbar-on-dark">
             <h4>Filters</h4>
             {filterCategories.platform && (
               <FilterCategory title="Console"
