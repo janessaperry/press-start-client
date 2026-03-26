@@ -58,6 +58,9 @@ const GameResultsPage = () => {
   const selectedSort = sortOptions.find(option => option.id === sorting) ?? sortOptions[0];
   const selectedPlatforms = searchParams.get('platform')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedGenres = searchParams.get('genres')?.split(',').map(id => Number(id.trim())) ?? [];
+  const currentPage = searchParams.get('page') ?? 1;
+  const limit = 20;
+  const offset = (Number(currentPage) - 1) * limit;
 
   const [ isLoading, setIsLoading ] = useState(false);
   const [ games, setGames ] = useState([]);
@@ -67,12 +70,15 @@ const GameResultsPage = () => {
 
   const getGames = async () => {
     setIsLoading(true);
-    const params = new URLSearchParams(location.search);
-    if (!params.has('sorting')) params.set('sorting', 'createdAt-desc');
-    if (platformFamilySlug) params.set('platformFamily', String(PLATFORM_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_BY_SLUG]?.id));
+    const apiParams = new URLSearchParams(location.search);
+    if (!apiParams.has('sorting')) apiParams.set('sorting', 'createdAt-desc');
+    if (platformFamilySlug) apiParams.set('platformFamily', String(PLATFORM_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_BY_SLUG]?.id));
+    if (apiParams.has('page')) apiParams.delete('page');
+    apiParams.set('limit', String(limit));
+    apiParams.set('offset', String(offset));
 
     try {
-      const response = await axios.get(`${baseServerUrl}/games?${params}`);
+      const response = await axios.get(`${baseServerUrl}/games?${apiParams}`);
       setGames(response.data.filteredResults.games);
       setResultsCount(response.data.filteredResults.count)
     }
@@ -281,7 +287,7 @@ const GameResultsPage = () => {
               </div>
 
               {resultsCount !== undefined &&
-                <Pagination resultsCount={resultsCount} className="justify-self-center"/>
+                <Pagination resultsCount={resultsCount} itemsPerPage={limit} className="justify-self-center"/>
               }
             </section>
           </div>

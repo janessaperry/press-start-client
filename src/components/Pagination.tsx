@@ -4,11 +4,11 @@ import { Link, useLocation } from "react-router-dom";
 
 type Props = {
   resultsCount: number,
-  itemsPerPage?: number,
+  itemsPerPage: number,
   className?: string,
 }
 
-const Pagination = ({ resultsCount, itemsPerPage = 40, className }: Props) => {
+const Pagination = ({ resultsCount, itemsPerPage, className }: Props) => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const currentPage = params.get('page') ?? '1';
