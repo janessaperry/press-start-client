@@ -8,17 +8,21 @@ type SelectOption = {
 
 type Props = {
   title: string,
+  description?: string,
   filters: SelectOption[],
   paramName: string,
   selectedFilters: number[],
   handleChange: (id: string) => void
 }
 
-const FilterCategory = ({ title, filters, paramName, selectedFilters, handleChange }: Props) => {
+const FilterCategory = ({ title, description, filters, paramName, selectedFilters, handleChange }: Props) => {
   return (
     <>
       <Fieldset className="space-y-2">
-        <Legend className="font-bold">{title}</Legend>
+        <Legend className="font-bold flex flex-col">
+          {title}
+          {description && <span className="text-sm font-normal italic text-secondary-100">{description}</span>}
+        </Legend>
         <div className="space-y-1">
           {filters.map((item: SelectOption) => {
             return (
