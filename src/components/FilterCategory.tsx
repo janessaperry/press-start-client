@@ -1,5 +1,6 @@
-import { Checkbox, Field, Fieldset, Label, Legend } from "@headlessui/react";
+import { Button, Checkbox, Field, Fieldset, Label, Legend } from "@headlessui/react";
 import { CheckIcon } from "@phosphor-icons/react";
+import { useState } from "react";
 
 type SelectOption = {
   id: number,
@@ -16,6 +17,8 @@ type Props = {
 }
 
 const FilterCategory = ({ title, description, filters, paramName, selectedFilters, handleChange }: Props) => {
+  const [ showAllFilters, setShowAllFilters ] = useState(false);
+
   return (
     <>
       <Fieldset className="space-y-2">
@@ -26,7 +29,7 @@ const FilterCategory = ({ title, description, filters, paramName, selectedFilter
         <div className="space-y-1">
           {filters.map((item: SelectOption) => {
             return (
-              <Field key={item.id} className="flex gap-2 checkbox-field">
+              <Field key={item.id} className={`flex gap-2 checkbox-field ${showAllFilters ? '' : 'nth-[n+6]:hidden'}`}>
                 <Checkbox className="group checkbox-input"
                   checked={selectedFilters.includes(item.id)}
                   onChange={() => handleChange(`${paramName}-${item.id}`)}>
@@ -36,6 +39,12 @@ const FilterCategory = ({ title, description, filters, paramName, selectedFilter
               </Field>
             )
           })}
+          {filters.length > 5 &&
+            <Button className="link-neutral no-underline"
+              onClick={() => setShowAllFilters(!showAllFilters)}>
+              {showAllFilters ? 'Show less' : 'Show more'}
+            </Button>
+          }
         </div>
       </Fieldset>
     </>

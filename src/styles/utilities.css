@@ -9,17 +9,20 @@
 /* links */
 @utility link-primary {
   @apply text-interactive-primary hover:text-interactive-primary-hover
-  focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
+  focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary
+  rounded-sm;
 }
 
 @utility link-secondary {
   @apply text-interactive-secondary hover:text-interactive-secondary-hover
-  focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
+  focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary
+  rounded-sm;
 }
 
 @utility link-neutral {
   @apply text-interactive-neutral hover:text-interactive-neutral-hover underline
-  focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
+  focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary
+  rounded-sm;
 }
 
 /* icon sizes */
