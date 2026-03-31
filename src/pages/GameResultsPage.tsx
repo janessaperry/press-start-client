@@ -35,7 +35,8 @@ type FilterCategories = {
   platformFamily?: SelectOption[],
   platform?: SelectOption[],
   genres?: SelectOption[],
-  timeToBeat?: SelectOption[];
+  timeToBeat?: SelectOption[],
+  totalRating?: SelectOption[]
 }
 
 const sortOptions = [
@@ -60,6 +61,7 @@ const GameResultsPage = () => {
   const selectedPlatforms = searchParams.get('platform')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedGenres = searchParams.get('genres')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedTimeToBeat = searchParams.get('timeToBeat')?.split(',').map(id => Number(id.trim())) ?? [];
+  const selectedTotalRating = searchParams.get('rating')?.split(',').map(id => Number(id.trim())) ?? [];
   const currentPage = searchParams.get('page') ?? 1;
   const limit = 20;
   const offset = (Number(currentPage) - 1) * limit;
@@ -208,6 +210,14 @@ const GameResultsPage = () => {
                 filters={filterCategories.timeToBeat}
                 selectedFilters={selectedTimeToBeat}
                 paramName='timeToBeat'
+                handleChange={handleFilterChange}/>
+            )}
+
+            {filterCategories.totalRating && (
+              <FilterCategory title="Time to Beat"
+                filters={filterCategories.totalRating}
+                selectedFilters={selectedTotalRating}
+                paramName='rating'
                 handleChange={handleFilterChange}/>
             )}
           </section>
