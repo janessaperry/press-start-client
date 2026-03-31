@@ -37,6 +37,7 @@ type FilterCategories = {
   genres?: SelectOption[],
   timeToBeat?: SelectOption[],
   totalRating?: SelectOption[]
+  releaseDate?: SelectOption[]
 }
 
 const sortOptions = [
@@ -62,6 +63,7 @@ const GameResultsPage = () => {
   const selectedGenres = searchParams.get('genres')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedTimeToBeat = searchParams.get('timeToBeat')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedTotalRating = searchParams.get('rating')?.split(',').map(id => Number(id.trim())) ?? [];
+  const selectedReleaseDate = searchParams.get('releaseDate')?.split(',').map(id => Number(id.trim())) ?? [];
   const currentPage = searchParams.get('page') ?? 1;
   const limit = 20;
   const offset = (Number(currentPage) - 1) * limit;
@@ -156,8 +158,11 @@ const GameResultsPage = () => {
 
   const handleClearAll = () => {
     const params = new URLSearchParams(location.search);
-    params.delete('genres');
     params.delete('platform');
+    params.delete('genres');
+    params.delete('timeToBeat');
+    params.delete('rating');
+    params.delete('releaseDate');
     navigate(`?${params}`, { replace: true });
   }
 
@@ -214,10 +219,18 @@ const GameResultsPage = () => {
             )}
 
             {filterCategories.totalRating && (
-              <FilterCategory title="Time to Beat"
+              <FilterCategory title="Rating"
                 filters={filterCategories.totalRating}
                 selectedFilters={selectedTotalRating}
                 paramName='rating'
+                handleChange={handleFilterChange}/>
+            )}
+
+            {filterCategories.releaseDate && (
+              <FilterCategory title="Release Date"
+                filters={filterCategories.releaseDate}
+                selectedFilters={selectedReleaseDate}
+                paramName='releaseDate'
                 handleChange={handleFilterChange}/>
             )}
           </section>

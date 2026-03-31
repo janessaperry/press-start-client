@@ -30,7 +30,7 @@ type GameDetails = {
   coverId: string | null,
   releaseDate: string | null,
   slug: string,
-  summary: string[],
+  summary: string,
   totalRating: number | null,
   gameType: {
     id: number,
@@ -246,10 +246,8 @@ const GameDetailsPage = () => {
 
         <div className="flex flex-col md:flex-row gap-6 md:gap-12">
           <div className="flex-1 space-y-4">
-            {gameDetails.summary.length > 0 ?
-              gameDetails.summary.map((p, i) => (
-                <p key={`game-details-${i}`} className="text-lg">{p}</p>
-              ))
+            {gameDetails.summary !== null ?
+              <p className="text-lg whitespace-pre-line">{gameDetails.summary}</p>
               :
               <p>
                 No details available yet. Check back later or <a href={`https://igdb.com/games/${gameDetails.slug}`}
