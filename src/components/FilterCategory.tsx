@@ -18,6 +18,8 @@ type Props = {
 
 const FilterCategory = ({ title, description, filters, paramName, selectedFilters, handleChange }: Props) => {
   const [ showAllFilters, setShowAllFilters ] = useState(false);
+  const visibleFilters = filters.slice(0, 5);
+  const hiddenFilters = filters.slice(5);
 
   return (
     <>
@@ -27,9 +29,10 @@ const FilterCategory = ({ title, description, filters, paramName, selectedFilter
           {description && <span className="text-sm font-normal italic text-secondary-100">{description}</span>}
         </Legend>
         <div className="space-y-1">
-          {filters.map((item: SelectOption) => {
+          {visibleFilters.map((item: SelectOption, i) => {
             return (
-              <Field key={item.id} className={`flex gap-2 checkbox-field ${showAllFilters ? '' : 'nth-[n+6]:hidden'}`}>
+              <Field key={item.id}
+                className={`flex gap-2 checkbox-field ${!showAllFilters && i >= 5 ? "max-h-0 overflow-hidden" : "max-h-20"} transition-all duration-1000`}>
                 <Checkbox className="group checkbox-input"
                   checked={selectedFilters.includes(item.id)}
                   onChange={() => handleChange(`${paramName}-${item.id}`)}>
@@ -39,11 +42,32 @@ const FilterCategory = ({ title, description, filters, paramName, selectedFilter
               </Field>
             )
           })}
-          {filters.length > 5 &&
-            <Button className="link-neutral no-underline"
-              onClick={() => setShowAllFilters(!showAllFilters)}>
-              {showAllFilters ? 'Show less' : 'Show more'}
-            </Button>
+
+          {hiddenFilters.length > 0 &&
+            <>
+              <div className={`grid ${showAllFilters ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'} transition-[grid-template-rows] duration-500 overflow-hidden`}>
+                <div className="space-y-1 min-h-0">
+                  {hiddenFilters.map(item => {
+                    return (
+                      <Field key={item.id}
+                        className="flex gap-2 checkbox-field">
+                        <Checkbox className="group checkbox-input"
+                          checked={selectedFilters.includes(item.id)}
+                          onChange={() => handleChange(`${paramName}-${item.id}`)}>
+                          <CheckIcon size={14} weight="bold" className="hidden group-data-checked:block"/>
+                        </Checkbox>
+                        <Label className="checkbox-label">{item.label}</Label>
+                      </Field>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <Button className="link-neutral no-underline"
+                onClick={() => setShowAllFilters(!showAllFilters)}>
+                {showAllFilters ? 'Show less' : 'Show more'}
+              </Button>
+            </>
           }
         </div>
       </Fieldset>
