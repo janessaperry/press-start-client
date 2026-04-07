@@ -6,18 +6,20 @@ import {
   Listbox, ListboxButton, ListboxOption, ListboxOptions,
 } from "@headlessui/react";
 import { CaretDownIcon, GridFourIcon, PencilSimpleLineIcon, RowsIcon, SlidersIcon } from "@phosphor-icons/react";
-import FilterChip from "../components/FilterChip.tsx";
-import { GameOverview } from "../components/GameCard.tsx";
-import GameCard from "../components/GameCard.tsx";
+
+import GameCard, { GameOverview } from "../components/GameCard.tsx";
 import FilterCategory from "../components/FilterCategory.tsx";
+import FilterChip from "../components/FilterChip.tsx";
 import Pagination from "../components/Pagination.tsx";
 
-const PLATFORM_BY_SLUG = {
-  playstation: { id: 1, name: 'PlayStation' },
-  xbox: { id: 2, name: 'Xbox' },
-  pc: { id: 4, name: 'PC' },
-  nintendo: { id: 5, name: 'Nintendo' },
-}
+import useGameResults from "../hooks/useGameResults.tsx";
+
+// const PLATFORM_BY_SLUG = {
+//   playstation: { id: 1, name: 'PlayStation' },
+//   xbox: { id: 2, name: 'Xbox' },
+//   pc: { id: 4, name: 'PC' },
+//   nintendo: { id: 5, name: 'Nintendo' },
+// }
 
 const PLATFORM_FAMILY_BY_SLUG = {
   playstation: { label: "PlayStation", platformIds: [ 48, 167 ] },
@@ -62,49 +64,13 @@ const GameResultsPage = () => {
   const selectedTimeToBeat = searchParams.get('timeToBeat')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedTotalRating = searchParams.get('totalRating')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedReleaseDate = searchParams.get('releaseDate')?.split(',').map(id => Number(id.trim())) ?? [];
-  const currentPage = searchParams.get('page') ?? 1;
   const limit = 20;
-  const offset = (Number(currentPage) - 1) * limit;
 
-  const [ isLoading, setIsLoading ] = useState(false);
-  const [ games, setGames ] = useState([]);
-  const [ resultsCount, setResultsCount ] = useState(undefined);
-  // const [ games, resultsCount ] = useGameResults(setIsLoading);
+  const [ games, resultsCount, isLoading ] = useGameResults();
   const [ filterCategories, setFilterCategories ] = useState<FilterCategories>({});
   const [ resultsView, setResultsView ] = useState<'rows' | 'grid'>('rows');
 
-  const getGames = async () => {
-    const apiParams = new URLSearchParams(searchParams);
-    if (!apiParams.has('sorting')) apiParams.set('sorting', 'createdAt-desc');
-    if (platformFamilySlug) apiParams.set('platformFamily', String(PLATFORM_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_BY_SLUG]?.id));
-    if (apiParams.has('page')) apiParams.delete('page');
-    apiParams.set('limit', String(limit));
-    apiParams.set('offset', String(offset));
-
-    try {
-      const response = await axios.get(`${baseServerUrl}/games?${apiParams}`);
-      setGames(response.data.filteredResults.games);
-      setResultsCount(response.data.filteredResults.count)
-    }
-    catch (e) {
-      console.error(e);
-    }
-    finally {
-      setIsLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    void getGames();
-  }, [ platformFamilySlug, searchParams.get('page'), searchParams.get('sorting'), searchParams.get('search') ]);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      void getGames();
-    }, 1000);
-    return () => clearTimeout(timeoutId);
-
-  }, [ searchParams.get('platform'), searchParams.get('genres'), searchParams.get('releaseDate'), searchParams.get('timeToBeat'), searchParams.get('totalRating') ]);
+  console.log("useGameResults hook", games, resultsCount, isLoading)
 
   useEffect(() => {
     const getFilterCategories = async () => {
@@ -136,7 +102,6 @@ const GameResultsPage = () => {
     }
     params.delete('page');
     setSearchParams(params, { replace: true });
-    setIsLoading(true);
   }
 
   const filterChips: SelectOption<string>[] = useMemo(() => {
@@ -318,7 +283,7 @@ const GameResultsPage = () => {
 
             <section className="col-span-2 space-y-4 md:space-y-6">
               {isLoading && <TestingLoading/>}
-              {games.length === 0 && <TestingNoGames/>}
+              {!isLoading && games?.length === 0 && <TestingNoGames/>}
 
               {!isLoading &&
                 <div className="grid grid-cols-2 gap-4">
