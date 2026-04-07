@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import {
   Button, Field, Label,
@@ -51,18 +51,16 @@ const sortOptions = [
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const GameResultsPage = () => {
   const { platformFamilySlug } = useParams();
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const platformFamily = PLATFORM_FAMILY_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_FAMILY_BY_SLUG];
-  const searchParams = new URLSearchParams(location.search);
+
+  const [ searchParams, setSearchParams ] = useSearchParams();
   const searchQuery = searchParams.get('search') ?? undefined;
   const sorting = searchParams.get('sorting');
   const selectedSort = sortOptions.find(option => option.id === sorting) ?? sortOptions[0];
   const selectedPlatforms = searchParams.get('platform')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedGenres = searchParams.get('genres')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedTimeToBeat = searchParams.get('timeToBeat')?.split(',').map(id => Number(id.trim())) ?? [];
-  const selectedTotalRating = searchParams.get('rating')?.split(',').map(id => Number(id.trim())) ?? [];
+  const selectedTotalRating = searchParams.get('totalRating')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedReleaseDate = searchParams.get('releaseDate')?.split(',').map(id => Number(id.trim())) ?? [];
   const currentPage = searchParams.get('page') ?? 1;
   const limit = 20;
@@ -71,12 +69,12 @@ const GameResultsPage = () => {
   const [ isLoading, setIsLoading ] = useState(false);
   const [ games, setGames ] = useState([]);
   const [ resultsCount, setResultsCount ] = useState(undefined);
+  // const [ games, resultsCount ] = useGameResults(setIsLoading);
   const [ filterCategories, setFilterCategories ] = useState<FilterCategories>({});
   const [ resultsView, setResultsView ] = useState<'rows' | 'grid'>('rows');
 
   const getGames = async () => {
-    setIsLoading(true);
-    const apiParams = new URLSearchParams(location.search);
+    const apiParams = new URLSearchParams(searchParams);
     if (!apiParams.has('sorting')) apiParams.set('sorting', 'createdAt-desc');
     if (platformFamilySlug) apiParams.set('platformFamily', String(PLATFORM_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_BY_SLUG]?.id));
     if (apiParams.has('page')) apiParams.delete('page');
@@ -98,7 +96,15 @@ const GameResultsPage = () => {
 
   useEffect(() => {
     void getGames();
-  }, [ platformFamilySlug, location.search ]);
+  }, [ platformFamilySlug, searchParams.get('page'), searchParams.get('sorting'), searchParams.get('search') ]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      void getGames();
+    }, 1000);
+    return () => clearTimeout(timeoutId);
+
+  }, [ searchParams.get('platform'), searchParams.get('genres'), searchParams.get('releaseDate'), searchParams.get('timeToBeat'), searchParams.get('totalRating') ]);
 
   useEffect(() => {
     const getFilterCategories = async () => {
@@ -115,14 +121,11 @@ const GameResultsPage = () => {
     void getFilterCategories();
   }, [ platformFamily ]);
 
-  // const debouncedFetch = useCallback(debounce((fetchGames) => {
-  //   void fetchGames();
-  // }, 750), []);
 
   const handleFilterChange = (compoundId: string) => {
     const [ category, id ] = compoundId.split('-')
 
-    const params = new URLSearchParams(location.search);
+    const params = new URLSearchParams(searchParams);
     const current = params.get(category)?.split(',').filter(Boolean) ?? [];
     const updated = current.includes(String(id)) ? current.filter(s => s !== String(id)) : [ ...current, String(id) ];
     if (updated.length === 0) {
@@ -132,13 +135,12 @@ const GameResultsPage = () => {
       params.set(category, updated.toString());
     }
     params.delete('page');
-    navigate(`?${params}`, { replace: true });
+    setSearchParams(params, { replace: true });
+    setIsLoading(true);
   }
 
-  const firstRender = useRef(true);
   const filterChips: SelectOption<string>[] = useMemo(() => {
     const selectedFilters = new Set<SelectOption<string>>();
-    const searchParams = new URLSearchParams(location.search);
 
     for (const [ key, valueString ] of searchParams.entries()) {
       valueString.split(",").forEach(value => {
@@ -152,25 +154,24 @@ const GameResultsPage = () => {
       });
     }
 
-    firstRender.current = false
     return [ ...selectedFilters ];
-  }, [ filterCategories, location.search ]);
+  }, [ filterCategories, searchParams ]);
 
   const handleClearAll = () => {
-    const params = new URLSearchParams(location.search);
+    const params = new URLSearchParams(searchParams);
     params.delete('platform');
     params.delete('genres');
     params.delete('timeToBeat');
-    params.delete('rating');
+    params.delete('totalRating');
     params.delete('releaseDate');
-    navigate(`?${params}`, { replace: true });
+    setSearchParams(params, { replace: true })
   }
 
   const handleSortChange = (selectedOption: SelectOption<string>) => {
-    const params = new URLSearchParams(location.search);
+    const params = new URLSearchParams(searchParams);
     params.set('sorting', String(selectedOption.id));
     params.delete('page');
-    navigate(`?${params}`, { replace: true });
+    setSearchParams(params, { replace: true });
   }
 
   const getTitle = () => {
@@ -194,11 +195,35 @@ const GameResultsPage = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <section className="hidden md:sticky md:top-4 md:max-h-[calc(100dvh-2rem)] md:overflow-y-scroll md:block md:col-span-1 p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl space-y-4 md:space-y-6 scrollbar-on-dark">
             <h4>Filters</h4>
+            {/*{filterCategories.gameType && (*/}
+            {/*  <FilterCategory title="Console"*/}
+            {/*    filters={filterCategories.platform}*/}
+            {/*    selectedFilters={selectedPlatforms}*/}
+            {/*    paramName='platform'*/}
+            {/*    handleChange={handleFilterChange}/>*/}
+            {/*)}*/}
+
             {filterCategories.platform && (
               <FilterCategory title="Console"
                 filters={filterCategories.platform}
                 selectedFilters={selectedPlatforms}
                 paramName='platform'
+                handleChange={handleFilterChange}/>
+            )}
+
+            {filterCategories.releaseDate && (
+              <FilterCategory title="Release Date"
+                filters={filterCategories.releaseDate}
+                selectedFilters={selectedReleaseDate}
+                paramName='releaseDate'
+                handleChange={handleFilterChange}/>
+            )}
+
+            {filterCategories.totalRating && (
+              <FilterCategory title="Rating"
+                filters={filterCategories.totalRating}
+                selectedFilters={selectedTotalRating}
+                paramName='totalRating'
                 handleChange={handleFilterChange}/>
             )}
 
@@ -215,22 +240,6 @@ const GameResultsPage = () => {
                 filters={filterCategories.timeToBeat}
                 selectedFilters={selectedTimeToBeat}
                 paramName='timeToBeat'
-                handleChange={handleFilterChange}/>
-            )}
-
-            {filterCategories.totalRating && (
-              <FilterCategory title="Rating"
-                filters={filterCategories.totalRating}
-                selectedFilters={selectedTotalRating}
-                paramName='rating'
-                handleChange={handleFilterChange}/>
-            )}
-
-            {filterCategories.releaseDate && (
-              <FilterCategory title="Release Date"
-                filters={filterCategories.releaseDate}
-                selectedFilters={selectedReleaseDate}
-                paramName='releaseDate'
                 handleChange={handleFilterChange}/>
             )}
           </section>
@@ -311,13 +320,15 @@ const GameResultsPage = () => {
               {isLoading && <TestingLoading/>}
               {games.length === 0 && <TestingNoGames/>}
 
-              <div className="grid grid-cols-2 gap-4">
-                {games.map((game: GameOverview) => {
-                  return (
-                    <GameCard key={game.id} gameOverview={game}/>
-                  )
-                })}
-              </div>
+              {!isLoading &&
+                <div className="grid grid-cols-2 gap-4">
+                  {games.map((game: GameOverview) => {
+                    return (
+                      <GameCard key={game.id} gameOverview={game}/>
+                    )
+                  })}
+                </div>
+              }
 
               {resultsCount !== undefined &&
                 <Pagination resultsCount={resultsCount} itemsPerPage={limit} className="justify-self-center"/>
