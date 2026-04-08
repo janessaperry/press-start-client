@@ -27,15 +27,6 @@ type SelectOption<T extends string | number = number> = {
   label: string,
 }
 
-type FilterCategories = {
-  platformFamily?: SelectOption[],
-  platform?: SelectOption[],
-  genres?: SelectOption[],
-  timeToBeat?: SelectOption[],
-  totalRating?: SelectOption[]
-  releaseDate?: SelectOption[]
-}
-
 const sortOptions = [
   { id: "createdAt-desc", label: "Recently Added" },
   { id: "name-asc", label: "Name (a-z)" },
@@ -52,11 +43,6 @@ const GameResultsPage = () => {
   const searchQuery = searchParams.get('search') ?? undefined;
   const sorting = searchParams.get('sorting');
   const selectedSort = sortOptions.find(option => option.id === sorting) ?? sortOptions[0];
-  const selectedPlatforms = searchParams.get('platform')?.split(',').map(id => Number(id.trim())) ?? [];
-  const selectedGenres = searchParams.get('genres')?.split(',').map(id => Number(id.trim())) ?? [];
-  const selectedTimeToBeat = searchParams.get('timeToBeat')?.split(',').map(id => Number(id.trim())) ?? [];
-  const selectedTotalRating = searchParams.get('totalRating')?.split(',').map(id => Number(id.trim())) ?? [];
-  const selectedReleaseDate = searchParams.get('releaseDate')?.split(',').map(id => Number(id.trim())) ?? [];
   const limit = 20;
 
   const { games, resultsCount, isLoading } = useGameResults();
@@ -72,68 +58,6 @@ const GameResultsPage = () => {
     handleClearAll
   } = useFilterSelections();
   const [ resultsView, setResultsView ] = useState<'rows' | 'grid'>('rows');
-
-  console.log("useGameResults hook", games, resultsCount, isLoading)
-
-  useEffect(() => {
-    const getFilterCategories = async () => {
-      const response = await axios.get(`${baseServerUrl}/filters`);
-      const filtersData = response.data;
-      let platformFilters = filtersData.platform;
-
-      if (platformFamily) {
-        platformFilters = platformFilters.filter((p: SelectOption) => platformFamily.platformIds.includes(p.id));
-      }
-      setFilterCategories({ ...filtersData, platform: platformFilters });
-    }
-
-    void getFilterCategories();
-  }, [ platformFamily ]);
-
-
-  const handleFilterChange = (compoundId: string) => {
-    const [ category, id ] = compoundId.split('-')
-
-    const params = new URLSearchParams(searchParams);
-    const current = params.get(category)?.split(',').filter(Boolean) ?? [];
-    const updated = current.includes(String(id)) ? current.filter(s => s !== String(id)) : [ ...current, String(id) ];
-    if (updated.length === 0) {
-      params.delete(category);
-    }
-    else {
-      params.set(category, updated.toString());
-    }
-    params.delete('page');
-    setSearchParams(params, { replace: true });
-  }
-
-  const filterChips: SelectOption<string>[] = useMemo(() => {
-    const selectedFilters = new Set<SelectOption<string>>();
-
-    for (const [ key, valueString ] of searchParams.entries()) {
-      valueString.split(",").forEach(value => {
-        const compoundId = `${key}-${value}`;
-        const category: SelectOption[] | undefined = filterCategories[key as keyof FilterCategories];
-        const foundFilter = category?.find((filterItem) => filterItem.id === Number(value));
-
-        if (foundFilter) {
-          selectedFilters.add({ id: compoundId, label: foundFilter.label })
-        }
-      });
-    }
-
-    return [ ...selectedFilters ];
-  }, [ filterCategories, searchParams ]);
-
-  const handleClearAll = () => {
-    const params = new URLSearchParams(searchParams);
-    params.delete('platform');
-    params.delete('genres');
-    params.delete('timeToBeat');
-    params.delete('totalRating');
-    params.delete('releaseDate');
-    setSearchParams(params, { replace: true })
-  }
 
   const handleSortChange = (selectedOption: SelectOption<string>) => {
     const params = new URLSearchParams(searchParams);

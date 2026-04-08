@@ -9,8 +9,14 @@ const PLATFORM_BY_SLUG = {
   nintendo: { id: 5, name: 'Nintendo' },
 }
 
+type GameResults = {
+  games: any[],
+  resultsCount: number | undefined,
+  isLoading: boolean
+}
+
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
-const useGameResults = (): [ any[], number | undefined, boolean ] => {
+const useGameResults = (): GameResults => {
   const { platformFamilySlug } = useParams();
   const [ searchParams ] = useSearchParams();
 
@@ -69,7 +75,7 @@ const useGameResults = (): [ any[], number | undefined, boolean ] => {
 
   }, [ debouncedParams ]);
 
-  return [ games, resultsCount, isLoading ];
+  return { games, resultsCount, isLoading };
 }
 
 export default useGameResults;
