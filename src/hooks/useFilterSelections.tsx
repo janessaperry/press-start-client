@@ -1,24 +1,6 @@
-import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import useFilterCategories from "./useFilterCategories.tsx";
-
-type SelectOption<T extends string | number = number> = {
-  id: T,
-  label: string,
-}
-
-type FilterCategories = {
-  platformFamily?: SelectOption[],
-  platform?: SelectOption[],
-  genres?: SelectOption[],
-  timeToBeat?: SelectOption[],
-  totalRating?: SelectOption[]
-  releaseDate?: SelectOption[]
-}
 
 const useFilterSelections = () => {
-  const filterCategories = useFilterCategories();
-
   const [ searchParams, setSearchParams ] = useSearchParams();
 
   const selectedPlatforms = searchParams.get('platform')?.split(',').map(id => Number(id.trim())) ?? [];
@@ -26,9 +8,10 @@ const useFilterSelections = () => {
   const selectedTimeToBeat = searchParams.get('timeToBeat')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedTotalRating = searchParams.get('totalRating')?.split(',').map(id => Number(id.trim())) ?? [];
   const selectedReleaseDate = searchParams.get('releaseDate')?.split(',').map(id => Number(id.trim())) ?? [];
+  const selectedGameType = searchParams.get('gameType')?.split(',').map(id => Number(id.trim())) ?? [];
 
   const handleFilterChange = (compoundId: string) => {
-    const [ category, id ] = compoundId.split('-')
+    const [ category, id ] = compoundId.split('-');
 
     const params = new URLSearchParams(searchParams);
     const current = params.get(category)?.split(',').filter(Boolean) ?? [];
@@ -43,24 +26,6 @@ const useFilterSelections = () => {
     setSearchParams(params, { replace: true });
   }
 
-  const filterChips: SelectOption<string>[] = useMemo(() => {
-    const selectedFilters = new Set<SelectOption<string>>();
-
-    for (const [ key, valueString ] of searchParams.entries()) {
-      valueString.split(",").forEach(value => {
-        const compoundId = `${key}-${value}`;
-        const category: SelectOption[] | undefined = filterCategories[key as keyof FilterCategories];
-        const foundFilter = category?.find((filterItem) => filterItem.id === Number(value));
-
-        if (foundFilter) {
-          selectedFilters.add({ id: compoundId, label: foundFilter.label })
-        }
-      });
-    }
-
-    return [ ...selectedFilters ];
-  }, [ filterCategories, searchParams ]);
-
   const handleClearAll = () => {
     const params = new URLSearchParams(searchParams);
     params.delete('platform');
@@ -68,6 +33,7 @@ const useFilterSelections = () => {
     params.delete('timeToBeat');
     params.delete('totalRating');
     params.delete('releaseDate');
+    params.delete('gameType');
     setSearchParams(params, { replace: true })
   }
 
@@ -77,7 +43,7 @@ const useFilterSelections = () => {
     selectedTimeToBeat,
     selectedTotalRating,
     selectedReleaseDate,
-    filterChips,
+    selectedGameType,
     handleFilterChange,
     handleClearAll
   };

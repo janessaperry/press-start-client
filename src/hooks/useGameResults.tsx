@@ -29,6 +29,7 @@ const useGameResults = (): GameResults => {
     searchParams.get('releaseDate'),
     searchParams.get('timeToBeat'),
     searchParams.get('totalRating'),
+    searchParams.get('gameType'),
   ].join(',');
   const immediateParams = [
     searchParams.get('page'),

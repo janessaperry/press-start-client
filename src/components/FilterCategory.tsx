@@ -9,6 +9,7 @@ type SelectOption = {
 
 type Props = {
   title: string,
+  showTitle?: boolean,
   description?: string,
   filters: SelectOption[],
   paramName: string,
@@ -16,7 +17,15 @@ type Props = {
   handleChange: (id: string) => void
 }
 
-const FilterCategory = ({ title, description, filters, paramName, selectedFilters, handleChange }: Props) => {
+const FilterCategory = ({
+  title,
+  showTitle = true,
+  description,
+  filters,
+  paramName,
+  selectedFilters,
+  handleChange
+}: Props) => {
   const [ showAllFilters, setShowAllFilters ] = useState(false);
   const visibleFilters = filters.slice(0, 5);
   const hiddenFilters = filters.slice(5);
@@ -24,10 +33,12 @@ const FilterCategory = ({ title, description, filters, paramName, selectedFilter
   return (
     <>
       <Fieldset className="space-y-2">
-        <Legend className="font-bold flex flex-col">
-          {title}
-          {description && <span className="text-sm font-normal italic text-secondary-100">{description}</span>}
-        </Legend>
+        {showTitle &&
+          <Legend className="font-bold flex flex-col">
+            {title}
+            {description && <span className="text-sm font-normal italic text-secondary-100">{description}</span>}
+          </Legend>
+        }
         <div className="space-y-1">
           {visibleFilters.map((item: SelectOption, i) => {
             return (

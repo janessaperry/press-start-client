@@ -14,17 +14,18 @@ type SelectOption<T extends string | number = number> = {
   label: string,
 }
 
-type FilterCategories = {
+export type FilterCategories = {
   platformFamily?: SelectOption[],
   platform?: SelectOption[],
   genres?: SelectOption[],
   timeToBeat?: SelectOption[],
   totalRating?: SelectOption[]
   releaseDate?: SelectOption[]
+  gameType?: SelectOption[]
 }
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
-const useFilterCategories = () => {
+const useFilterCategories = (): FilterCategories => {
   const { platformFamilySlug } = useParams();
   const platformFamily = PLATFORM_FAMILY_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_FAMILY_BY_SLUG];
 

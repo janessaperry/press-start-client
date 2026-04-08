@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import {
   Button, Field, Label,
@@ -11,7 +11,7 @@ import FilterCategory from "../components/FilterCategory.tsx";
 import FilterChip from "../components/FilterChip.tsx";
 import Pagination from "../components/Pagination.tsx";
 
-import useFilterCategories from "../hooks/useFilterCategories.tsx";
+import useFilterCategories, { FilterCategories } from "../hooks/useFilterCategories.tsx";
 import useFilterSelections from "../hooks/useFilterSelections.tsx";
 import useGameResults from "../hooks/useGameResults.tsx";
 
@@ -53,7 +53,7 @@ const GameResultsPage = () => {
     selectedTimeToBeat,
     selectedTotalRating,
     selectedReleaseDate,
-    filterChips,
+    selectedGameType,
     handleFilterChange,
     handleClearAll
   } = useFilterSelections();
@@ -72,6 +72,24 @@ const GameResultsPage = () => {
     return `Explore games`;
   }
 
+  const filterChips: SelectOption<string>[] = useMemo(() => {
+    const selectedFilters = new Set<SelectOption<string>>();
+
+    for (const [ key, valueString ] of searchParams.entries()) {
+      valueString.split(",").forEach(value => {
+        const compoundId = `${key}-${value}`;
+        const category: SelectOption[] | undefined = filterCategories[key as keyof FilterCategories];
+        const foundFilter = category?.find((filterItem) => filterItem.id === Number(value));
+
+        if (foundFilter) {
+          selectedFilters.add({ id: compoundId, label: foundFilter.label })
+        }
+      });
+    }
+
+    return [ ...selectedFilters ];
+  }, [ filterCategories, searchParams ]);
+
   return (
     <>
       <div className="container px-4 md:px-10 pt-12 md:pt-24 pb-6 md:pb-12 space-y-4 md:space-y-16">
@@ -87,13 +105,13 @@ const GameResultsPage = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <section className="hidden md:sticky md:top-4 md:max-h-[calc(100dvh-2rem)] md:overflow-y-scroll md:block md:col-span-1 p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl space-y-4 md:space-y-6 scrollbar-on-dark">
             <h4>Filters</h4>
-            {/*{filterCategories.gameType && (*/}
-            {/*  <FilterCategory title="Console"*/}
-            {/*    filters={filterCategories.platform}*/}
-            {/*    selectedFilters={selectedPlatforms}*/}
-            {/*    paramName='platform'*/}
-            {/*    handleChange={handleFilterChange}/>*/}
-            {/*)}*/}
+            {filterCategories.gameType && (
+              <FilterCategory title="Game Type" showTitle={false}
+                filters={filterCategories.gameType}
+                selectedFilters={selectedGameType}
+                paramName='gameType'
+                handleChange={handleFilterChange}/>
+            )}
 
             {filterCategories.platform && (
               <FilterCategory title="Console"
