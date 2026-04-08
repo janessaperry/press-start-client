@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import axios from "axios";
 import {
   Button, Field, Label,
   Listbox, ListboxButton, ListboxOption, ListboxOptions,
@@ -12,14 +11,9 @@ import FilterCategory from "../components/FilterCategory.tsx";
 import FilterChip from "../components/FilterChip.tsx";
 import Pagination from "../components/Pagination.tsx";
 
+import useFilterCategories from "../hooks/useFilterCategories.tsx";
+import useFilterSelections from "../hooks/useFilterSelections.tsx";
 import useGameResults from "../hooks/useGameResults.tsx";
-
-// const PLATFORM_BY_SLUG = {
-//   playstation: { id: 1, name: 'PlayStation' },
-//   xbox: { id: 2, name: 'Xbox' },
-//   pc: { id: 4, name: 'PC' },
-//   nintendo: { id: 5, name: 'Nintendo' },
-// }
 
 const PLATFORM_FAMILY_BY_SLUG = {
   playstation: { label: "PlayStation", platformIds: [ 48, 167 ] },
@@ -50,7 +44,6 @@ const sortOptions = [
   { id: "releaseDate-asc", label: "Release Date (oldest first)" },
 ];
 
-const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const GameResultsPage = () => {
   const { platformFamilySlug } = useParams();
   const platformFamily = PLATFORM_FAMILY_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_FAMILY_BY_SLUG];
@@ -66,8 +59,18 @@ const GameResultsPage = () => {
   const selectedReleaseDate = searchParams.get('releaseDate')?.split(',').map(id => Number(id.trim())) ?? [];
   const limit = 20;
 
-  const [ games, resultsCount, isLoading ] = useGameResults();
-  const [ filterCategories, setFilterCategories ] = useState<FilterCategories>({});
+  const { games, resultsCount, isLoading } = useGameResults();
+  const filterCategories = useFilterCategories();
+  const {
+    selectedPlatforms,
+    selectedGenres,
+    selectedTimeToBeat,
+    selectedTotalRating,
+    selectedReleaseDate,
+    filterChips,
+    handleFilterChange,
+    handleClearAll
+  } = useFilterSelections();
   const [ resultsView, setResultsView ] = useState<'rows' | 'grid'>('rows');
 
   console.log("useGameResults hook", games, resultsCount, isLoading)
