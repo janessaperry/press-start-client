@@ -20,7 +20,7 @@ const Filters = ({ className }: Props) => {
   } = useFilterSelections();
 
   return (
-    <section className={`${className || ''} md:sticky md:top-4 md:max-h-[calc(100dvh-2rem)] md:overflow-y-scroll md:block md:col-span-1 p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl space-y-4 md:space-y-6 scrollbar-on-dark`}>
+    <section className={`${className || ''} p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl space-y-4 md:space-y-6 scrollbar-on-dark`}>
       <h4>Filters</h4>
       {filterCategories.gameType && (
         <FilterCategory title="Game Type" showTitle={false}

@@ -1,14 +1,16 @@
 import { useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { useParams, useSearchParams } from "react-router-dom";
 import {
   Button, Field, Label,
   Listbox, ListboxButton, ListboxOption, ListboxOptions,
 } from "@headlessui/react";
 import { CaretDownIcon, GridFourIcon, PencilSimpleLineIcon, RowsIcon, SlidersIcon } from "@phosphor-icons/react";
+import Filters from "../components/Filters.tsx";
 
 import GameCard, { GameOverview } from "../components/GameCard.tsx";
-import FilterCategory from "../components/FilterCategory.tsx";
 import FilterChip from "../components/FilterChip.tsx";
+import Modal from "../components/Modal.tsx";
 import Pagination from "../components/Pagination.tsx";
 
 import useFilterCategories, { FilterCategories } from "../hooks/useFilterCategories.tsx";
@@ -45,18 +47,10 @@ const GameResultsPage = () => {
   const selectedSort = sortOptions.find(option => option.id === sorting) ?? sortOptions[0];
   const limit = 20;
 
-  const { games, resultsCount, isLoading } = useGameResults();
+  const { games, resultsCount, isLoading } = useGameResults(limit);
   const filterCategories = useFilterCategories();
-  const {
-    selectedPlatforms,
-    selectedGenres,
-    selectedTimeToBeat,
-    selectedTotalRating,
-    selectedReleaseDate,
-    selectedGameType,
-    handleFilterChange,
-    handleClearAll
-  } = useFilterSelections();
+  const { handleFilterChange, handleClearAll } = useFilterSelections();
+  const [ filterModalOpen, setFilterModalOpen ] = useState(false);
   const [ resultsView, setResultsView ] = useState<'rows' | 'grid'>('rows');
 
   const handleSortChange = (selectedOption: SelectOption<string>) => {
@@ -90,6 +84,11 @@ const GameResultsPage = () => {
     return [ ...selectedFilters ];
   }, [ filterCategories, searchParams ]);
 
+  const openFilters = () => {
+    console.log("open filters on mobile");
+    setFilterModalOpen(true)
+  }
+
   return (
     <>
       <div className="container px-4 md:px-10 pt-12 md:pt-24 pb-6 md:pb-12 space-y-4 md:space-y-16">
@@ -103,57 +102,9 @@ const GameResultsPage = () => {
         </header>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <section className="hidden md:sticky md:top-4 md:max-h-[calc(100dvh-2rem)] md:overflow-y-scroll md:block md:col-span-1 p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl space-y-4 md:space-y-6 scrollbar-on-dark">
-            <h4>Filters</h4>
-            {filterCategories.gameType && (
-              <FilterCategory title="Game Type" showTitle={false}
-                filters={filterCategories.gameType}
-                selectedFilters={selectedGameType}
-                paramName='gameType'
-                handleChange={handleFilterChange}/>
-            )}
-
-            {filterCategories.platform && (
-              <FilterCategory title="Console"
-                filters={filterCategories.platform}
-                selectedFilters={selectedPlatforms}
-                paramName='platform'
-                handleChange={handleFilterChange}/>
-            )}
-
-            {filterCategories.releaseDate && (
-              <FilterCategory title="Release Date"
-                filters={filterCategories.releaseDate}
-                selectedFilters={selectedReleaseDate}
-                paramName='releaseDate'
-                handleChange={handleFilterChange}/>
-            )}
-
-            {filterCategories.totalRating && (
-              <FilterCategory title="Rating"
-                filters={filterCategories.totalRating}
-                selectedFilters={selectedTotalRating}
-                paramName='totalRating'
-                handleChange={handleFilterChange}/>
-            )}
-
-            {filterCategories.genres && (
-              <FilterCategory title="Genres"
-                filters={filterCategories.genres}
-                selectedFilters={selectedGenres}
-                paramName='genres'
-                handleChange={handleFilterChange}/>
-            )}
-
-            {filterCategories.timeToBeat && (
-              <FilterCategory title="Time to Beat" description="Based on 'normal' times."
-                filters={filterCategories.timeToBeat}
-                selectedFilters={selectedTimeToBeat}
-                paramName='timeToBeat'
-                handleChange={handleFilterChange}/>
-            )}
-          </section>
-
+          <Filters className="hidden md:sticky md:top-4 md:max-h-[calc(100dvh-2rem)] md:overflow-y-scroll md:block md:col-span-1"/>
+          {createPortal(<Modal modalOpen={filterModalOpen}
+            setModalOpen={setFilterModalOpen}><Filters/></Modal>, document.body)}
 
           <div className="col-span-2 md:col-span-3 space-y-4 md:space-y-6">
             <div className="space-y-4">
@@ -182,7 +133,7 @@ const GameResultsPage = () => {
                   </Listbox>
                 </Field>
 
-                <Button onClick={() => console.log("open filters on mobile")} className="button ghost md:hidden">
+                <Button onClick={openFilters} className="button ghost md:hidden">
                   <SlidersIcon weight="bold"/>Filters
                 </Button>
               </section>
