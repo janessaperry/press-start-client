@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
+import useIsMobile from "./useIsMobile.tsx";
 
 const PLATFORM_BY_SLUG = {
   playstation: { id: 1, name: 'PlayStation' },
@@ -16,12 +17,12 @@ type GameResults = {
 }
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
-const useGameResults = (): GameResults => {
+const useGameResults = (limit: number): GameResults => {
   const { platformFamilySlug } = useParams();
   const [ searchParams ] = useSearchParams();
+  const isMobile = useIsMobile();
 
   const currentPage = searchParams.get('page') ?? 1;
-  const limit = 20;
   const offset = (Number(currentPage) - 1) * limit;
   const debouncedParams = [
     searchParams.get('platform'),
@@ -68,13 +69,15 @@ const useGameResults = (): GameResults => {
   }, [ platformFamilySlug, immediateParams ]);
 
   useEffect(() => {
+    console.log("isMobile", isMobile);
+
+    if (isMobile) return;
     setIsLoading(true);
     const timeoutId = setTimeout(() => {
       void getGames();
     }, 1000);
     return () => clearTimeout(timeoutId);
-
-  }, [ debouncedParams ]);
+  }, [ debouncedParams, isMobile ]);
 
   return { games, resultsCount, isLoading };
 }
