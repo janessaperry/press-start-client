@@ -16,6 +16,7 @@ import Pagination from "../components/Pagination.tsx";
 import useFilterCategories, { FilterCategories } from "../hooks/useFilterCategories.tsx";
 import useFilterSelections from "../hooks/useFilterSelections.tsx";
 import useGameResults from "../hooks/useGameResults.tsx";
+import useIsMobile from "../hooks/useIsMobile.tsx";
 
 const PLATFORM_FAMILY_BY_SLUG = {
   playstation: { label: "PlayStation", platformIds: [ 48, 167 ] },
@@ -47,9 +48,10 @@ const GameResultsPage = () => {
   const selectedSort = sortOptions.find(option => option.id === sorting) ?? sortOptions[0];
   const limit = 20;
 
+  const isMobile = useIsMobile();
   const { games, resultsCount, isLoading } = useGameResults(limit);
   const filterCategories = useFilterCategories();
-  const { handleFilterChange, handleClearAll } = useFilterSelections();
+  const { selectedFilters, handleFilterChange, applyFilters, handleClearAll } = useFilterSelections();
   const [ filterModalOpen, setFilterModalOpen ] = useState(false);
   const [ resultsView, setResultsView ] = useState<'rows' | 'grid'>('rows');
 
@@ -84,11 +86,6 @@ const GameResultsPage = () => {
     return [ ...selectedFilters ];
   }, [ filterCategories, searchParams ]);
 
-  const openFilters = () => {
-    console.log("open filters on mobile");
-    setFilterModalOpen(true)
-  }
-
   return (
     <>
       <div className="container px-4 md:px-10 pt-12 md:pt-24 pb-6 md:pb-12 space-y-4 md:space-y-16">
@@ -102,9 +99,19 @@ const GameResultsPage = () => {
         </header>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <Filters className="hidden md:sticky md:top-4 md:max-h-[calc(100dvh-2rem)] md:overflow-y-scroll md:block md:col-span-1"/>
-          {createPortal(<Modal modalOpen={filterModalOpen}
-            setModalOpen={setFilterModalOpen}><Filters/></Modal>, document.body)}
+          <Filters selectedFilters={selectedFilters} handleFilterChange={handleFilterChange}
+            className="hidden md:sticky md:top-4 md:max-h-[calc(100dvh-2rem)] md:overflow-y-scroll md:block md:col-span-1"/>
+          {isMobile &&
+            createPortal(
+              <Modal modalOpen={filterModalOpen}
+                setModalOpen={setFilterModalOpen}
+                handleSubmit={applyFilters}
+                handleCancel={() => console.log("cancel filters")}>
+                <Filters selectedFilters={selectedFilters} handleFilterChange={handleFilterChange}/>
+              </Modal>,
+              document.body
+            )
+          }
 
           <div className="col-span-2 md:col-span-3 space-y-4 md:space-y-6">
             <div className="space-y-4">
@@ -133,7 +140,7 @@ const GameResultsPage = () => {
                   </Listbox>
                 </Field>
 
-                <Button onClick={openFilters} className="button ghost md:hidden">
+                <Button onClick={() => setFilterModalOpen(true)} className="button ghost md:hidden">
                   <SlidersIcon weight="bold"/>Filters
                 </Button>
               </section>

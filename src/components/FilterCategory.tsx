@@ -1,6 +1,7 @@
 import { Button, Checkbox, Field, Fieldset, Label, Legend } from "@headlessui/react";
 import { CheckIcon } from "@phosphor-icons/react";
 import { useState } from "react";
+import { SelectedFilters } from "../hooks/useFilterSelections.tsx";
 
 type SelectOption = {
   id: number,
@@ -12,8 +13,8 @@ type Props = {
   showTitle?: boolean,
   description?: string,
   filters: SelectOption[],
-  paramName: string,
   selectedFilters: number[],
+  paramName: keyof SelectedFilters,
   handleChange: (id: string) => void
 }
 
@@ -22,8 +23,8 @@ const FilterCategory = ({
   showTitle = true,
   description,
   filters,
-  paramName,
   selectedFilters,
+  paramName,
   handleChange
 }: Props) => {
   const [ showAllFilters, setShowAllFilters ] = useState(false);

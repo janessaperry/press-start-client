@@ -69,14 +69,18 @@ const useGameResults = (limit: number): GameResults => {
   }, [ platformFamilySlug, immediateParams ]);
 
   useEffect(() => {
-    console.log("isMobile", isMobile);
-
-    if (isMobile) return;
     setIsLoading(true);
-    const timeoutId = setTimeout(() => {
+    if (isMobile) {
       void getGames();
-    }, 1000);
-    return () => clearTimeout(timeoutId);
+    }
+    else {
+      const timeoutId = setTimeout(() => {
+        void getGames();
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
+    }
+
   }, [ debouncedParams, isMobile ]);
 
   return { games, resultsCount, isLoading };

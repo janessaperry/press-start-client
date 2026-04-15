@@ -1,23 +1,16 @@
 import { ComponentProps } from "react";
 import useFilterCategories from "../hooks/useFilterCategories.tsx";
-import useFilterSelections from "../hooks/useFilterSelections.tsx";
+import { SelectedFilters } from "../hooks/useFilterSelections.tsx";
 import FilterCategory from "./FilterCategory.tsx";
 
 type Props = {
+  selectedFilters: SelectedFilters,
+  handleFilterChange: (compoundId: string, syncUrl?: boolean) => void,
   className?: string
 } & ComponentProps<'section'>
 
-const Filters = ({ className }: Props) => {
+const Filters = ({ className, selectedFilters, handleFilterChange }: Props) => {
   const filterCategories = useFilterCategories();
-  const {
-    selectedPlatforms,
-    selectedGenres,
-    selectedTimeToBeat,
-    selectedTotalRating,
-    selectedReleaseDate,
-    selectedGameType,
-    handleFilterChange,
-  } = useFilterSelections();
 
   return (
     <section className={`${className || ''} p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl space-y-4 md:space-y-6 scrollbar-on-dark`}>
@@ -25,7 +18,7 @@ const Filters = ({ className }: Props) => {
       {filterCategories.gameType && (
         <FilterCategory title="Game Type" showTitle={false}
           filters={filterCategories.gameType}
-          selectedFilters={selectedGameType}
+          selectedFilters={selectedFilters.gameType}
           paramName='gameType'
           handleChange={handleFilterChange}/>
       )}
@@ -33,7 +26,7 @@ const Filters = ({ className }: Props) => {
       {filterCategories.platform && (
         <FilterCategory title="Console"
           filters={filterCategories.platform}
-          selectedFilters={selectedPlatforms}
+          selectedFilters={selectedFilters.platform}
           paramName='platform'
           handleChange={handleFilterChange}/>
       )}
@@ -41,7 +34,7 @@ const Filters = ({ className }: Props) => {
       {filterCategories.releaseDate && (
         <FilterCategory title="Release Date"
           filters={filterCategories.releaseDate}
-          selectedFilters={selectedReleaseDate}
+          selectedFilters={selectedFilters.releaseDate}
           paramName='releaseDate'
           handleChange={handleFilterChange}/>
       )}
@@ -49,7 +42,7 @@ const Filters = ({ className }: Props) => {
       {filterCategories.totalRating && (
         <FilterCategory title="Rating"
           filters={filterCategories.totalRating}
-          selectedFilters={selectedTotalRating}
+          selectedFilters={selectedFilters.totalRating}
           paramName='totalRating'
           handleChange={handleFilterChange}/>
       )}
@@ -57,7 +50,7 @@ const Filters = ({ className }: Props) => {
       {filterCategories.genres && (
         <FilterCategory title="Genres"
           filters={filterCategories.genres}
-          selectedFilters={selectedGenres}
+          selectedFilters={selectedFilters.genres}
           paramName='genres'
           handleChange={handleFilterChange}/>
       )}
@@ -65,7 +58,7 @@ const Filters = ({ className }: Props) => {
       {filterCategories.timeToBeat && (
         <FilterCategory title="Time to Beat" description="Based on 'normal' times."
           filters={filterCategories.timeToBeat}
-          selectedFilters={selectedTimeToBeat}
+          selectedFilters={selectedFilters.timeToBeat}
           paramName='timeToBeat'
           handleChange={handleFilterChange}/>
       )}
