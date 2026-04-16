@@ -99,8 +99,8 @@ const ExplorePage = () => {
 
   return (
     <>
-      <section className="px-4 py-20 bg-purple-700">
-        <div className="container flex flex-col gap-10">
+      <section className="px-4 py-10 md:py-20 bg-purple-700">
+        <div className="container flex flex-col gap-6 md:gap-10">
           <h1 className="text-center">Find your next game</h1>
 
           <search className="flex flex-col  gap-4">
@@ -123,9 +123,9 @@ const ExplorePage = () => {
         </div>
       </section>
 
-      <section className="container px-4 py-20 flex flex-col gap-10">
+      <section className="container px-4 py-10 md:py-20 flex flex-col gap-6 md:gap-10">
         <h2>Explore by platform</h2>
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           <Link to="/explore/xbox" className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
             <img src={XboxLogo} alt="View Xbox games" className="w-full"/>
           </Link>
@@ -144,14 +144,14 @@ const ExplorePage = () => {
       </section>
 
       {newRelease &&
-        <section className="container px-4 py-20 flex flex-col gap-10">
+        <section className="container px-4 py-10 md:py-20 flex flex-col gap-6 md:gap-10">
           <h2>New Releases</h2>
           <GameCarousel games={newRelease}/>
         </section>
       }
 
       {comingSoon &&
-        <section className="container px-4 py-20 flex flex-col gap-10">
+        <section className="container px-4 py-10 md:py-20 flex flex-col gap-6 md:gap-10">
           <h2>Coming Soon</h2>
           <GameCarousel games={comingSoon}/>
         </section>
