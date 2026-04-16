@@ -5,8 +5,8 @@ import { GhostIcon, UserCircleIcon } from "@phosphor-icons/react";
 import useAuth from "../hooks/useAuth.tsx";
 
 const Header = () => {
-  const {logout} = useAuth();
-  const getNavLinkClass = ({isActive}: {isActive: boolean}): string => {
+  const { logout } = useAuth();
+  const getNavLinkClass = ({ isActive }: { isActive: boolean }): string => {
     return `relative text-lg flex flex-col justify-start items-center 
     ${isActive ?
       "text-accent-300" :
@@ -16,17 +16,17 @@ const Header = () => {
 
   return (
     <header className="container">
-      <div className="max-w-xl mx-auto my-0 py-4 md:px-8 md:py-4">
+      <div className="max-w-xl mx-auto p-4 md:px-8 md:py-4">
         <nav className="flex items-center justify-between">
           <NavLink to="/" className="">
-            <img src={PressStartLogo} alt="Press Start Logo" className="max-w-[16rem]"/>
+            <img src={PressStartLogo} alt="Press Start Logo" className="max-w-[10rem] md:max-w-[16rem]"/>
           </NavLink>
 
-          <ul className="flex items-center gap-8 m-0 p-0">
-            <li className="m-0 p-0">
+          <ul className="flex items-center gap-3 md:gap-8">
+            <li>
               <NavLink to="/explore"
                 className={getNavLinkClass}>
-                {({isActive}) => (
+                {({ isActive }) => (
                   <>
                     Explore
                     {isActive && <GhostIcon weight="fill" size={12} className="absolute -bottom-3"/>}
@@ -34,10 +34,10 @@ const Header = () => {
                 )}
               </NavLink>
             </li>
-            <li className="m-0 p-0">
+            <li>
               <NavLink to="/collection"
                 className={getNavLinkClass}>
-                {({isActive}) => (
+                {({ isActive }) => (
                   <>
                     Collection
                     {isActive && <GhostIcon weight="fill" size={12} className="absolute -bottom-3"/>}
@@ -45,11 +45,10 @@ const Header = () => {
                 )}
               </NavLink>
             </li>
-
-            <li className="m-0 p-0">
-              <Popover className="">
-                <PopoverButton className="button secondary">
-                  <UserCircleIcon weight="duotone" className=""/>
+            <li>
+              <Popover>
+                <PopoverButton className="button secondary p-3 md:p-2">
+                  <UserCircleIcon weight="duotone" className="icon-md"/>
                 </PopoverButton>
 
                 <PopoverPanel className="bg-primary-500 p-2 mt-1 flex flex-col gap-1 rounded-xl shadow-md shadow-primary-900"

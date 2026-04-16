@@ -22,13 +22,13 @@ export type Result = {
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const ExplorePage = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [ searchParams ] = useSearchParams();
 
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<Result[]>([]);
-  const [showSearchResults, setShowSearchResults] = useState<boolean>(false);
-  const [newRelease, setNewRelease] = useState<GameOverview[]>([]);
-  const [comingSoon, setComingSoon] = useState<GameOverview[]>([]);
+  const [ searchQuery, setSearchQuery ] = useState<string>('');
+  const [ searchResults, setSearchResults ] = useState<Result[]>([]);
+  const [ showSearchResults, setShowSearchResults ] = useState<boolean>(false);
+  const [ newRelease, setNewRelease ] = useState<GameOverview[]>([]);
+  const [ comingSoon, setComingSoon ] = useState<GameOverview[]>([]);
 
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -75,7 +75,7 @@ const ExplorePage = () => {
     return () => {
       clearTimeout(timeoutId);
     }
-  }, [searchQuery]);
+  }, [ searchQuery ]);
 
 
   useEffect(() => {
@@ -103,8 +103,8 @@ const ExplorePage = () => {
         <div className="container flex flex-col gap-10">
           <h1 className="text-center">Find your next game</h1>
 
-          <search className="flex flex-col gap-4">
-            <form className="self-center w-full md:max-w-3/4 lg:max-w-1/2 flex gap-3"
+          <search className="flex flex-col  gap-4">
+            <form className="self-center w-full md:max-w-3/4 lg:max-w-1/2 flex items-center gap-3"
               onSubmit={handleSearchSubmit}>
               <Input name="search"
                 type="search"
@@ -112,8 +112,8 @@ const ExplorePage = () => {
                 onChange={e => handleSearchInput(e)}
                 value={searchQuery}
                 className="grow"/>
-              <Button type="submit" className="button primary">
-                <MagnifyingGlassIcon/>
+              <Button type="submit" className="button primary h-full aspect-square">
+                <MagnifyingGlassIcon className="icon-md"/>
               </Button>
             </form>
             {showSearchResults &&
