@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import useFilterCategories from "./useFilterCategories.tsx";
 import useIsMobile from "./useIsMobile.tsx";
 
 export type SelectedFilters = {
@@ -13,7 +14,9 @@ export type SelectedFilters = {
 
 const useFilterSelections = () => {
   const isMobile = useIsMobile();
+  const validFilters = useFilterCategories();
   const [ searchParams, setSearchParams ] = useSearchParams();
+
   const [ selectedFilters, setSelectedFilters ] = useState<SelectedFilters>({
     platform: searchParams.get('platform')?.split(',').map(id => Number(id.trim())) ?? [],
     genres: searchParams.get('genres')?.split(',').map(id => Number(id.trim())) ?? [],
@@ -22,6 +25,45 @@ const useFilterSelections = () => {
     releaseDate: searchParams.get('releaseDate')?.split(',').map(id => Number(id.trim())) ?? [],
     gameType: searchParams.get('gameType')?.split(',').map(id => Number(id.trim())) ?? [],
   });
+
+  useEffect(() => {
+    if (Object.keys(validFilters).length === 0) return;
+
+    let changed = false;
+
+    const params = new URLSearchParams(searchParams);
+    for (const [ key ] of searchParams.entries()) {
+      if (!Object.hasOwn(validFilters, key)) {
+        params.delete(key);
+        changed = true;
+        continue;
+      }
+
+      const typedKey = key as keyof SelectedFilters;
+      const validOptions = validFilters[typedKey];
+
+      if (validOptions && validOptions.length > 0) {
+        const currentValues = params.get(typedKey)?.split(',').filter(Boolean) ?? [];
+        const validValues = currentValues.filter(v =>
+          validOptions.some((opt: { id: number }) => opt.id === Number(v))
+        );
+
+        if (validValues.length !== currentValues.length) {
+          if (validValues.length > 0) {
+            params.set(typedKey, validValues.join(','));
+          }
+          else {
+            params.delete(typedKey);
+          }
+          changed = true;
+        }
+      }
+    }
+
+    if (changed) {
+      setSearchParams(params, { replace: true });
+    }
+  }, [ validFilters ]);
 
   const handleFilterChange = (compoundId: string, syncUrl: boolean = false) => {
     const [ category, idStr ] = compoundId.split('-') as [ keyof SelectedFilters, string ];
