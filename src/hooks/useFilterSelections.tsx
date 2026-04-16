@@ -68,7 +68,7 @@ const useFilterSelections = () => {
         params.delete(category);
       }
     }
-
+    params.delete('page')
     setSearchParams(params, { replace: true });
   }
 
@@ -89,7 +89,8 @@ const useFilterSelections = () => {
     params.delete('totalRating');
     params.delete('releaseDate');
     params.delete('gameType');
-    setSearchParams(params, { replace: true })
+    params.delete('page');
+    setSearchParams(params, { replace: true });
   }
 
   return {
