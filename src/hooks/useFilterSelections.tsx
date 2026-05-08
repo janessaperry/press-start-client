@@ -12,11 +12,12 @@ export type SelectedFilters = {
   gameType: number[],
 }
 
+const otherValidParams = new Set([ 'page', 'sorting', 'search' ]);
+
 const useFilterSelections = () => {
   const isMobile = useIsMobile();
   const validFilters = useFilterCategories();
   const [ searchParams, setSearchParams ] = useSearchParams();
-
   const [ selectedFilters, setSelectedFilters ] = useState<SelectedFilters>({
     platform: searchParams.get('platform')?.split(',').map(id => Number(id.trim())) ?? [],
     genres: searchParams.get('genres')?.split(',').map(id => Number(id.trim())) ?? [],
@@ -25,14 +26,32 @@ const useFilterSelections = () => {
     releaseDate: searchParams.get('releaseDate')?.split(',').map(id => Number(id.trim())) ?? [],
     gameType: searchParams.get('gameType')?.split(',').map(id => Number(id.trim())) ?? [],
   });
+  const [ selectedFilterOrder, setSelectedFilterOrder ] = useState<string[]>(getInitialFilterChipOrder);
 
+  function getInitialFilterChipOrder () {
+    const initialOrder: string[] = [];
+
+    [ ...searchParams ].forEach(param => {
+      const category = param[0];
+      const values = param[1].split(',');
+      let compoundId = '';
+      for (let i = 0; i < values.length; i++) {
+        compoundId = `${category}-${values[i]}`;
+        initialOrder.push(compoundId)
+      }
+    });
+    return initialOrder;
+  }
+
+  // sanitize search params against valid filter categories and options
   useEffect(() => {
     if (Object.keys(validFilters).length === 0) return;
 
     let changed = false;
-
     const params = new URLSearchParams(searchParams);
-    for (const [ key ] of searchParams.entries()) {
+    for (const [ key ] of params.entries()) {
+      if (otherValidParams.has(key)) continue;
+
       if (!Object.hasOwn(validFilters, key)) {
         params.delete(key);
         changed = true;
@@ -69,6 +88,15 @@ const useFilterSelections = () => {
     const [ category, idStr ] = compoundId.split('-') as [ keyof SelectedFilters, string ];
     const id = Number(idStr);
 
+    // in order of selection
+    if (selectedFilterOrder.includes(compoundId)) {
+      setSelectedFilterOrder(selectedFilterOrder.filter(id => id !== compoundId));
+    }
+    else {
+      setSelectedFilterOrder([ ...selectedFilterOrder, compoundId ]);
+    }
+
+    // by category
     const currentSelections = selectedFilters[category];
     if (currentSelections.includes(id)) {
       setSelectedFilters(prev => ({
@@ -124,6 +152,8 @@ const useFilterSelections = () => {
       gameType: [],
     });
 
+    setSelectedFilterOrder([]);
+
     const params = new URLSearchParams(searchParams);
     params.delete('platform');
     params.delete('genres');
@@ -137,6 +167,7 @@ const useFilterSelections = () => {
 
   return {
     selectedFilters,
+    selectedFilterOrder,
     handleFilterChange,
     applyFilters,
     handleClearAll

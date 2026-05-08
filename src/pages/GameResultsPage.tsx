@@ -51,7 +51,13 @@ const GameResultsPage = () => {
   const isMobile = useIsMobile();
   const { games, resultsCount, isLoading } = useGameResults(limit);
   const filterCategories = useFilterCategories();
-  const { selectedFilters, handleFilterChange, applyFilters, handleClearAll } = useFilterSelections();
+  const {
+    selectedFilters,
+    selectedFilterOrder,
+    handleFilterChange,
+    applyFilters,
+    handleClearAll
+  } = useFilterSelections();
   const [ filterModalOpen, setFilterModalOpen ] = useState(false);
   const [ resultsView, setResultsView ] = useState<'rows' | 'grid'>('rows');
 
@@ -71,20 +77,18 @@ const GameResultsPage = () => {
   const filterChips: SelectOption<string>[] = useMemo(() => {
     const selectedFilters = new Set<SelectOption<string>>();
 
-    for (const [ key, valueString ] of searchParams.entries()) {
-      valueString.split(",").forEach(value => {
-        const compoundId = `${key}-${value}`;
-        const category: SelectOption[] | undefined = filterCategories[key as keyof FilterCategories];
-        const foundFilter = category?.find((filterItem) => filterItem.id === Number(value));
+    for (let i = 0; i < selectedFilterOrder.length; i++) {
+      const currentId = selectedFilterOrder[i];
+      const [ category, value ] = currentId.split('-');
+      const categoryOptions: SelectOption[] | undefined = filterCategories[category as keyof FilterCategories];
 
-        if (foundFilter) {
-          selectedFilters.add({ id: compoundId, label: foundFilter.label })
-        }
-      });
+      const foundFilter = categoryOptions?.find((option) => option.id === Number(value));
+      if (foundFilter) {
+        selectedFilters.add({ id: selectedFilterOrder[i], label: foundFilter.label })
+      }
     }
-
     return [ ...selectedFilters ];
-  }, [ filterCategories, searchParams ]);
+  }, [ filterCategories, selectedFilterOrder ]);
 
   return (
     <>
