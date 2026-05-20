@@ -60,7 +60,7 @@ const GameResultsPage = () => {
     handleClearAll
   } = useFilterSelections();
   const [ filterModalOpen, setFilterModalOpen ] = useState(false);
-  const [ resultsView, setResultsView ] = useState<'rows' | 'grid'>('rows');
+  const [ resultsView, setResultsView ] = useState<'row' | 'grid'>('row');
 
   const handleSortChange = (selectedOption: SelectOption<string>) => {
     const params = new URLSearchParams(searchParams);
@@ -182,7 +182,7 @@ const GameResultsPage = () => {
                     <GridFourIcon size={24}/>
                   </button>
                   <button className={`p-1 aria-pressed:bg-accent-500/50`}
-                    onClick={() => setResultsView('rows')} aria-pressed={resultsView === 'rows'}>
+                    onClick={() => setResultsView('row')} aria-pressed={resultsView === 'row'}>
                     <RowsIcon size={24}/>
                   </button>
                 </div>
@@ -194,10 +194,10 @@ const GameResultsPage = () => {
               {!isLoading && games?.length === 0 && <TestingNoGames/>}
 
               {!isLoading &&
-                <div className="grid grid-cols-2 gap-4">
+                <div className={`grid gap-4 ${resultsView === 'grid' ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-2'}`}>
                   {games.map((game: GameOverview) => {
                     return (
-                      <GameCard key={game.id} gameOverview={game}/>
+                      <GameCard key={game.id} gameOverview={game} variant={resultsView}/>
                     )
                   })}
                 </div>
