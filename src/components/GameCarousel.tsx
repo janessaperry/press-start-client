@@ -3,7 +3,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { EmblaCarouselType } from 'embla-carousel'
 import { CaretLeftIcon, CaretRightIcon, CircleIcon } from "@phosphor-icons/react";
 import { PacmanIcon } from "@/components/icons";
-import { GameOverview } from "../pages/ExplorePage.tsx";
+import { GameOverview } from "./GameCard.tsx";
 import GameCard from "./GameCard.tsx";
 import ButtonIcon from "./ButtonIcon.tsx";
 
