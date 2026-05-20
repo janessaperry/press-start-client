@@ -53,9 +53,10 @@ const GameResultsPage = () => {
   const filterCategories = useFilterCategories();
   const {
     selectedFilters,
-    selectedFilterOrder,
+    committedOrder,
     handleFilterChange,
     applyFilters,
+    cancelFilters,
     handleClearAll
   } = useFilterSelections();
   const [ filterModalOpen, setFilterModalOpen ] = useState(false);
@@ -75,20 +76,20 @@ const GameResultsPage = () => {
   }
 
   const filterChips: SelectOption<string>[] = useMemo(() => {
-    const selectedFilters = new Set<SelectOption<string>>();
+    const chips = new Set<SelectOption<string>>();
 
-    for (let i = 0; i < selectedFilterOrder.length; i++) {
-      const currentId = selectedFilterOrder[i];
+    for (let i = 0; i < committedOrder.length; i++) {
+      const currentId = committedOrder[i];
       const [ category, value ] = currentId.split('-');
       const categoryOptions: SelectOption[] | undefined = filterCategories[category as keyof FilterCategories];
 
       const foundFilter = categoryOptions?.find((option) => option.id === Number(value));
       if (foundFilter) {
-        selectedFilters.add({ id: selectedFilterOrder[i], label: foundFilter.label })
+        chips.add({ id: committedOrder[i], label: foundFilter.label })
       }
     }
-    return [ ...selectedFilters ];
-  }, [ filterCategories, selectedFilterOrder ]);
+    return [ ...chips ];
+  }, [ filterCategories, committedOrder ]);
 
   return (
     <>
@@ -110,7 +111,7 @@ const GameResultsPage = () => {
               <Modal modalOpen={filterModalOpen}
                 setModalOpen={setFilterModalOpen}
                 handleSubmit={applyFilters}
-                handleCancel={() => console.log("cancel filters")}>
+                handleCancel={cancelFilters}>
                 <Filters selectedFilters={selectedFilters} handleFilterChange={handleFilterChange}/>
               </Modal>,
               document.body

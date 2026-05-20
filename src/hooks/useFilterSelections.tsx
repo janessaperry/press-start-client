@@ -26,7 +26,9 @@ const useFilterSelections = () => {
     releaseDate: searchParams.get('releaseDate')?.split(',').map(id => Number(id.trim())) ?? [],
     gameType: searchParams.get('gameType')?.split(',').map(id => Number(id.trim())) ?? [],
   });
-  const [ selectedFilterOrder, setSelectedFilterOrder ] = useState<string[]>(getInitialFilterChipOrder);
+
+  const [ pendingOrder, setPendingOrder ] = useState<string[]>(getInitialFilterChipOrder);
+  const [ committedOrder, setCommittedOrder ] = useState<string[]>(getInitialFilterChipOrder);
 
   function getInitialFilterChipOrder () {
     const initialOrder: string[] = [];
@@ -88,17 +90,7 @@ const useFilterSelections = () => {
     const [ category, idStr ] = compoundId.split('-') as [ keyof SelectedFilters, string ];
     const id = Number(idStr);
 
-    // in order of selection
-    if (selectedFilterOrder.includes(compoundId)) {
-      setSelectedFilterOrder(selectedFilterOrder.filter(id => id !== compoundId));
-    }
-    else {
-      setSelectedFilterOrder([ ...selectedFilterOrder, compoundId ]);
-    }
-
-    // by category
-    const currentSelections = selectedFilters[category];
-    if (currentSelections.includes(id)) {
+    if (selectedFilters[category].includes(id)) {
       setSelectedFilters(prev => ({
         ...prev,
         [category]: prev[category].filter(fId => id !== fId)
@@ -110,6 +102,11 @@ const useFilterSelections = () => {
         [category]: [ id, ...prev[category] ]
       }))
     }
+
+    const newOrder = pendingOrder.includes(compoundId)
+      ? pendingOrder.filter(id => id !== compoundId)
+      : [ ...pendingOrder, compoundId ];
+    setPendingOrder(newOrder);
 
     if (!isMobile || syncUrl) {
       const params = new URLSearchParams(searchParams);
@@ -123,7 +120,20 @@ const useFilterSelections = () => {
       }
       params.delete('page');
       setSearchParams(params, { replace: true });
+      setCommittedOrder(newOrder);
     }
+  }
+
+  const cancelFilters = () => {
+    setSelectedFilters({
+      platform: searchParams.get('platform')?.split(',').map(id => Number(id.trim())) ?? [],
+      genres: searchParams.get('genres')?.split(',').map(id => Number(id.trim())) ?? [],
+      timeToBeat: searchParams.get('timeToBeat')?.split(',').map(id => Number(id.trim())) ?? [],
+      totalRating: searchParams.get('totalRating')?.split(',').map(id => Number(id.trim())) ?? [],
+      releaseDate: searchParams.get('releaseDate')?.split(',').map(id => Number(id.trim())) ?? [],
+      gameType: searchParams.get('gameType')?.split(',').map(id => Number(id.trim())) ?? [],
+    });
+    setPendingOrder(committedOrder);
   }
 
   const applyFilters = () => {
@@ -138,8 +148,9 @@ const useFilterSelections = () => {
         params.delete(category);
       }
     }
-    params.delete('page')
+    params.delete('page');
     setSearchParams(params, { replace: true });
+    setCommittedOrder(pendingOrder);
   }
 
   const handleClearAll = () => {
@@ -152,7 +163,8 @@ const useFilterSelections = () => {
       gameType: [],
     });
 
-    setSelectedFilterOrder([]);
+    setPendingOrder([]);
+    setCommittedOrder([]);
 
     const params = new URLSearchParams(searchParams);
     params.delete('platform');
@@ -167,9 +179,10 @@ const useFilterSelections = () => {
 
   return {
     selectedFilters,
-    selectedFilterOrder,
+    committedOrder,
     handleFilterChange,
     applyFilters,
+    cancelFilters,
     handleClearAll
   };
 }
