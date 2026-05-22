@@ -1,9 +1,10 @@
 import { createContext } from "react";
 
 type AuthContextType = {
+  userId: string | null;
   token: string | null | undefined;
   isAuthenticated: boolean;
-  login: (token: string) => void;
+  login: (token: string, userId: string) => void;
   logout: () => void;
 }
 

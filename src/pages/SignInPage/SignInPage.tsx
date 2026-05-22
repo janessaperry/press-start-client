@@ -11,16 +11,16 @@ import useAuth from "../../hooks/useAuth.tsx";
 import { validateEmailFormat } from "../../utils/validators.ts";
 
 const SignInPage = () => {
-  const {login} = useAuth();
-  const [formData, setFormData] = useState({
+  const { login } = useAuth();
+  const [ formData, setFormData ] = useState({
     email: "",
     password: ""
   })
-  const [formErrors, setFormErrors] = useState({
+  const [ formErrors, setFormErrors ] = useState({
     email: "",
     password: ""
   })
-  const [authError, setAuthError] = useState(false);
+  const [ authError, setAuthError ] = useState(false);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -32,7 +32,7 @@ const SignInPage = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const {email, password} = formData;
+    const { email, password } = formData;
 
     const emailValid = validateEmailFormat(email);
     const isPasswordFilled = password !== "";
@@ -56,8 +56,10 @@ const SignInPage = () => {
     setAuthError(false);
 
     const token = response.data.token;
+    const userId = response.data.userId;
     localStorage.setItem('token', token);
-    login(token);
+    localStorage.setItem('userId', userId);
+    login(token, userId);
   }
 
   const logIn = async (email: string, password: string) => {
