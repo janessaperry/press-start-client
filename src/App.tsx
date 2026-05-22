@@ -7,7 +7,7 @@ import SignUpPage from "./pages/SignUpPage/SignUpPage.tsx";
 import SignInPage from "./pages/SignInPage/SignInPage.tsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage/ForgotPasswordPage.tsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage/ResetPasswordPage.tsx";
-import CollectionPage from "./pages/CollectionPage/CollectionPage.tsx";
+import CollectionPage from "./pages/CollectionPage.tsx";
 import ExplorePage from "./pages/ExplorePage.tsx";
 import GameResultsPage from "./pages/GameResultsPage.tsx";
 import GameDetailsPage from "./pages/GameDetailsPage.tsx";
