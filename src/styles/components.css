@@ -3,7 +3,7 @@
     @apply flex items-center justify-center gap-2 md:gap-3
     text-secondary-900 font-semibold
     px-3 md:px-4 py-2
-    border-none rounded-full
+    rounded-full
     focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
 
     &.primary {
@@ -16,7 +16,7 @@
 
     &.ghost {
       @apply text-grey-50
-      border border-solid border-interactive-primary hover:border-interactive-primary-hover
+      border border-interactive-primary hover:border-interactive-primary-hover
       bg-transparent hover:bg-interactive-primary-hover/10;
 
       &.muted {
@@ -30,7 +30,7 @@
 
     &.danger {
       @apply text-danger-900
-      bg-danger-500 hover:bg-danger-500
+      bg-danger-500 hover:bg-danger-600
       focus-visible:outline-danger-500;
     }
 

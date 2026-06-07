@@ -5,7 +5,7 @@ import { GhostIcon, UserCircleIcon } from "@phosphor-icons/react";
 import useAuth from "../hooks/useAuth.tsx";
 
 const Header = () => {
-  const { logout } = useAuth();
+  const { userId, logout } = useAuth();
   const getNavLinkClass = ({ isActive }: { isActive: boolean }): string => {
     return `relative text-lg flex flex-col justify-start items-center 
     ${isActive ?
@@ -35,32 +35,44 @@ const Header = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/collection"
+              <NavLink to="/my-games"
                 className={getNavLinkClass}>
                 {({ isActive }) => (
                   <>
-                    Collection
+                    My Games
                     {isActive && <GhostIcon weight="fill" size={12} className="absolute -bottom-3"/>}
                   </>
                 )}
               </NavLink>
             </li>
-            <li>
-              <Popover>
-                <PopoverButton className="button secondary p-3 md:p-2">
-                  <UserCircleIcon weight="duotone" className="icon-md"/>
-                </PopoverButton>
+            {userId &&
+              <li>
+                <Popover>
+                  <PopoverButton className="button secondary p-3 md:p-2">
+                    <UserCircleIcon weight="duotone" className="icon-md"/>
+                  </PopoverButton>
 
-                <PopoverPanel className="bg-primary-500 p-2 mt-1 flex flex-col gap-1 rounded-xl shadow-md shadow-primary-900"
-                  anchor='bottom end'>
+                  <PopoverPanel className="bg-primary-500 p-2 mt-1 flex flex-col gap-1 rounded-xl shadow-md shadow-primary-900"
+                    anchor='bottom end'>
 
-                  <NavLink to="/settings"
-                    className="px-4 py-2 rounded-md text-grey-50 hover:bg-primary-700">Settings</NavLink>
+                    <NavLink to="/settings"
+                      className="px-4 py-2 rounded-md text-grey-50 hover:bg-primary-700">Settings</NavLink>
 
-                  <Button className="button primary" onClick={logout}>Log out</Button>
-                </PopoverPanel>
-              </Popover>
-            </li>
+                    <Button className="button primary" onClick={logout}>Log out</Button>
+                  </PopoverPanel>
+                </Popover>
+              </li>
+            }
+            {userId === null &&
+              <>
+                <li>
+                  <NavLink to="/sign-in" className="button primary">Sign in</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/sign-up" className="link-primary">Create Account</NavLink>
+                </li>
+              </>
+            }
           </ul>
         </nav>
       </div>
