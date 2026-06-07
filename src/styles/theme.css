@@ -25,6 +25,7 @@
 
   --color-red-50: rgb(253, 217, 230);
   --color-red-500: rgb(253, 91, 118);
+  --color-red-600: rgb(246, 70, 94);
   --color-red-900: rgb(88, 16, 51);
 
   --color-yellow-500: rgb(255, 193, 7);
@@ -63,6 +64,7 @@
   --color-success: var(--color-green-500);
   --color-danger-50: var(--color-red-50);
   --color-danger-500: var(--color-red-500);
+  --color-danger-600: var(--color-red-600);
   --color-danger-900: var(--color-red-900);
   --color-error-50: var(--color-red-50);
   --color-error-500: var(--color-red-500);
