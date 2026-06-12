@@ -21,7 +21,9 @@ export type FilterCategories = {
   timeToBeat?: SelectOption[],
   totalRating?: SelectOption[]
   releaseDate?: SelectOption[]
-  gameType?: SelectOption[]
+  gameType?: SelectOption[],
+  libraryStatus?: SelectOption[],
+  libraryFormat?: SelectOption[],
 }
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;

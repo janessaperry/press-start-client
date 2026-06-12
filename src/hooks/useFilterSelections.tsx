@@ -10,7 +10,8 @@ export type SelectedFilters = {
   totalRating: number[],
   releaseDate: number[],
   gameType: number[],
-  libraryStatus: number[]
+  libraryStatus: number[],
+  libraryFormat: number[]
 }
 
 const otherValidParams = new Set([ 'page', 'sorting', 'search' ]);
@@ -27,6 +28,7 @@ const useFilterSelections = () => {
     releaseDate: searchParams.get('releaseDate')?.split(',').map(id => Number(id.trim())) ?? [],
     gameType: searchParams.get('gameType')?.split(',').map(id => Number(id.trim())) ?? [],
     libraryStatus: searchParams.get('libraryStatus')?.split(',').map(id => Number(id.trim())) ?? [],
+    libraryFormat: searchParams.get('libraryFormat')?.split(',').map(id => Number(id.trim())) ?? [],
   });
 
   const [ pendingOrder, setPendingOrder ] = useState<string[]>(getInitialFilterChipOrder);
@@ -134,6 +136,8 @@ const useFilterSelections = () => {
       totalRating: searchParams.get('totalRating')?.split(',').map(id => Number(id.trim())) ?? [],
       releaseDate: searchParams.get('releaseDate')?.split(',').map(id => Number(id.trim())) ?? [],
       gameType: searchParams.get('gameType')?.split(',').map(id => Number(id.trim())) ?? [],
+      libraryStatus: searchParams.get('libraryStatus')?.split(',').map(id => Number(id.trim())) ?? [],
+      libraryFormat: searchParams.get('libraryFormat')?.split(',').map(id => Number(id.trim())) ?? [],
     });
     setPendingOrder(committedOrder);
   }
@@ -163,6 +167,8 @@ const useFilterSelections = () => {
       totalRating: [],
       releaseDate: [],
       gameType: [],
+      libraryStatus: [],
+      libraryFormat: [],
     });
 
     setPendingOrder([]);
