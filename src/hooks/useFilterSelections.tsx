@@ -10,6 +10,7 @@ export type SelectedFilters = {
   totalRating: number[],
   releaseDate: number[],
   gameType: number[],
+  libraryStatus: number[]
 }
 
 const otherValidParams = new Set([ 'page', 'sorting', 'search' ]);
@@ -25,6 +26,7 @@ const useFilterSelections = () => {
     totalRating: searchParams.get('totalRating')?.split(',').map(id => Number(id.trim())) ?? [],
     releaseDate: searchParams.get('releaseDate')?.split(',').map(id => Number(id.trim())) ?? [],
     gameType: searchParams.get('gameType')?.split(',').map(id => Number(id.trim())) ?? [],
+    libraryStatus: searchParams.get('libraryStatus')?.split(',').map(id => Number(id.trim())) ?? [],
   });
 
   const [ pendingOrder, setPendingOrder ] = useState<string[]>(getInitialFilterChipOrder);
