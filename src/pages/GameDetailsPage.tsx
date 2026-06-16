@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Button, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
-import { ArrowRightIcon, CaretDownIcon, CircleIcon } from "@phosphor-icons/react";
+import { ArrowRightIcon, CaretDownIcon, CircleIcon, TrashSimpleIcon } from "@phosphor-icons/react";
+import ButtonIcon from "../components/ButtonIcon.tsx";
+import useAuth from "../hooks/useAuth.tsx";
+import useFilterCategories from "../hooks/useFilterCategories.tsx";
 
 import { getCoverUrl, getEsrbThumbnailUrl } from "../utils/images.ts";
 
@@ -71,19 +74,17 @@ type GameDetails = {
   }
 }
 
-const formats = [
-  { id: 1, label: "Digital" },
-  { id: 2, label: "Physical" },
-]
-
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 
 const GameDetailsPage = () => {
   const { gameId } = useParams();
+  const { userId } = useAuth();
+  const { libraryFormat, libraryStatus } = useFilterCategories();
 
   const [ loading, setLoading ] = useState<boolean>(true);
   const [ selectedPlatform, setSelectedPlatform ] = useState<ListboxOption>({ id: 0, label: "Select a console" });
   const [ selectedFormat, setSelectedFormat ] = useState<ListboxOption>({ id: 0, label: "Select a format" });
+  const [ selectedStatus, setSelectedStatus ] = useState<ListboxOption>({ id: 0, label: "Add to library" });
   const [ gameDetails, setGameDetails ] = useState<GameDetails | null>(null);
   const [ hasRelatedContent, setHasRelatedContent ] = useState<boolean>(false);
 
@@ -126,7 +127,55 @@ const GameDetailsPage = () => {
     void fetchGameDetails();
   }, [ gameId ]);
 
-  console.log(gameDetails);
+  useEffect(() => {
+    const fetchUserLibraryGame = async () => {
+      const response = await axios.get(`${baseServerUrl}/users/${userId}/library/${gameId}`);
+      const { libraryPlatform, libraryFormat, libraryStatus } = response.data;
+
+      const userLibraryGamePlatform = libraryPlatform ? {
+        id: libraryPlatform.id,
+        label: libraryPlatform.label
+      } : undefined;
+      const userLibraryGameFormat = libraryFormat ? { id: libraryFormat.id, label: libraryFormat.label } : undefined;
+      const userLibraryStatus = libraryStatus ? { id: libraryStatus.id, label: libraryStatus.label } : undefined;
+
+      if (userLibraryGamePlatform) setSelectedPlatform(userLibraryGamePlatform);
+      if (userLibraryGameFormat) setSelectedFormat(userLibraryGameFormat);
+      if (userLibraryStatus) setSelectedStatus(userLibraryStatus);
+    }
+
+    if (userId) void fetchUserLibraryGame();
+  }, [ gameId, userId ]);
+
+  // console.log(gameDetails);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!userId) {
+      console.log("you need to create an account");
+      return;
+    }
+
+    console.log('Add game to library', selectedFormat, selectedPlatform, selectedStatus);
+
+    const response = await axios.post(`${baseServerUrl}/users/${userId}/library`, {
+        gameId,
+        libraryPlatform: selectedPlatform,
+        libraryFormat: selectedFormat,
+        libraryStatus: selectedStatus
+      }
+      //add auth headers here
+    );
+    console.log("handleSubmit response", response);
+  }
+
+  const handleDelete = async () => {
+    await axios.delete(`${baseServerUrl}/users/${userId}/library/${gameId}`);
+    setSelectedPlatform({ id: 0, label: "Select a console" })
+    setSelectedFormat({ id: 0, label: "Select a format" })
+    setSelectedStatus({ id: 0, label: "Add to library" })
+  }
 
   const convertSecondsToHours = (seconds: number) => {
     return seconds / 60 / 60;
@@ -189,13 +238,13 @@ const GameDetailsPage = () => {
 
             <section className="p-6 bg-primary-300 rounded-3xl space-y-4">
               <header className="space-y-4">
-                <h2>Add to / Manage collection</h2>
+                <h2>Add to Library / Manage in Library</h2>
                 <p className="text-sm italic">Select the console and format you own the game in and add to you
-                  collection, or just add it to your wishlist.
+                  library, or just add it to your wishlist.
                 </p>
               </header>
 
-              <form className="flex flex-col gap-4">
+              <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <div className="flex gap-4">
                   <Listbox value={selectedPlatform} onChange={setSelectedPlatform} by="id">
                     <ListboxButton className="flex-1 button ghost justify-between">
@@ -207,7 +256,7 @@ const GameDetailsPage = () => {
                       {gameDetails.platforms.map((item) => (
                         <ListboxOption key={item.id}
                           value={item}
-                          className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg"
+                          className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
                         >
                           {item.label}
                         </ListboxOption>
@@ -222,10 +271,9 @@ const GameDetailsPage = () => {
 
                     <ListboxOptions anchor="bottom end"
                       className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
-                      {formats.map((item: ListboxOption) => (
-                        <ListboxOption key={item.id}
-                          value={item}
-                          className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg"
+                      {libraryFormat?.map((item: ListboxOption) => (
+                        <ListboxOption key={item.id} value={item}
+                          className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
                         >
                           {item.label}
                         </ListboxOption>
@@ -234,7 +282,29 @@ const GameDetailsPage = () => {
                   </Listbox>
                 </div>
 
-                <Button className="button primary">Add Game</Button>
+                <div className="flex gap-4">
+                  <Button className="button primary grow" type="submit">Add Game</Button>
+
+                  <Listbox value={selectedStatus} onChange={setSelectedStatus} by="id">
+                    <ListboxButton className="button primary justify-between grow">
+                      {selectedStatus.label} <CaretDownIcon weight="bold"/>
+                    </ListboxButton>
+
+                    <ListboxOptions anchor="bottom end"
+                      className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
+                      {libraryStatus?.map((item: ListboxOption) => (
+                        <ListboxOption key={item.id} value={item}
+                          className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
+                        >
+                          {item.label}
+                        </ListboxOption>
+                      ))}
+                    </ListboxOptions>
+                  </Listbox>
+
+                  <ButtonIcon handleClick={handleDelete} icon={TrashSimpleIcon} variant="danger"
+                    className="border border-danger-900" type="button"/>
+                </div>
               </form>
             </section>
           </div>

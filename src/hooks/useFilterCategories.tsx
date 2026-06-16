@@ -9,8 +9,8 @@ const PLATFORM_FAMILY_BY_SLUG = {
   nintendo: { label: "Nintendo", platformIds: [ 130, 508 ] },
 }
 
-type SelectOption<T extends string | number = number> = {
-  id: T,
+type SelectOption = {
+  id: number,
   label: string,
 }
 
