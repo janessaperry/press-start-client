@@ -1,30 +1,21 @@
-// Libraries
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
-// Layouts
-// Route Logic
-// Components & Assets
-import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import { Button, Fieldset } from "@headlessui/react";
 import { CheckCircleIcon } from "@phosphor-icons/react";
+
+import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import TextInput from "../../components/TextInput.tsx";
 
-// Utils
-// import useAuth from "../../hooks/useAuth.tsx";
 import { validateEmailFormat } from "../../utils/validators.ts";
-
-// Styles
-// import styles from "./ForgotPasswordPage.module.css"
 
 const ForgotPasswordPage = () => {
   // const { login } = useAuth();
-  const [email, setEmail] = useState("")
-  const [emailError, setEmailError] = useState("")
-  const [linkSent, setLinkSent] = useState(false);
-  const [rateLimitHit, setRateLimitHit] = useState(false);
-  const [countdown, setCountdown] = useState<number>(0);
+  const [ email, setEmail ] = useState("")
+  const [ emailError, setEmailError ] = useState("")
+  const [ linkSent, setLinkSent ] = useState(false);
+  const [ rateLimitHit, setRateLimitHit ] = useState(false);
+  const [ countdown, setCountdown ] = useState<number>(0);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -81,7 +72,7 @@ const ForgotPasswordPage = () => {
     }, 1000);
 
     return () => clearInterval(interval)
-  }, [countdown])
+  }, [ countdown ])
 
   return (
     <>

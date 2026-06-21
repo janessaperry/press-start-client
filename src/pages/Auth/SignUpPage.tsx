@@ -1,40 +1,28 @@
-// Libraries
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
-// Layouts
-
-// Route Logic
-
-// Components & Assets
-import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import { Button, Fieldset } from "@headlessui/react";
+import { ArrowRightIcon, WarningCircleIcon } from "@phosphor-icons/react";
 
-// Utils
 import useAuth from "../../hooks/useAuth.tsx";
 import { validateEmailFormat, validatePasswordFormat } from "../../utils/validators.ts";
 
-// Pages
-
-// Styles
-import styles from "./SignUpPage.module.css"
+import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import TextInput from "../../components/TextInput.tsx";
-import { ArrowRightIcon, WarningCircleIcon } from "@phosphor-icons/react";
 
 const SignUpPage = () => {
-  const {login} = useAuth();
-  const [formData, setFormData] = useState({
+  const { login } = useAuth();
+  const [ formData, setFormData ] = useState({
     email: "",
     password: "",
     confirmPassword: ""
   });
-  const [formErrors, setFormErrors] = useState({
+  const [ formErrors, setFormErrors ] = useState({
     email: "",
     password: "",
     confirmPassword: ""
   })
-  const [authError, setAuthError] = useState(false);
+  const [ authError, setAuthError ] = useState(false);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -75,8 +63,10 @@ const SignUpPage = () => {
       });
 
       const token = response.data.token;
+      const userId = response.data.userId;
       localStorage.setItem('token', token);
-      login(token);
+      localStorage.setItem('userId', userId);
+      login(token, userId);
     }
     catch (e) {
       setAuthError(true);
@@ -90,7 +80,7 @@ const SignUpPage = () => {
     <>
       <main className="h-screen">
         <div className="h-full flex">
-          <div className={`hidden md:inline-block flex-1 p-12 ${styles.imageContainer}`}>
+          <div className="hidden md:inline-block flex-1 p-12 bg-[url(/src/assets/images/sign-up-bg-v2.jpg)] bg-cover bg-no-repeat bg-right">
             <img src={PressStartLogo} alt="Press Start logo"/>
           </div>
 

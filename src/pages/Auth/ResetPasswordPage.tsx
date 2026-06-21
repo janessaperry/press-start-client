@@ -20,12 +20,12 @@ import { validatePasswordFormat } from "../../utils/validators.ts";
 
 const ResetPasswordPage = () => {
   const baseServerUrl = import.meta.env.VITE_SERVER_URL;
-  const [searchParams] = useSearchParams();
+  const [ searchParams ] = useSearchParams();
   const token = searchParams.get("token") || null;
   const navigate = useNavigate();
 
-  const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [ password, setPassword ] = useState("");
+  const [ passwordError, setPasswordError ] = useState("");
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
