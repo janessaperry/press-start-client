@@ -1,7 +1,7 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { Button, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 import { ArrowRightIcon, CaretDownIcon, CircleIcon, TrashSimpleIcon } from "@phosphor-icons/react";
 import ButtonIcon from "../components/ButtonIcon.tsx";
 import useAuth from "../hooks/useAuth.tsx";
@@ -87,6 +87,7 @@ const GameDetailsPage = () => {
   const [ selectedStatus, setSelectedStatus ] = useState<ListboxOption>({ id: 0, label: "Add to library" });
   const [ gameDetails, setGameDetails ] = useState<GameDetails | null>(null);
   const [ hasRelatedContent, setHasRelatedContent ] = useState<boolean>(false);
+  const [ inLibrary, setInLibrary ] = useState(false);
 
   function formatReleaseDate (dateIso: string | null): string {
     if (!dateIso) return 'Release date unknown';
@@ -130,8 +131,9 @@ const GameDetailsPage = () => {
   useEffect(() => {
     const fetchUserLibraryGame = async () => {
       const response = await axios.get(`${baseServerUrl}/users/${userId}/library/${gameId}`);
-      const { libraryPlatform, libraryFormat, libraryStatus } = response.data;
+      setInLibrary(true);
 
+      const { libraryPlatform, libraryFormat, libraryStatus } = response.data;
       const userLibraryGamePlatform = libraryPlatform ? {
         id: libraryPlatform.id,
         label: libraryPlatform.label
@@ -142,39 +144,67 @@ const GameDetailsPage = () => {
       if (userLibraryGamePlatform) setSelectedPlatform(userLibraryGamePlatform);
       if (userLibraryGameFormat) setSelectedFormat(userLibraryGameFormat);
       if (userLibraryStatus) setSelectedStatus(userLibraryStatus);
+      console.log(userLibraryStatus)
     }
 
     if (userId) void fetchUserLibraryGame();
   }, [ gameId, userId ]);
 
-  // console.log(gameDetails);
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const handleSubmit = async (selectedStatus: ListboxOption) => {
     if (!userId) {
       console.log("you need to create an account");
       return;
     }
 
-    console.log('Add game to library', selectedFormat, selectedPlatform, selectedStatus);
+    const payload = {
+      gameId,
+      libraryPlatform: selectedPlatform,
+      libraryFormat: selectedFormat,
+      libraryStatus: selectedStatus
+    }
+    const response = await axios.post(`${baseServerUrl}/users/${userId}/library`, payload);
+    if (response.status === 201) {
+      setInLibrary(true);
+    }
+  }
 
-    const response = await axios.post(`${baseServerUrl}/users/${userId}/library`, {
-        gameId,
-        libraryPlatform: selectedPlatform,
-        libraryFormat: selectedFormat,
-        libraryStatus: selectedStatus
-      }
-      //add auth headers here
-    );
-    console.log("handleSubmit response", response);
+  const handleUpdate = async (updatedField: Partial<{
+    libraryPlatform: ListboxOption;
+    libraryFormat: ListboxOption;
+    libraryStatus: ListboxOption;
+  }>) => {
+
+    const response = await axios.patch(`${baseServerUrl}/users/${userId}/library/${gameId}`, updatedField);
+    console.log("handleUpdate response:", response);
   }
 
   const handleDelete = async () => {
     await axios.delete(`${baseServerUrl}/users/${userId}/library/${gameId}`);
+    setInLibrary(false);
     setSelectedPlatform({ id: 0, label: "Select a console" })
     setSelectedFormat({ id: 0, label: "Select a format" })
     setSelectedStatus({ id: 0, label: "Add to library" })
+  }
+
+  const onStatusChange = async (selectedStatus: ListboxOption) => {
+    setSelectedStatus(selectedStatus);
+
+    if (!inLibrary) {
+      await handleSubmit(selectedStatus);
+    }
+    else {
+      await handleUpdate({ libraryStatus: selectedStatus })
+    }
+  }
+
+  const onPlatformChange = async (selectedPlatform: ListboxOption) => {
+    setSelectedPlatform(selectedPlatform);
+    if (inLibrary) await handleUpdate({ libraryPlatform: selectedPlatform });
+  }
+
+  const onFormatChange = async (selectedFormat: ListboxOption) => {
+    setSelectedFormat(selectedFormat);
+    if (inLibrary) await handleUpdate({ libraryFormat: selectedFormat })
   }
 
   const convertSecondsToHours = (seconds: number) => {
@@ -238,15 +268,17 @@ const GameDetailsPage = () => {
 
             <section className="p-6 bg-primary-300 rounded-3xl space-y-4">
               <header className="space-y-4">
-                <h2>Add to Library / Manage in Library</h2>
+                <h2>{inLibrary ? "Manage Game in Library" : "Add to Library"}</h2>
                 <p className="text-sm italic">Select the console and format you own the game in and add to you
                   library, or just add it to your wishlist.
                 </p>
               </header>
 
-              <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+              <form className="flex flex-col gap-4">
                 <div className="flex gap-4">
-                  <Listbox value={selectedPlatform} onChange={setSelectedPlatform} by="id">
+                  <Listbox value={selectedPlatform}
+                    onChange={(selectedPlatform) => onPlatformChange(selectedPlatform)}
+                    by="id">
                     <ListboxButton className="flex-1 button ghost justify-between">
                       {selectedPlatform.label} <CaretDownIcon weight="bold"/>
                     </ListboxButton>
@@ -264,7 +296,7 @@ const GameDetailsPage = () => {
                     </ListboxOptions>
                   </Listbox>
 
-                  <Listbox value={selectedFormat} onChange={setSelectedFormat} by="id">
+                  <Listbox value={selectedFormat} onChange={(selectedFormat) => onFormatChange(selectedFormat)} by="id">
                     <ListboxButton className="flex-1 button ghost justify-between">
                       {selectedFormat.label} <CaretDownIcon weight="bold"/>
                     </ListboxButton>
@@ -283,9 +315,8 @@ const GameDetailsPage = () => {
                 </div>
 
                 <div className="flex gap-4">
-                  <Button className="button primary grow" type="submit">Add Game</Button>
-
-                  <Listbox value={selectedStatus} onChange={setSelectedStatus} by="id">
+                  <Listbox value={selectedStatus}
+                    onChange={(selectedStatus) => onStatusChange(selectedStatus)} by="id">
                     <ListboxButton className="button primary justify-between grow">
                       {selectedStatus.label} <CaretDownIcon weight="bold"/>
                     </ListboxButton>
@@ -302,8 +333,10 @@ const GameDetailsPage = () => {
                     </ListboxOptions>
                   </Listbox>
 
-                  <ButtonIcon handleClick={handleDelete} icon={TrashSimpleIcon} variant="danger"
-                    className="border border-danger-900" type="button"/>
+                  {inLibrary &&
+                    <ButtonIcon handleClick={handleDelete} icon={TrashSimpleIcon}
+                      variant="danger" className="border border-danger-900" type="button"/>
+                  }
                 </div>
               </form>
             </section>
