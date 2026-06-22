@@ -1,23 +1,51 @@
+import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from "@headlessui/react";
+import { CaretDownIcon } from "@phosphor-icons/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import GameCard from "../components/GameCard.tsx";
 import useAuth from "../hooks/useAuth.tsx";
+import useFilterCategories from "../hooks/useFilterCategories.tsx";
+import { getCoverUrl } from "../utils/images.ts";
+import { SelectOption } from "./GameDetailsPage.tsx";
+import GameCard, { GameOverview } from "../components/GameCard.tsx";
+
+type LibraryStatusEnum = 'WANT_TO_PLAY' | 'PLAYING' | 'PLAYED' | 'ON_PAUSE' | 'WISHLIST';
+type LibraryFormatEnum = 'DIGITAL' | 'PHYSICAL';
+type LibraryGame = {
+  libraryStatus: SelectOption & { enum: LibraryStatusEnum };
+  libraryFormat: SelectOption & { enum: LibraryFormatEnum };
+  libraryPlatform: SelectOption;
+  gameOverview: GameOverview;
+}
+type LibraryCounts = {
+  label: string;
+  count: number;
+}
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
+
 const LibraryPage = () => {
   const { userId } = useAuth();
   const [ libraryGames, setLibraryGames ] = useState([]);
-
+  const [ currentlyPlaying, setCurrentlyPlaying ] = useState([]);
+  const [ libraryCounts, setLibraryCounts ] = useState<LibraryCounts[]>([]);
+  const [ libraryTotalCount, setLibraryTotalCount ] = useState(0);
+  const { libraryStatusOptions = [] } = useFilterCategories();
 
   useEffect(() => {
     const getLibrary = async () => {
       const response = await axios.get(`${baseServerUrl}/users/${userId}/library`);
-      setLibraryGames(response.data.library);
-      console.log("LIBRARY RESPONSE", response.data)
+      const libraryGames = response.data.library;
+      setLibraryGames(libraryGames);
+
+      const playing = libraryGames.filter((game: LibraryGame) => game.libraryStatus?.enum === 'PLAYING');
+      setCurrentlyPlaying(playing);
+
+      setLibraryCounts(response.data.libraryStatusCounts);
+      setLibraryTotalCount(response.data.libraryTotalCount)
     }
 
     void getLibrary();
-  }, [ userId ]);
+  }, [ userId, libraryStatusOptions ]);
 
 
   return (
@@ -27,36 +55,64 @@ const LibraryPage = () => {
           <h1 className="">My Games</h1>
         </header>
 
-        <div>
-          <section>
-            <h2>Stats • 24 Games</h2>
+        <div className="flex flex-col md:flex-row gap-4 md:gap-10">
+          <section className="md:w-1/4">
+            <h4>My Library • {libraryTotalCount} Games</h4>
             <ul>
-              <li>Playing</li>
-              <li>Want to Play</li>
-              <li>Played</li>
-              <li>On Pause</li>
-              <li>Wishlist</li>
+              {libraryCounts.map(count => (
+                <li key={count.label} className="flex justify-between gap-4">
+                  <span>{count.label}</span>
+                  <span>{count.count}</span>
+                </li>
+              ))}
             </ul>
           </section>
 
-          <section>
+          <section className="md:w-3/4 p-4 space-y-4 md:p-6 border border-accent-300/20 rounded-2xl">
             <h2>Currently Playing</h2>
-            <div>
-              <article>
-                <img className="max-w-24 rounded-xl" src="https://placecats.com/louie/229/305" alt="UPDATE"/>
-                <h3>Simplified Game Card</h3>
-                Dropdown for status here
-              </article>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
+              {currentlyPlaying.length > 0 ? (
+                currentlyPlaying.map((game: LibraryGame) => (
+                  <article key={game.gameOverview.id} className="col-span-1 space-y-2">
+                    <img className="w-full rounded-xl"
+                      src={getCoverUrl(game.gameOverview.coverId)}
+                      alt={`${game.gameOverview.name} cover`}/>
+
+                    <div className="flex">
+                      <Listbox value={game.libraryStatus}
+                        onChange={(selectedStatus) => console.log(selectedStatus)} by="id">
+                        <ListboxButton className="button primary justify-between grow">
+                          {game.libraryStatus.label} <CaretDownIcon weight="bold"/>
+                        </ListboxButton>
+
+                        <ListboxOptions anchor="bottom end"
+                          className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
+                          {libraryStatusOptions?.map((item: SelectOption) => (
+                            <ListboxOption key={item.id} value={item}
+                              className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
+                            >
+                              {item.label}
+                            </ListboxOption>
+                          ))}
+                        </ListboxOptions>
+                      </Listbox>
+                    </div>
+                  </article>
+                ))
+              ) : (
+                <p>Empty state</p>
+              )}
             </div>
           </section>
         </div>
 
         <div>
           <h2>My Games</h2>
-          <div>
-            {libraryGames.map((game) => (
-              <div key={game.igdbGameId}>{game.igdbGameId} {game.status} {game.gameDetails.name} | {game.libraryPlatform?.abbreviation}</div>
-            ))}
+          <div className="grid grid-cols-2 gap-4">
+            {libraryGames.map((game: LibraryGame) => {
+              return <GameCard key={game.gameOverview.id} gameOverview={game.gameOverview}/>
+            })}
+            {/* todo add empty state */}
           </div>
         </div>
       </div>
