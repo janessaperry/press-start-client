@@ -15,62 +15,63 @@ import InfoChipList from "../components/InfoChipList.tsx";
 import GameCoverList from "../components/GameCoverList.tsx";
 import { BadgeNumber, BadgeText } from "../components/Badge.tsx";
 
-type ListboxOption = {
-  id: number,
-  label: string
+export type SelectOption = {
+  id: number;
+  label: string;
+  enum?: string;
 }
 
 export type GameThumbnail = {
-  id: number,
-  name: string,
-  slug: string,
-  coverId: string | null
+  id: number;
+  name: string;
+  slug: string;
+  coverId: string | null;
 }
 
 type GameDetails = {
-  id: number,
-  name: string,
-  coverId: string | null,
-  releaseDate: string | null,
-  slug: string,
-  summary: string,
-  totalRating: number | null,
+  id: number;
+  name: string;
+  coverId: string | null;
+  releaseDate: string | null;
+  slug: string;
+  summary: string;
+  totalRating: number | null;
   gameType: {
-    id: number,
-    label: string
-  },
-  developers: string[],
-  publishers: string[],
+    id: number;
+    label: string;
+  };
+  developers: string[];
+  publishers: string[];
   timeToBeat: {
     times: {
-      label: string,
-      value: number | null
-    }[],
-    count: number | null,
-  } | null,
-  screenshotIds: string[],
-  esrbRating: string,
-  esrbThumbnailId: string,
-  esrbDescriptions: string[],
+      label: string;
+      value: number | null;
+    }[];
+    count: number | null;
+  } | null;
+  screenshotIds: string[];
+  esrbRating: string;
+  esrbThumbnailId: string;
+  esrbDescriptions: string[];
   platforms: {
-    id: number,
-    label: string,
-  }[],
-  genres: ListboxOption[],
+    id: number;
+    label: string;
+  }[];
+  genres: SelectOption[];
   collections: {
-    id: number,
-    name: string,
-    games: GameThumbnail[]
-  }[],
+    id: number;
+    name: string;
+    games: GameThumbnail[];
+  }[];
   franchises: {
-    id: number,
-    name: string,
-    games: GameThumbnail[]
-  }[],
-  baseGame: GameThumbnail,
+    id: number;
+    name: string;
+    games: GameThumbnail[];
+  }[];
+  baseGame: GameThumbnail;
   relatedContent: {
-    expansions: GameThumbnail[],
-    dlcs: GameThumbnail[]
+    expansions: GameThumbnail[];
+    dlcs: GameThumbnail[];
   }
 }
 
@@ -79,12 +80,12 @@ const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const GameDetailsPage = () => {
   const { gameId } = useParams();
   const { userId } = useAuth();
-  const { libraryFormat, libraryStatus } = useFilterCategories();
+  const { libraryFormatOptions, libraryStatusOptions } = useFilterCategories();
 
   const [ loading, setLoading ] = useState<boolean>(true);
-  const [ selectedPlatform, setSelectedPlatform ] = useState<ListboxOption>({ id: 0, label: "Select a console" });
-  const [ selectedFormat, setSelectedFormat ] = useState<ListboxOption>({ id: 0, label: "Select a format" });
-  const [ selectedStatus, setSelectedStatus ] = useState<ListboxOption>({ id: 0, label: "Add to library" });
+  const [ selectedPlatform, setSelectedPlatform ] = useState<SelectOption>({ id: 0, label: "Select a console" });
+  const [ selectedFormat, setSelectedFormat ] = useState<SelectOption>({ id: 0, label: "Select a format" });
+  const [ selectedStatus, setSelectedStatus ] = useState<SelectOption>({ id: 0, label: "Add to library" });
   const [ gameDetails, setGameDetails ] = useState<GameDetails | null>(null);
   const [ hasRelatedContent, setHasRelatedContent ] = useState<boolean>(false);
   const [ inLibrary, setInLibrary ] = useState(false);
@@ -150,7 +151,7 @@ const GameDetailsPage = () => {
     if (userId) void fetchUserLibraryGame();
   }, [ gameId, userId ]);
 
-  const handleSubmit = async (selectedStatus: ListboxOption) => {
+  const handleSubmit = async (selectedStatus: SelectOption) => {
     if (!userId) {
       console.log("you need to create an account");
       return;
@@ -169,9 +170,9 @@ const GameDetailsPage = () => {
   }
 
   const handleUpdate = async (updatedField: Partial<{
-    libraryPlatform: ListboxOption;
-    libraryFormat: ListboxOption;
-    libraryStatus: ListboxOption;
+    libraryPlatform: SelectOption;
+    libraryFormat: SelectOption;
+    libraryStatus: SelectOption;
   }>) => {
 
     const response = await axios.patch(`${baseServerUrl}/users/${userId}/library/${gameId}`, updatedField);
@@ -186,7 +187,7 @@ const GameDetailsPage = () => {
     setSelectedStatus({ id: 0, label: "Add to library" })
   }
 
-  const onStatusChange = async (selectedStatus: ListboxOption) => {
+  const onStatusChange = async (selectedStatus: SelectOption) => {
     setSelectedStatus(selectedStatus);
 
     if (!inLibrary) {
@@ -197,12 +198,12 @@ const GameDetailsPage = () => {
     }
   }
 
-  const onPlatformChange = async (selectedPlatform: ListboxOption) => {
+  const onPlatformChange = async (selectedPlatform: SelectOption) => {
     setSelectedPlatform(selectedPlatform);
     if (inLibrary) await handleUpdate({ libraryPlatform: selectedPlatform });
   }
 
-  const onFormatChange = async (selectedFormat: ListboxOption) => {
+  const onFormatChange = async (selectedFormat: SelectOption) => {
     setSelectedFormat(selectedFormat);
     if (inLibrary) await handleUpdate({ libraryFormat: selectedFormat })
   }
@@ -303,7 +304,7 @@ const GameDetailsPage = () => {
 
                     <ListboxOptions anchor="bottom end"
                       className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
-                      {libraryFormat?.map((item: ListboxOption) => (
+                      {libraryFormatOptions?.map((item: SelectOption) => (
                         <ListboxOption key={item.id} value={item}
                           className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
                         >
@@ -323,7 +324,7 @@ const GameDetailsPage = () => {
 
                     <ListboxOptions anchor="bottom end"
                       className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
-                      {libraryStatus?.map((item: ListboxOption) => (
+                      {libraryStatusOptions?.map((item: SelectOption) => (
                         <ListboxOption key={item.id} value={item}
                           className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
                         >

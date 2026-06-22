@@ -10,20 +10,20 @@ const PLATFORM_FAMILY_BY_SLUG = {
 }
 
 type SelectOption = {
-  id: number,
-  label: string,
+  id: number;
+  label: string;
 }
 
 export type FilterCategories = {
-  platformFamily?: SelectOption[],
-  platform?: SelectOption[],
-  genres?: SelectOption[],
-  timeToBeat?: SelectOption[],
-  totalRating?: SelectOption[]
-  releaseDate?: SelectOption[]
-  gameType?: SelectOption[],
-  libraryStatus?: SelectOption[],
-  libraryFormat?: SelectOption[],
+  platformFamily?: SelectOption[];
+  platform?: SelectOption[];
+  genres?: SelectOption[];
+  timeToBeat?: SelectOption[];
+  totalRating?: SelectOption[];
+  releaseDate?: SelectOption[];
+  gameType?: SelectOption[];
+  libraryStatusOptions?: SelectOption[];
+  libraryFormatOptions?: SelectOption[];
 }
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
