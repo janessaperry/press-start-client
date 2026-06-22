@@ -23,6 +23,7 @@ export type GameOverview = {
 type GameCardProps = {
   gameOverview: GameOverview,
   variant?: 'grid' | 'row',
+  focusable?: boolean,
 } & ComponentProps<'a'>
 
 const showGameTypeBadge: Record<number, boolean> = {
@@ -37,11 +38,9 @@ const showGameTypeBadge: Record<number, boolean> = {
   11: true, // Port
 }
 
-const GameCard = ({ gameOverview, className = "", variant = 'grid' }: GameCardProps) => {
-
-  // todo tab index show only be -1 if in carousel
+const GameCard = ({ gameOverview, className = "", variant = 'grid', focusable = true }: GameCardProps) => {
   return (
-    <Link to={`/game/${gameOverview.id}/${gameOverview.slug}`} tabIndex={-1}
+    <Link to={`/game/${gameOverview.id}/${gameOverview.slug}`} tabIndex={focusable ? 0 : -1}
       className={`block p-2 md:p-4 bg-primary-700 hover:gradient-primary rounded-2xl overflow-hidden ${className}`}>
       <article className={`grid gap-4 ${variant === 'row' ? 'grid-cols-4' : 'grid-cols-1 md:grid-cols-4'}`}>
         <div className="col-span-1 flex flex-col items-start gap-3">
