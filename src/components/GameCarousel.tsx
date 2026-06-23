@@ -3,7 +3,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { EmblaCarouselType } from 'embla-carousel'
 import { CaretLeftIcon, CaretRightIcon, CircleIcon } from "@phosphor-icons/react";
 import { PacmanIcon } from "@/components/icons";
-import { GameOverview } from "./GameCard.tsx";
+import { GameOverview } from "../types/common.ts";
 import GameCard from "./GameCard.tsx";
 import ButtonIcon from "./ButtonIcon.tsx";
 
@@ -11,8 +11,8 @@ type GameOverviewData = {
   games: GameOverview[]
 }
 
-const GameCarousel = ({games}: GameOverviewData) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
+const GameCarousel = ({ games }: GameOverviewData) => {
+  const [ emblaRef, emblaApi ] = useEmblaCarousel({
     align: "start",
     slidesToScroll: 1,
     loop: true
@@ -20,14 +20,14 @@ const GameCarousel = ({games}: GameOverviewData) => {
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi])
+  }, [ emblaApi ])
 
   const scrollNext = useCallback(() => {
     if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi])
+  }, [ emblaApi ])
 
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [ scrollSnaps, setScrollSnaps ] = useState<number[]>([]);
+  const [ selectedIndex, setSelectedIndex ] = useState(0);
 
   const onInit = useCallback((emblaApi: EmblaCarouselType) => {
     setScrollSnaps(emblaApi.scrollSnapList());
@@ -49,7 +49,7 @@ const GameCarousel = ({games}: GameOverviewData) => {
     onSelect(emblaApi);
 
     emblaApi.on('reInit', onInit).on('reInit', onSelect).on('select', onSelect);
-  }, [emblaApi, onInit, onSelect]);
+  }, [ emblaApi, onInit, onSelect ]);
 
   return (
     <div className="flex flex-col gap-4">

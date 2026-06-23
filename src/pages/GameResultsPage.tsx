@@ -8,15 +8,16 @@ import {
 import { CaretDownIcon, GridFourIcon, PencilSimpleLineIcon, RowsIcon, SlidersIcon } from "@phosphor-icons/react";
 import Filters from "../components/Filters.tsx";
 
-import GameCard, { GameOverview } from "../components/GameCard.tsx";
+import GameCard from "../components/GameCard.tsx";
 import FilterChip from "../components/FilterChip.tsx";
 import Modal from "../components/Modal.tsx";
 import Pagination from "../components/Pagination.tsx";
 
-import useFilterCategories, { FilterCategories } from "../hooks/useFilterCategories.tsx";
+import useFilterCategories from "../hooks/useFilterCategories.tsx";
 import useFilterSelections from "../hooks/useFilterSelections.tsx";
 import useGameResults from "../hooks/useGameResults.tsx";
 import useIsMobile from "../hooks/useIsMobile.tsx";
+import { FilterCategories, GameOverview } from "../types/common.ts";
 
 const PLATFORM_FAMILY_BY_SLUG = {
   playstation: { label: "PlayStation", platformIds: [ 48, 167 ] },

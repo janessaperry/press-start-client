@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Result } from "../pages/ExplorePage.tsx";
+import { Result } from "../types/common.ts";
 import { getCoverUrl } from "../utils/images.ts";
 
 type Props = {

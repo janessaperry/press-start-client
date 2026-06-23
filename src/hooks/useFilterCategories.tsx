@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { FilterCategories } from "../types/common.ts";
 
 const PLATFORM_FAMILY_BY_SLUG = {
   playstation: { label: "PlayStation", platformIds: [ 48, 167 ] },
@@ -14,17 +15,6 @@ type SelectOption = {
   label: string;
 }
 
-export type FilterCategories = {
-  platformFamily?: SelectOption[];
-  platform?: SelectOption[];
-  genres?: SelectOption[];
-  timeToBeat?: SelectOption[];
-  totalRating?: SelectOption[];
-  releaseDate?: SelectOption[];
-  gameType?: SelectOption[];
-  libraryStatusOptions?: SelectOption[];
-  libraryFormatOptions?: SelectOption[];
-}
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const useFilterCategories = (): FilterCategories => {

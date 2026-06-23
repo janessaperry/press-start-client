@@ -4,20 +4,13 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Button, Input } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 
+import { GameOverview, Result } from "../types/common.ts";
 import NintendoLogo from "/src/assets/logos/platforms/nintendo-logo-white.svg";
 import XboxLogo from "/src/assets/logos/platforms/xbox-logo-white.svg"
 import PlaystationLogo from "/src/assets/logos/platforms/playstation-logo-white.svg"
 
-import { GameOverview } from "../components/GameCard.tsx";
 import GameCarousel from "../components/GameCarousel.tsx";
 import SearchResultsDropdown from "../components/SearchResultsDropdown.tsx";
-
-
-export type Result = {
-  id: number,
-  name: string,
-  coverId: string | null
-}
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const ExplorePage = () => {
