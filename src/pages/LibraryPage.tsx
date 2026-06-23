@@ -47,6 +47,17 @@ const LibraryPage = () => {
     void getLibrary();
   }, [ userId, libraryStatus ]);
 
+  const onDelete = (gameId: number, libraryStatus: string) => {
+    setLibraryGames((prev) => (
+      prev.filter((record: LibraryGame) => record.gameOverview.id !== gameId)
+    ));
+    setLibraryTotalCount(prev => prev - 1);
+    setLibraryCounts(prevState => prevState.map(category =>
+      category.label === libraryStatus
+        ? { ...category, count: category.count - 1 }
+        : category
+    ));
+  }
 
   return (
     <>
@@ -115,10 +126,8 @@ const LibraryPage = () => {
                 libraryFormat: game.libraryFormat,
                 libraryStatus: game.libraryStatus,
               }
-              return <GameCard key={game.gameOverview.id}
-                gameOverview={game.gameOverview}
-                showLibraryControls={true}
-                libraryData={libraryData}/>
+              return <GameCard key={game.gameOverview.id} gameOverview={game.gameOverview}
+                showLibraryControls={true} libraryData={libraryData} onDelete={onDelete}/>
             })}
             {/* todo add empty state */}
           </div>

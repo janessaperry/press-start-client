@@ -11,10 +11,11 @@ type Props = {
     libraryPlatform: SelectOption;
     libraryFormat: SelectOption;
     libraryStatus: SelectOption;
-  }
+  },
+  onDelete?: (gameId: number, libraryStatus: string) => void;
 }
 
-const LibraryControls = ({ gameOverview, libraryData }: Props) => {
+const LibraryControls = ({ gameOverview, libraryData, onDelete }: Props) => {
   const { libraryFormat, libraryStatus } = useFilterCategories();
 
   const {
@@ -23,7 +24,7 @@ const LibraryControls = ({ gameOverview, libraryData }: Props) => {
     selectedFormat, setSelectedFormat,
     selectedStatus, setSelectedStatus,
     inLibrary
-  } = useLibraryGame(gameOverview.id, libraryData);
+  } = useLibraryGame(gameOverview.id, libraryData, onDelete);
 
   const onStatusChange = async (selectedStatus: SelectOption) => {
     setSelectedStatus(selectedStatus);
@@ -48,7 +49,6 @@ const LibraryControls = ({ gameOverview, libraryData }: Props) => {
 
   return (
     <>
-      <h1>Library Controls</h1>
       <form className="flex flex-col gap-4">
         <div className="flex gap-4">
           <Listbox value={selectedPlatform}

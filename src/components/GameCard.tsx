@@ -6,18 +6,6 @@ import { BadgeNumber, BadgeText } from "./Badge.tsx";
 import { getCoverUrl } from "../utils/images.ts";
 import LibraryControls from "./LibraryControls.tsx";
 
-type GameCardProps = {
-  gameOverview: GameOverview;
-  variant?: 'grid' | 'row';
-  focusable?: boolean;
-  showLibraryControls?: boolean;
-  libraryData?: {
-    libraryPlatform: SelectOption;
-    libraryFormat: SelectOption;
-    libraryStatus: SelectOption;
-  }
-} & ComponentProps<'a'>
-
 const showGameTypeBadge: Record<number, boolean> = {
   0: false, // Main Game
   1: true, // DLC
@@ -30,13 +18,27 @@ const showGameTypeBadge: Record<number, boolean> = {
   11: true, // Port
 }
 
+type GameCardProps = {
+  gameOverview: GameOverview;
+  variant?: 'grid' | 'row';
+  focusable?: boolean;
+  showLibraryControls?: boolean;
+  libraryData?: {
+    libraryPlatform: SelectOption;
+    libraryFormat: SelectOption;
+    libraryStatus: SelectOption;
+  },
+  onDelete?: (gameId: number, libraryStatus: string) => void;
+} & ComponentProps<'a'>
+
 const GameCard = ({
   gameOverview,
   className = "",
   variant = 'grid',
   focusable = true,
   showLibraryControls = false,
-  libraryData
+  libraryData,
+  onDelete,
 }: GameCardProps) => {
 
   return (
@@ -71,7 +73,7 @@ const GameCard = ({
 
           {showLibraryControls && (
             <section onClick={(e) => e.preventDefault()}>
-              <LibraryControls gameOverview={gameOverview} libraryData={libraryData}/>
+              <LibraryControls gameOverview={gameOverview} libraryData={libraryData} onDelete={onDelete}/>
             </section>
           )}
         </div>

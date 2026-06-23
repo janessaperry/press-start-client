@@ -10,7 +10,7 @@ type InitialData = {
 }
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
-const useLibraryGame = (gameId: number, initialData?: InitialData) => {
+const useLibraryGame = (gameId: number, initialData?: InitialData, onDelete?: (gameId: number, libraryStatus: string) => void) => {
   const { userId } = useAuth();
 
   const [ inLibrary, setInLibrary ] = useState(!!initialData?.libraryStatus);
@@ -28,6 +28,8 @@ const useLibraryGame = (gameId: number, initialData?: InitialData) => {
   });
 
   useEffect(() => {
+    if (!userId || initialData) return;
+
     const fetchUserLibraryGame = async () => {
       try {
         const response = await axios.get(`${baseServerUrl}/users/${userId}/library/${gameId}`);
@@ -46,12 +48,13 @@ const useLibraryGame = (gameId: number, initialData?: InitialData) => {
         if (userLibraryStatus) setSelectedStatus(userLibraryStatus);
       }
       catch (e) {
-        console.log("Game not found in library: ", e)
+        console.log("Game not found in library: ", e);
+        setInLibrary(false);
       }
     }
 
-    if (userId && !initialData) void fetchUserLibraryGame();
-  }, [ gameId, userId, initialData ]);
+    void fetchUserLibraryGame();
+  }, [ gameId, userId ]);
 
   const handleSubmit = async (selectedStatus: SelectOption) => {
     if (!userId) {
@@ -83,10 +86,15 @@ const useLibraryGame = (gameId: number, initialData?: InitialData) => {
 
   const handleDelete = async () => {
     await axios.delete(`${baseServerUrl}/users/${userId}/library/${gameId}`);
+    if (onDelete !== undefined) {
+      console.log("handleDelete", gameId, selectedStatus.label)
+      onDelete(gameId, selectedStatus.label);
+    }
+
     setInLibrary(false);
-    setSelectedPlatform({ id: 0, label: "Select a console" })
-    setSelectedFormat({ id: 0, label: "Select a format" })
-    setSelectedStatus({ id: 0, label: "Add to library" })
+    setSelectedPlatform({ id: 0, label: "Select a console" });
+    setSelectedFormat({ id: 0, label: "Select a format" });
+    setSelectedStatus({ id: 0, label: "Add to library" });
   }
 
   return {
