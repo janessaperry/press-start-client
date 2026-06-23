@@ -1,94 +1,25 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
-import { ArrowRightIcon, CaretDownIcon, CircleIcon, TrashSimpleIcon } from "@phosphor-icons/react";
-import ButtonIcon from "../components/ButtonIcon.tsx";
-import useAuth from "../hooks/useAuth.tsx";
-import useFilterCategories from "../hooks/useFilterCategories.tsx";
-
-import { getCoverUrl, getEsrbThumbnailUrl } from "../utils/images.ts";
-
+import { ArrowRightIcon, CircleIcon } from "@phosphor-icons/react";
+import LibraryControls from "../components/LibraryControls.tsx";
+import useLibraryGame from "../hooks/useLibraryGame.tsx";
+import { GameDetails } from "../types/common";
+import { getCoverUrl, getEsrbThumbnailUrl } from "../utils/images";
 import NotFoundPage from "./NotFoundPage.tsx";
 import ImageCarousel from "../components/ImageCarousel.tsx";
 import InfoChipList from "../components/InfoChipList.tsx";
 import GameCoverList from "../components/GameCoverList.tsx";
 import { BadgeNumber, BadgeText } from "../components/Badge.tsx";
 
-export type SelectOption = {
-  id: number;
-  label: string;
-  enum?: string;
-}
-
-export type GameThumbnail = {
-  id: number;
-  name: string;
-  slug: string;
-  coverId: string | null;
-}
-
-type GameDetails = {
-  id: number;
-  name: string;
-  coverId: string | null;
-  releaseDate: string | null;
-  slug: string;
-  summary: string;
-  totalRating: number | null;
-  gameType: {
-    id: number;
-    label: string;
-  };
-  developers: string[];
-  publishers: string[];
-  timeToBeat: {
-    times: {
-      label: string;
-      value: number | null;
-    }[];
-    count: number | null;
-  } | null;
-  screenshotIds: string[];
-  esrbRating: string;
-  esrbThumbnailId: string;
-  esrbDescriptions: string[];
-  platforms: {
-    id: number;
-    label: string;
-  }[];
-  genres: SelectOption[];
-  collections: {
-    id: number;
-    name: string;
-    games: GameThumbnail[];
-  }[];
-  franchises: {
-    id: number;
-    name: string;
-    games: GameThumbnail[];
-  }[];
-  baseGame: GameThumbnail;
-  relatedContent: {
-    expansions: GameThumbnail[];
-    dlcs: GameThumbnail[];
-  }
-}
-
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
-
 const GameDetailsPage = () => {
   const { gameId } = useParams();
-  const { userId } = useAuth();
-  const { libraryFormatOptions, libraryStatusOptions } = useFilterCategories();
-
   const [ loading, setLoading ] = useState<boolean>(true);
-  const [ selectedPlatform, setSelectedPlatform ] = useState<SelectOption>({ id: 0, label: "Select a console" });
-  const [ selectedFormat, setSelectedFormat ] = useState<SelectOption>({ id: 0, label: "Select a format" });
-  const [ selectedStatus, setSelectedStatus ] = useState<SelectOption>({ id: 0, label: "Add to library" });
+
   const [ gameDetails, setGameDetails ] = useState<GameDetails | null>(null);
   const [ hasRelatedContent, setHasRelatedContent ] = useState<boolean>(false);
-  const [ inLibrary, setInLibrary ] = useState(false);
+  const { inLibrary } = useLibraryGame(Number(gameId));
 
   function formatReleaseDate (dateIso: string | null): string {
     if (!dateIso) return 'Release date unknown';
@@ -128,85 +59,6 @@ const GameDetailsPage = () => {
 
     void fetchGameDetails();
   }, [ gameId ]);
-
-  useEffect(() => {
-    const fetchUserLibraryGame = async () => {
-      const response = await axios.get(`${baseServerUrl}/users/${userId}/library/${gameId}`);
-      setInLibrary(true);
-
-      const { libraryPlatform, libraryFormat, libraryStatus } = response.data;
-      const userLibraryGamePlatform = libraryPlatform ? {
-        id: libraryPlatform.id,
-        label: libraryPlatform.label
-      } : undefined;
-      const userLibraryGameFormat = libraryFormat ? { id: libraryFormat.id, label: libraryFormat.label } : undefined;
-      const userLibraryStatus = libraryStatus ? { id: libraryStatus.id, label: libraryStatus.label } : undefined;
-
-      if (userLibraryGamePlatform) setSelectedPlatform(userLibraryGamePlatform);
-      if (userLibraryGameFormat) setSelectedFormat(userLibraryGameFormat);
-      if (userLibraryStatus) setSelectedStatus(userLibraryStatus);
-      console.log(userLibraryStatus)
-    }
-
-    if (userId) void fetchUserLibraryGame();
-  }, [ gameId, userId ]);
-
-  const handleSubmit = async (selectedStatus: SelectOption) => {
-    if (!userId) {
-      console.log("you need to create an account");
-      return;
-    }
-
-    const payload = {
-      gameId,
-      libraryPlatform: selectedPlatform,
-      libraryFormat: selectedFormat,
-      libraryStatus: selectedStatus
-    }
-    const response = await axios.post(`${baseServerUrl}/users/${userId}/library`, payload);
-    if (response.status === 201) {
-      setInLibrary(true);
-    }
-  }
-
-  const handleUpdate = async (updatedField: Partial<{
-    libraryPlatform: SelectOption;
-    libraryFormat: SelectOption;
-    libraryStatus: SelectOption;
-  }>) => {
-
-    const response = await axios.patch(`${baseServerUrl}/users/${userId}/library/${gameId}`, updatedField);
-    console.log("handleUpdate response:", response);
-  }
-
-  const handleDelete = async () => {
-    await axios.delete(`${baseServerUrl}/users/${userId}/library/${gameId}`);
-    setInLibrary(false);
-    setSelectedPlatform({ id: 0, label: "Select a console" })
-    setSelectedFormat({ id: 0, label: "Select a format" })
-    setSelectedStatus({ id: 0, label: "Add to library" })
-  }
-
-  const onStatusChange = async (selectedStatus: SelectOption) => {
-    setSelectedStatus(selectedStatus);
-
-    if (!inLibrary) {
-      await handleSubmit(selectedStatus);
-    }
-    else {
-      await handleUpdate({ libraryStatus: selectedStatus })
-    }
-  }
-
-  const onPlatformChange = async (selectedPlatform: SelectOption) => {
-    setSelectedPlatform(selectedPlatform);
-    if (inLibrary) await handleUpdate({ libraryPlatform: selectedPlatform });
-  }
-
-  const onFormatChange = async (selectedFormat: SelectOption) => {
-    setSelectedFormat(selectedFormat);
-    if (inLibrary) await handleUpdate({ libraryFormat: selectedFormat })
-  }
 
   const convertSecondsToHours = (seconds: number) => {
     return seconds / 60 / 60;
@@ -274,72 +126,7 @@ const GameDetailsPage = () => {
                   library, or just add it to your wishlist.
                 </p>
               </header>
-
-              <form className="flex flex-col gap-4">
-                <div className="flex gap-4">
-                  <Listbox value={selectedPlatform}
-                    onChange={(selectedPlatform) => onPlatformChange(selectedPlatform)}
-                    by="id">
-                    <ListboxButton className="flex-1 button ghost justify-between">
-                      {selectedPlatform.label} <CaretDownIcon weight="bold"/>
-                    </ListboxButton>
-
-                    <ListboxOptions anchor="bottom end"
-                      className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
-                      {gameDetails.platforms.map((item) => (
-                        <ListboxOption key={item.id}
-                          value={item}
-                          className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
-                        >
-                          {item.label}
-                        </ListboxOption>
-                      ))}
-                    </ListboxOptions>
-                  </Listbox>
-
-                  <Listbox value={selectedFormat} onChange={(selectedFormat) => onFormatChange(selectedFormat)} by="id">
-                    <ListboxButton className="flex-1 button ghost justify-between">
-                      {selectedFormat.label} <CaretDownIcon weight="bold"/>
-                    </ListboxButton>
-
-                    <ListboxOptions anchor="bottom end"
-                      className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
-                      {libraryFormatOptions?.map((item: SelectOption) => (
-                        <ListboxOption key={item.id} value={item}
-                          className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
-                        >
-                          {item.label}
-                        </ListboxOption>
-                      ))}
-                    </ListboxOptions>
-                  </Listbox>
-                </div>
-
-                <div className="flex gap-4">
-                  <Listbox value={selectedStatus}
-                    onChange={(selectedStatus) => onStatusChange(selectedStatus)} by="id">
-                    <ListboxButton className="button primary justify-between grow">
-                      {selectedStatus.label} <CaretDownIcon weight="bold"/>
-                    </ListboxButton>
-
-                    <ListboxOptions anchor="bottom end"
-                      className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
-                      {libraryStatusOptions?.map((item: SelectOption) => (
-                        <ListboxOption key={item.id} value={item}
-                          className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
-                        >
-                          {item.label}
-                        </ListboxOption>
-                      ))}
-                    </ListboxOptions>
-                  </Listbox>
-
-                  {inLibrary &&
-                    <ButtonIcon handleClick={handleDelete} icon={TrashSimpleIcon}
-                      variant="danger" className="border border-danger-900" type="button"/>
-                  }
-                </div>
-              </form>
+              <LibraryControls gameOverview={gameDetails}/>
             </section>
           </div>
         </section>

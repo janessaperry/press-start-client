@@ -4,9 +4,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth.tsx";
 import useFilterCategories from "../hooks/useFilterCategories.tsx";
+import { GameOverview, SelectOption } from "../types/common.ts";
 import { getCoverUrl } from "../utils/images.ts";
-import { SelectOption } from "./GameDetailsPage.tsx";
-import GameCard, { GameOverview } from "../components/GameCard.tsx";
+import GameCard from "../components/GameCard.tsx";
 
 type LibraryStatusEnum = 'WANT_TO_PLAY' | 'PLAYING' | 'PLAYED' | 'ON_PAUSE' | 'WISHLIST';
 type LibraryFormatEnum = 'DIGITAL' | 'PHYSICAL';
@@ -29,7 +29,7 @@ const LibraryPage = () => {
   const [ currentlyPlaying, setCurrentlyPlaying ] = useState([]);
   const [ libraryCounts, setLibraryCounts ] = useState<LibraryCounts[]>([]);
   const [ libraryTotalCount, setLibraryTotalCount ] = useState(0);
-  const { libraryStatusOptions = [] } = useFilterCategories();
+  const { libraryStatus = [] } = useFilterCategories();
 
   useEffect(() => {
     const getLibrary = async () => {
@@ -45,7 +45,7 @@ const LibraryPage = () => {
     }
 
     void getLibrary();
-  }, [ userId, libraryStatusOptions ]);
+  }, [ userId, libraryStatus ]);
 
 
   return (
@@ -87,7 +87,7 @@ const LibraryPage = () => {
 
                         <ListboxOptions anchor="bottom end"
                           className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
-                          {libraryStatusOptions?.map((item: SelectOption) => (
+                          {libraryStatus?.map((item: SelectOption) => (
                             <ListboxOption key={item.id} value={item}
                               className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
                             >
@@ -110,7 +110,15 @@ const LibraryPage = () => {
           <h2>My Games</h2>
           <div className="grid grid-cols-2 gap-4">
             {libraryGames.map((game: LibraryGame) => {
-              return <GameCard key={game.gameOverview.id} gameOverview={game.gameOverview}/>
+              const libraryData = {
+                libraryPlatform: game.libraryPlatform,
+                libraryFormat: game.libraryFormat,
+                libraryStatus: game.libraryStatus,
+              }
+              return <GameCard key={game.gameOverview.id}
+                gameOverview={game.gameOverview}
+                showLibraryControls={true}
+                libraryData={libraryData}/>
             })}
             {/* todo add empty state */}
           </div>

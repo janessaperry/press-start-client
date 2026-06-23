@@ -1,29 +1,21 @@
 import { Link } from "react-router-dom";
 import { ComponentProps } from "react";
+import { GameOverview, SelectOption } from "../types/common";
 import InfoChipList from "./InfoChipList.tsx";
 import { BadgeNumber, BadgeText } from "./Badge.tsx";
 import { getCoverUrl } from "../utils/images.ts";
-
-export type GameOverview = {
-  id: number,
-  name: string,
-  coverId: string | null,
-  slug: string,
-  totalRating: number | null,
-  platforms: {
-    id: number,
-    label: string
-  }[],
-  gameType: {
-    id: number,
-    label: string
-  }
-}
+import LibraryControls from "./LibraryControls.tsx";
 
 type GameCardProps = {
-  gameOverview: GameOverview,
-  variant?: 'grid' | 'row',
-  focusable?: boolean,
+  gameOverview: GameOverview;
+  variant?: 'grid' | 'row';
+  focusable?: boolean;
+  showLibraryControls?: boolean;
+  libraryData?: {
+    libraryPlatform: SelectOption;
+    libraryFormat: SelectOption;
+    libraryStatus: SelectOption;
+  }
 } & ComponentProps<'a'>
 
 const showGameTypeBadge: Record<number, boolean> = {
@@ -38,7 +30,15 @@ const showGameTypeBadge: Record<number, boolean> = {
   11: true, // Port
 }
 
-const GameCard = ({ gameOverview, className = "", variant = 'grid', focusable = true }: GameCardProps) => {
+const GameCard = ({
+  gameOverview,
+  className = "",
+  variant = 'grid',
+  focusable = true,
+  showLibraryControls = false,
+  libraryData
+}: GameCardProps) => {
+
   return (
     <Link to={`/game/${gameOverview.id}/${gameOverview.slug}`} tabIndex={focusable ? 0 : -1}
       className={`block p-2 md:p-4 bg-primary-700 hover:gradient-primary rounded-2xl overflow-hidden ${className}`}>
@@ -60,7 +60,7 @@ const GameCard = ({ gameOverview, className = "", variant = 'grid', focusable = 
               size="xs"/>
           </div>
 
-          {gameOverview.platforms &&
+          {!showLibraryControls && gameOverview.platforms &&
             <div className="flex flex-col gap-2">
               <p className="text-sm font-semibold uppercase text-primary-50/80">
                 Available on
@@ -68,6 +68,12 @@ const GameCard = ({ gameOverview, className = "", variant = 'grid', focusable = 
               <InfoChipList data={gameOverview.platforms.map(c => ({id: c.id, label: c.label}))} size="xs"/>
             </div>
           }
+
+          {showLibraryControls && (
+            <section onClick={(e) => e.preventDefault()}>
+              <LibraryControls gameOverview={gameOverview} libraryData={libraryData}/>
+            </section>
+          )}
         </div>
       </article>
     </Link>
