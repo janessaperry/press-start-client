@@ -13,9 +13,10 @@ type Props = {
     libraryStatus: SelectOption;
   },
   onDelete?: (gameId: number, libraryStatus: string) => void;
+  onStatusUpdate?: (gameId: number, prevLibraryStatus: string, newLibraryStatus: string) => void;
 }
 
-const LibraryControls = ({ gameOverview, libraryData, onDelete }: Props) => {
+const LibraryControls = ({ gameOverview, libraryData, onDelete, onStatusUpdate }: Props) => {
   const { libraryFormat, libraryStatus } = useFilterCategories();
 
   const {
@@ -24,7 +25,7 @@ const LibraryControls = ({ gameOverview, libraryData, onDelete }: Props) => {
     selectedFormat, setSelectedFormat,
     selectedStatus, setSelectedStatus,
     inLibrary
-  } = useLibraryGame(gameOverview.id, libraryData, onDelete);
+  } = useLibraryGame(gameOverview.id, libraryData, onDelete, onStatusUpdate);
 
   const onStatusChange = async (selectedStatus: SelectOption) => {
     setSelectedStatus(selectedStatus);

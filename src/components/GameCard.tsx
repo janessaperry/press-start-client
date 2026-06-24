@@ -29,6 +29,7 @@ type GameCardProps = {
     libraryStatus: SelectOption;
   },
   onDelete?: (gameId: number, libraryStatus: string) => void;
+  onStatusUpdate?: (gameId: number, prevLibraryStatus: string, newLibraryStatus: string) => void;
 } & ComponentProps<'a'>
 
 const GameCard = ({
@@ -39,6 +40,7 @@ const GameCard = ({
   showLibraryControls = false,
   libraryData,
   onDelete,
+  onStatusUpdate,
 }: GameCardProps) => {
 
   return (
@@ -73,7 +75,10 @@ const GameCard = ({
 
           {showLibraryControls && (
             <section onClick={(e) => e.preventDefault()}>
-              <LibraryControls gameOverview={gameOverview} libraryData={libraryData} onDelete={onDelete}/>
+              <LibraryControls gameOverview={gameOverview}
+                libraryData={libraryData}
+                onDelete={onDelete}
+                onStatusUpdate={onStatusUpdate}/>
             </section>
           )}
         </div>

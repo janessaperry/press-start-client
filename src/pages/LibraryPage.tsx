@@ -1,9 +1,6 @@
-import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from "@headlessui/react";
-import { CaretDownIcon } from "@phosphor-icons/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth.tsx";
-import useFilterCategories from "../hooks/useFilterCategories.tsx";
 import { GameOverview, SelectOption } from "../types/common.ts";
 import { getCoverUrl } from "../utils/images.ts";
 import GameCard from "../components/GameCard.tsx";
@@ -25,11 +22,10 @@ const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 
 const LibraryPage = () => {
   const { userId } = useAuth();
-  const [ libraryGames, setLibraryGames ] = useState([]);
-  const [ currentlyPlaying, setCurrentlyPlaying ] = useState([]);
+  const [ libraryGames, setLibraryGames ] = useState<LibraryGame[]>([]);
+  const [ currentlyPlaying, setCurrentlyPlaying ] = useState<LibraryGame[]>([]);
   const [ libraryCounts, setLibraryCounts ] = useState<LibraryCounts[]>([]);
   const [ libraryTotalCount, setLibraryTotalCount ] = useState(0);
-  const { libraryStatus = [] } = useFilterCategories();
 
   useEffect(() => {
     const getLibrary = async () => {
@@ -45,18 +41,46 @@ const LibraryPage = () => {
     }
 
     void getLibrary();
-  }, [ userId, libraryStatus ]);
+  }, [ userId ]);
+
+  // todo refactor to use enum instead of label
+  const onStatusUpdate = (gameId: number, prevLibraryStatus: string, newLibraryStatus: string) => {
+    setLibraryCounts(prev => prev.map(countEntry => {
+      if (countEntry.label === prevLibraryStatus) return { ...countEntry, count: countEntry.count - 1 };
+      if (countEntry.label === newLibraryStatus) return { ...countEntry, count: countEntry.count + 1 };
+      return countEntry;
+    }));
+
+    if (prevLibraryStatus === 'Playing') {
+      setCurrentlyPlaying(prev => (
+        prev.filter((game) => game.gameOverview.id !== gameId)
+      ));
+    }
+
+    if (newLibraryStatus === 'Playing') {
+      const addedGame = libraryGames.find((game) => game.gameOverview.id === gameId);
+      if (addedGame) {
+        setCurrentlyPlaying(prev => [ ...prev, addedGame ]);
+      }
+    }
+  }
 
   const onDelete = (gameId: number, libraryStatus: string) => {
     setLibraryGames((prev) => (
       prev.filter((record: LibraryGame) => record.gameOverview.id !== gameId)
     ));
+
+    setCurrentlyPlaying(prev => (
+      prev.filter((libraryGame) => libraryGame.gameOverview.id !== gameId)
+    ));
+
     setLibraryTotalCount(prev => prev - 1);
-    setLibraryCounts(prevState => prevState.map(category =>
+
+    setLibraryCounts(prev => prev.map(category => (
       category.label === libraryStatus
         ? { ...category, count: category.count - 1 }
         : category
-    ));
+    )));
   }
 
   return (
@@ -88,26 +112,6 @@ const LibraryPage = () => {
                     <img className="w-full rounded-xl"
                       src={getCoverUrl(game.gameOverview.coverId)}
                       alt={`${game.gameOverview.name} cover`}/>
-
-                    <div className="flex">
-                      <Listbox value={game.libraryStatus}
-                        onChange={(selectedStatus) => console.log(selectedStatus)} by="id">
-                        <ListboxButton className="button primary justify-between grow">
-                          {game.libraryStatus.label} <CaretDownIcon weight="bold"/>
-                        </ListboxButton>
-
-                        <ListboxOptions anchor="bottom end"
-                          className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
-                          {libraryStatus?.map((item: SelectOption) => (
-                            <ListboxOption key={item.id} value={item}
-                              className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
-                            >
-                              {item.label}
-                            </ListboxOption>
-                          ))}
-                        </ListboxOptions>
-                      </Listbox>
-                    </div>
                   </article>
                 ))
               ) : (
@@ -127,8 +131,10 @@ const LibraryPage = () => {
                 libraryStatus: game.libraryStatus,
               }
               return <GameCard key={game.gameOverview.id} gameOverview={game.gameOverview}
-                showLibraryControls={true} libraryData={libraryData} onDelete={onDelete}/>
+                showLibraryControls={true} libraryData={libraryData}
+                onDelete={onDelete} onStatusUpdate={onStatusUpdate}/>
             })}
+
             {/* todo add empty state */}
           </div>
         </div>

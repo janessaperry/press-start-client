@@ -10,21 +10,23 @@ type InitialData = {
 }
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
-const useLibraryGame = (gameId: number, initialData?: InitialData, onDelete?: (gameId: number, libraryStatus: string) => void) => {
+const useLibraryGame = (
+  gameId: number,
+  initialData?: InitialData,
+  onDelete?: (gameId: number, libraryStatus: string) => void,
+  onStatusUpdate?: (gameId: number, prevLibraryStatus: string, newLibraryStatus: string) => void,
+) => {
   const { userId } = useAuth();
 
   const [ inLibrary, setInLibrary ] = useState(!!initialData?.libraryStatus);
   const [ selectedPlatform, setSelectedPlatform ] = useState<SelectOption>(initialData?.libraryPlatform ?? {
-    id: 0,
-    label: `Select a console`
+    id: 0, label: `Select a console`
   });
   const [ selectedFormat, setSelectedFormat ] = useState<SelectOption>(initialData?.libraryFormat ?? {
-    id: 0,
-    label: `Select a format`
+    id: 0, label: `Select a format`
   });
   const [ selectedStatus, setSelectedStatus ] = useState<SelectOption>(initialData?.libraryStatus ?? {
-    id: 0,
-    label: `Add to library`
+    id: 0, label: `Add to library`
   });
 
   useEffect(() => {
@@ -80,14 +82,21 @@ const useLibraryGame = (gameId: number, initialData?: InitialData, onDelete?: (g
     libraryStatus: SelectOption;
   }>) => {
 
-    const response = await axios.patch(`${baseServerUrl}/users/${userId}/library/${gameId}`, updatedField);
-    console.log("handleUpdate response:", response);
+    //todo make sure updated is different from previous before the api call too
+    await axios.patch(`${baseServerUrl}/users/${userId}/library/${gameId}`, updatedField);
+
+    if (Object.hasOwn(updatedField, 'libraryStatus')) {
+      const prevStatus = selectedStatus.label;
+      const newStatus = updatedField.libraryStatus!.label;
+      if (prevStatus !== newStatus && onStatusUpdate !== undefined) {
+        onStatusUpdate(gameId, prevStatus, newStatus)
+      }
+    }
   }
 
   const handleDelete = async () => {
     await axios.delete(`${baseServerUrl}/users/${userId}/library/${gameId}`);
     if (onDelete !== undefined) {
-      console.log("handleDelete", gameId, selectedStatus.label)
       onDelete(gameId, selectedStatus.label);
     }
 
