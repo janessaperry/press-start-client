@@ -1,18 +1,13 @@
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { useParams, useSearchParams } from "react-router-dom";
-import {
-  Button, Field, Label,
-  Listbox, ListboxButton, ListboxOption, ListboxOptions,
-} from "@headlessui/react";
+import { Button, Field, Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
 import { CaretDownIcon, GridFourIcon, PencilSimpleLineIcon, RowsIcon, SlidersIcon } from "@phosphor-icons/react";
 import Filters from "../components/Filters.tsx";
-
 import GameCard from "../components/GameCard.tsx";
 import FilterChip from "../components/FilterChip.tsx";
 import Modal from "../components/Modal.tsx";
 import Pagination from "../components/Pagination.tsx";
-
 import useFilterCategories from "../hooks/useFilterCategories.tsx";
 import useFilterSelections from "../hooks/useFilterSelections.tsx";
 import useGameResults from "../hooks/useGameResults.tsx";

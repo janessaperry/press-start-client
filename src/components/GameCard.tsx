@@ -28,6 +28,8 @@ type GameCardProps = {
     libraryFormat: SelectOption;
     libraryStatus: SelectOption;
   },
+  libraryFormatOptions?: SelectOption[];
+  libraryStatusOptions?: SelectOption[];
   onDelete?: (gameId: number, libraryStatus: string) => void;
   onStatusUpdate?: (gameId: number, prevLibraryStatus: string, newLibraryStatus: string) => void;
 } & ComponentProps<'a'>
@@ -39,6 +41,8 @@ const GameCard = ({
   focusable = true,
   showLibraryControls = false,
   libraryData,
+  libraryFormatOptions,
+  libraryStatusOptions,
   onDelete,
   onStatusUpdate,
 }: GameCardProps) => {
@@ -69,7 +73,7 @@ const GameCard = ({
               <p className="text-sm font-semibold uppercase text-primary-50/80">
                 Available on
               </p>
-              <InfoChipList data={gameOverview.platforms.map(c => ({id: c.id, label: c.label}))} size="xs"/>
+              <InfoChipList data={gameOverview.platforms.map(c => ({ id: c.id, label: c.label }))} size="xs"/>
             </div>
           }
 
@@ -77,6 +81,8 @@ const GameCard = ({
             <section onClick={(e) => e.preventDefault()}>
               <LibraryControls gameOverview={gameOverview}
                 libraryData={libraryData}
+                libraryFormatOptions={libraryFormatOptions}
+                libraryStatusOptions={libraryStatusOptions}
                 onDelete={onDelete}
                 onStatusUpdate={onStatusUpdate}/>
             </section>

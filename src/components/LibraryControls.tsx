@@ -1,6 +1,5 @@
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 import { CaretDownIcon, TrashSimpleIcon } from "@phosphor-icons/react";
-import useFilterCategories from "../hooks/useFilterCategories.tsx";
 import useLibraryGame from "../hooks/useLibraryGame.tsx";
 import { GameOverview, SelectOption } from "../types/common.ts";
 import ButtonIcon from "./ButtonIcon.tsx";
@@ -12,13 +11,20 @@ type Props = {
     libraryFormat: SelectOption;
     libraryStatus: SelectOption;
   },
+  libraryFormatOptions?: SelectOption[];
+  libraryStatusOptions?: SelectOption[];
   onDelete?: (gameId: number, libraryStatus: string) => void;
   onStatusUpdate?: (gameId: number, prevLibraryStatus: string, newLibraryStatus: string) => void;
 }
 
-const LibraryControls = ({ gameOverview, libraryData, onDelete, onStatusUpdate }: Props) => {
-  const { libraryFormat, libraryStatus } = useFilterCategories();
-
+const LibraryControls = ({
+  gameOverview,
+  libraryData,
+  libraryFormatOptions,
+  libraryStatusOptions,
+  onDelete,
+  onStatusUpdate
+}: Props) => {
   const {
     handleSubmit, handleUpdate, handleDelete,
     selectedPlatform, setSelectedPlatform,
@@ -79,7 +85,7 @@ const LibraryControls = ({ gameOverview, libraryData, onDelete, onStatusUpdate }
 
             <ListboxOptions anchor="bottom end"
               className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
-              {libraryFormat?.map((item: SelectOption) => (
+              {libraryFormatOptions?.map((item: SelectOption) => (
                 <ListboxOption key={item.id} value={item}
                   className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
                 >
@@ -99,7 +105,7 @@ const LibraryControls = ({ gameOverview, libraryData, onDelete, onStatusUpdate }
 
             <ListboxOptions anchor="bottom end"
               className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
-              {libraryStatus?.map((item: SelectOption) => (
+              {libraryStatusOptions?.map((item: SelectOption) => (
                 <ListboxOption key={item.id} value={item}
                   className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
                 >

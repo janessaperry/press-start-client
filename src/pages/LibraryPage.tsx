@@ -1,9 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import Filters from "../components/Filters.tsx";
+import GameCard from "../components/GameCard.tsx";
+import Modal from "../components/Modal.tsx";
 import useAuth from "../hooks/useAuth.tsx";
+import useFilterCategories from "../hooks/useFilterCategories.tsx";
+import useFilterSelections from "../hooks/useFilterSelections.tsx";
+import useIsMobile from "../hooks/useIsMobile.tsx";
 import { GameOverview, SelectOption } from "../types/common.ts";
 import { getCoverUrl } from "../utils/images.ts";
-import GameCard from "../components/GameCard.tsx";
 
 type LibraryStatusEnum = 'WANT_TO_PLAY' | 'PLAYING' | 'PLAYED' | 'ON_PAUSE' | 'WISHLIST';
 type LibraryFormatEnum = 'DIGITAL' | 'PHYSICAL';
@@ -22,6 +28,17 @@ const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 
 const LibraryPage = () => {
   const { userId } = useAuth();
+  const isMobile = useIsMobile();
+  const { libraryFormat, libraryStatus } = useFilterCategories('library', Number(userId));
+
+  const {
+    selectedFilters,
+    handleFilterChange,
+    applyFilters,
+    cancelFilters,
+  } = useFilterSelections();
+  const [ filterModalOpen, setFilterModalOpen ] = useState(false);
+
   const [ libraryGames, setLibraryGames ] = useState<LibraryGame[]>([]);
   const [ currentlyPlaying, setCurrentlyPlaying ] = useState<LibraryGame[]>([]);
   const [ libraryCounts, setLibraryCounts ] = useState<LibraryCounts[]>([]);
@@ -105,11 +122,11 @@ const LibraryPage = () => {
 
           <section className="md:w-3/4 p-4 space-y-4 md:p-6 border border-accent-300/20 rounded-2xl">
             <h2>Currently Playing</h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-4 gap-4 md:gap-6">
               {currentlyPlaying.length > 0 ? (
                 currentlyPlaying.map((game: LibraryGame) => (
                   <article key={game.gameOverview.id} className="col-span-1 space-y-2">
-                    <img className="w-full rounded-xl"
+                    <img className="w-full rounded-md md:rounded-xl"
                       src={getCoverUrl(game.gameOverview.coverId)}
                       alt={`${game.gameOverview.name} cover`}/>
                   </article>
@@ -121,22 +138,48 @@ const LibraryPage = () => {
           </section>
         </div>
 
-        <div>
-          <h2>My Games</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {libraryGames.map((game: LibraryGame) => {
-              const libraryData = {
-                libraryPlatform: game.libraryPlatform,
-                libraryFormat: game.libraryFormat,
-                libraryStatus: game.libraryStatus,
-              }
-              return <GameCard key={game.gameOverview.id} gameOverview={game.gameOverview}
-                showLibraryControls={true} libraryData={libraryData}
-                onDelete={onDelete} onStatusUpdate={onStatusUpdate}/>
-            })}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <section>
+            <Filters selectedFilters={selectedFilters} handleFilterChange={handleFilterChange}
+              className="hidden md:sticky md:top-4 md:max-h-[calc(100dvh-2rem)] md:overflow-y-scroll md:block md:col-span-1"/>
+            {isMobile &&
+              createPortal(
+                <Modal modalOpen={filterModalOpen}
+                  setModalOpen={setFilterModalOpen}
+                  handleSubmit={applyFilters}
+                  handleCancel={cancelFilters}>
+                  <Filters selectedFilters={selectedFilters} handleFilterChange={handleFilterChange}/>
+                </Modal>,
+                document.body
+              )
+            }
+          </section>
 
-            {/* todo add empty state */}
+          <div className="col-span-2 md:col-span-3 space-y-4 md:space-y-6">
+            <section>
+              <h2>My Games</h2>
+              <div className="grid grid-cols-2 gap-4">
+                {libraryGames.map((game: LibraryGame) => {
+                  const libraryData = {
+                    libraryPlatform: game.libraryPlatform,
+                    libraryFormat: game.libraryFormat,
+                    libraryStatus: game.libraryStatus,
+                  }
+                  return <GameCard key={game.gameOverview.id}
+                    gameOverview={game.gameOverview}
+                    showLibraryControls={true}
+                    libraryData={libraryData}
+                    libraryFormatOptions={libraryFormat}
+                    libraryStatusOptions={libraryStatus}
+                    onDelete={onDelete}
+                    onStatusUpdate={onStatusUpdate}/>
+                })}
+
+                {/* todo add empty state */}
+              </div>
+            </section>
           </div>
+
         </div>
       </div>
     </>

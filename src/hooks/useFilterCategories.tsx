@@ -15,17 +15,17 @@ type SelectOption = {
   label: string;
 }
 
-
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
-const useFilterCategories = (): FilterCategories => {
+const useFilterCategories = (context?: string, userId?: number): FilterCategories => {
   const { platformFamilySlug } = useParams();
   const platformFamily = PLATFORM_FAMILY_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_FAMILY_BY_SLUG];
 
   const [ filterCategories, setFilterCategories ] = useState<FilterCategories>({});
+  const query = context === 'library' ? `?context=${context}&userId=${userId}` : '';
 
   useEffect(() => {
     const getFilterCategories = async () => {
-      const response = await axios.get(`${baseServerUrl}/filters`);
+      const response = await axios.get(`${baseServerUrl}/filters${query}`);
       const filtersData = response.data;
       let platformFilters = filtersData.platform;
 
@@ -36,7 +36,7 @@ const useFilterCategories = (): FilterCategories => {
     }
 
     void getFilterCategories();
-  }, [ platformFamily ]);
+  }, [ platformFamilySlug ]);
 
   return filterCategories;
 }
