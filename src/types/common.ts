@@ -34,7 +34,10 @@ export type Result = {
   coverId: string | null;
 }
 
-//******** GAME TYPES ********//
+//******************************//
+//********* GAME TYPES *********//
+//******************************//
+
 export type GameOverview = {
   id: number;
   name: string;
@@ -103,4 +106,17 @@ export type GameDetails = {
     expansions: GameThumbnail[];
     dlcs: GameThumbnail[];
   }
+}
+
+//*******************************//
+//******** LIBRARY TYPES ********//
+//*******************************//
+
+type LibraryStatusEnum = 'WANT_TO_PLAY' | 'PLAYING' | 'PLAYED' | 'ON_PAUSE' | 'WISHLIST';
+type LibraryFormatEnum = 'DIGITAL' | 'PHYSICAL';
+export type LibraryGame = {
+  libraryStatus: SelectOption & { enum: LibraryStatusEnum };
+  libraryFormat: SelectOption & { enum: LibraryFormatEnum };
+  libraryPlatform: SelectOption;
+  gameOverview: GameOverview;
 }

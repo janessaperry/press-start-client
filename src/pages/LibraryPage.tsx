@@ -1,5 +1,4 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import Filters from "../components/Filters.tsx";
 import GameCard from "../components/GameCard.tsx";
@@ -8,23 +7,10 @@ import useAuth from "../hooks/useAuth.tsx";
 import useFilterCategories from "../hooks/useFilterCategories.tsx";
 import useFilterSelections from "../hooks/useFilterSelections.tsx";
 import useIsMobile from "../hooks/useIsMobile.tsx";
-import { GameOverview, SelectOption } from "../types/common.ts";
+import useLibraryResults from "../hooks/useLibraryResults.ts";
+import { LibraryGame } from "../types/common.ts";
 import { getCoverUrl } from "../utils/images.ts";
 
-type LibraryStatusEnum = 'WANT_TO_PLAY' | 'PLAYING' | 'PLAYED' | 'ON_PAUSE' | 'WISHLIST';
-type LibraryFormatEnum = 'DIGITAL' | 'PHYSICAL';
-type LibraryGame = {
-  libraryStatus: SelectOption & { enum: LibraryStatusEnum };
-  libraryFormat: SelectOption & { enum: LibraryFormatEnum };
-  libraryPlatform: SelectOption;
-  gameOverview: GameOverview;
-}
-type LibraryCounts = {
-  label: string;
-  count: number;
-}
-
-const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const LibraryPage = () => {
   const { userId } = useAuth();
   const isMobile = useIsMobile();
@@ -33,28 +19,17 @@ const LibraryPage = () => {
     selectedFilters,
     handleFilterChange, applyFilters, cancelFilters,
   } = useFilterSelections(filterCategories);
-
   const [ filterModalOpen, setFilterModalOpen ] = useState(false);
-  const [ libraryGames, setLibraryGames ] = useState<LibraryGame[]>([]);
-  const [ currentlyPlaying, setCurrentlyPlaying ] = useState<LibraryGame[]>([]);
-  const [ libraryCounts, setLibraryCounts ] = useState<LibraryCounts[]>([]);
-  const [ libraryTotalCount, setLibraryTotalCount ] = useState(0);
-
-  useEffect(() => {
-    const getLibrary = async () => {
-      const response = await axios.get(`${baseServerUrl}/users/${userId}/library`);
-      const libraryGames = response.data.library;
-      setLibraryGames(libraryGames);
-
-      const playing = libraryGames.filter((game: LibraryGame) => game.libraryStatus?.enum === 'PLAYING');
-      setCurrentlyPlaying(playing);
-
-      setLibraryCounts(response.data.libraryStatusCounts);
-      setLibraryTotalCount(response.data.libraryTotalCount)
-    }
-
-    void getLibrary();
-  }, [ userId ]);
+  const {
+    libraryGames,
+    setLibraryGames,
+    currentlyPlaying,
+    setCurrentlyPlaying,
+    libraryCounts,
+    setLibraryCounts,
+    libraryTotalCount,
+    setLibraryTotalCount
+  } = useLibraryResults(Number(userId))
 
   // todo refactor to use enum instead of label
   const onStatusUpdate = (gameId: number, prevLibraryStatus: string, newLibraryStatus: string) => {
