@@ -14,12 +14,24 @@ export type FilterCategories = {
   gameType?: SelectOption[];
   libraryStatus?: SelectOption[];
   libraryFormat?: SelectOption[];
+  libraryFormatControls?: SelectOption[];
+}
+
+export type SelectedFilters = {
+  platform: number[];
+  genres: number[];
+  timeToBeat: number[];
+  totalRating: number[];
+  releaseDate: number[];
+  gameType: number[];
+  libraryStatus: number[];
+  libraryFormat: number[];
 }
 
 export type Result = {
-  id: number,
-  name: string,
-  coverId: string | null
+  id: number;
+  name: string;
+  coverId: string | null;
 }
 
 //******** GAME TYPES ********//

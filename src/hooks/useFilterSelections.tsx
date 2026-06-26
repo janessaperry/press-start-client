@@ -1,24 +1,14 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import useFilterCategories from "./useFilterCategories.tsx";
+import { FilterCategories, SelectedFilters } from "../types/common.ts";
 import useIsMobile from "./useIsMobile.tsx";
 
-export type SelectedFilters = {
-  platform: number[],
-  genres: number[],
-  timeToBeat: number[],
-  totalRating: number[],
-  releaseDate: number[],
-  gameType: number[],
-  libraryStatus: number[],
-  libraryFormat: number[]
-}
 
 const otherValidParams = new Set([ 'page', 'sorting', 'search' ]);
 
-const useFilterSelections = () => {
+const useFilterSelections = (validFilters: FilterCategories) => {
   const isMobile = useIsMobile();
-  const validFilters = useFilterCategories();
+
   const [ searchParams, setSearchParams ] = useSearchParams();
   const [ selectedFilters, setSelectedFilters ] = useState<SelectedFilters>({
     platform: searchParams.get('platform')?.split(',').map(id => Number(id.trim())) ?? [],

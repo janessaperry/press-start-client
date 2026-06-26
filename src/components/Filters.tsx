@@ -1,63 +1,91 @@
 import { ComponentProps } from "react";
-import useFilterCategories from "../hooks/useFilterCategories.tsx";
-import { SelectedFilters } from "../hooks/useFilterSelections.tsx";
+import { FilterCategories, SelectedFilters } from "../types/common.ts";
 import FilterCategory from "./FilterCategory.tsx";
 
 type Props = {
-  selectedFilters: SelectedFilters,
-  handleFilterChange: (compoundId: string, syncUrl?: boolean) => void,
-  className?: string
+  filterCategories: FilterCategories;
+  selectedFilters: SelectedFilters;
+  handleFilterChange: (compoundId: string, syncUrl?: boolean) => void;
+  isLibrary?: boolean;
+  className?: string;
 } & ComponentProps<'section'>
 
-const Filters = ({ className, selectedFilters, handleFilterChange }: Props) => {
-  const filterCategories = useFilterCategories();
+const Filters = ({ className, filterCategories, selectedFilters, handleFilterChange, isLibrary = false }: Props) => {
+
+  const {
+    gameType,
+    platform,
+    releaseDate,
+    totalRating,
+    genres,
+    timeToBeat,
+    libraryStatus,
+    libraryFormat
+  } = filterCategories;
 
   return (
     <section className={`${className || ''} p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl space-y-4 md:space-y-6 scrollbar-on-dark`}>
       <h4>Filters</h4>
-      {filterCategories.gameType && (
-        <FilterCategory title="Game Type" showTitle={false}
-          filters={filterCategories.gameType}
+      {isLibrary && libraryStatus && (
+        <FilterCategory title="Play Status"
+          filters={libraryStatus}
+          selectedFilters={selectedFilters.libraryStatus}
+          paramName='libraryStatus'
+          handleChange={handleFilterChange}/>
+      )}
+
+      {isLibrary && libraryFormat && (
+        <FilterCategory title="Game Format"
+          filters={libraryFormat}
+          selectedFilters={selectedFilters.libraryFormat}
+          paramName='libraryFormat'
+          handleChange={handleFilterChange}/>
+      )}
+
+
+      {gameType && (
+        <FilterCategory title="Game Type" showTitle={isLibrary}
+          filters={gameType}
           selectedFilters={selectedFilters.gameType}
           paramName='gameType'
           handleChange={handleFilterChange}/>
       )}
 
-      {filterCategories.platform && (
+      {platform && (
         <FilterCategory title="Console"
-          filters={filterCategories.platform}
+          filters={platform}
           selectedFilters={selectedFilters.platform}
           paramName='platform'
           handleChange={handleFilterChange}/>
       )}
 
-      {filterCategories.releaseDate && (
+      {releaseDate && (
         <FilterCategory title="Release Date"
-          filters={filterCategories.releaseDate}
+          filters={releaseDate}
           selectedFilters={selectedFilters.releaseDate}
           paramName='releaseDate'
           handleChange={handleFilterChange}/>
       )}
 
-      {filterCategories.totalRating && (
+      {totalRating && (
         <FilterCategory title="Rating"
-          filters={filterCategories.totalRating}
+          filters={totalRating}
           selectedFilters={selectedFilters.totalRating}
           paramName='totalRating'
           handleChange={handleFilterChange}/>
       )}
 
-      {filterCategories.genres && (
+      {genres && (
         <FilterCategory title="Genres"
-          filters={filterCategories.genres}
+          filters={genres}
           selectedFilters={selectedFilters.genres}
           paramName='genres'
           handleChange={handleFilterChange}/>
       )}
 
-      {filterCategories.timeToBeat && (
+      {timeToBeat && (
         <FilterCategory title="Time to Beat" description="Based on 'normal' times."
-          filters={filterCategories.timeToBeat}
+          filters={timeToBeat}
           selectedFilters={selectedFilters.timeToBeat}
           paramName='timeToBeat'
           handleChange={handleFilterChange}/>

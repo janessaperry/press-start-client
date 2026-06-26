@@ -1,7 +1,7 @@
-import { Button, Checkbox, Field, Fieldset, Label, Legend } from "@headlessui/react";
-import { CheckIcon } from "@phosphor-icons/react";
 import { useState } from "react";
-import { SelectedFilters } from "../hooks/useFilterSelections.tsx";
+import { CheckIcon } from "@phosphor-icons/react";
+import { Button, Checkbox, Field, Fieldset, Label, Legend } from "@headlessui/react";
+import { SelectedFilters } from "../types/common.ts";
 
 type SelectOption = {
   id: number,

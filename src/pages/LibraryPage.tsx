@@ -25,20 +25,16 @@ type LibraryCounts = {
 }
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
-
 const LibraryPage = () => {
   const { userId } = useAuth();
   const isMobile = useIsMobile();
-  const { libraryFormat, libraryStatus } = useFilterCategories('library', Number(userId));
-
+  const filterCategories = useFilterCategories('library', Number(userId));
   const {
     selectedFilters,
-    handleFilterChange,
-    applyFilters,
-    cancelFilters,
-  } = useFilterSelections();
-  const [ filterModalOpen, setFilterModalOpen ] = useState(false);
+    handleFilterChange, applyFilters, cancelFilters,
+  } = useFilterSelections(filterCategories);
 
+  const [ filterModalOpen, setFilterModalOpen ] = useState(false);
   const [ libraryGames, setLibraryGames ] = useState<LibraryGame[]>([]);
   const [ currentlyPlaying, setCurrentlyPlaying ] = useState<LibraryGame[]>([]);
   const [ libraryCounts, setLibraryCounts ] = useState<LibraryCounts[]>([]);
@@ -140,15 +136,22 @@ const LibraryPage = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <section>
-            <Filters selectedFilters={selectedFilters} handleFilterChange={handleFilterChange}
+            <Filters filterCategories={filterCategories}
+              selectedFilters={selectedFilters}
+              handleFilterChange={handleFilterChange}
+              isLibrary={true}
               className="hidden md:sticky md:top-4 md:max-h-[calc(100dvh-2rem)] md:overflow-y-scroll md:block md:col-span-1"/>
+
             {isMobile &&
               createPortal(
                 <Modal modalOpen={filterModalOpen}
                   setModalOpen={setFilterModalOpen}
                   handleSubmit={applyFilters}
                   handleCancel={cancelFilters}>
-                  <Filters selectedFilters={selectedFilters} handleFilterChange={handleFilterChange}/>
+                  <Filters filterCategories={filterCategories}
+                    selectedFilters={selectedFilters}
+                    handleFilterChange={handleFilterChange}
+                    isLibrary={true}/>
                 </Modal>,
                 document.body
               )
@@ -169,8 +172,8 @@ const LibraryPage = () => {
                     gameOverview={game.gameOverview}
                     showLibraryControls={true}
                     libraryData={libraryData}
-                    libraryFormatOptions={libraryFormat}
-                    libraryStatusOptions={libraryStatus}
+                    libraryFormatOptions={filterCategories.libraryFormatControls}
+                    libraryStatusOptions={filterCategories.libraryStatus}
                     onDelete={onDelete}
                     onStatusUpdate={onStatusUpdate}/>
                 })}

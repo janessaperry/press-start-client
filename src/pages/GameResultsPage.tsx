@@ -54,7 +54,7 @@ const GameResultsPage = () => {
     applyFilters,
     cancelFilters,
     handleClearAll
-  } = useFilterSelections();
+  } = useFilterSelections(filterCategories);
   const [ filterModalOpen, setFilterModalOpen ] = useState(false);
   const [ resultsView, setResultsView ] = useState<'row' | 'grid'>('row');
 
@@ -100,15 +100,20 @@ const GameResultsPage = () => {
         </header>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <Filters selectedFilters={selectedFilters} handleFilterChange={handleFilterChange}
+          <Filters filterCategories={filterCategories}
+            selectedFilters={selectedFilters}
+            handleFilterChange={handleFilterChange}
             className="hidden md:sticky md:top-4 md:max-h-[calc(100dvh-2rem)] md:overflow-y-scroll md:block md:col-span-1"/>
+
           {isMobile &&
             createPortal(
               <Modal modalOpen={filterModalOpen}
                 setModalOpen={setFilterModalOpen}
                 handleSubmit={applyFilters}
                 handleCancel={cancelFilters}>
-                <Filters selectedFilters={selectedFilters} handleFilterChange={handleFilterChange}/>
+                <Filters filterCategories={filterCategories}
+                  selectedFilters={selectedFilters}
+                  handleFilterChange={handleFilterChange}/>
               </Modal>,
               document.body
             )
