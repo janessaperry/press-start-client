@@ -48,48 +48,52 @@ const GameCard = ({
 }: GameCardProps) => {
 
   return (
-    <Link to={`/game/${gameOverview.id}/${gameOverview.slug}`} tabIndex={focusable ? 0 : -1}
-      className={`block p-2 md:p-4 bg-primary-700 hover:gradient-primary rounded-2xl overflow-hidden ${className}`}>
-      <article className={`grid gap-4 ${variant === 'row' ? 'grid-cols-4' : 'grid-cols-1 md:grid-cols-4'}`}>
-        <div className="col-span-1 flex flex-col items-start gap-3">
-          <img className="self-stretch rounded-lg object-cover aspect-square md:aspect-auto"
-            src={getCoverUrl(gameOverview.coverId, 'cover_big')}
-            alt={`${gameOverview.name} cover art`}/>
+    <>
+      <article className={`flex flex-col bg-primary-700 hover:gradient-primary rounded-2xl overflow-hidden ${className}`}>
+        <Link to={`/game/${gameOverview.id}/${gameOverview.slug}`} tabIndex={focusable ? 0 : -1}
+          className={`flex-1 p-2 md:p-4 grid gap-4 ${variant === 'row' ? 'grid-cols-4' : 'grid-cols-1 md:grid-cols-4'}`}>
+          <div className="col-span-1 flex flex-col items-start gap-3">
+            <img className="self-stretch rounded-lg object-cover aspect-square md:aspect-auto"
+              src={getCoverUrl(gameOverview.coverId, 'cover_big')}
+              alt={`${gameOverview.name} cover art`}/>
 
-          {showGameTypeBadge[gameOverview.gameType.id] &&
-            <BadgeText label={gameOverview.gameType.label} size="xs" className="hidden md:inline-block"/>
-          }
-        </div>
-
-        <div className={`${variant === 'row' ? 'col-span-3' : 'col-span-1'} md:col-span-3 flex flex-col gap-2 md:gap-4`}>
-          <div className="flex items-start gap-3">
-            <h4 className="grow text-primary-50 line-clamp-2">{gameOverview.name}</h4>
-            <BadgeNumber label={gameOverview.totalRating !== null ? String(Math.round(gameOverview.totalRating)) : 'n/a'}
-              size="xs"/>
+            {showGameTypeBadge[gameOverview.gameType.id] &&
+              <BadgeText label={gameOverview.gameType.label} size="xs" className="hidden md:inline-block"/>
+            }
           </div>
 
-          {!showLibraryControls && gameOverview.platforms &&
-            <div className="flex flex-col gap-2">
-              <p className="text-sm font-semibold uppercase text-primary-50/80">
-                Available on
-              </p>
-              <InfoChipList data={gameOverview.platforms.map(c => ({ id: c.id, label: c.label }))} size="xs"/>
+          <div className={`${variant === 'row' ? 'col-span-3' : 'col-span-1'} md:col-span-3 flex flex-col gap-2 md:gap-4`}>
+            <div className="flex items-start gap-3">
+              <h4 className="grow text-primary-50 line-clamp-2">{gameOverview.name}</h4>
+              <BadgeNumber label={gameOverview.totalRating !== null ? String(Math.round(gameOverview.totalRating)) : 'n/a'}
+                size="xs"/>
             </div>
-          }
 
-          {showLibraryControls && (
-            <section onClick={(e) => e.preventDefault()}>
-              <LibraryControls gameOverview={gameOverview}
-                libraryData={libraryData}
-                libraryFormatOptions={libraryFormatOptions}
-                libraryStatusOptions={libraryStatusOptions}
-                onDelete={onDelete}
-                onStatusUpdate={onStatusUpdate}/>
-            </section>
-          )}
-        </div>
+            {!showLibraryControls && gameOverview.platforms &&
+              <div className="flex flex-col gap-2">
+                <p className="text-sm font-semibold uppercase text-primary-50/80">
+                  Available on
+                </p>
+                <InfoChipList data={gameOverview.platforms.map(c => ({ id: c.id, label: c.label }))} size="xs"/>
+              </div>
+            }
+
+
+          </div>
+        </Link>
+        {showLibraryControls && (
+          <section className="px-2 pb-2 md:px-4 md:pb-4">
+            <LibraryControls gameOverview={gameOverview}
+              libraryData={libraryData}
+              libraryFormatOptions={libraryFormatOptions}
+              libraryStatusOptions={libraryStatusOptions}
+              onDelete={onDelete}
+              onStatusUpdate={onStatusUpdate}/>
+          </section>
+        )}
       </article>
-    </Link>
+    </>
+
   )
 }
 

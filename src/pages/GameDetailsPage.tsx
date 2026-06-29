@@ -74,7 +74,7 @@ const GameDetailsPage = () => {
 
   return (
     <>
-      <div className="md:px-4 py-10 md:py-20 bg-purple-700">
+      <div className="md:px-4 py-6 md:py-20 bg-purple-700">
         <section className="md:container md:mx-auto p-4 md:p-12 bg-primary-500 flex flex-col md:flex-row gap-6 md:gap-12 md:rounded-4xl">
           <div className="md:basis-1/4 flex flex-col items-stretch gap-3 md:gap-6">
             <img src={getCoverUrl(gameDetails.coverId)} alt={`${gameDetails.name} cover art`}
@@ -119,7 +119,7 @@ const GameDetailsPage = () => {
                 size="md"/>
             </div>
 
-            <section className="p-6 bg-primary-300 rounded-3xl space-y-4">
+            <section className="p-4 md:p-6 -ml-4 -mr-4 md:m-0  bg-primary-300 md:rounded-3xl space-y-4">
               <header className="space-y-4">
                 <h2>{inLibrary ? "Manage Game in Library" : "Add to Library"}</h2>
                 <p className="text-sm italic">Select the console and format you own the game in and add to you

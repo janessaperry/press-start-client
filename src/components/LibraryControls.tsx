@@ -56,17 +56,18 @@ const LibraryControls = ({
 
   return (
     <>
-      <form className="flex flex-col gap-4">
-        <div className="flex gap-4">
+      <form className="flex flex-col gap-2 md:gap-4">
+        <div className="flex gap-2">
           <Listbox value={selectedPlatform}
             onChange={(selectedPlatform) => onPlatformChange(selectedPlatform)}
             by="id">
-            <ListboxButton className="flex-1 button ghost justify-between">
-              {selectedPlatform.label} <CaretDownIcon weight="bold"/>
+            <ListboxButton className="flex-1 min-w-0 button ghost justify-between">
+              <span className="truncate">{selectedPlatform.label}</span> <CaretDownIcon weight="bold"
+              className="shrink-0"/>
             </ListboxButton>
 
             <ListboxOptions anchor="bottom end"
-              className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
+              className="p-2 mt-2 w-(--button-width) min-w-40 text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
               {gameOverview.platforms.map((item: SelectOption) => (
                 <ListboxOption key={item.id}
                   value={item}
@@ -79,12 +80,13 @@ const LibraryControls = ({
           </Listbox>
 
           <Listbox value={selectedFormat} onChange={(selectedFormat) => onFormatChange(selectedFormat)} by="id">
-            <ListboxButton className="flex-1 button ghost justify-between">
-              {selectedFormat.label} <CaretDownIcon weight="bold"/>
+            <ListboxButton className="flex-1 min-w-0 button ghost justify-between">
+              <span className="truncate">{selectedFormat.label}</span> <CaretDownIcon weight="bold"
+              className="shrink-0"/>
             </ListboxButton>
 
             <ListboxOptions anchor="bottom end"
-              className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
+              className="p-2 mt-2 w-(--button-width) min-w-40 text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
               {libraryFormatOptions?.map((item: SelectOption) => (
                 <ListboxOption key={item.id} value={item}
                   className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
@@ -96,15 +98,16 @@ const LibraryControls = ({
           </Listbox>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <Listbox value={selectedStatus}
             onChange={(selectedStatus) => onStatusChange(selectedStatus)} by="id">
-            <ListboxButton className="button primary justify-between grow">
-              {selectedStatus.label} <CaretDownIcon weight="bold"/>
+            <ListboxButton className="button primary justify-between grow min-w-0">
+              <span className="truncate">{selectedStatus.label}</span> <CaretDownIcon weight="bold"
+              className="shrink-0"/>
             </ListboxButton>
 
             <ListboxOptions anchor="bottom end"
-              className="p-2 mt-2 w-(--button-width) text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
+              className="p-2 mt-2 w-(--button-width) min-w-40 text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
               {libraryStatusOptions?.map((item: SelectOption) => (
                 <ListboxOption key={item.id} value={item}
                   className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
