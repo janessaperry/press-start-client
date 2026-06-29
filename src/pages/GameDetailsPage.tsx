@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { ArrowRightIcon, CircleIcon } from "@phosphor-icons/react";
 import LibraryControls from "../components/LibraryControls.tsx";
+import useFilterCategories from "../hooks/useFilterCategories.tsx";
 import useLibraryGame from "../hooks/useLibraryGame.tsx";
 import { GameDetails } from "../types/common";
 import { getCoverUrl, getEsrbThumbnailUrl } from "../utils/images";
@@ -20,6 +21,7 @@ const GameDetailsPage = () => {
   const [ gameDetails, setGameDetails ] = useState<GameDetails | null>(null);
   const [ hasRelatedContent, setHasRelatedContent ] = useState<boolean>(false);
   const { inLibrary } = useLibraryGame(Number(gameId));
+  const { libraryStatus, libraryFormatControls } = useFilterCategories('library');
 
   function formatReleaseDate (dateIso: string | null): string {
     if (!dateIso) return 'Release date unknown';
@@ -126,7 +128,9 @@ const GameDetailsPage = () => {
                   library, or just add it to your wishlist.
                 </p>
               </header>
-              <LibraryControls gameOverview={gameDetails}/>
+              <LibraryControls gameOverview={gameDetails}
+                libraryFormatOptions={libraryFormatControls}
+                libraryStatusOptions={libraryStatus}/>
             </section>
           </div>
         </section>
