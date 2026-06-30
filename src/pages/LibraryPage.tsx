@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import Filters from "../components/Filters.tsx";
 import GameCard from "../components/GameCard.tsx";
 import Modal from "../components/Modal.tsx";
+import Pagination from "../components/Pagination.tsx";
 import useAuth from "../hooks/useAuth.tsx";
 import useFilterCategories from "../hooks/useFilterCategories.tsx";
 import useFilterSelections from "../hooks/useFilterSelections.tsx";
@@ -21,15 +22,11 @@ const LibraryPage = () => {
   } = useFilterSelections(filterCategories);
   const [ filterModalOpen, setFilterModalOpen ] = useState(false);
   const {
-    libraryGames,
-    setLibraryGames,
-    currentlyPlaying,
-    setCurrentlyPlaying,
-    libraryCounts,
-    setLibraryCounts,
-    libraryTotalCount,
-    setLibraryTotalCount
-  } = useLibraryResults(Number(userId))
+    libraryGames, setLibraryGames,
+    currentlyPlaying, setCurrentlyPlaying,
+    libraryCounts, setLibraryCounts,
+    libraryTotalCount, setLibraryTotalCount
+  } = useLibraryResults(Number(userId), 2)
 
   // todo refactor to use enum instead of label
   const onStatusUpdate = (gameId: number, prevLibraryStatus: string, newLibraryStatus: string) => {
@@ -134,7 +131,7 @@ const LibraryPage = () => {
           </section>
 
           <div className="col-span-2 md:col-span-3 space-y-4 md:space-y-6">
-            <section>
+            <section className="space-y-4">
               <h2>My Games</h2>
               <div className="grid grid-cols-2 gap-4">
                 {libraryGames.map((game: LibraryGame) => {
@@ -155,9 +152,12 @@ const LibraryPage = () => {
 
                 {/* todo add empty state */}
               </div>
+              <div>
+                {/*todo update results count to be based on filtered results count*/}
+                <Pagination itemsPerPage={2} resultsCount={libraryTotalCount}/>
+              </div>
             </section>
           </div>
-
         </div>
       </div>
     </>
