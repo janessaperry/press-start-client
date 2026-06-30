@@ -48,12 +48,8 @@ const GameResultsPage = () => {
   const { games, resultsCount, isLoading } = useGameResults(limit);
   const filterCategories = useFilterCategories();
   const {
-    selectedFilters,
-    committedOrder,
-    handleFilterChange,
-    applyFilters,
-    cancelFilters,
-    handleClearAll
+    selectedFilters, committedOrder,
+    handleFilterChange, applyFilters, cancelFilters, handleClearAll
   } = useFilterSelections(filterCategories);
   const [ filterModalOpen, setFilterModalOpen ] = useState(false);
   const [ resultsView, setResultsView ] = useState<'row' | 'grid'>('row');
