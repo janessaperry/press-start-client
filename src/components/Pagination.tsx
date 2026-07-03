@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 type Props = {
-  resultsCount: number,
-  itemsPerPage: number,
-  className?: string,
+  resultsCount: number;
+  itemsPerPage: number;
+  className?: string;
 }
 
 const Pagination = ({ resultsCount, itemsPerPage, className }: Props) => {

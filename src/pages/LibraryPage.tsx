@@ -13,9 +13,11 @@ import { LibraryGame } from "../types/common.ts";
 import { getCoverUrl } from "../utils/images.ts";
 
 const LibraryPage = () => {
+  const limit = 4;
   const { userId } = useAuth();
   const isMobile = useIsMobile();
   const filterCategories = useFilterCategories('library', Number(userId));
+
   const {
     selectedFilters,
     handleFilterChange, applyFilters, cancelFilters,
@@ -23,10 +25,11 @@ const LibraryPage = () => {
   const [ filterModalOpen, setFilterModalOpen ] = useState(false);
   const {
     libraryGames, setLibraryGames,
+    filteredCount,
     currentlyPlaying, setCurrentlyPlaying,
     libraryCounts, setLibraryCounts,
     libraryTotalCount, setLibraryTotalCount
-  } = useLibraryResults(Number(userId), 2)
+  } = useLibraryResults(Number(userId), limit)
 
   // todo refactor to use enum instead of label
   const onStatusUpdate = (gameId: number, prevLibraryStatus: string, newLibraryStatus: string) => {
@@ -154,7 +157,7 @@ const LibraryPage = () => {
               </div>
               <div>
                 {/*todo update results count to be based on filtered results count*/}
-                <Pagination itemsPerPage={2} resultsCount={libraryTotalCount}/>
+                <Pagination itemsPerPage={limit} resultsCount={filteredCount}/>
               </div>
             </section>
           </div>
