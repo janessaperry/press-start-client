@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ComponentProps } from "react";
-import { GameOverview, SelectOption } from "../types/common";
+import { GameOverview, LibraryStatusEnum, SelectOption } from "../types/common";
 import InfoChipList from "./InfoChipList.tsx";
 import { BadgeNumber, BadgeText } from "./Badge.tsx";
 import { getCoverUrl } from "../utils/images.ts";
@@ -30,8 +30,8 @@ type GameCardProps = {
   },
   libraryFormatOptions?: SelectOption[];
   libraryStatusOptions?: SelectOption[];
-  onDelete?: (gameId: number, libraryStatus: string) => void;
-  onStatusUpdate?: (gameId: number, prevLibraryStatus: string, newLibraryStatus: string) => void;
+  onDelete?: (gameId: number, libraryStatus: LibraryStatusEnum) => void;
+  onStatusUpdate?: (gameId: number, prevLibraryStatus: LibraryStatusEnum, newLibraryStatus: LibraryStatusEnum) => void;
 } & ComponentProps<'a'>
 
 const GameCard = ({

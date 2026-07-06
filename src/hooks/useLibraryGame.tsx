@@ -1,20 +1,25 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { SelectOption } from "../types/common.ts";
+import {
+  LibraryFormatOption,
+  LibraryStatusEnum,
+  LibraryStatusOption,
+  SelectOption
+} from "../types/common.ts";
 import useAuth from "./useAuth.tsx";
 
 type InitialData = {
   libraryPlatform?: SelectOption;
-  libraryFormat?: SelectOption;
-  libraryStatus: SelectOption;
+  libraryFormat?: LibraryFormatOption;
+  libraryStatus: LibraryStatusOption;
 }
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const useLibraryGame = (
   gameId: number,
   initialData?: InitialData,
-  onDelete?: (gameId: number, libraryStatus: string) => void,
-  onStatusUpdate?: (gameId: number, prevLibraryStatus: string, newLibraryStatus: string) => void,
+  onDelete?: (gameId: number, libraryStatus: LibraryStatusEnum) => void,
+  onStatusUpdate?: (gameId: number, prevLibraryStatus: LibraryStatusEnum, newLibraryStatus: LibraryStatusEnum) => void,
 ) => {
   const { userId } = useAuth();
 
@@ -22,10 +27,10 @@ const useLibraryGame = (
   const [ selectedPlatform, setSelectedPlatform ] = useState<SelectOption>(initialData?.libraryPlatform ?? {
     id: 0, label: `Select a console`
   });
-  const [ selectedFormat, setSelectedFormat ] = useState<SelectOption>(initialData?.libraryFormat ?? {
+  const [ selectedFormat, setSelectedFormat ] = useState<LibraryFormatOption>(initialData?.libraryFormat ?? {
     id: 0, label: `Select a format`
   });
-  const [ selectedStatus, setSelectedStatus ] = useState<SelectOption>(initialData?.libraryStatus ?? {
+  const [ selectedStatus, setSelectedStatus ] = useState<LibraryStatusOption>(initialData?.libraryStatus ?? {
     id: 0, label: `Add to library`
   });
 
@@ -78,18 +83,18 @@ const useLibraryGame = (
 
   const handleUpdate = async (updatedField: Partial<{
     libraryPlatform: SelectOption;
-    libraryFormat: SelectOption;
-    libraryStatus: SelectOption;
+    libraryFormat: LibraryFormatOption;
+    libraryStatus: LibraryStatusOption;
   }>) => {
 
     //todo make sure updated is different from previous before the api call too
     await axios.patch(`${baseServerUrl}/users/${userId}/library/${gameId}`, updatedField);
 
     if (Object.hasOwn(updatedField, 'libraryStatus')) {
-      const prevStatus = selectedStatus.label;
-      const newStatus = updatedField.libraryStatus!.label;
-      if (prevStatus !== newStatus && onStatusUpdate !== undefined) {
-        onStatusUpdate(gameId, prevStatus, newStatus)
+      const prevStatusEnum = selectedStatus.enum;
+      const newStatusEnum = updatedField.libraryStatus!.enum;
+      if (prevStatusEnum && newStatusEnum && prevStatusEnum !== newStatusEnum && onStatusUpdate !== undefined) {
+        onStatusUpdate(gameId, prevStatusEnum, newStatusEnum)
       }
     }
   }
@@ -97,7 +102,9 @@ const useLibraryGame = (
   const handleDelete = async () => {
     await axios.delete(`${baseServerUrl}/users/${userId}/library/${gameId}`);
     if (onDelete !== undefined) {
-      onDelete(gameId, selectedStatus.label);
+      if (selectedStatus.enum) {
+        onDelete(gameId, selectedStatus.enum);
+      }
     }
 
     setInLibrary(false);

@@ -1,7 +1,7 @@
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 import { CaretDownIcon, TrashSimpleIcon } from "@phosphor-icons/react";
 import useLibraryGame from "../hooks/useLibraryGame.tsx";
-import { GameOverview, SelectOption } from "../types/common.ts";
+import { GameOverview, LibraryStatusEnum, SelectOption } from "../types/common.ts";
 import ButtonIcon from "./ButtonIcon.tsx";
 
 type Props = {
@@ -13,8 +13,8 @@ type Props = {
   },
   libraryFormatOptions?: SelectOption[];
   libraryStatusOptions?: SelectOption[];
-  onDelete?: (gameId: number, libraryStatus: string) => void;
-  onStatusUpdate?: (gameId: number, prevLibraryStatus: string, newLibraryStatus: string) => void;
+  onDelete?: (gameId: number, libraryStatus: LibraryStatusEnum) => void;
+  onStatusUpdate?: (gameId: number, prevLibraryStatus: LibraryStatusEnum, newLibraryStatus: LibraryStatusEnum) => void;
 }
 
 const LibraryControls = ({

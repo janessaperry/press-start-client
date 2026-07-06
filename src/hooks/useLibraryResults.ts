@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { LibraryGame } from "../types/common.ts";
+import { LibraryGame, LibraryStatusEnum } from "../types/common.ts";
 import useIsMobile from "./useIsMobile.tsx";
 
 type LibraryCounts = {
+  enum: LibraryStatusEnum;
   label: string;
   count: number;
 }
@@ -52,8 +53,6 @@ const useLibraryResults = (userId: number, limit: number) => {
       const libraryGames = response.data.library;
       setLibraryGames(libraryGames);
       setFilteredCount(response.data.filteredCount);
-
-      console.log(response.data.filteredCount)
 
       const playing = response.data.currentlyPlaying;
       setCurrentlyPlaying(playing);

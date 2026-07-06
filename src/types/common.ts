@@ -1,8 +1,10 @@
 export type SelectOption = {
   id: number;
   label: string;
-  enum?: string;
 }
+
+export type LibraryFormatOption = SelectOption & { enum?: LibraryFormatEnum; }
+export type LibraryStatusOption = SelectOption & { enum?: LibraryStatusEnum; }
 
 export type FilterCategories = {
   platformFamily?: SelectOption[];
@@ -112,11 +114,11 @@ export type GameDetails = {
 //******** LIBRARY TYPES ********//
 //*******************************//
 
-type LibraryStatusEnum = 'WANT_TO_PLAY' | 'PLAYING' | 'PLAYED' | 'ON_PAUSE' | 'WISHLIST';
-type LibraryFormatEnum = 'DIGITAL' | 'PHYSICAL';
+export type LibraryStatusEnum = 'WANT_TO_PLAY' | 'PLAYING' | 'PLAYED' | 'ON_PAUSE' | 'WISHLIST';
+export type LibraryFormatEnum = 'DIGITAL' | 'PHYSICAL';
 export type LibraryGame = {
-  libraryStatus: SelectOption & { enum: LibraryStatusEnum };
-  libraryFormat: SelectOption & { enum: LibraryFormatEnum };
+  libraryStatus: LibraryStatusOption;
+  libraryFormat: LibraryFormatOption;
   libraryPlatform: SelectOption;
   gameOverview: GameOverview;
 }
