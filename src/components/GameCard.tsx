@@ -1,6 +1,8 @@
+import { GameControllerIcon } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 import { ComponentProps } from "react";
 import { GameOverview, LibraryStatusEnum, SelectOption } from "../types/common";
+import { formatTimeToBeat } from "../utils/times.ts";
 import InfoChipList from "./InfoChipList.tsx";
 import { BadgeNumber, BadgeText } from "./Badge.tsx";
 import { getCoverUrl } from "../utils/images.ts";
@@ -69,6 +71,15 @@ const GameCard = ({
                 size="xs"/>
             </div>
 
+            {showLibraryControls && gameOverview.timeToBeat &&
+              <div className="flex items-center gap-2 text-green-500">
+                <GameControllerIcon className="icon-md"/>
+                <span className="text-lg">
+                  {formatTimeToBeat(gameOverview.timeToBeat)}
+                </span>
+              </div>
+            }
+
             {!showLibraryControls && gameOverview.platforms &&
               <div className="flex flex-col gap-2">
                 <p className="text-sm font-semibold uppercase text-primary-50/80">
@@ -77,8 +88,6 @@ const GameCard = ({
                 <InfoChipList data={gameOverview.platforms.map(c => ({ id: c.id, label: c.label }))} size="xs"/>
               </div>
             }
-
-
           </div>
         </Link>
         {showLibraryControls && (

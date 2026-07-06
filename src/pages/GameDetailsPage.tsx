@@ -7,6 +7,7 @@ import useFilterCategories from "../hooks/useFilterCategories.ts";
 import useLibraryGame from "../hooks/useLibraryGame.ts";
 import { GameDetails } from "../types/common";
 import { getCoverUrl, getEsrbThumbnailUrl } from "../utils/images";
+import { formatTimeToBeat } from "../utils/times.ts";
 import NotFoundPage from "./NotFoundPage.tsx";
 import ImageCarousel from "../components/ImageCarousel.tsx";
 import InfoChipList from "../components/InfoChipList.tsx";
@@ -61,15 +62,6 @@ const GameDetailsPage = () => {
 
     void fetchGameDetails();
   }, [ gameId ]);
-
-  const convertSecondsToHours = (seconds: number) => {
-    return seconds / 60 / 60;
-  }
-
-  const formatTimeToBeat = (seconds: number | null): string => {
-    if (!seconds) return 'n/a';
-    return `${Math.round(convertSecondsToHours(seconds))}H`
-  }
 
   if (loading) return <GameDetailsSkeleton/>;
   if (!gameDetails) return <NotFoundPage/>;
