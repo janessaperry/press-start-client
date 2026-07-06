@@ -12,18 +12,13 @@ import useFilterCategories from "../hooks/useFilterCategories.tsx";
 import useFilterSelections from "../hooks/useFilterSelections.tsx";
 import useGameResults from "../hooks/useGameResults.tsx";
 import useIsMobile from "../hooks/useIsMobile.tsx";
-import { FilterCategories, GameOverview } from "../types/common.ts";
+import { FilterCategories, GameOverview, SelectOption } from "../types/common.ts";
 
 const PLATFORM_FAMILY_BY_SLUG = {
   playstation: { label: "PlayStation", platformIds: [ 48, 167 ] },
   xbox: { label: "Xbox", platformIds: [ 49, 169 ] },
   pc: { label: "PC", platformIds: [ 3, 14, 6 ] },
   nintendo: { label: "Nintendo", platformIds: [ 130, 508 ] },
-}
-
-type SelectOption<T extends string | number = number> = {
-  id: T,
-  label: string,
 }
 
 const sortOptions = [
@@ -95,11 +90,11 @@ const GameResultsPage = () => {
           }
         </header>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           <Filters filterCategories={filterCategories}
             selectedFilters={selectedFilters}
             handleFilterChange={handleFilterChange}
-            className="hidden md:sticky md:top-4 md:max-h-[calc(100dvh-2rem)] md:overflow-y-scroll md:block md:col-span-1"/>
+            className="hidden lg:sticky lg:top-4 lg:max-h-[calc(100dvh-2rem)] lg:overflow-y-scroll lg:block lg:col-span-1"/>
 
           {isMobile &&
             createPortal(
@@ -115,36 +110,38 @@ const GameResultsPage = () => {
             )
           }
 
-          <div className="col-span-2 md:col-span-3 space-y-4 md:space-y-6">
+          <div className="col-span-2 lg:col-span-3 space-y-4 md:space-y-6">
             <div className="space-y-4">
-              <section className="flex md:justify-between gap-4">
+              <section className="flex flex-col md:justify-between gap-4">
                 <div className="hidden md:block">
                   <h2>{resultsCount} results</h2>
                 </div>
 
-                <Field className="grow md:grow-0 flex items-center gap-2">
-                  <Label>Sort by:</Label>
-                  <Listbox value={selectedSort}
-                    onChange={(selectedOption) => handleSortChange(selectedOption)}>
-                    <ListboxButton className="grow md:grow-0 button ghost justify-between">
-                      {selectedSort?.label}
-                      <CaretDownIcon weight="bold"/>
-                    </ListboxButton>
-                    <ListboxOptions anchor="bottom" transition className="dropdown-options primary">
-                      {sortOptions.map((option) => {
-                        return (
-                          <ListboxOption key={option.id} value={option} className="dropdown-option ">
-                            {option.label}
-                          </ListboxOption>
-                        )
-                      })}
-                    </ListboxOptions>
-                  </Listbox>
-                </Field>
+                <div className="flex flex-row md:justify-between gap-4">
+                  <Field className="grow md:grow-0 flex items-center gap-2">
+                    <Label>Sort by:</Label>
+                    <Listbox value={selectedSort}
+                      onChange={(selectedOption) => handleSortChange(selectedOption)}>
+                      <ListboxButton className="grow md:grow-0 button ghost justify-between">
+                        {selectedSort?.label}
+                        <CaretDownIcon weight="bold"/>
+                      </ListboxButton>
+                      <ListboxOptions anchor="bottom" transition className="dropdown-options primary">
+                        {sortOptions.map((option) => {
+                          return (
+                            <ListboxOption key={option.id} value={option} className="dropdown-option ">
+                              {option.label}
+                            </ListboxOption>
+                          )
+                        })}
+                      </ListboxOptions>
+                    </Listbox>
+                  </Field>
 
-                <Button onClick={() => setFilterModalOpen(true)} className="button ghost md:hidden">
-                  <SlidersIcon weight="bold"/>Filters
-                </Button>
+                  <Button onClick={() => setFilterModalOpen(true)} className="button ghost lg:hidden">
+                    <SlidersIcon weight="bold"/> <span className="hidden sm:block">Filters</span>
+                  </Button>
+                </div>
               </section>
 
               <section className={`grid ${filterChips.length > 0 ? "[grid-template-rows:1fr]" : "[grid-template-rows:0fr]"} transition-[grid-template-rows] duration-250`}>
