@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { Button, Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import { GhostIcon, UserCircleIcon } from "@phosphor-icons/react";
-import useAuth from "../hooks/useAuth.tsx";
+import useAuth from "../hooks/useAuth.ts";
 
 const Header = () => {
   const { userId, logout } = useAuth();

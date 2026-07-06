@@ -8,10 +8,10 @@ import GameCard from "../components/GameCard.tsx";
 import FilterChip from "../components/FilterChip.tsx";
 import Modal from "../components/Modal.tsx";
 import Pagination from "../components/Pagination.tsx";
-import useFilterCategories from "../hooks/useFilterCategories.tsx";
-import useFilterSelections from "../hooks/useFilterSelections.tsx";
-import useGameResults from "../hooks/useGameResults.tsx";
-import useIsMobile from "../hooks/useIsMobile.tsx";
+import useFilterCategories from "../hooks/useFilterCategories.ts";
+import useFilterSelections from "../hooks/useFilterSelections.ts";
+import useGameResults from "../hooks/useGameResults.ts";
+import useIsMobile from "../hooks/useIsMobile.ts";
 import { FilterCategories, GameOverview, SelectOption } from "../types/common.ts";
 
 const PLATFORM_FAMILY_BY_SLUG = {

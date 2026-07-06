@@ -4,7 +4,7 @@ import axios from "axios";
 import { Button, Fieldset } from "@headlessui/react";
 import { ArrowRightIcon, WarningCircleIcon } from "@phosphor-icons/react";
 
-import useAuth from "../../hooks/useAuth.tsx";
+import useAuth from "../../hooks/useAuth.ts";
 import { validateEmailFormat, validatePasswordFormat } from "../../utils/validators.ts";
 
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"

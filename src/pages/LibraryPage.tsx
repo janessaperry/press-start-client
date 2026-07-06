@@ -3,16 +3,18 @@ import { CaretDownIcon, SlidersIcon } from "@phosphor-icons/react";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLocation, useSearchParams } from "react-router-dom";
+
 import FilterChip from "../components/FilterChip.tsx";
 import Filters from "../components/Filters.tsx";
 import GameCard from "../components/GameCard.tsx";
 import Modal from "../components/Modal.tsx";
 import Pagination from "../components/Pagination.tsx";
+
 import { FilterCategories, LibraryGame, LibraryStatusEnum, SelectOption } from "../types/common.ts";
-import useAuth from "../hooks/useAuth.tsx";
-import useFilterCategories from "../hooks/useFilterCategories.tsx";
-import useFilterSelections from "../hooks/useFilterSelections.tsx";
-import useIsMobile from "../hooks/useIsMobile.tsx";
+import useAuth from "../hooks/useAuth.ts";
+import useFilterCategories from "../hooks/useFilterCategories.ts";
+import useFilterSelections from "../hooks/useFilterSelections.ts";
+import useIsMobile from "../hooks/useIsMobile.ts";
 import useLibraryResults from "../hooks/useLibraryResults.ts";
 import { getCoverUrl } from "../utils/images.ts";
 import { LIBRARY_STATUS_ICONS } from "../utils/libraryIcons.ts";

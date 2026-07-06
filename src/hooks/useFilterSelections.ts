@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FilterCategories, SelectedFilters } from "../types/common.ts";
-import useIsMobile from "./useIsMobile.tsx";
+import useIsMobile from "./useIsMobile.ts";
 
 
 const otherValidParams = new Set([ 'page', 'sorting', 'search' ]);

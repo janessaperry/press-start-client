@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { LibraryGame, LibraryStatusEnum } from "../types/common.ts";
-import useIsMobile from "./useIsMobile.tsx";
+import useIsMobile from "./useIsMobile.ts";
 
 type LibraryCounts = {
   enum: LibraryStatusEnum;

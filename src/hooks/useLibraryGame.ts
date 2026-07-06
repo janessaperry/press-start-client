@@ -6,7 +6,7 @@ import {
   LibraryStatusOption,
   SelectOption
 } from "../types/common.ts";
-import useAuth from "./useAuth.tsx";
+import useAuth from "./useAuth.ts";
 
 type InitialData = {
   libraryPlatform?: SelectOption;

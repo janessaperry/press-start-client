@@ -7,7 +7,7 @@ import { WarningCircleIcon } from "@phosphor-icons/react";
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import TextInput from "../../components/TextInput.tsx";
 
-import useAuth from "../../hooks/useAuth.tsx";
+import useAuth from "../../hooks/useAuth.ts";
 import { validateEmailFormat } from "../../utils/validators.ts";
 
 const SignInPage = () => {

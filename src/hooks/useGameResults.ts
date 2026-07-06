@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import useIsMobile from "./useIsMobile.tsx";
+import useIsMobile from "./useIsMobile.ts";
 
 const PLATFORM_BY_SLUG = {
   playstation: { id: 1, name: 'PlayStation' },
