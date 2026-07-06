@@ -1,5 +1,4 @@
 import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
-import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 type Props = {
@@ -35,11 +34,6 @@ const Pagination = ({ resultsCount, itemsPerPage, className }: Props) => {
 
     return `?${params.toString()}`;
   }
-
-  useEffect(() => {
-    window.scrollTo({ top: 100, left: 100, behavior: "smooth" });
-  }, [ location.search ]);
-
 
   if (totalPages <= 1) return null;
 

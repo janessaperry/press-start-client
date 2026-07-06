@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { Button, Field, Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
 import { CaretDownIcon, GridFourIcon, PencilSimpleLineIcon, RowsIcon, SlidersIcon } from "@phosphor-icons/react";
 import Filters from "../components/Filters.tsx";
@@ -78,6 +78,15 @@ const GameResultsPage = () => {
     return [ ...chips ];
   }, [ filterCategories, committedOrder ]);
 
+  const location = useLocation();
+  useEffect(() => {
+    const el = document.getElementById("game-results-container");
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 24;
+      window.scrollTo({ top, behavior: "smooth" })
+    }
+  }, [ location.search ]);
+
   return (
     <>
       <div className="container px-4 md:px-10 pt-12 md:pt-24 pb-6 md:pb-12 space-y-4 md:space-y-16">
@@ -112,7 +121,7 @@ const GameResultsPage = () => {
 
           <div className="col-span-2 lg:col-span-3 space-y-4 md:space-y-6">
             <div className="space-y-4">
-              <section className="flex flex-col md:justify-between gap-4">
+              <section id="game-results-container" className="flex flex-col md:justify-between gap-4">
                 <div className="hidden md:block">
                   <h2>{resultsCount} results</h2>
                 </div>
