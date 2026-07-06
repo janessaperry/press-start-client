@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { Button, Field, Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
+import { CaretDownIcon, SlidersIcon } from "@phosphor-icons/react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
+import FilterChip from "../components/FilterChip.tsx";
 import Filters from "../components/Filters.tsx";
 import GameCard from "../components/GameCard.tsx";
 import Modal from "../components/Modal.tsx";
 import Pagination from "../components/Pagination.tsx";
-import { LibraryGame, LibraryStatusEnum } from "../types/common.ts";
+import { FilterCategories, LibraryGame, LibraryStatusEnum, SelectOption } from "../types/common.ts";
 import useAuth from "../hooks/useAuth.tsx";
 import useFilterCategories from "../hooks/useFilterCategories.tsx";
 import useFilterSelections from "../hooks/useFilterSelections.tsx";
@@ -13,15 +17,28 @@ import useLibraryResults from "../hooks/useLibraryResults.ts";
 import { getCoverUrl } from "../utils/images.ts";
 import { LIBRARY_STATUS_ICONS } from "../utils/libraryIcons.ts";
 
+const sortOptions = [
+  { id: "createdAt-desc", label: "Date Added (newest first)" },
+  { id: "createdAt-asc", label: "Date Added (oldest first)" },
+  { id: "name-asc", label: "Name (a-z)" },
+  { id: "name-desc", label: "Name (z-a)" },
+  { id: "releaseDate-desc", label: "Release Date (newest first)" },
+  { id: "releaseDate-asc", label: "Release Date (oldest first)" },
+];
+
 const LibraryPage = () => {
-  const limit = 4;
+  const limit = 10;
   const { userId } = useAuth();
   const isMobile = useIsMobile();
   const filterCategories = useFilterCategories('library', Number(userId));
 
+  const [ searchParams, setSearchParams ] = useSearchParams();
+  const sorting = searchParams.get('sorting');
+  const selectedSort = sortOptions.find(option => option.id === sorting) ?? sortOptions[0];
+
   const {
-    selectedFilters,
-    handleFilterChange, applyFilters, cancelFilters,
+    selectedFilters, committedOrder,
+    handleFilterChange, applyFilters, cancelFilters, handleClearAll
   } = useFilterSelections(filterCategories);
   const [ filterModalOpen, setFilterModalOpen ] = useState(false);
   const {
@@ -30,7 +47,30 @@ const LibraryPage = () => {
     currentlyPlaying, setCurrentlyPlaying,
     libraryCounts, setLibraryCounts,
     libraryTotalCount, setLibraryTotalCount
-  } = useLibraryResults(Number(userId), limit)
+  } = useLibraryResults(Number(userId), limit);
+
+  const handleSortChange = (selectedOption: SelectOption<string>) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('sorting', String(selectedOption.id));
+    params.delete('page');
+    setSearchParams(params, { replace: true });
+  }
+
+  const filterChips: SelectOption<string>[] = useMemo(() => {
+    const chips = new Set<SelectOption<string>>();
+
+    for (let i = 0; i < committedOrder.length; i++) {
+      const currentId = committedOrder[i];
+      const [ category, value ] = currentId.split('-');
+      const categoryOptions: SelectOption[] | undefined = filterCategories[category as keyof FilterCategories];
+
+      const foundFilter = categoryOptions?.find((option) => option.id === Number(value));
+      if (foundFilter) {
+        chips.add({ id: committedOrder[i], label: foundFilter.label })
+      }
+    }
+    return [ ...chips ];
+  }, [ filterCategories, committedOrder ]);
 
   const onStatusUpdate = (gameId: number, prevLibraryStatus: LibraryStatusEnum, newLibraryStatus: LibraryStatusEnum) => {
     setLibraryCounts(prev => prev.map(countEntry => {
@@ -70,6 +110,15 @@ const LibraryPage = () => {
         : category
     )));
   }
+
+  const location = useLocation();
+  useEffect(() => {
+    const el = document.getElementById("library-container");
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 24;
+      window.scrollTo({ top, behavior: "smooth" })
+    }
+  }, [ location.search ]);
 
   return (
     <>
@@ -111,37 +160,86 @@ const LibraryPage = () => {
               </div>
             </section>
           </div>
-
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <section>
-            <Filters filterCategories={filterCategories}
-              selectedFilters={selectedFilters}
-              handleFilterChange={handleFilterChange}
-              isLibrary={true}
-              className="hidden md:sticky md:top-4 md:max-h-[calc(100dvh-2rem)] md:overflow-y-scroll md:block md:col-span-1"/>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
 
-            {isMobile &&
-              createPortal(
-                <Modal modalOpen={filterModalOpen}
-                  setModalOpen={setFilterModalOpen}
-                  handleSubmit={applyFilters}
-                  handleCancel={cancelFilters}>
-                  <Filters filterCategories={filterCategories}
-                    selectedFilters={selectedFilters}
-                    handleFilterChange={handleFilterChange}
-                    isLibrary={true}/>
-                </Modal>,
-                document.body
-              )
-            }
-          </section>
+          <Filters filterCategories={filterCategories}
+            selectedFilters={selectedFilters}
+            handleFilterChange={handleFilterChange}
+            isLibrary={true}
+            className="hidden lg:sticky lg:top-4 lg:max-h-[calc(100dvh-4rem)] lg:overflow-y-scroll lg:block lg:col-span-1"/>
 
-          <div className="col-span-2 md:col-span-3 space-y-4 md:space-y-6">
-            <section className="space-y-4">
-              <h2>Library</h2>
-              <div className="grid grid-cols-2 gap-4">
+          {isMobile &&
+            createPortal(
+              <Modal modalOpen={filterModalOpen}
+                setModalOpen={setFilterModalOpen}
+                handleSubmit={applyFilters}
+                handleCancel={cancelFilters}>
+                <Filters filterCategories={filterCategories}
+                  selectedFilters={selectedFilters}
+                  handleFilterChange={handleFilterChange}
+                  isLibrary={true}/>
+              </Modal>,
+              document.body
+            )
+          }
+
+          <div className="col-span-2 lg:col-span-3 space-y-4 lg:space-y-6">
+            <div className="space-y-4">
+              <section id="library-container"
+                className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <h2>Library</h2>
+
+                <div className="flex flex-row md:justify-between gap-4">
+                  <Field className="grow md:grow-0 flex items-center gap-2">
+                    <Label>Sort by:</Label>
+                    <Listbox value={selectedSort}
+                      onChange={(selectedOption) => handleSortChange(selectedOption)}>
+                      <ListboxButton className="grow lg:grow-0 button ghost justify-between">
+                        {selectedSort?.label}
+                        <CaretDownIcon weight="bold"/>
+                      </ListboxButton>
+                      <ListboxOptions anchor="bottom" transition className="dropdown-options primary">
+                        {sortOptions.map((option) => {
+                          return (
+                            <ListboxOption key={option.id} value={option} className="dropdown-option ">
+                              {option.label}
+                            </ListboxOption>
+                          )
+                        })}
+                      </ListboxOptions>
+                    </Listbox>
+                  </Field>
+
+                  <Button onClick={() => setFilterModalOpen(true)} className="button ghost lg:hidden">
+                    <SlidersIcon weight="bold"/> <span className="hidden sm:block">Filters</span>
+                  </Button>
+                </div>
+              </section>
+
+              <section className={`grid ${filterChips.length > 0 ? "[grid-template-rows:1fr]" : "[grid-template-rows:0fr]"} transition-[grid-template-rows] duration-250`}>
+                <div className="overflow-hidden min-h-0">
+                  <h3 className="sr-only">Selected Filters</h3>
+                  <div className="p-4 bg-blue-500 border border-accent-300/20 rounded-2xl">
+                    <ul className="flex gap-3 flex-wrap">
+                      {filterChips?.map(filter => (
+                        <FilterChip key={filter.id}
+                          chipId={filter.id}
+                          label={filter.label}
+                          handleChange={handleFilterChange}/>
+                      ))}
+                      <li>
+                        <button onClick={handleClearAll} className="py-1 px-3 button danger">
+                          Clear all
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+
+              <div className="grid sm:grid-cols-2 gap-4">
                 {libraryGames.map((game: LibraryGame) => {
                   const libraryData = {
                     libraryPlatform: game.libraryPlatform,
@@ -160,11 +258,12 @@ const LibraryPage = () => {
 
                 {/* todo add empty state */}
               </div>
-              <div>
+
+              <div className="flex items-center justify-center">
                 {/*todo update results count to be based on filtered results count*/}
                 <Pagination itemsPerPage={limit} resultsCount={filteredCount}/>
               </div>
-            </section>
+            </div>
           </div>
         </div>
       </div>

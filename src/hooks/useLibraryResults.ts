@@ -34,6 +34,7 @@ const useLibraryResults = (userId: number, limit: number) => {
     searchParams.get('genres'),
     searchParams.get('timeToBeat'),
   ].join(',');
+
   const immediateParams = [
     searchParams.get('page'),
     searchParams.get('sorting'),

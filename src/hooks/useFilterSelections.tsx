@@ -171,6 +171,8 @@ const useFilterSelections = (validFilters: FilterCategories) => {
     params.delete('totalRating');
     params.delete('releaseDate');
     params.delete('gameType');
+    params.delete('libraryStatus');
+    params.delete('libraryFormat');
     params.delete('page');
     setSearchParams(params, { replace: true });
   }
