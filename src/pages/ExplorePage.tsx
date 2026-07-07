@@ -136,20 +136,20 @@ const ExplorePage = () => {
 
       <section className="container px-4 py-10 md:py-20 flex flex-col gap-6 md:gap-10">
         <h2>Explore by platform</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 md:gap-6">
           <Link to="/explore/xbox" className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
-            <img src={XboxLogo} alt="View Xbox games" className="w-full"/>
+            <img src={XboxLogo} alt="View Xbox games" className="h-14"/>
           </Link>
           <Link to="/explore/playstation"
             className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
-            <img src={PlaystationLogo} alt="View Xbox games" className="w-full"/>
+            <img src={PlaystationLogo} alt="View Xbox games" className="h-16"/>
           </Link>
           <Link to="/explore/nintendo"
             className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
-            <img src={NintendoLogo} alt="View Xbox games" className="w-full"/>
+            <img src={NintendoLogo} alt="View Xbox games" className="h-14"/>
           </Link>
           <Link to="/explore/pc" className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
-            <div className="w-full text-center font-heading text-2xl">PC</div>
+            <div className="w-full text-center font-heading text-5xl sm:text-4xl lg:text-5xl">PC</div>
           </Link>
         </div>
       </section>
