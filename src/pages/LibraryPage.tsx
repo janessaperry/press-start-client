@@ -1,16 +1,16 @@
 import { Button, Field, Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
 import { CaretDownIcon, SlidersIcon } from "@phosphor-icons/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLocation, useSearchParams } from "react-router-dom";
 
-import FilterChip from "../components/FilterChip.tsx";
+import FilterChipBar from "../components/FilterChipBar.tsx";
 import Filters from "../components/Filters.tsx";
 import GameCard from "../components/GameCard.tsx";
 import Modal from "../components/Modal.tsx";
 import Pagination from "../components/Pagination.tsx";
 
-import { FilterCategories, LibraryGame, LibraryStatusEnum, SelectOption } from "../types/common.ts";
+import { LibraryGame, LibraryStatusEnum } from "../types/common.ts";
 import useAuth from "../hooks/useAuth.ts";
 import useFilterCategories from "../hooks/useFilterCategories.ts";
 import useFilterSelections from "../hooks/useFilterSelections.ts";
@@ -52,28 +52,12 @@ const LibraryPage = () => {
     getLibrary
   } = useLibraryResults(Number(userId), limit);
 
-  const handleSortChange = (selectedOption: SelectOption<string>) => {
+  const handleSortChange = (selectedOption: { id: string | number; label: string }) => {
     const params = new URLSearchParams(searchParams);
     params.set('sorting', String(selectedOption.id));
     params.delete('page');
     setSearchParams(params, { replace: true });
   }
-
-  const filterChips: SelectOption<string>[] = useMemo(() => {
-    const chips = new Set<SelectOption<string>>();
-
-    for (let i = 0; i < committedOrder.length; i++) {
-      const currentId = committedOrder[i];
-      const [ category, value ] = currentId.split('-');
-      const categoryOptions: SelectOption[] | undefined = filterCategories[category as keyof FilterCategories];
-
-      const foundFilter = categoryOptions?.find((option) => option.id === Number(value));
-      if (foundFilter) {
-        chips.add({ id: committedOrder[i], label: foundFilter.label })
-      }
-    }
-    return [ ...chips ];
-  }, [ filterCategories, committedOrder ]);
 
   const onStatusUpdate = (gameId: number, prevLibraryStatus: LibraryStatusEnum, newLibraryStatus: LibraryStatusEnum) => {
     setLibraryCounts(prev => prev.map(countEntry => {
@@ -237,26 +221,10 @@ const LibraryPage = () => {
                 </div>
               </section>
 
-              <section className={`grid ${filterChips.length > 0 ? "[grid-template-rows:1fr]" : "[grid-template-rows:0fr]"} transition-[grid-template-rows] duration-250`}>
-                <div className="overflow-hidden min-h-0">
-                  <h3 className="sr-only">Selected Filters</h3>
-                  <div className="p-4 bg-blue-500 border border-accent-300/20 rounded-2xl">
-                    <ul className="flex gap-3 flex-wrap">
-                      {filterChips?.map(filter => (
-                        <FilterChip key={filter.id}
-                          chipId={filter.id}
-                          label={filter.label}
-                          handleChange={handleFilterChange}/>
-                      ))}
-                      <li>
-                        <button onClick={handleClearAll} className="py-1 px-3 button danger">
-                          Clear all
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </section>
+              <FilterChipBar filterCategories={filterCategories}
+                committedOrder={committedOrder}
+                handleFilterChange={handleFilterChange}
+                handleClearAll={handleClearAll}/>
 
               <div className="grid sm:grid-cols-2 gap-4">
                 {libraryGames.map((game: LibraryGame) => {

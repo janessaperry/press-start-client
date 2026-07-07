@@ -1,18 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { Button, Field, Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
 import { CaretDownIcon, GridFourIcon, PencilSimpleLineIcon, RowsIcon, SlidersIcon } from "@phosphor-icons/react";
+import FilterChipBar from "../components/FilterChipBar.tsx";
 import Filters from "../components/Filters.tsx";
 import GameCard from "../components/GameCard.tsx";
-import FilterChip from "../components/FilterChip.tsx";
 import Modal from "../components/Modal.tsx";
 import Pagination from "../components/Pagination.tsx";
 import useFilterCategories from "../hooks/useFilterCategories.ts";
 import useFilterSelections from "../hooks/useFilterSelections.ts";
 import useGameResults from "../hooks/useGameResults.ts";
 import useIsMobile from "../hooks/useIsMobile.ts";
-import { FilterCategories, GameOverview, SelectOption } from "../types/common.ts";
+import { GameOverview, SelectOption } from "../types/common.ts";
 
 const PLATFORM_FAMILY_BY_SLUG = {
   playstation: { label: "PlayStation", platformIds: [ 48, 167 ] },
@@ -61,22 +61,6 @@ const GameResultsPage = () => {
     if (searchQuery) {return `Results for "${searchQuery}"`;}
     return `Explore games`;
   }
-
-  const filterChips: SelectOption<string>[] = useMemo(() => {
-    const chips = new Set<SelectOption<string>>();
-
-    for (let i = 0; i < committedOrder.length; i++) {
-      const currentId = committedOrder[i];
-      const [ category, value ] = currentId.split('-');
-      const categoryOptions: SelectOption[] | undefined = filterCategories[category as keyof FilterCategories];
-
-      const foundFilter = categoryOptions?.find((option) => option.id === Number(value));
-      if (foundFilter) {
-        chips.add({ id: committedOrder[i], label: foundFilter.label })
-      }
-    }
-    return [ ...chips ];
-  }, [ filterCategories, committedOrder ]);
 
   const location = useLocation();
   useEffect(() => {
@@ -153,26 +137,10 @@ const GameResultsPage = () => {
                 </div>
               </section>
 
-              <section className={`grid ${filterChips.length > 0 ? "[grid-template-rows:1fr]" : "[grid-template-rows:0fr]"} transition-[grid-template-rows] duration-250`}>
-                <div className="overflow-hidden min-h-0">
-                  <h3 className="sr-only">Selected Filters</h3>
-                  <div className="p-4 bg-blue-500 border border-accent-300/20 rounded-2xl">
-                    <ul className="flex gap-3 flex-wrap">
-                      {filterChips?.map(filter => (
-                        <FilterChip key={filter.id}
-                          chipId={filter.id}
-                          label={filter.label}
-                          handleChange={handleFilterChange}/>
-                      ))}
-                      <li>
-                        <button onClick={handleClearAll} className="py-1 px-3 button danger">
-                          Clear all
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </section>
+              <FilterChipBar filterCategories={filterCategories}
+                committedOrder={committedOrder}
+                handleFilterChange={handleFilterChange}
+                handleClearAll={handleClearAll}/>
 
               <section className="flex items-center justify-between md:hidden">
                 <h2>{resultsCount} results</h2>
