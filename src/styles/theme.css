@@ -13,6 +13,7 @@
 
   --color-blue-100: rgb(181, 180, 188);
   --color-blue-200: rgb(166, 165, 182);
+  --color-blue-300: rgb(139, 136, 161);
   --color-blue-500: rgb(26, 19, 68);
   --color-blue-900: rgb(17, 13, 39);
 
@@ -54,6 +55,7 @@
 
   --color-secondary-100: var(--color-blue-100);
   --color-secondary-200: var(--color-blue-200);
+  --color-secondary-300: var(--color-blue-300);
   --color-secondary-900: var(--color-blue-900);
 
   --color-accent-300: var(--color-teal-300);

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { Button, Input } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 
@@ -19,9 +19,22 @@ const ExplorePage = () => {
 
   const [ searchQuery, setSearchQuery ] = useState<string>('');
   const [ searchResults, setSearchResults ] = useState<Result[]>([]);
-  const [ showSearchResults, setShowSearchResults ] = useState<boolean>(false);
+  const [ isSearchPending, setIsSearchPending ] = useState<boolean>(false);
+  const [ isDropdownOpen, setIsDropdownOpen ] = useState<boolean>(false);
   const [ newRelease, setNewRelease ] = useState<GameOverview[]>([]);
   const [ comingSoon, setComingSoon ] = useState<GameOverview[]>([]);
+
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,27 +60,30 @@ const ExplorePage = () => {
     }
   }
 
-  const handleSearchInput = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleSearchInput = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
+    if (value.length >= 3) {
+      setIsSearchPending(true);
+      setIsDropdownOpen(true);
+    }
+    else {
+      setIsSearchPending(false);
+      setIsDropdownOpen(false);
+      setSearchResults([]);
+    }
   }
 
   useEffect(() => {
+    if (searchQuery.length < 3) return;
+
     const timeoutId = setTimeout(async () => {
-      if (searchQuery.length >= 3) {
-        const results = await fetchSearchResults(searchQuery);
-        setSearchResults(results);
-        setShowSearchResults(true);
-      }
-      else {
-        setShowSearchResults(false);
-        setSearchResults([]);
-      }
+      const results = await fetchSearchResults(searchQuery);
+      setSearchResults(results ?? []);
+      setIsSearchPending(false);
     }, 400);
 
-    return () => {
-      clearTimeout(timeoutId);
-    }
+    return () => clearTimeout(timeoutId);
   }, [ searchQuery ]);
 
 
@@ -96,22 +112,24 @@ const ExplorePage = () => {
         <div className="container flex flex-col gap-6 md:gap-10">
           <h1 className="text-center">Find your next game</h1>
 
-          <search className="flex flex-col  gap-4">
-            <form className="self-center w-full md:max-w-3/4 lg:max-w-1/2 flex items-center gap-3"
-              onSubmit={handleSearchSubmit}>
-              <Input name="search"
-                type="search"
-                placeholder="Search..."
-                onChange={e => handleSearchInput(e)}
-                value={searchQuery}
-                className="grow"/>
-              <Button type="submit" className="button primary h-full aspect-square">
-                <MagnifyingGlassIcon className="icon-md"/>
-              </Button>
-            </form>
-            {showSearchResults &&
-              <SearchResultsDropdown results={searchResults}/>
-            }
+          <search className="flex justify-center">
+            <div ref={searchContainerRef} className="w-full md:max-w-3/4 lg:max-w-1/2 flex flex-col gap-3">
+              <form className="flex items-stretch gap-3" onSubmit={handleSearchSubmit}>
+                <Input name="search"
+                  type="search"
+                  placeholder="Search..."
+                  autoComplete="off"
+                  onChange={e => handleSearchInput(e)}
+                  value={searchQuery}
+                  className="grow md:text-xl"/>
+                <Button type="submit" className="button primary aspect-square rounded-full">
+                  <MagnifyingGlassIcon className="icon-md"/>
+                </Button>
+              </form>
+              {isDropdownOpen &&
+                <SearchResultsDropdown results={searchResults} isSearchPending={isSearchPending} query={searchQuery}/>
+              }
+            </div>
           </search>
         </div>
       </section>

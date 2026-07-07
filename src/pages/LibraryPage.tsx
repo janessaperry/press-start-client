@@ -10,7 +10,7 @@ import GameCard from "../components/GameCard.tsx";
 import Modal from "../components/Modal.tsx";
 import Pagination from "../components/Pagination.tsx";
 
-import { LibraryGame, LibraryStatusEnum } from "../types/common.ts";
+import { LibraryGame, LibraryStatusEnum, SelectOption } from "../types/common.ts";
 import useAuth from "../hooks/useAuth.ts";
 import useFilterCategories from "../hooks/useFilterCategories.ts";
 import useFilterSelections from "../hooks/useFilterSelections.ts";
@@ -52,7 +52,7 @@ const LibraryPage = () => {
     getLibrary
   } = useLibraryResults(Number(userId), limit);
 
-  const handleSortChange = (selectedOption: { id: string | number; label: string }) => {
+  const handleSortChange = (selectedOption: SelectOption<string>) => {
     const params = new URLSearchParams(searchParams);
     params.set('sorting', String(selectedOption.id));
     params.delete('page');
