@@ -94,7 +94,8 @@ const useLibraryResults = (userId: number, limit: number) => {
     currentlyPlaying, setCurrentlyPlaying,
     libraryCounts, setLibraryCounts,
     libraryTotalCount, setLibraryTotalCount,
-    isLoading, setIsLoading
+    isLoading, setIsLoading,
+    getLibrary
   }
 }
 

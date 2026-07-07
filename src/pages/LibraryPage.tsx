@@ -45,10 +45,11 @@ const LibraryPage = () => {
   const [ filterModalOpen, setFilterModalOpen ] = useState(false);
   const {
     libraryGames, setLibraryGames,
-    filteredCount,
+    filteredCount, setFilteredCount,
     currentlyPlaying, setCurrentlyPlaying,
     libraryCounts, setLibraryCounts,
-    libraryTotalCount, setLibraryTotalCount
+    libraryTotalCount, setLibraryTotalCount,
+    getLibrary
   } = useLibraryResults(Number(userId), limit);
 
   const handleSortChange = (selectedOption: SelectOption<string>) => {
@@ -96,9 +97,8 @@ const LibraryPage = () => {
   }
 
   const onDelete = (gameId: number, libraryStatus: LibraryStatusEnum) => {
-    setLibraryGames((prev) => (
-      prev.filter((record: LibraryGame) => record.gameOverview.id !== gameId)
-    ));
+    const newLibraryGames = libraryGames.filter((record: LibraryGame) => record.gameOverview.id !== gameId);
+    setLibraryGames(newLibraryGames);
 
     setCurrentlyPlaying(prev => (
       prev.filter((libraryGame) => libraryGame.gameOverview.id !== gameId)
@@ -111,6 +111,23 @@ const LibraryPage = () => {
         ? { ...category, count: category.count - 1 }
         : category
     )));
+
+    const newFilteredCount = filteredCount - 1;
+    setFilteredCount(newFilteredCount);
+
+    if (newLibraryGames.length === 0) {
+      const newTotalPages = Math.ceil(newFilteredCount / limit);
+      const currentPageNum = Number(searchParams.get('page') ?? 1);
+
+      if (currentPageNum > newTotalPages) {
+        const params = new URLSearchParams(searchParams);
+        params.set('page', String(Math.max(newTotalPages, 1)));
+        setSearchParams(params, { replace: true });
+      }
+      else {
+        void getLibrary();
+      }
+    }
   }
 
   const location = useLocation();
