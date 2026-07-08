@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Button, Fieldset } from "@headlessui/react";
-import { WarningCircleIcon } from "@phosphor-icons/react";
+import { InfoIcon, WarningCircleIcon } from "@phosphor-icons/react";
 
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import TextInput from "../../components/TextInput.tsx";
@@ -78,8 +78,12 @@ const SignInPage = () => {
     <>
       <main className="h-screen">
         <div className="h-full flex">
-          <div className="hidden md:inline-block flex-1 p-12 bg-[url(/src/assets/images/sign-up-bg-v2.jpg)] bg-cover bg-no-repeat bg-right">
-            <img src={PressStartLogo} alt="Press Start logo"/>
+          <div className="hidden md:flex md:flex-col md:items-start md:justify-between flex-1 p-12 bg-[url(/src/assets/images/sign-up-bg-v3.jpg)] bg-cover bg-no-repeat bg-right">
+            <img src={PressStartLogo} alt="Press Start logo" className="h-8 drop-shadow-xl drop-shadow-secondary-900"/>
+            <div className="lg:max-w-1/2 flex items-start gap-1.5 bg-primary-900/60 p-2 text-sm rounded-sm"><InfoIcon
+              className="icon-sm shrink-0"/> AI generated image - if you have a gaming related image you'd like you
+              contribute, please reach out!
+            </div>
           </div>
 
           <section className="bg-primary-700 flex-1 p-12 flex flex-col gap-4">
@@ -104,8 +108,8 @@ const SignInPage = () => {
 
               <Fieldset className="flex flex-col gap-8 border-none">
                 <TextInput id="email"
-                  label="Email"
-                  placeholder="Email"
+                  label="Email address"
+                  placeholder="email@example.com"
                   required={true}
                   errorMessage={formErrors.email}
                   value={formData.email}
@@ -114,14 +118,14 @@ const SignInPage = () => {
                 <TextInput id="password"
                   label="Password"
                   type="password"
-                  placeholder="Password"
+                  placeholder="Enter your password"
                   required={true}
                   errorMessage={formErrors.password}
                   value={formData.password}
                   onChange={(e) => handleInputChange(e)}/>
               </Fieldset>
 
-              <Button className="button secondary" type="submit">Continue</Button>
+              <Button className="button primary" type="submit">Continue</Button>
             </form>
 
             <p className="font-bold">Forgot password? <Link to="/forgot-password" className="link-primary">Reset
