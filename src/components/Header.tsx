@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Button, Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { Button } from "@headlessui/react";
 import { GhostIcon, ListIcon, XIcon } from "@phosphor-icons/react";
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import useAuth from "../hooks/useAuth.ts";
@@ -53,24 +53,24 @@ const Header = () => {
                   )}
                 </NavLink>
               </li>
-              {userId &&
-                <li>
-                  <Popover>
-                    {({ close }) => (
-                      <>
-                        <PopoverButton className={getNavLinkClass({ isActive: false })}>
+              {userId && (
+                <>
+                  <li>
+                    <NavLink to="/account-settings" className={getNavLinkClass}>
+                      {({ isActive }) => (
+                        <>
                           Account
-                        </PopoverButton>
-                        <PopoverPanel className="bg-primary-500 p-2 mt-1 flex flex-col gap-1 rounded-xl shadow-md shadow-primary-900"
-                          anchor="bottom end">
-                          <NavLink to="/account-settings" onClick={close}
-                            className="px-4 py-2 rounded-md text-grey-50 hover:bg-primary-700">Settings</NavLink>
-                          <Button className="button primary" onClick={logout}>Log out</Button>
-                        </PopoverPanel>
-                      </>
-                    )}
-                  </Popover>
-                </li>
+                          {isActive && <GhostIcon weight="fill" size={12} className="absolute -bottom-3"/>}
+                        </>
+                      )}
+                    </NavLink>
+                  </li>
+
+                  <li>
+                    <Button className="button ghost muted" onClick={logout}>Log out</Button>
+                  </li>
+                </>
+              )
               }
               {userId === null &&
                 <>
