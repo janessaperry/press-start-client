@@ -1,14 +1,14 @@
-import { ChangeEvent, FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Button, Fieldset } from "@headlessui/react";
 import { InfoIcon, WarningCircleIcon } from "@phosphor-icons/react";
 
-import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
-import TextInput from "../../components/TextInput.tsx";
-
 import useAuth from "../../hooks/useAuth.ts";
 import { validateEmailFormat } from "../../utils/validators.ts";
+
+import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
+import TextInput from "../../components/TextInput.tsx";
 
 const SignInPage = () => {
   const { login } = useAuth();

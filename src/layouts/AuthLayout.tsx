@@ -5,7 +5,7 @@ const AuthLayout = () => {
   const { isAuthenticated } = useAuth();
 
   if ( isAuthenticated ) {
-    return <Navigate to="/"/>;
+    return <Navigate to="/my-games"/>;
   }
 
   return <Outlet/>
