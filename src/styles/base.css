@@ -93,16 +93,27 @@
 
   /* Buttons */
   button {
-    @apply cursor-pointer;
+    @apply cursor-pointer rounded-sm
+    focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
   }
 
   /* Inputs */
   input[type="text"], input[type="password"], input[type="search"] {
     @apply px-4 py-2 rounded-full
     text-secondary-900
-    bg-grey-50
+    bg-grey-100
     border-2 border-primary-300
     focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
+  }
+
+  input[type="search"]::-webkit-search-cancel-button {
+    @apply appearance-none h-5 w-5 cursor-pointer bg-grey-600;
+
+    -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI1NiAyNTYiPjxwYXRoIGQ9Ik0yMDguNDksMTkxLjUxYTEyLDEyLDAsMCwxLTE3LDE3TDEyOCwxNDUsNjQuNDksMjA4LjQ5YTEyLDEyLDAsMCwxLTE3LTE3TDExMSwxMjgsNDcuNTEsNjQuNDlhMTIsMTIsMCwwLDEsMTctMTdMMTI4LDExMWw2My41MS02My41MmExMiwxMiwwLDAsMSwxNywxN0wxNDUsMTI4WiI+PC9wYXRoPjwvc3ZnPg==");
+    mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI1NiAyNTYiPjxwYXRoIGQ9Ik0yMDguNDksMTkxLjUxYTEyLDEyLDAsMCwxLTE3LDE3TDEyOCwxNDUsNjQuNDksMjA4LjQ5YTEyLDEyLDAsMCwxLTE3LTE3TDExMSwxMjgsNDcuNTEsNjQuNDlhMTIsMTIsMCwwLDEsMTctMTdMMTI4LDExMWw2My41MS02My41MmExMiwxMiwwLDAsMSwxNywxN0wxNDUsMTI4WiI+PC9wYXRoPjwvc3ZnPg==");
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
   }
 
   /* Remove animations for people who've turned them off */

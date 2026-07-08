@@ -13,7 +13,6 @@
 
   --color-blue-100: rgb(181, 180, 188);
   --color-blue-200: rgb(166, 165, 182);
-  --color-blue-300: rgb(139, 136, 161);
   --color-blue-500: rgb(26, 19, 68);
   --color-blue-900: rgb(17, 13, 39);
 
@@ -32,16 +31,19 @@
   --color-yellow-500: rgb(255, 193, 7);
 
   /* Neutral colors */
-  --color-grey-50: rgb(234, 233, 237);
-  --color-grey-100: rgb(218, 215, 222);
-  --color-grey-200: rgb(210, 207, 215);
-  --color-grey-300: rgb(201, 198, 206);
-  --color-grey-400: rgb(185, 186, 194);
-  --color-grey-500: rgb(166, 172, 180);
-  --color-grey-600: rgb(108, 117, 125);
-  --color-grey-700: rgb(73, 80, 87);
-  --color-grey-800: rgb(52, 58, 64);
-  --color-grey-900: rgb(33, 37, 41);
+  /*--color-grey-50: rgb(234, 233, 237);*/
+  /*--color-grey-100: rgb(218, 215, 222);*/
+  /*--color-grey-200: rgb(210, 207, 215);*/
+  --color-grey-50: rgb(225, 225, 231);
+  --color-grey-100: rgb(209, 213, 217);
+  --color-grey-200: rgb(184, 192, 200);
+  /*--color-grey-300: rgb(201, 198, 206);*/
+  /*--color-grey-400: rgb(185, 186, 194);*/
+  --color-grey-500: rgb(124, 139, 154);
+  --color-grey-600: rgb(91, 110, 129);
+  /*--color-grey-700: rgb(73, 80, 87);*/
+  /*--color-grey-800: rgb(52, 58, 64);*/
+  /*--color-grey-900: rgb(33, 37, 41);*/
 
 
   /* Semantic Colors */
@@ -55,7 +57,6 @@
 
   --color-secondary-100: var(--color-blue-100);
   --color-secondary-200: var(--color-blue-200);
-  --color-secondary-300: var(--color-blue-300);
   --color-secondary-900: var(--color-blue-900);
 
   --color-accent-300: var(--color-teal-300);

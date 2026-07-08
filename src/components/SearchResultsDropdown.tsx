@@ -11,10 +11,10 @@ type Props = {
 const SearchResultsDropdown = ({ results, isSearchPending, query }: Props) => {
   const renderContent = () => {
     if (isSearchPending) {
-      return <p className="p-3 text-secondary-300 text-lg italic">Searching...</p>;
+      return <p className="p-3 text-grey-600 text-lg italic">Searching...</p>;
     }
     if (results.length === 0) {
-      return <p className="p-3 text-secondary-300 text-lg italic">No games found for "{query}"</p>;
+      return <p className="p-3 text-grey-600 text-lg italic">No games found for "{query}"</p>;
     }
     return results.map(result => (
       <Link key={result.id} to={`/game/${result.id}/${result.name}`}
