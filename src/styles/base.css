@@ -93,7 +93,7 @@
 
   /* Buttons */
   button {
-    @apply cursor-pointer rounded-sm
+    @apply cursor-pointer rounded-sm font-semibold
     focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
   }
 

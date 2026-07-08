@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Button, Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import { GhostIcon, ListIcon, UserCircleIcon, XIcon } from "@phosphor-icons/react";
+import { GhostIcon, ListIcon, XIcon } from "@phosphor-icons/react";
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import useAuth from "../hooks/useAuth.ts";
 
@@ -56,15 +56,19 @@ const Header = () => {
               {userId &&
                 <li>
                   <Popover>
-                    <PopoverButton className="button secondary p-3 md:p-2">
-                      <UserCircleIcon weight="duotone" className="icon-md"/>
-                    </PopoverButton>
-                    <PopoverPanel className="bg-primary-500 p-2 mt-1 flex flex-col gap-1 rounded-xl shadow-md shadow-primary-900"
-                      anchor="bottom end">
-                      <NavLink to="/settings"
-                        className="px-4 py-2 rounded-md text-grey-50 hover:bg-primary-700">Settings</NavLink>
-                      <Button className="button primary" onClick={logout}>Log out</Button>
-                    </PopoverPanel>
+                    {({ close }) => (
+                      <>
+                        <PopoverButton className={getNavLinkClass({ isActive: false })}>
+                          Account
+                        </PopoverButton>
+                        <PopoverPanel className="bg-primary-500 p-2 mt-1 flex flex-col gap-1 rounded-xl shadow-md shadow-primary-900"
+                          anchor="bottom end">
+                          <NavLink to="/account-settings" onClick={close}
+                            className="px-4 py-2 rounded-md text-grey-50 hover:bg-primary-700">Settings</NavLink>
+                          <Button className="button primary" onClick={logout}>Log out</Button>
+                        </PopoverPanel>
+                      </>
+                    )}
                   </Popover>
                 </li>
               }
@@ -120,7 +124,7 @@ const Header = () => {
             {userId &&
               <div className="flex flex-col gap-3">
                 <p className="text-sm uppercase tracking-widest text-primary-100">Account</p>
-                <NavLink to="/settings" className={getMobileNavLinkClass} onClick={closeMobileMenu}>
+                <NavLink to="/account-settings" className={getMobileNavLinkClass} onClick={closeMobileMenu}>
                   Settings
                 </NavLink>
                 <button className="text-lg font-medium text-grey-50 hover:text-interactive-primary-hover text-left"

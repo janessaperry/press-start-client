@@ -7,6 +7,7 @@ import SignUpPage from "./pages/Auth/SignUpPage.tsx";
 import SignInPage from "./pages/Auth/SignInPage.tsx";
 import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage.tsx";
 import ResetPasswordPage from "./pages/Auth/ResetPasswordPage.tsx";
+import AccountSettingsPage from "./pages/AccountSettingsPage.tsx";
 import LibraryPage from "./pages/LibraryPage.tsx";
 import ExplorePage from "./pages/ExplorePage.tsx";
 import GameResultsPage from "./pages/GameResultsPage.tsx";
@@ -27,7 +28,7 @@ function App () {
 
 
           <Route element={<PageLayout/>}>
-            <Route path="/" element={<LibraryPage/>}/>
+            <Route path="/" element={<ExplorePage/>}/>
             <Route path="/explore" element={<ExplorePage/>}/>
             <Route path="/explore/:platformFamilySlug" element={<GameResultsPage/>}/>
             <Route path="/games" element={<GameResultsPage/>}/>
@@ -37,7 +38,7 @@ function App () {
 
             <Route element={<ProtectedRoute/>}>
               <Route path="/my-games" element={<LibraryPage/>}/>
-              <Route path="/account" element={<LibraryPage/>}/>
+              <Route path="/account-settings" element={<AccountSettingsPage/>}/>
             </Route>
           </Route>
         </Routes>
