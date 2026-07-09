@@ -1,15 +1,17 @@
-import { ChangeEvent, FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Button, Fieldset } from "@headlessui/react";
-import { ArrowRightIcon, InfoIcon, WarningCircleIcon } from "@phosphor-icons/react";
+import { ArrowRightIcon, InfoIcon } from "@phosphor-icons/react";
 
 import useAuth from "../../hooks/useAuth.ts";
 import { validateEmailFormat, validatePasswordFormat } from "../../utils/validators.ts";
 
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
+import Alert from "../../components/Alert.tsx";
 import TextInput from "../../components/TextInput.tsx";
 
+const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const SignUpPage = () => {
   const { login } = useAuth();
   const [ formData, setFormData ] = useState({
@@ -23,18 +25,28 @@ const SignUpPage = () => {
     confirmPassword: ""
   })
   const [ authError, setAuthError ] = useState(false);
+  const [ serverError, setServerError ] = useState(false);
+
+  const resetErrors = () => {
+    setAuthError(false);
+    setServerError(false);
+    setFormErrors({
+      email: "",
+      password: "",
+      confirmPassword: ""
+    })
+  }
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
-        ...formData,
-        [e.target.id]: e.target.value
-      }
-    )
+      ...formData,
+      [e.target.id]: e.target.value
+    })
   }
-
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    resetErrors();
 
     const emailValid = validateEmailFormat(formData.email);
     const passwordValid = validatePasswordFormat(formData.password);
@@ -45,7 +57,6 @@ const SignUpPage = () => {
       password: passwordValid ? "" : "Password does not match criteria.",
       confirmPassword: confirmPasswordValid ? "" : "Passwords do not match."
     }
-
     setFormErrors(newErrors);
 
     const formValid = emailValid && passwordValid && confirmPasswordValid;
@@ -56,8 +67,7 @@ const SignUpPage = () => {
 
   const createUser = async (email: string, password: string) => {
     try {
-      //todo move this to correct folder after working
-      const response = await axios.post("http://localhost:8080/auth/register", {
+      const response = await axios.post(`${baseServerUrl}/auth/register`, {
         email,
         password
       });
@@ -69,10 +79,19 @@ const SignUpPage = () => {
       login(token, userId);
     }
     catch (e) {
-      setAuthError(true);
-      console.error(`Sign up failed: ${e}`);
+      if (axios.isAxiosError(e)) {
+        if (e.response?.status === 409) {
+          setAuthError(true);
+        }
+        else {
+          setServerError(true);
+        }
+      }
+      else {
+        setServerError(true);
+      }
+      console.error("Sign up failed:", e);
     }
-
   }
 
 
@@ -96,21 +115,16 @@ const SignUpPage = () => {
               <h1>Sign up</h1>
 
               {authError && (
-                <div className="text-error-500 bg-error-500/20 px-4 py-2 rounded-md flex flex-col gap-1"
-                  role="alert"
-                  aria-live="assertive"
-                  aria-atomic="true">
+                <Alert message="An account already exists for that email address." variant="warning">
+                  <Link to="/sign-in"
+                    className="inline-flex gap-1 items-center link-primary">
+                    Sign in <ArrowRightIcon weight="bold"/>
+                  </Link>
+                </Alert>
+              )}
 
-                  <div className="flex gap-2">
-                    <WarningCircleIcon weight="bold" size={18} className="relative top-1 shrink-0"/>
-                    <p className="font-bold">An account already exists for that email
-                      address. <Link to="/sign-in"
-                        className="inline-flex gap-1 items-center link-primary">
-                        Sign in <ArrowRightIcon weight="bold"/>
-                      </Link>
-                    </p>
-                  </div>
-                </div>
+              {serverError && (
+                <Alert message="Something went wrong. Please try again." variant="warning"/>
               )}
 
               <Fieldset className="flex flex-col gap-8 border-none">
@@ -149,7 +163,6 @@ const SignUpPage = () => {
               <Button className="button primary" type="submit">Continue</Button>
             </form>
           </section>
-
         </div>
       </main>
     </>
