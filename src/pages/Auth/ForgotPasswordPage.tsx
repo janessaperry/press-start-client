@@ -1,21 +1,23 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Button, Fieldset } from "@headlessui/react";
-import { CheckCircleIcon, InfoIcon } from "@phosphor-icons/react";
-
-import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
-import TextInput from "../../components/TextInput.tsx";
+import { InfoIcon } from "@phosphor-icons/react";
 
 import { validateEmailFormat } from "../../utils/validators.ts";
 
+import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
+import Alert from "../../components/Alert.tsx";
+import TextInput from "../../components/TextInput.tsx";
+
+const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const ForgotPasswordPage = () => {
-  // const { login } = useAuth();
   const [ email, setEmail ] = useState("")
   const [ emailError, setEmailError ] = useState("")
   const [ linkSent, setLinkSent ] = useState(false);
   const [ rateLimitHit, setRateLimitHit ] = useState(false);
   const [ countdown, setCountdown ] = useState<number>(0);
+  const [ serverError, setServerError ] = useState(false);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -23,6 +25,8 @@ const ForgotPasswordPage = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setEmailError("");
+    setServerError(false);
 
     const emailValid = validateEmailFormat(email);
     if (!emailValid) {
@@ -31,7 +35,7 @@ const ForgotPasswordPage = () => {
     }
 
     const response = await requestReset(email);
-    if (response && response.status === 200) {
+    if (response) {
       setLinkSent(true);
       return;
     }
@@ -39,25 +43,27 @@ const ForgotPasswordPage = () => {
 
   const requestReset = async (email: string) => {
     try {
-      return await axios.post("http://localhost:8080/auth/password-reset/request", {
+      return await axios.post(`${baseServerUrl}/auth/password-reset/request`, {
         email
       });
     }
-    catch (e: unknown) {
+    catch (e) {
       if (axios.isAxiosError(e)) {
         const status = e.response?.status;
-
         if (status === 429) {
           setRateLimitHit(true);
-
           const retryAfter = e.response?.data?.retryAfter || 60;
           if (countdown <= 0) setCountdown(retryAfter);
         }
-
-        return;
+        else {
+          setServerError(true);
+        }
       }
-
-      console.error(`Request failed:`, e);
+      else {
+        setServerError(true);
+      }
+      console.error("Request failed:", e);
+      return;
     }
   }
 
@@ -96,27 +102,17 @@ const ForgotPasswordPage = () => {
               </p>
 
               {linkSent && (
-                <div className="text-info-500 bg-info-900/50 px-4 py-2 rounded-md flex gap-2"
-                  role="status"
-                  aria-live="polite"
-                  aria-atomic="true">
-                  <CheckCircleIcon weight="bold" size={18} className="relative top-1 shrink-0"/>
-                  <p className="font-bold">If an account exists for that email, we’ve sent a password reset link.
-                    Check your inbox to continue.
-                  </p>
-                </div>
+                <Alert message="If an account exists for that email, we've sent a password reset link. Check your inbox to continue."
+                  variant="info"/>
               )}
 
               {rateLimitHit && (
-                <div className="text-error-500 bg-error-900/50 px-4 py-2 rounded-md flex gap-2"
-                  role="status"
-                  aria-live="polite"
-                  aria-atomic="true">
-                  <CheckCircleIcon weight="bold" size={18} className="relative top-1 shrink-0"/>
-                  <p className="font-bold">Please wait {countdown} seconds before requesting another reset
-                    link.
-                  </p>
-                </div>
+                <Alert message={`Please wait ${countdown} seconds before requesting another reset link.`}
+                  variant="warning"/>
+              )}
+
+              {serverError && (
+                <Alert message="Something went wrong. Please try again." variant="warning"/>
               )}
 
               <Fieldset className="flex flex-col gap-8 border-none">
