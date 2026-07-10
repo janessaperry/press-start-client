@@ -63,7 +63,6 @@ const ForgotPasswordPage = () => {
         setServerError(true);
       }
       console.error("Request failed:", e);
-      return;
     }
   }
 
