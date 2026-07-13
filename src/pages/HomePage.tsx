@@ -62,18 +62,16 @@ const HomePage = () => {
         <div className="p-3 bg-secondary-900 border border-secondary-100/20 rounded-3xl">
           <img src="/src/assets/images/screenshots/explore.png" alt="Screenshot of the explore page"/>
         </div>
-      </section>
 
-      <div className="container px-4 md:px-10">
-        <section className="flex flex-col items-start md:flex-row gap-6 md:gap-10 p-4 md:py-6 md:px-10 bg-primary-500 rounded-3xl">
+        <div className="flex flex-col items-start md:flex-row gap-6 md:gap-10 p-4 md:py-6 md:px-10 bg-primary-500 rounded-3xl">
           <div className="grow space-y-4">
             <h2>Ready to start your collection?</h2>
             <p className="text-lg lg:text-xl">Create an account to start tracking the games you own today.</p>
           </div>
 
           <Link to="/sign-up" className="button primary min-w-fit">Create Account</Link>
-        </section>
-      </div>
+        </div>
+      </section>
     </>
   )
 }
