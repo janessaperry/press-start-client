@@ -118,7 +118,7 @@ const LibraryPage = () => {
   useEffect(() => {
     const el = document.getElementById("library-container");
     if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 24;
+      const top = el.getBoundingClientRect().top + window.scrollY - 80;
       window.scrollTo({ top, behavior: "smooth" })
     }
   }, [ location.search ]);
@@ -171,7 +171,7 @@ const LibraryPage = () => {
             selectedFilters={selectedFilters}
             handleFilterChange={handleFilterChange}
             isLibrary={true}
-            className="hidden lg:sticky lg:top-4 lg:max-h-[calc(100dvh-4rem)] lg:overflow-y-scroll lg:block lg:col-span-1"/>
+            className="hidden lg:sticky lg:top-20 lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-scroll lg:block lg:col-span-1"/>
 
           {isMobile &&
             createPortal(

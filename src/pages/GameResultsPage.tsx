@@ -66,7 +66,7 @@ const GameResultsPage = () => {
   useEffect(() => {
     const el = document.getElementById("game-results-container");
     if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 24;
+      const top = el.getBoundingClientRect().top + window.scrollY - 80;
       window.scrollTo({ top, behavior: "smooth" })
     }
   }, [ location.search ]);
@@ -87,7 +87,7 @@ const GameResultsPage = () => {
           <Filters filterCategories={filterCategories}
             selectedFilters={selectedFilters}
             handleFilterChange={handleFilterChange}
-            className="hidden lg:sticky lg:top-4 lg:max-h-[calc(100dvh-2rem)] lg:overflow-y-scroll lg:block lg:col-span-1"/>
+            className="hidden lg:sticky lg:top-20 lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-scroll lg:block lg:col-span-1"/>
 
           {isMobile &&
             createPortal(
@@ -105,8 +105,8 @@ const GameResultsPage = () => {
 
           <div className="col-span-2 lg:col-span-3 space-y-4 md:space-y-6">
             <div className="space-y-4">
-              <section id="game-results-container" className="flex flex-col md:justify-between gap-4">
-                <div className="hidden md:block">
+              <section id="game-results-container" className="flex flex-col lg:flex-row md:justify-between gap-4">
+                <div className="hidden md:inline-block">
                   <h2>{resultsCount} results</h2>
                 </div>
 
