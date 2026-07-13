@@ -27,37 +27,40 @@ const HomePage = () => {
           className="absolute top-1/2 -translate-y-1/2 left-0 lg:left-auto lg:-right-10 z-0 h-[140%] object-cover pointer-events-none"/>
       </section>
 
-      <section className="container px-4 md:px-10 py-12 md:py-24">
-        <div>
+      <section className="container px-4 md:px-10 py-12 md:py-24 space-y-10">
+        <div className="space-y-4">
           <h2>Everything you need to manage your collection</h2>
           <p className="text-lg lg:text-xl">
             From discovering new games to organizing your backlog, Press Start keeps everything in one place.
           </p>
         </div>
 
-        <div>
-          <div>
-            <h3>Discover games</h3>
+        <div className="flex gap-4">
+          <div className="flex-1 p-4 bg-secondary-500 border border-accent-300/80 hover:border-accent-300/60 rounded-2xl space-y-2">
+            <h4>Discover games</h4>
             <p>Explore games across PlayStation, Xbox, Nintendo, and PC and add to your collection.</p>
           </div>
-          <div>
-            <h3>Organize your collection</h3>
+
+          <div className="flex-1 p-4 bg-secondary-500 border border-accent-300/20 hover:border-accent-300/60 rounded-2xl space-y-2">
+            <h4>Organize your collection</h4>
             <p>Keep track of physical and digital games across platforms in one place.</p>
           </div>
-          <div>
-            <h3>Manage your backlog</h3>
+
+          <div className="flex-1 p-4 bg-secondary-500 border border-accent-300/20 hover:border-accent-300/60 rounded-2xl space-y-2">
+            <h4>Manage your backlog</h4>
             <p>Update play status in your collection so you always know what's next.</p>
           </div>
-          <div>
-            <h3>Decide what to play next</h3>
+
+          <div className="flex-1 p-4 bg-secondary-500 border border-accent-300/20 hover:border-accent-300/60 rounded-2xl space-y-2">
+            <h4>Decide what to play next</h4>
             <p>Filter your collection by platform, genre, play time, rating, and more to find what you're in the mood
               for.
             </p>
           </div>
         </div>
 
-        <div>
-          Image placeholder
+        <div className="p-3 bg-secondary-900 border border-secondary-100/20 rounded-3xl">
+          <img src="/src/assets/images/screenshots/explore.png" alt="Screenshot of the explore page"/>
         </div>
       </section>
 
