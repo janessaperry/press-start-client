@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthLayout from "./layouts/AuthLayout.tsx";
 import PageLayout from "./layouts/PageLayout.tsx";
+import HomePage from "./pages/HomePage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import ProtectedRoute from "./routes/ProtectedRoute.tsx";
 import SignUpPage from "./pages/Auth/SignUpPage.tsx";
@@ -28,7 +29,7 @@ function App () {
 
 
           <Route element={<PageLayout/>}>
-            <Route path="/" element={<ExplorePage/>}/>
+            <Route path="/" element={<HomePage/>}/>
             <Route path="/explore" element={<ExplorePage/>}/>
             <Route path="/explore/:platformFamilySlug" element={<GameResultsPage/>}/>
             <Route path="/games" element={<GameResultsPage/>}/>
