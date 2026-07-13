@@ -7,7 +7,7 @@ const ProtectedRoute = () => {
   const [ wasAuthenticated ] = useState(isAuthenticated);
 
   if (!isAuthenticated) {
-    return <Navigate to={wasAuthenticated ? "/explore" : "/sign-in"}/>;
+    return <Navigate to={wasAuthenticated ? "/" : "/sign-in"}/>;
   }
 
   return <Outlet/>

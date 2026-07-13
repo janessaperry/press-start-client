@@ -28,7 +28,7 @@ const Header = () => {
       <header className="container">
         <div className="max-w-xl mx-auto p-4 md:px-8 md:py-4">
           <nav className="flex items-center justify-between">
-            <NavLink to="/">
+            <NavLink to={`${userId ? '/explore' : '/'}`}>
               <img src={PressStartLogo} alt="Press Start Logo" className="max-w-[10rem] md:max-w-[16rem]"/>
             </NavLink>
 
