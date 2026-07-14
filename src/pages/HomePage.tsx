@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import Logomark from "../assets/images/logomark.svg"
-import FeatureCard from "../components/FeatureCard.tsx";
 import FeatureShowcase from "../components/FeatureShowcase.tsx";
 
 const HomePage = () => {

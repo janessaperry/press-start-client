@@ -1,8 +1,6 @@
 import { useState } from "react";
-import FeatureCard from "./FeatureCard.tsx";
 import explorePageImg from "../assets/images/screenshots/explore-page.png";
 import addToLibraryImg from "../assets/images/screenshots/add-to-library.png";
-import libraryPageImg from "../assets/images/screenshots/library-page.png";
 import filterLibraryImg from "../assets/images/screenshots/filter-library.png";
 
 type Feature = {
@@ -16,25 +14,19 @@ const features: Feature[] = [
   {
     id: "discover",
     title: "Discover games",
-    description: `Explore games across PlayStation, Xbox, Nintendo, and PC and add to your collection.`,
+    description: `Explore games across PlayStation, Xbox, Nintendo, and PC and add them to your library.`,
     imgSrc: explorePageImg
   },
   {
-    id: "organize",
-    title: "Organize your collection",
-    description: `Keep track of physical and digital games across platforms in one place.`,
+    id: "manage",
+    title: "Manage your games",
+    description: `Track the console, format, and play status for every game in your library.`,
     imgSrc: addToLibraryImg
   },
   {
-    id: "backlog",
-    title: "Manage your backlog",
-    description: `Update play status in your collection so you always know what's next.`,
-    imgSrc: libraryPageImg
-  },
-  {
     id: "filter",
-    title: "Decide what to play next",
-    description: `Filter your collection by platform, genre, play time, rating, and more to find what you're in the mood for.`,
+    title: "Decide what to play", //better title here?
+    description: `Filter your library by console, genre, play time, rating, and more.`,
     imgSrc: filterLibraryImg
   },
 ]
@@ -56,17 +48,18 @@ const FeatureShowcase = () => {
         <div className="order-last lg:order-first flex flex-row overflow-x-auto lg:flex-col lg:overflow-visible lg:w-1/3 gap-4"
           role="tablist">
           {features.map(feature => (
-            <FeatureCard
+            <button
               key={feature.id}
               id={feature.id}
               role="tab"
-              title={feature.title}
-              description={feature.description}
               aria-selected={selectedFeature === feature.id}
               aria-controls={`panel-${feature.id}`}
-              className="shrink-0 w-72 lg:w-auto lg:flex-1"
               onClick={() => setSelectedFeature(feature.id)}
-            />
+              className={`flex flex-col p-4 text-left bg-secondary-500 border border-secondary-200/20 hover:border-accent-300/40 aria-selected:border-accent-300/80 transition-colors space-y-2 rounded-2xl shrink-0 w-72 lg:w-auto lg:flex-1`}
+            >
+              <h4>{feature.title}</h4>
+              <p>{feature.description}</p>
+            </button>
           ))}
         </div>
 
