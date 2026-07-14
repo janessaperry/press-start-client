@@ -29,6 +29,7 @@
   --color-red-900: rgb(88, 16, 51);
 
   --color-yellow-500: rgb(255, 193, 7);
+  --color-yellow-900: rgb(86, 64, 2);
 
   /* Neutral colors */
   /*--color-grey-50: rgb(234, 233, 237);*/
@@ -74,7 +75,8 @@
   --color-error-500: var(--color-red-500);
   --color-error-900: var(--color-red-900);
   --color-required: var(--color-red-500);
-  --color-warning: var(--color-yellow-500);
+  --color-warning-500: var(--color-yellow-500);
+  --color-warning-900: var(--color-yellow-900);
   --color-info-300: var(--color-teal-300);
   --color-info-500: var(--color-teal-500);
   --color-info-900: var(--color-teal-900);
@@ -96,4 +98,16 @@
   --container-md: 48rem; /* 768px */
   --container-lg: 64rem; /* 1024px */
   --container-xl: 80rem; /* 1280px */
+  /* Animations */
+  --animate-swing: swing 2s ease-in-out infinite;
+
+  @keyframes swing {
+    0%, 100% {
+      transform: rotate(-30deg);
+    }
+
+    50% {
+      transform: rotate(30deg);
+    }
+  }
 }

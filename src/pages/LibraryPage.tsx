@@ -1,8 +1,15 @@
 import { Button, Field, Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
-import { CaretDownIcon, SlidersIcon } from "@phosphor-icons/react";
+import {
+  CaretDownIcon,
+  GameControllerIcon,
+  GhostIcon,
+  SlidersIcon,
+  SwordIcon,
+  TreasureChestIcon
+} from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 
 import FilterChipBar from "../components/FilterChipBar.tsx";
 import Filters from "../components/Filters.tsx";
@@ -49,8 +56,10 @@ const LibraryPage = () => {
     currentlyPlaying, setCurrentlyPlaying,
     libraryCounts, setLibraryCounts,
     libraryTotalCount, setLibraryTotalCount,
+    isLoading,
     getLibrary
   } = useLibraryResults(Number(userId), limit);
+
 
   const handleSortChange = (selectedOption: SelectOption<string>) => {
     const params = new URLSearchParams(searchParams);
@@ -116,12 +125,38 @@ const LibraryPage = () => {
 
   const location = useLocation();
   useEffect(() => {
+    //todo fix so first page load does not scroll
     const el = document.getElementById("library-container");
     if (el) {
       const top = el.getBoundingClientRect().top + window.scrollY - 80;
       window.scrollTo({ top, behavior: "smooth" })
     }
   }, [ location.search ]);
+
+  const renderGameResults = () => {
+    if (libraryTotalCount === 0) return <EmptyLibraryMessage/>;
+    if (isLoading) return <FetchingGamesAnimation/>;
+    if (filteredCount === 0) return <NoFilteredResults/>;
+    return (
+      <div className="grid sm:grid-cols-2 gap-4">
+        {libraryGames.map((game: LibraryGame) => {
+          const libraryData = {
+            libraryPlatform: game.libraryPlatform,
+            libraryFormat: game.libraryFormat,
+            libraryStatus: game.libraryStatus,
+          }
+          return <GameCard key={game.gameOverview.id}
+            gameOverview={game.gameOverview}
+            showLibraryControls={true}
+            libraryData={libraryData}
+            libraryFormatOptions={filterCategories.libraryFormatControls}
+            libraryStatusOptions={filterCategories.libraryStatus}
+            onDelete={onDelete}
+            onStatusUpdate={onStatusUpdate}/>
+        })}
+      </div>
+    )
+  }
 
   return (
     <>
@@ -132,8 +167,8 @@ const LibraryPage = () => {
           </header>
 
           <div className="flex flex-col md:flex-row gap-4 md:gap-10">
-            <section className="md:w-1/4 space-y-2">
-              <h4>Overview • {libraryTotalCount} Games</h4>
+            <section className="md:w-1/4 space-y-2 text-secondary-200">
+              <h4 className="text-secondary-100">Overview • {libraryTotalCount} Games</h4>
               <ul className="space-y-1">
                 {libraryCounts.map(count => {
                   const Icon = LIBRARY_STATUS_ICONS[count.enum];
@@ -147,26 +182,49 @@ const LibraryPage = () => {
             </section>
 
             <section className="md:w-3/4 p-4 space-y-4 md:p-6 border border-accent-300/20 rounded-2xl">
-              <h2>Currently Playing</h2>
-              <div className="grid grid-cols-4 gap-4 md:gap-6">
-                {currentlyPlaying.length > 0 ? (
-                  currentlyPlaying.map((game: LibraryGame) => (
-                    <article key={game.gameOverview.id} className="col-span-1 space-y-2">
-                      <img className="w-full rounded-md md:rounded-xl"
-                        src={getCoverUrl(game.gameOverview.coverId)}
-                        alt={`${game.gameOverview.name} cover`}/>
-                    </article>
-                  ))
-                ) : (
-                  <p>Empty state</p>
-                )}
-              </div>
+              {currentlyPlaying.length > 0 ? (
+                <>
+                  <h2>Currently Playing</h2>
+                  <div className="grid grid-cols-6 gap-4 md:gap-6">
+                    {currentlyPlaying.map((game: LibraryGame) => (
+                      <article key={game.gameOverview.id} className="col-span-1 space-y-2">
+                        <img className="w-full rounded-md md:rounded-xl"
+                          src={getCoverUrl(game.gameOverview.coverId)}
+                          alt={`${game.gameOverview.name} cover`}/>
+                      </article>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div className="p-4 flex flex-col items-center justify-center gap-4 text-center">
+                  <div className="p-3 bg-accent-500/10 rounded-full">
+                    <GameControllerIcon size={48} className="text-accent-300/80"/>
+                  </div>
+                  {libraryGames.length > 0 ? (
+                    <div className="space-y-2">
+                      <h3>No games in progress</h3>
+                      <p className="text-lg text-secondary-100">
+                        Update a game's status to Currently Playing and it will appear here.
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="space-y-2">
+                        <h3>Ready Player One?</h3>
+                        <p className="text-lg text-secondary-100">
+                          Explore games and start your first adventure.
+                        </p>
+                      </div>
+                      <Link to="/explore" className="button primary">Explore games</Link>
+                    </>
+                  )}
+                </div>
+              )}
             </section>
           </div>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-
           <Filters filterCategories={filterCategories}
             selectedFilters={selectedFilters}
             handleFilterChange={handleFilterChange}
@@ -226,28 +284,9 @@ const LibraryPage = () => {
                 handleFilterChange={handleFilterChange}
                 handleClearAll={handleClearAll}/>
 
-              <div className="grid sm:grid-cols-2 gap-4">
-                {libraryGames.map((game: LibraryGame) => {
-                  const libraryData = {
-                    libraryPlatform: game.libraryPlatform,
-                    libraryFormat: game.libraryFormat,
-                    libraryStatus: game.libraryStatus,
-                  }
-                  return <GameCard key={game.gameOverview.id}
-                    gameOverview={game.gameOverview}
-                    showLibraryControls={true}
-                    libraryData={libraryData}
-                    libraryFormatOptions={filterCategories.libraryFormatControls}
-                    libraryStatusOptions={filterCategories.libraryStatus}
-                    onDelete={onDelete}
-                    onStatusUpdate={onStatusUpdate}/>
-                })}
-
-                {/* todo add empty state */}
-              </div>
+              {renderGameResults()}
 
               <div className="flex items-center justify-center">
-                {/*todo update results count to be based on filtered results count*/}
                 <Pagination itemsPerPage={limit} resultsCount={filteredCount}/>
               </div>
             </div>
@@ -259,3 +298,52 @@ const LibraryPage = () => {
 };
 
 export default LibraryPage;
+
+
+const FetchingGamesAnimation = () => {
+  return (
+    <div className="p-4 flex flex-col items-center gap-6 bg-blue-500/20 border border-accent-300/20 rounded-2xl">
+      <SwordIcon className="text-primary-100  icon-2xl -rotate-45 animate-swing"/>
+
+      <div className="space-y-2 text-center">
+        <h3 className="text-primary-100">Gearing up...</h3>
+        <p className="text-secondary-100 text-lg">Searching for your next adventure.</p>
+      </div>
+    </div>
+  )
+}
+
+const EmptyLibraryMessage = () => {
+  return (
+    <div className="w-full p-4 flex flex-col items-center justify-center gap-4 text-center">
+      <div className="p-3 bg-warning-500/10 rounded-full">
+        <TreasureChestIcon size={48} className="text-warning-500/80"/>
+      </div>
+
+      <div className="space-y-2">
+        <h3>Your library is empty</h3>
+        <p className="text-lg text-secondary-100">
+          Explore games and add your first title to get started.
+        </p>
+      </div>
+      <Link to="/explore" className="button primary">Explore games</Link>
+    </div>
+  )
+}
+
+const NoFilteredResults = () => {
+  return (
+    <div className="w-full p-4 flex flex-col items-center justify-center gap-4 text-center">
+      <div className="p-3 bg-error-900/50 rounded-full">
+        <GhostIcon size={48} className="text-error-500"/>
+      </div>
+
+      <div className="space-y-2">
+        <h3>No games found</h3>
+        <p className="text-lg text-secondary-100">
+          Try adjusting your filters to see more games.
+        </p>
+      </div>
+    </div>
+  )
+}
