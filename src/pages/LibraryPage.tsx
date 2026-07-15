@@ -57,7 +57,7 @@ const LibraryPage = () => {
     currentlyPlaying, setCurrentlyPlaying,
     libraryCounts, setLibraryCounts,
     libraryTotalCount, setLibraryTotalCount,
-    isLoading,
+    isLoading, hasLoaded,
     getLibrary
   } = useLibraryResults(Number(userId), limit);
 
@@ -134,6 +134,14 @@ const LibraryPage = () => {
   }, [ location.search ]);
 
   const renderCurrentlyPlaying = () => {
+    if (!hasLoaded) {
+      return (
+        <StatusMessage icon={GameControllerIcon} variant="info"
+          title="Gearing up..."
+          message="Fetching your currently playing games."/>
+      );
+    }
+
     if (libraryGames.length === 0) {
       return (
         <StatusMessage icon={GameControllerIcon} variant="info"
@@ -169,8 +177,7 @@ const LibraryPage = () => {
   }
 
   const renderGameResults = () => {
-    if (isLoading) return <LoadingGamesMessage/>;
-    if (libraryTotalCount === 0) {
+    if (hasLoaded && libraryTotalCount === 0) {
       return (
         <StatusMessage icon={TreasureChestIcon}
           variant="warning"
@@ -180,6 +187,7 @@ const LibraryPage = () => {
         </StatusMessage>
       )
     }
+    if (isLoading) return <LoadingGamesMessage/>;
 
     if (filteredCount === 0) {
       return (

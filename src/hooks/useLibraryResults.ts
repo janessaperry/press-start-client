@@ -19,6 +19,7 @@ const useLibraryResults = (userId: number, limit: number) => {
   const [ libraryCounts, setLibraryCounts ] = useState<LibraryCounts[]>([]);
   const [ libraryTotalCount, setLibraryTotalCount ] = useState(0);
   const [ isLoading, setIsLoading ] = useState(false);
+  const [ hasLoaded, setHasLoaded ] = useState(false);
 
   const [ searchParams ] = useSearchParams();
   const currentPage = searchParams.get('page') ?? 1;
@@ -66,6 +67,7 @@ const useLibraryResults = (userId: number, limit: number) => {
     }
     finally {
       setIsLoading(false);
+      setHasLoaded(true);
     }
   }
 
@@ -94,7 +96,7 @@ const useLibraryResults = (userId: number, limit: number) => {
     currentlyPlaying, setCurrentlyPlaying,
     libraryCounts, setLibraryCounts,
     libraryTotalCount, setLibraryTotalCount,
-    isLoading, setIsLoading,
+    isLoading, setIsLoading, hasLoaded,
     getLibrary
   }
 }
