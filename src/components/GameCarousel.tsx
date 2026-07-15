@@ -79,7 +79,7 @@ const GameCarousel = ({ games }: GameOverviewData) => {
           {games.map(game => {
             return (
               <div key={game.id} className="flex-[0_0_42%] min-w-0 pl-4 flex">
-                <GameCard gameOverview={game} focusable={false}/>
+                <GameCard gameOverview={game} focusable={false} inCarousel={true}/>
               </div>
             )
           })}

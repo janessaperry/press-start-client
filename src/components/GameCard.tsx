@@ -1,11 +1,11 @@
-import { GameControllerIcon } from "@phosphor-icons/react";
-import { Link } from "react-router-dom";
 import { ComponentProps } from "react";
+import { Link } from "react-router-dom";
+import { GameControllerIcon } from "@phosphor-icons/react";
 import { GameOverview, LibraryStatusEnum, SelectOption } from "../types/common";
 import { formatTimeToBeat } from "../utils/times.ts";
-import InfoChipList from "./InfoChipList.tsx";
-import { BadgeNumber, BadgeText } from "./Badge.tsx";
 import { getCoverUrl } from "../utils/images.ts";
+import { BadgeNumber, BadgeText } from "./Badge.tsx";
+import InfoChipList from "./InfoChipList.tsx";
 import LibraryControls from "./LibraryControls.tsx";
 
 const showGameTypeBadge: Record<number, boolean> = {
@@ -24,6 +24,7 @@ type GameCardProps = {
   gameOverview: GameOverview;
   variant?: 'grid' | 'row';
   focusable?: boolean;
+  inCarousel?: boolean;
   showLibraryControls?: boolean;
   libraryData?: {
     libraryPlatform: SelectOption;
@@ -41,6 +42,7 @@ const GameCard = ({
   className = "",
   variant = 'grid',
   focusable = true,
+  inCarousel = false,
   showLibraryControls = false,
   libraryData,
   libraryFormatOptions,
@@ -71,11 +73,11 @@ const GameCard = ({
                 size="xs"/>
             </div>
 
-            {showLibraryControls && gameOverview.timeToBeat &&
+            {!inCarousel && gameOverview.timeToBeatNormally &&
               <div className="flex items-center gap-2 text-green-500">
                 <GameControllerIcon className="icon-md"/>
                 <span className="text-lg">
-                  {formatTimeToBeat(gameOverview.timeToBeat)}
+                  {formatTimeToBeat(gameOverview.timeToBeatNormally)}
                 </span>
               </div>
             }

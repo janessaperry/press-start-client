@@ -54,7 +54,7 @@ export type GameOverview = {
     id: number;
     label: string;
   }
-  timeToBeat?: number;
+  timeToBeatNormally?: number;
 }
 
 export type GameThumbnail = {
