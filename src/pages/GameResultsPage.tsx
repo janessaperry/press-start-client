@@ -2,12 +2,21 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { Button, Field, Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
-import { CaretDownIcon, GridFourIcon, PencilSimpleLineIcon, RowsIcon, SlidersIcon } from "@phosphor-icons/react";
+import {
+  CaretDownIcon,
+  GhostIcon,
+  GridFourIcon,
+  PencilSimpleLineIcon,
+  RowsIcon,
+  SlidersIcon
+} from "@phosphor-icons/react";
 import FilterChipBar from "../components/FilterChipBar.tsx";
 import Filters from "../components/Filters.tsx";
 import GameCard from "../components/GameCard.tsx";
+import LoadingGamesMessage from "../components/LoadingGamesMessage.tsx";
 import Modal from "../components/Modal.tsx";
 import Pagination from "../components/Pagination.tsx";
+import StatusMessage from "../components/StatusMessage.tsx";
 import useFilterCategories from "../hooks/useFilterCategories.ts";
 import useFilterSelections from "../hooks/useFilterSelections.ts";
 import useGameResults from "../hooks/useGameResults.ts";
@@ -70,6 +79,33 @@ const GameResultsPage = () => {
       window.scrollTo({ top, behavior: "smooth" })
     }
   }, [ location.search ]);
+
+  const renderGameResults = () => {
+    if (isLoading) return <LoadingGamesMessage/>
+    if (resultsCount === 0) {
+      return (
+        <StatusMessage icon={GhostIcon}
+          variant="error"
+          title="No games found"
+          message="Try adjusting your filters to see more games."/>
+      )
+    }
+
+    return (
+      <>
+        <div className={`grid gap-4 ${resultsView === 'grid' ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-2'}`}>
+          {games.map((game: GameOverview) => {
+            return (
+              <GameCard key={game.id} gameOverview={game} variant={resultsView}/>
+            )
+          })}
+        </div>
+        {resultsCount !== undefined &&
+          <Pagination resultsCount={resultsCount} itemsPerPage={limit} className="justify-self-center"/>
+        }
+      </>
+    )
+  }
 
   return (
     <>
@@ -161,22 +197,7 @@ const GameResultsPage = () => {
             </div>
 
             <section className="col-span-2 space-y-4 md:space-y-6">
-              {isLoading && <TestingLoading/>}
-              {!isLoading && games?.length === 0 && <TestingNoGames/>}
-
-              {!isLoading &&
-                <div className={`grid gap-4 ${resultsView === 'grid' ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-2'}`}>
-                  {games.map((game: GameOverview) => {
-                    return (
-                      <GameCard key={game.id} gameOverview={game} variant={resultsView}/>
-                    )
-                  })}
-                </div>
-              }
-
-              {resultsCount !== undefined &&
-                <Pagination resultsCount={resultsCount} itemsPerPage={limit} className="justify-self-center"/>
-              }
+              {renderGameResults()}
             </section>
           </div>
         </div>
@@ -186,21 +207,3 @@ const GameResultsPage = () => {
 }
 
 export default GameResultsPage;
-
-const TestingNoGames = () => {
-  return (
-    <div className="p-4 bg-blue-500/20 border border-accent-300/20 rounded-2xl">
-      <h2>No games</h2>
-      <p>Add no games message and button to clear filters or change search</p>
-    </div>
-  )
-}
-
-const TestingLoading = () => {
-  return (
-    <div className="p-4 bg-blue-500/20 border border-accent-300/20 rounded-2xl">
-      <h2>Loading games...</h2>
-      <p>Add loading message and animation</p>
-    </div>
-  )
-}
