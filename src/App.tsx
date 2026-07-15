@@ -14,6 +14,7 @@ import ExplorePage from "./pages/ExplorePage.tsx";
 import GameResultsPage from "./pages/GameResultsPage.tsx";
 import GameDetailsPage from "./pages/GameDetailsPage.tsx";
 import './App.css'
+import PublicOnlyRoute from "./routes/PublicOnlyRoute.tsx";
 
 function App () {
   return (
@@ -21,15 +22,19 @@ function App () {
       <BrowserRouter>
         <Routes>
           <Route element={<AuthLayout/>}>
-            <Route path="/sign-up" element={<SignUpPage/>}/>
-            <Route path="/sign-in" element={<SignInPage/>}/>
-            <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
-            <Route path="/reset-password" element={<ResetPasswordPage/>}/>
+            <Route element={<PublicOnlyRoute/>}>
+              <Route path="/sign-up" element={<SignUpPage/>}/>
+              <Route path="/sign-in" element={<SignInPage/>}/>
+              <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
+              <Route path="/reset-password" element={<ResetPasswordPage/>}/>
+            </Route>
           </Route>
 
-
           <Route element={<PageLayout/>}>
-            <Route path="/" element={<HomePage/>}/>
+            <Route element={<PublicOnlyRoute/>}>
+              <Route path="/" element={<HomePage/>}/>
+            </Route>
+
             <Route path="/explore" element={<ExplorePage/>}/>
             <Route path="/explore/:platformFamilySlug" element={<GameResultsPage/>}/>
             <Route path="/games" element={<GameResultsPage/>}/>
