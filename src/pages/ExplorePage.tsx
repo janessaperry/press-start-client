@@ -1,91 +1,24 @@
 import axios from "axios";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
-import { Button, Input } from "@headlessui/react";
-import { MagnifyingGlassIcon } from "@phosphor-icons/react";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-import { GameOverview, Result } from "../types/common.ts";
+import { GameOverview } from "../types/common.ts";
 import NintendoLogo from "/src/assets/logos/platforms/nintendo-logo-white.svg";
 import XboxLogo from "/src/assets/logos/platforms/xbox-logo-white.svg"
 import PlaystationLogo from "/src/assets/logos/platforms/playstation-logo-white.svg"
 
 import GameCarousel from "../components/GameCarousel.tsx";
-import SearchResultsDropdown from "../components/SearchResultsDropdown.tsx";
+import SearchWithDropdown from "../components/SearchWithDropdown.tsx";
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const ExplorePage = () => {
   const navigate = useNavigate();
-  const [ searchParams ] = useSearchParams();
-
-  const [ searchQuery, setSearchQuery ] = useState<string>('');
-  const [ searchResults, setSearchResults ] = useState<Result[]>([]);
-  const [ isSearchPending, setIsSearchPending ] = useState<boolean>(false);
-  const [ isDropdownOpen, setIsDropdownOpen ] = useState<boolean>(false);
   const [ newRelease, setNewRelease ] = useState<GameOverview[]>([]);
   const [ comingSoon, setComingSoon ] = useState<GameOverview[]>([]);
 
-  const searchContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
-        setIsDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const params = new URLSearchParams({
-      ...Object.fromEntries(searchParams),
-      search: searchQuery
-    });
-
-    navigate({
-      pathname: "/games",
-      search: `?${params}`
-    });
+  const handleSearchSubmit = (query: string) => {
+    navigate({ pathname: "/games", search: `?search=${encodeURIComponent(query)}` });
   }
-
-  const fetchSearchResults = async (searchQuery: string) => {
-    try {
-      const response = await axios.get(`${baseServerUrl}/games/search/${searchQuery}`);
-      return response.data.searchResults;
-    }
-    catch (e) {
-      console.error(`Error searching games: ${e}`);
-    }
-  }
-
-  const handleSearchInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-    if (value.length >= 3) {
-      setIsSearchPending(true);
-      setIsDropdownOpen(true);
-    }
-    else {
-      setIsSearchPending(false);
-      setIsDropdownOpen(false);
-      setSearchResults([]);
-    }
-  }
-
-  useEffect(() => {
-    if (searchQuery.length < 3) return;
-
-    const timeoutId = setTimeout(async () => {
-      const results = await fetchSearchResults(searchQuery);
-      setSearchResults(results ?? []);
-      setIsSearchPending(false);
-    }, 400);
-
-    return () => clearTimeout(timeoutId);
-  }, [ searchQuery ]);
-
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -112,25 +45,7 @@ const ExplorePage = () => {
         <div className="container flex flex-col gap-6 md:gap-10">
           <h1 className="text-center">Find your next game</h1>
 
-          <search className="flex justify-center">
-            <div ref={searchContainerRef} className="w-full md:max-w-3/4 lg:max-w-1/2 flex flex-col gap-3">
-              <form className="flex items-stretch gap-3" onSubmit={handleSearchSubmit}>
-                <Input name="search"
-                  type="search"
-                  placeholder="Search..."
-                  autoComplete="off"
-                  onChange={e => handleSearchInput(e)}
-                  value={searchQuery}
-                  className="grow md:text-xl"/>
-                <Button type="submit" className="button primary aspect-square rounded-full">
-                  <MagnifyingGlassIcon className="icon-md"/>
-                </Button>
-              </form>
-              {isDropdownOpen &&
-                <SearchResultsDropdown results={searchResults} isSearchPending={isSearchPending} query={searchQuery}/>
-              }
-            </div>
-          </search>
+          <SearchWithDropdown className="flex justify-center" onSubmit={handleSearchSubmit}/>
         </div>
       </section>
 
