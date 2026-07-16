@@ -55,6 +55,7 @@ export type GameOverview = {
     label: string;
   }
   timeToBeatNormally?: number;
+  inLibrary?: boolean;
 }
 
 export type GameThumbnail = {

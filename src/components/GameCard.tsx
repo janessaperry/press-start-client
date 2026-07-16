@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 import { Link } from "react-router-dom";
-import { GameControllerIcon } from "@phosphor-icons/react";
+import { CheckCircleIcon, GameControllerIcon } from "@phosphor-icons/react";
 import { GameOverview, LibraryStatusEnum, SelectOption } from "../types/common";
 import { formatTimeToBeat } from "../utils/times.ts";
 import { getCoverUrl } from "../utils/images.ts";
@@ -57,9 +57,17 @@ const GameCard = ({
         <Link to={`/game/${gameOverview.id}/${gameOverview.slug}`} tabIndex={focusable ? 0 : -1}
           className={`flex-1 p-2 md:p-4 grid gap-4 ${variant === 'row' ? 'grid-cols-4' : 'grid-cols-1 md:grid-cols-4'}`}>
           <div className="col-span-1 flex flex-col items-start gap-3">
-            <img className="self-stretch rounded-lg object-cover aspect-square md:aspect-auto"
-              src={getCoverUrl(gameOverview.coverId, 'cover_big')}
-              alt={`${gameOverview.name} cover art`}/>
+            <div className="relative">
+              <img className="self-stretch object-cover aspect-square md:aspect-auto rounded-lg"
+                src={getCoverUrl(gameOverview.coverId, 'cover_big')}
+                alt={`${gameOverview.name} cover art`}/>
+
+              {gameOverview.inLibrary && (
+                <div className="absolute bottom-0 w-full h-2/3 px-1 pb-1 flex items-end justify-center gap-1 bg-linear-to-b from-secondary-900/0 via-secondary-900/60 to-secondary-900/80 border-b-2 border-accent-500 rounded-lg">
+                  <CheckCircleIcon weight="fill" className="icon-md text-accent-300"/>
+                </div>
+              )}
+            </div>
 
             {showGameTypeBadge[gameOverview.gameType.id] &&
               <BadgeText label={gameOverview.gameType.label} size="xs" className="hidden md:inline-block"/>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
+import useAuth from "./useAuth.ts";
 import useIsMobile from "./useIsMobile.ts";
 
 const PLATFORM_BY_SLUG = {
@@ -18,6 +19,7 @@ type GameResults = {
 
 const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const useGameResults = (limit: number): GameResults => {
+  const { userId } = useAuth();
   const { platformFamilySlug } = useParams();
   const [ searchParams ] = useSearchParams();
   const isMobile = useIsMobile();
@@ -49,6 +51,7 @@ const useGameResults = (limit: number): GameResults => {
     if (apiParams.has('page')) apiParams.delete('page');
     apiParams.set('limit', String(limit));
     apiParams.set('offset', String(offset));
+    if (userId) apiParams.set('userId', userId)
 
     try {
       const response = await axios.get(`${baseServerUrl}/games?${apiParams}`);
