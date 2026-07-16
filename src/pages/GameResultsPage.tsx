@@ -8,7 +8,7 @@ import {
   GridFourIcon,
   PencilSimpleLineIcon,
   RowsIcon,
-  SlidersIcon
+  SlidersIcon, XIcon
 } from "@phosphor-icons/react";
 import FilterChipBar from "../components/FilterChipBar.tsx";
 import Filters from "../components/Filters.tsx";
@@ -16,6 +16,7 @@ import GameCard from "../components/GameCard.tsx";
 import LoadingGamesMessage from "../components/LoadingGamesMessage.tsx";
 import Modal from "../components/Modal.tsx";
 import Pagination from "../components/Pagination.tsx";
+import SearchGamesInput from "../components/SearchGamesInput.tsx";
 import StatusMessage from "../components/StatusMessage.tsx";
 import useFilterCategories from "../hooks/useFilterCategories.ts";
 import useFilterSelections from "../hooks/useFilterSelections.ts";
@@ -42,6 +43,7 @@ const GameResultsPage = () => {
   const { platformFamilySlug } = useParams();
   const platformFamily = PLATFORM_FAMILY_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_FAMILY_BY_SLUG];
 
+  const [ showSearchInput, setShowSearchInput ] = useState(false);
   const [ searchParams, setSearchParams ] = useSearchParams();
   const searchQuery = searchParams.get('search') ?? undefined;
   const sorting = searchParams.get('sorting');
@@ -78,6 +80,7 @@ const GameResultsPage = () => {
       const top = el.getBoundingClientRect().top + window.scrollY - 80;
       window.scrollTo({ top, behavior: "smooth" })
     }
+    if (showSearchInput) setShowSearchInput(false);
   }, [ location.search ]);
 
   const renderGameResults = () => {
@@ -87,7 +90,7 @@ const GameResultsPage = () => {
         <StatusMessage icon={GhostIcon}
           variant="error"
           title="No games found"
-          message="Try adjusting your filters to see more games."/>
+          message="Try adjusting your search or  filters to see more games."/>
       )
     }
 
@@ -110,13 +113,30 @@ const GameResultsPage = () => {
   return (
     <>
       <div className="container px-4 md:px-10 pt-12 md:pt-24 pb-6 md:pb-12 space-y-4 md:space-y-16">
-        <header className="flex items-center gap-4">
-          <h1 className="">{getTitle()}</h1>
-          {searchQuery &&
-            <Button onClick={() => console.log("edit search query")} className="button ghost">
-              <PencilSimpleLineIcon weight="bold"/>Edit
-            </Button>
-          }
+        <header className="flex flex-col gap-4">
+          <div className="flex items-end md:items-center gap-4">
+            <h1 className="">{getTitle()}</h1>
+
+            {searchQuery && (
+              <Button onClick={() => setShowSearchInput(!showSearchInput)} className="button ghost">
+                {showSearchInput ? (
+                  <>
+                    <XIcon weight="bold"/>
+                    Cancel
+                  </>
+                ) : (
+                  <>
+                    <PencilSimpleLineIcon weight="bold"/>
+                    Edit
+                  </>
+                )}
+              </Button>
+            )}
+
+          </div>
+          {showSearchInput && (
+            <SearchGamesInput className=""/>
+          )}
         </header>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
@@ -146,19 +166,20 @@ const GameResultsPage = () => {
                   <h2>{resultsCount} results</h2>
                 </div>
 
-                <div className="flex flex-row md:justify-between gap-4">
-                  <Field className="grow md:grow-0 flex items-center gap-2">
-                    <Label>Sort by:</Label>
+                <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] md:flex md:justify-between items-center gap-4">
+                  <Field className="contents md:grow-0 md:flex items-center gap-2">
+                    <Label className="shrink-0">Sort by:</Label>
                     <Listbox value={selectedSort}
-                      onChange={(selectedOption) => handleSortChange(selectedOption)}>
-                      <ListboxButton className="grow md:grow-0 button ghost justify-between">
-                        {selectedSort?.label}
-                        <CaretDownIcon weight="bold"/>
+                      onChange={(selectedOption) => handleSortChange(selectedOption)}
+                      as="div">
+                      <ListboxButton className="w-full button ghost justify-between">
+                        <span className="truncate">{selectedSort?.label}</span>
+                        <CaretDownIcon weight="bold" className="shrink-0"/>
                       </ListboxButton>
                       <ListboxOptions anchor="bottom" transition className="dropdown-options primary">
                         {sortOptions.map((option) => {
                           return (
-                            <ListboxOption key={option.id} value={option} className="dropdown-option ">
+                            <ListboxOption key={option.id} value={option} className="dropdown-option">
                               {option.label}
                             </ListboxOption>
                           )
@@ -167,7 +188,7 @@ const GameResultsPage = () => {
                     </Listbox>
                   </Field>
 
-                  <Button onClick={() => setFilterModalOpen(true)} className="button ghost lg:hidden">
+                  <Button onClick={() => setFilterModalOpen(true)} className="button ghost h-full lg:hidden">
                     <SlidersIcon weight="bold"/> <span className="hidden sm:block">Filters</span>
                   </Button>
                 </div>
