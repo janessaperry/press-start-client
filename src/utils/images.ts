@@ -9,7 +9,7 @@ export function getCoverUrl (coverId: string | null, size: ImageSize = '720p'): 
 
 export function getEsrbThumbnailUrl (esrbThumbnailId: string) {
   const baseServerUrl = import.meta.env.VITE_SERVER_URL;
-  return `${baseServerUrl}/public/images/${esrbThumbnailId}.svg`;
+  return `${baseServerUrl}/images/${esrbThumbnailId}.svg`;
 }
 
 export function getScreenshotUrl (imageId: string, size: ImageSize = 'screenshot_big') {

@@ -57,7 +57,7 @@ const GameCard = ({
         <Link to={`/game/${gameOverview.id}/${gameOverview.slug}`} tabIndex={focusable ? 0 : -1}
           className={`flex-1 p-2 md:p-4 grid gap-4 ${variant === 'row' ? 'grid-cols-4' : 'grid-cols-1 md:grid-cols-4'}`}>
           <div className="col-span-1 flex flex-col items-start gap-3">
-            <div className="relative">
+            <div className="relative mx-auto">
               <img className="self-stretch object-cover aspect-square md:aspect-auto rounded-lg"
                 src={getCoverUrl(gameOverview.coverId, 'cover_big')}
                 alt={`${gameOverview.name} cover art`}/>
