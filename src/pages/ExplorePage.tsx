@@ -1,6 +1,6 @@
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import apiClient from "../api/client.ts";
 
 import { GameOverview } from "../types/common.ts";
 import NintendoLogo from "/src/assets/logos/platforms/nintendo-logo-white.svg";
@@ -10,7 +10,6 @@ import PlaystationLogo from "/src/assets/logos/platforms/playstation-logo-white.
 import GameCarousel from "../components/GameCarousel.tsx";
 import SearchWithDropdown from "../components/SearchWithDropdown.tsx";
 
-const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const ExplorePage = () => {
   const navigate = useNavigate();
   const [ newRelease, setNewRelease ] = useState<GameOverview[]>([]);
@@ -23,7 +22,7 @@ const ExplorePage = () => {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await axios.get(`${baseServerUrl}/games?status=coming-soon,new-release`);
+        const response = await apiClient.get(`/games?status=coming-soon,new-release`);
         const games = response.data;
         setComingSoon(games.status.comingSoon);
         setNewRelease(games.status.newRelease);

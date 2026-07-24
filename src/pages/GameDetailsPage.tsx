@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
 import { ArrowRightIcon, CircleIcon } from "@phosphor-icons/react";
+import apiClient from "../api/client.ts";
 import LibraryControls from "../components/LibraryControls.tsx";
 import useFilterCategories from "../hooks/useFilterCategories.ts";
 import useLibraryGame from "../hooks/useLibraryGame.ts";
@@ -14,7 +14,6 @@ import InfoChipList from "../components/InfoChipList.tsx";
 import GameCoverList from "../components/GameCoverList.tsx";
 import { BadgeNumber, BadgeText } from "../components/Badge.tsx";
 
-const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const GameDetailsPage = () => {
   const { gameId } = useParams();
   const [ loading, setLoading ] = useState<boolean>(true);
@@ -42,7 +41,7 @@ const GameDetailsPage = () => {
     const fetchGameDetails = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${baseServerUrl}/games/${gameId}`);
+        const response = await apiClient.get(`/games/${gameId}`);
         setGameDetails(response.data.gameDetails);
         window.scrollTo(0, 0);
 

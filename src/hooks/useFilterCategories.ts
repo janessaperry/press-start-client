@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import apiClient from "../api/client.ts";
 import { FilterCategories, SelectOption } from "../types/common.ts";
 
 const PLATFORM_FAMILY_BY_SLUG = {
@@ -10,7 +10,6 @@ const PLATFORM_FAMILY_BY_SLUG = {
   nintendo: { label: "Nintendo", platformIds: [ 130, 508 ] },
 }
 
-const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const useFilterCategories = (context?: string, userId?: number): FilterCategories => {
   const { platformFamilySlug } = useParams();
   const platformFamily = PLATFORM_FAMILY_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_FAMILY_BY_SLUG];
@@ -21,7 +20,7 @@ const useFilterCategories = (context?: string, userId?: number): FilterCategorie
   useEffect(() => {
     const getFilterCategories = async () => {
       try {
-        const response = await axios.get(`${baseServerUrl}/filters${query}`);
+        const response = await apiClient.get(`/filters${query}`);
         const filtersData = response.data;
         let platformFilters = filtersData.platform;
 

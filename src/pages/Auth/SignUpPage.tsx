@@ -3,14 +3,12 @@ import { Link } from "react-router-dom";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Button, Fieldset } from "@headlessui/react";
 import { ArrowRightIcon } from "@phosphor-icons/react";
-
+import apiClient from "../../api/client.ts";
 import useAuth from "../../hooks/useAuth.ts";
 import { validateEmailFormat, validatePasswordFormat } from "../../utils/validators.ts";
-
 import Alert from "../../components/Alert.tsx";
 import TextInput from "../../components/TextInput.tsx";
 
-const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const SignUpPage = () => {
   const { login } = useAuth();
   const [ formData, setFormData ] = useState({
@@ -66,7 +64,7 @@ const SignUpPage = () => {
 
   const createUser = async (email: string, password: string) => {
     try {
-      const response = await axios.post(`${baseServerUrl}/auth/register`, {
+      const response = await apiClient.post(`/auth/register`, {
         email,
         password
       });

@@ -2,13 +2,11 @@ import axios from "axios";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button, Fieldset } from "@headlessui/react";
-
+import apiClient from "../../api/client.ts";
 import { validatePasswordFormat } from "../../utils/validators.ts";
-
 import Alert from "../../components/Alert.tsx";
 import TextInput from "../../components/TextInput.tsx";
 
-const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const ResetPasswordPage = () => {
   const [ searchParams ] = useSearchParams();
   const token = searchParams.get("token") || null;
@@ -49,7 +47,7 @@ const ResetPasswordPage = () => {
 
   const updatePassword = async (plainToken: string, newPassword: string) => {
     try {
-      return await axios.post(`${baseServerUrl}/auth/password-reset/reset`, {
+      return await apiClient.post(`/auth/password-reset/reset`, {
         plainToken,
         newPassword,
       });

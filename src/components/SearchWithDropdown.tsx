@@ -1,11 +1,9 @@
-import axios from "axios";
 import { Button, Input } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import apiClient from "../api/client.ts";
 import SearchResultsDropdown from "./SearchResultsDropdown.tsx";
 import { Result } from "../types/common.ts";
-
-const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 
 type Props = {
   onSubmit: (query: string) => void;
@@ -35,7 +33,7 @@ const SearchWithDropdown = ({ onSubmit, className }: Props) => {
 
     const timeoutId = setTimeout(async () => {
       try {
-        const response = await axios.get(`${baseServerUrl}/games/search/${searchQuery}`);
+        const response = await apiClient.get(`/games/search/${searchQuery}`);
         setSearchResults(response.data.searchResults ?? []);
       }
       catch (e) {

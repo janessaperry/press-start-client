@@ -17,7 +17,6 @@ type GameResults = {
   isLoading: boolean
 }
 
-const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const useGameResults = (limit: number): GameResults => {
   const { userId } = useAuth();
   const { platformFamilySlug } = useParams();
@@ -62,7 +61,7 @@ const useGameResults = (limit: number): GameResults => {
       console.error(e);
     }
     finally {
-      setIsLoading(false);
+      if (!signal.aborted) setIsLoading(false);
     }
   }
 

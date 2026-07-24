@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import apiClient from "../api/client.ts";
 import {
   LibraryFormatOption,
   LibraryStatusEnum,
@@ -14,7 +14,6 @@ type InitialData = {
   libraryStatus: LibraryStatusOption;
 }
 
-const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const useLibraryGame = (
   gameId: number,
   initialData?: InitialData,
@@ -39,7 +38,7 @@ const useLibraryGame = (
 
     const fetchUserLibraryGame = async () => {
       try {
-        const response = await axios.get(`${baseServerUrl}/users/${userId}/library/${gameId}`);
+        const response = await apiClient.get(`/users/${userId}/library/${gameId}`);
         setInLibrary(true);
 
         const { libraryPlatform, libraryFormat, libraryStatus } = response.data;
@@ -75,7 +74,7 @@ const useLibraryGame = (
       libraryFormat: selectedFormat,
       libraryStatus: selectedStatus
     }
-    const response = await axios.post(`${baseServerUrl}/users/${userId}/library`, payload);
+    const response = await apiClient.post(`/users/${userId}/library`, payload);
     if (response.status === 201) {
       setInLibrary(true);
     }
@@ -88,7 +87,7 @@ const useLibraryGame = (
   }>) => {
 
     //todo make sure updated is different from previous before the api call too
-    await axios.patch(`${baseServerUrl}/users/${userId}/library/${gameId}`, updatedField);
+    await apiClient.patch(`/users/${userId}/library/${gameId}`, updatedField);
 
     if (Object.hasOwn(updatedField, 'libraryStatus')) {
       const prevStatusEnum = selectedStatus.enum;
@@ -100,7 +99,7 @@ const useLibraryGame = (
   }
 
   const handleDelete = async () => {
-    await axios.delete(`${baseServerUrl}/users/${userId}/library/${gameId}`);
+    await apiClient.delete(`/users/${userId}/library/${gameId}`);
     if (onDelete !== undefined) {
       if (selectedStatus.enum) {
         onDelete(gameId, selectedStatus.enum);

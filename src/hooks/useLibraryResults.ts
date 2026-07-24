@@ -10,7 +10,6 @@ type LibraryCounts = {
   count: number;
 }
 
-const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const useLibraryResults = (userId: number, limit: number) => {
   const isMobile = useIsMobile();
   const [ libraryGames, setLibraryGames ] = useState<LibraryGame[]>([]);
@@ -66,8 +65,10 @@ const useLibraryResults = (userId: number, limit: number) => {
       console.error("Error fetching library games:", e)
     }
     finally {
-      setIsLoading(false);
-      setHasLoaded(true);
+      if (!signal.aborted) {
+        setIsLoading(false);
+        setHasLoaded(true);
+      }
     }
   }
 

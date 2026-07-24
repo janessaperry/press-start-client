@@ -4,17 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { Button, Dialog, DialogBackdrop, DialogPanel, DialogTitle, Fieldset } from "@headlessui/react";
 import { BellIcon, CheckCircleIcon, LockKeyIcon, WarningCircleIcon } from "@phosphor-icons/react";
 import type { Icon } from "@phosphor-icons/react";
-
+import apiClient from "../api/client.ts";
 import TextInput from "../components/TextInput.tsx";
 import useAuth from "../hooks/useAuth.ts";
 import { validatePasswordFormat } from "../utils/validators.ts";
 
 type Tab = 'account' | 'notifications';
 
-const baseServerUrl = import.meta.env.VITE_SERVER_URL;
-
 const AccountSettingsPage = () => {
-  const { userId, token, logout } = useAuth();
+  const { userId, logout } = useAuth();
   const navigate = useNavigate();
 
   const [ activeTab, setActiveTab ] = useState<Tab>('account');
@@ -48,7 +46,6 @@ const AccountSettingsPage = () => {
     setServerError('');
   }
 
-
   const handlePasswordSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetAllErrors();
@@ -75,10 +72,8 @@ const AccountSettingsPage = () => {
     }
 
     try {
-      const response = await axios.patch(
-        `${baseServerUrl}/users/${userId}/password`,
+      const response = await apiClient.patch(`/users/${userId}/password`,
         { currentPassword, newPassword },
-        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (response.status === 200) {
@@ -101,10 +96,7 @@ const AccountSettingsPage = () => {
 
   const handleDeleteAccount = async () => {
     try {
-      await axios.delete(
-        `${baseServerUrl}/users/${userId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await apiClient.delete(`/users/${userId}`);
       logout();
       navigate('/');
     }

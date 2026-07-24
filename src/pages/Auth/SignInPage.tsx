@@ -2,14 +2,12 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Button, Fieldset } from "@headlessui/react";
-
+import apiClient from "../../api/client.ts";
 import useAuth from "../../hooks/useAuth.ts";
 import { validateEmailFormat } from "../../utils/validators.ts";
-
 import Alert from "../../components/Alert.tsx";
 import TextInput from "../../components/TextInput.tsx";
 
-const baseServerUrl = import.meta.env.VITE_SERVER_URL;
 const SignInPage = () => {
   const { login } = useAuth();
   const [ formData, setFormData ] = useState({
@@ -62,7 +60,7 @@ const SignInPage = () => {
 
   const logIn = async (email: string, password: string) => {
     try {
-      return await axios.post(`${baseServerUrl}/auth/login`, {
+      return await apiClient.post(`/auth/login`, {
         email,
         password
       });
