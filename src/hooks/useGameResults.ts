@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
+import apiClient from "../api/client.ts";
 import useAuth from "./useAuth.ts";
 import useIsMobile from "./useIsMobile.ts";
 
@@ -42,8 +43,9 @@ const useGameResults = (limit: number): GameResults => {
   const [ games, setGames ] = useState([]);
   const [ resultsCount, setResultsCount ] = useState<number | undefined>(undefined);
   const [ isLoading, setIsLoading ] = useState(false);
+  const isFirstRender = useRef(true);
 
-  const getGames = async () => {
+  const getGames = async (signal: AbortSignal) => {
     const apiParams = new URLSearchParams(searchParams);
     if (!apiParams.has('sorting')) apiParams.set('sorting', 'createdAt-desc');
     if (platformFamilySlug) apiParams.set('platformFamily', String(PLATFORM_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_BY_SLUG]?.id));
@@ -53,11 +55,12 @@ const useGameResults = (limit: number): GameResults => {
     if (userId) apiParams.set('userId', userId)
 
     try {
-      const response = await axios.get(`${baseServerUrl}/games?${apiParams}`);
+      const response = await apiClient.get(`/games?${apiParams}`, { signal });
       setGames(response.data.filteredResults.games);
       setResultsCount(response.data.filteredResults.count)
     }
     catch (e) {
+      if (axios.isCancel(e)) return;
       console.error(e);
     }
     finally {
@@ -66,24 +69,38 @@ const useGameResults = (limit: number): GameResults => {
   }
 
   useEffect(() => {
+    const controller = new AbortController();
     setIsLoading(true);
-    void getGames();
+
+    void getGames(controller.signal);
+    return () => controller.abort();
   }, [ platformFamilySlug, immediateParams ]);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    const controller = new AbortController();
     setIsLoading(true);
+
     if (isMobile) {
-      void getGames();
+      void getGames(controller.signal);
     }
     else {
       const timeoutId = setTimeout(() => {
-        void getGames();
+        void getGames(controller.signal);
       }, 1000);
 
-      return () => clearTimeout(timeoutId);
+      return () => {
+        clearTimeout(timeoutId);
+        controller.abort();
+      };
     }
 
-  }, [ debouncedParams, isMobile ]);
+    return () => controller.abort();
+  }, [ debouncedParams ]);
 
   return { games, resultsCount, isLoading };
 }

@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import apiClient from "../api/client.ts";
 import { LibraryGame, LibraryStatusEnum } from "../types/common.ts";
 import useIsMobile from "./useIsMobile.ts";
 
@@ -19,6 +20,7 @@ const useLibraryResults = (userId: number, limit: number) => {
   const [ libraryTotalCount, setLibraryTotalCount ] = useState(0);
   const [ isLoading, setIsLoading ] = useState(false);
   const [ hasLoaded, setHasLoaded ] = useState(false);
+  const isFirstRender = useRef(true);
 
   const [ searchParams ] = useSearchParams();
   const currentPage = searchParams.get('page') ?? 1;
@@ -41,7 +43,7 @@ const useLibraryResults = (userId: number, limit: number) => {
   ].join(',')
 
 
-  const getLibrary = async () => {
+  const getLibrary = async (signal: AbortSignal) => {
     const apiParams = new URLSearchParams(searchParams);
     if (!apiParams.has('sorting')) apiParams.set('sorting', 'createdAt-desc');
     if (apiParams.has('page')) apiParams.delete('page');
@@ -50,7 +52,9 @@ const useLibraryResults = (userId: number, limit: number) => {
     apiParams.set('offset', String(offset));
 
     try {
-      const response = await axios.get(`${baseServerUrl}/users/${userId}/library?${apiParams}`);
+      const response = await apiClient.get(`/users/${userId}/library?${apiParams}`, {
+        signal
+      });
       const libraryGames = response.data.library;
       setLibraryGames(libraryGames);
       setFilteredCount(response.data.filteredCount);
@@ -62,6 +66,7 @@ const useLibraryResults = (userId: number, limit: number) => {
       setLibraryTotalCount(response.data.libraryTotalCount)
     }
     catch (e) {
+      if (axios.isCancel(e)) return;
       console.error("Error fetching library games:", e)
     }
     finally {
@@ -73,23 +78,43 @@ const useLibraryResults = (userId: number, limit: number) => {
   }
 
   useEffect(() => {
-    void getLibrary();
+    const controller = new AbortController();
+    setIsLoading(true);
+    void getLibrary(controller.signal);
+    return () => controller.abort();
   }, [ userId, immediateParams ]);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    const controller = new AbortController();
     setIsLoading(true);
 
     if (isMobile) {
-      void getLibrary();
+      void getLibrary(controller.signal);
     }
     else {
       const timeoutId = setTimeout(() => {
-        void getLibrary()
-      }, 1000)
+        void getLibrary(controller.signal);
+      }, 1000);
 
-      return () => clearTimeout(timeoutId)
+      return () => {
+        clearTimeout(timeoutId);
+        controller.abort();
+      };
     }
-  }, [ userId, debouncedParams, isMobile ]);
+
+    return () => controller.abort();
+  }, [ userId, debouncedParams ]);
+
+  const refetch = () => {
+    const controller = new AbortController();
+    setIsLoading(true);
+    void getLibrary(controller.signal);
+  };
 
   return {
     libraryGames, setLibraryGames,
@@ -98,7 +123,7 @@ const useLibraryResults = (userId: number, limit: number) => {
     libraryCounts, setLibraryCounts,
     libraryTotalCount, setLibraryTotalCount,
     isLoading, setIsLoading, hasLoaded,
-    getLibrary
+    refetch
   }
 }
 

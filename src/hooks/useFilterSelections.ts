@@ -3,12 +3,10 @@ import { useSearchParams } from "react-router-dom";
 import { FilterCategories, SelectedFilters } from "../types/common.ts";
 import useIsMobile from "./useIsMobile.ts";
 
-
 const otherValidParams = new Set([ 'page', 'sorting', 'search' ]);
 
 const useFilterSelections = (validFilters: FilterCategories) => {
   const isMobile = useIsMobile();
-
   const [ searchParams, setSearchParams ] = useSearchParams();
   const [ selectedFilters, setSelectedFilters ] = useState<SelectedFilters>({
     platform: searchParams.get('platform')?.split(',').map(id => Number(id.trim())) ?? [],
@@ -38,6 +36,22 @@ const useFilterSelections = (validFilters: FilterCategories) => {
     });
     return initialOrder;
   }
+
+  useEffect(() => {
+    if (!isMobile) {
+      setSelectedFilters({
+        platform: searchParams.get('platform')?.split(',').map(id => Number(id.trim())) ?? [],
+        genres: searchParams.get('genres')?.split(',').map(id => Number(id.trim())) ?? [],
+        timeToBeat: searchParams.get('timeToBeat')?.split(',').map(id => Number(id.trim())) ?? [],
+        totalRating: searchParams.get('totalRating')?.split(',').map(id => Number(id.trim())) ?? [],
+        releaseDate: searchParams.get('releaseDate')?.split(',').map(id => Number(id.trim())) ?? [],
+        gameType: searchParams.get('gameType')?.split(',').map(id => Number(id.trim())) ?? [],
+        libraryStatus: searchParams.get('libraryStatus')?.split(',').map(id => Number(id.trim())) ?? [],
+        libraryFormat: searchParams.get('libraryFormat')?.split(',').map(id => Number(id.trim())) ?? [],
+      });
+      setPendingOrder(committedOrder);
+    }
+  }, [ isMobile ]);
 
   // sanitize search params against valid filter categories and options
   useEffect(() => {
