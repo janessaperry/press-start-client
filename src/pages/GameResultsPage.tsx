@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { Button, Field, Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
@@ -74,11 +74,17 @@ const GameResultsPage = () => {
   }
 
   const location = useLocation();
+  const prevSearch = useRef<string | null>(null);
   useEffect(() => {
+    if (prevSearch.current === null || prevSearch.current === location.search) {
+      prevSearch.current = location.search;
+      return;
+    }
+    prevSearch.current = location.search;
     const el = document.getElementById("game-results-container");
     if (el) {
       const top = el.getBoundingClientRect().top + window.scrollY - 80;
-      window.scrollTo({ top, behavior: "smooth" })
+      window.scrollTo({ top, behavior: "smooth" });
     }
     if (showSearchInput) setShowSearchInput(false);
   }, [ location.search ]);

@@ -6,10 +6,9 @@ import {
   SlidersIcon,
   TreasureChestIcon
 } from "@phosphor-icons/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
-
 import FilterChipBar from "../components/FilterChipBar.tsx";
 import Filters from "../components/Filters.tsx";
 import GameCard from "../components/GameCard.tsx";
@@ -22,7 +21,6 @@ import useFilterCategories from "../hooks/useFilterCategories.ts";
 import useFilterSelections from "../hooks/useFilterSelections.ts";
 import useIsMobile from "../hooks/useIsMobile.ts";
 import useLibraryResults from "../hooks/useLibraryResults.ts";
-
 import { LibraryGame, LibraryStatusEnum, SelectOption } from "../types/common.ts";
 import { getCoverUrl } from "../utils/images.ts";
 import { LIBRARY_STATUS_ICONS } from "../utils/libraryIcons.ts";
@@ -125,11 +123,17 @@ const LibraryPage = () => {
   }
 
   const location = useLocation();
+  const prevSearch = useRef<string | null>(null);
   useEffect(() => {
+    if (prevSearch.current === null || prevSearch.current === location.search) {
+      prevSearch.current = location.search;
+      return;
+    }
+    prevSearch.current = location.search;
     const el = document.getElementById("library-container");
     if (el) {
       const top = el.getBoundingClientRect().top + window.scrollY - 80;
-      window.scrollTo({ top, behavior: "smooth" })
+      window.scrollTo({ top, behavior: "smooth" });
     }
   }, [ location.search ]);
 

@@ -15,11 +15,13 @@ import GameResultsPage from "./pages/GameResultsPage.tsx";
 import GameDetailsPage from "./pages/GameDetailsPage.tsx";
 import './App.css'
 import PublicOnlyRoute from "./routes/PublicOnlyRoute.tsx";
+import ScrollToTop from "./components/ScrollToTop.tsx";
 
 function App () {
   return (
     <>
       <BrowserRouter>
+        <ScrollToTop/>
         <Routes>
           <Route element={<AuthLayout/>}>
             <Route element={<PublicOnlyRoute/>}>
