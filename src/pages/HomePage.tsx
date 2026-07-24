@@ -10,9 +10,8 @@ const HomePage = () => {
           <div className="relative w-full md:w-1/2 space-y-10 z-10">
             <div className="space-y-4">
               <h1 className="text-pretty">Keep your game collection organized</h1>
-              <p className="text-lg lg:text-xl">Keep track of the games you own across platforms and spend less time
-                deciding what
-                to play next.
+              <p className="text-lg lg:text-xl">
+                Keep track of the games you own across platforms and spend less time deciding what to play next.
               </p>
             </div>
             <div className="flex gap-4">

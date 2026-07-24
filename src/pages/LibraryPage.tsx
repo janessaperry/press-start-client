@@ -56,7 +56,7 @@ const LibraryPage = () => {
     libraryCounts, setLibraryCounts,
     libraryTotalCount, setLibraryTotalCount,
     isLoading, hasLoaded,
-    getLibrary
+    refetch
   } = useLibraryResults(Number(userId), limit);
 
 
@@ -117,7 +117,7 @@ const LibraryPage = () => {
         setSearchParams(params, { replace: true });
       }
       else {
-        void getLibrary();
+        refetch();
       }
     }
   }
@@ -146,7 +146,7 @@ const LibraryPage = () => {
       );
     }
 
-    if (libraryGames.length === 0) {
+    if (libraryTotalCount === 0) {
       return (
         <StatusMessage icon={GameControllerIcon} variant="info"
           title="Ready Player One?"
