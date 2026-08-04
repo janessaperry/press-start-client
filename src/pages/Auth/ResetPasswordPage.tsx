@@ -15,7 +15,7 @@ const ResetPasswordPage = () => {
   const [ password, setPassword ] = useState("");
   const [ passwordError, setPasswordError ] = useState("");
   const [ authError, setAuthError ] = useState(false);
-  const [ serverError, setServerError ] = useState(false);
+  const [ serverError, setServerError ] = useState('');
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
@@ -23,7 +23,7 @@ const ResetPasswordPage = () => {
 
   const resetErrors = () => {
     setAuthError(false);
-    setServerError(false);
+    setServerError('');
     setPasswordError("");
   }
 
@@ -58,13 +58,21 @@ const ResetPasswordPage = () => {
         if (statusCode === 400) {
           setAuthError(true);
         }
+        else if (statusCode === 429) {
+          const retryAfterSecs = Number(e.response!.headers['retry-after']);
+          const retryAfterMins = Number.isNaN(retryAfterSecs) ? null : Math.ceil(retryAfterSecs / 60);
+          setServerError(
+            retryAfterMins !== null
+              ? `Too many requests. Please try again after ${retryAfterMins} minutes.`
+              : 'Too many requests. Please try again later.'
+          );
+        }
         else {
-          setServerError(true)
+          setServerError('Unable to reset password. Please try again later.');
         }
       }
       else {
-
-        setServerError(true);
+        setServerError('Unable to reset password. Please try again later.');
       }
       console.error("Reset password failed:", e);
     }
@@ -86,7 +94,7 @@ const ResetPasswordPage = () => {
         )}
 
         {serverError && (
-          <Alert message="Unable to reset password. Please try again later." variant="warning"/>
+          <Alert message={serverError} variant="warning"/>
         )}
 
         <p className="text-lg">

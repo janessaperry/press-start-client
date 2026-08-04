@@ -2,9 +2,10 @@ import axios from "axios";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Dialog, DialogBackdrop, DialogPanel, DialogTitle, Fieldset } from "@headlessui/react";
-import { BellIcon, CheckCircleIcon, LockKeyIcon, WarningCircleIcon } from "@phosphor-icons/react";
+import { BellIcon, LockKeyIcon } from "@phosphor-icons/react";
 import type { Icon } from "@phosphor-icons/react";
 import apiClient from "../api/client.ts";
+import Alert from "../components/Alert.tsx";
 import TextInput from "../components/TextInput.tsx";
 import useAuth from "../hooks/useAuth.ts";
 import { validatePasswordFormat } from "../utils/validators.ts";
@@ -72,7 +73,7 @@ const AccountSettingsPage = () => {
     }
 
     try {
-      const response = await apiClient.patch(`/users/${userId}/password`,
+      const response = await apiClient.patch(`/users/${userId}/account/password`,
         { currentPassword, newPassword },
       );
 
@@ -88,6 +89,16 @@ const AccountSettingsPage = () => {
           currentPassword: "Password is incorrect."
         }))
       }
+      else if (axios.isAxiosError(e) && e.response?.status === 429) {
+        const retryAfterSecs = Number(e.response.headers['retry-after']);
+        const retryAfterMins = Number.isNaN(retryAfterSecs) ? null : Math.ceil(retryAfterSecs / 60);
+
+        setServerError(
+          retryAfterMins !== null
+            ? `Too many requests. Please try again after ${retryAfterMins} minutes.`
+            : 'Too many requests. Please try again later.'
+        );
+      }
       else {
         setServerError('Unable to update password. Please try again later.');
       }
@@ -96,7 +107,7 @@ const AccountSettingsPage = () => {
 
   const handleDeleteAccount = async () => {
     try {
-      await apiClient.delete(`/users/${userId}`);
+      await apiClient.delete(`/users/${userId}/account`);
       logout();
       navigate('/');
     }
@@ -180,29 +191,8 @@ const AccountSettingsPage = () => {
                       />
                     </Fieldset>
 
-                    {passwordSuccess &&
-                      <div className="text-success bg-info-900/50 px-4 py-2 rounded-md flex flex-col gap-1"
-                        role="status"
-                        aria-live="polite"
-                        aria-atomic="true">
-                        <div className="flex gap-2">
-                          <CheckCircleIcon weight="bold" size={18} className="relative top-1 shrink-0"/>
-                          <p className="font-medium">{passwordSuccess}</p>
-                        </div>
-                      </div>
-                    }
-
-                    {serverError &&
-                      <div className="text-error-500 bg-error-500/20 px-4 py-2 rounded-md flex flex-col gap-1"
-                        role="alert"
-                        aria-live="assertive"
-                        aria-atomic="true">
-                        <div className="flex gap-2">
-                          <WarningCircleIcon weight="bold" size={18} className="relative top-1 shrink-0"/>
-                          <p className="font-medium">{serverError}</p>
-                        </div>
-                      </div>
-                    }
+                    {passwordSuccess && <Alert message={passwordSuccess} variant="success"/>}
+                    {serverError && <Alert message={serverError} variant="warning"/>}
 
                     <Button type="submit" className="button primary">Update Password</Button>
                   </form>

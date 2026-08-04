@@ -22,11 +22,11 @@ const SignUpPage = () => {
     confirmPassword: ""
   })
   const [ authError, setAuthError ] = useState(false);
-  const [ serverError, setServerError ] = useState(false);
+  const [ serverError, setServerError ] = useState('');
 
   const resetErrors = () => {
     setAuthError(false);
-    setServerError(false);
+    setServerError('');
     setFormErrors({
       email: "",
       password: "",
@@ -80,12 +80,21 @@ const SignUpPage = () => {
         if (e.response?.status === 409) {
           setAuthError(true);
         }
+        else if (e.response?.status === 429) {
+          const retryAfterSecs = Number(e.response.headers['retry-after']);
+          const retryAfterMins = Number.isNaN(retryAfterSecs) ? null : Math.ceil(retryAfterSecs / 60);
+          setServerError(
+            retryAfterMins !== null
+              ? `Too many requests. Please try again after ${retryAfterMins} minutes.`
+              : 'Too many requests. Please try again later.'
+          );
+        }
         else {
-          setServerError(true);
+          setServerError('Something went wrong. Please try again.');
         }
       }
       else {
-        setServerError(true);
+        setServerError('Something went wrong. Please try again.');
       }
       console.error("Sign up failed:", e);
     }
@@ -110,7 +119,7 @@ const SignUpPage = () => {
         )}
 
         {serverError && (
-          <Alert message="Something went wrong. Please try again." variant="warning"/>
+          <Alert message={serverError} variant="warning"/>
         )}
 
         <Fieldset className="flex flex-col gap-8 border-none">
