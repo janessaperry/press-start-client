@@ -9,6 +9,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
+import RateLimitPage from "../components/RateLimitPage.tsx";
 import FilterChipBar from "../components/FilterChipBar.tsx";
 import Filters from "../components/Filters.tsx";
 import GameCard from "../components/GameCard.tsx";
@@ -38,7 +39,7 @@ const LibraryPage = () => {
   const limit = 10;
   const { userId } = useAuth();
   const isMobile = useIsMobile();
-  const filterCategories = useFilterCategories('library', Number(userId));
+  const { error: filterError, ...filterCategories } = useFilterCategories('library', Number(userId));
 
   const [ searchParams, setSearchParams ] = useSearchParams();
   const sorting = searchParams.get('sorting');
@@ -56,6 +57,7 @@ const LibraryPage = () => {
     libraryCounts, setLibraryCounts,
     libraryTotalCount, setLibraryTotalCount,
     isLoading, hasLoaded,
+    error,
     refetch
   } = useLibraryResults(Number(userId), limit);
 
@@ -179,6 +181,8 @@ const LibraryPage = () => {
       </>
     );
   }
+
+  if (error || filterError) return <RateLimitPage/>;
 
   const renderGameResults = () => {
     if (hasLoaded && libraryTotalCount === 0) {

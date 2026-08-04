@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import apiClient from "../api/client.ts";
+import { getRetryAfterMessage } from "../utils/rateLimiting.ts";
 import { LibraryGame, LibraryStatusEnum } from "../types/common.ts";
 import useIsMobile from "./useIsMobile.ts";
 
@@ -20,6 +21,7 @@ const useLibraryResults = (userId: number, limit: number) => {
   const [ libraryTotalCount, setLibraryTotalCount ] = useState(0);
   const [ isLoading, setIsLoading ] = useState(false);
   const [ hasLoaded, setHasLoaded ] = useState(false);
+  const [ error, setError ] = useState('');
   const isFirstRender = useRef(true);
 
   const [ searchParams ] = useSearchParams();
@@ -67,7 +69,12 @@ const useLibraryResults = (userId: number, limit: number) => {
     }
     catch (e) {
       if (axios.isCancel(e)) return;
-      console.error("Error fetching library games:", e)
+      if (axios.isAxiosError(e) && e.response?.status === 429) {
+        setError(getRetryAfterMessage(e.response.headers));
+      }
+      else {
+        console.error("Error fetching library games:", e);
+      }
     }
     finally {
       if (!signal.aborted) {
@@ -80,6 +87,7 @@ const useLibraryResults = (userId: number, limit: number) => {
   useEffect(() => {
     const controller = new AbortController();
     setIsLoading(true);
+    setError('');
     void getLibrary(controller.signal);
     return () => controller.abort();
   }, [ userId, immediateParams ]);
@@ -113,6 +121,7 @@ const useLibraryResults = (userId: number, limit: number) => {
   const refetch = () => {
     const controller = new AbortController();
     setIsLoading(true);
+    setError('');
     void getLibrary(controller.signal);
   };
 
@@ -123,6 +132,7 @@ const useLibraryResults = (userId: number, limit: number) => {
     libraryCounts, setLibraryCounts,
     libraryTotalCount, setLibraryTotalCount,
     isLoading, setIsLoading, hasLoaded,
+    error,
     refetch
   }
 }

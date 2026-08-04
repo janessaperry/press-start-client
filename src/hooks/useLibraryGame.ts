@@ -1,5 +1,7 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import apiClient from "../api/client.ts";
+import { getRetryAfterMessage } from "../utils/rateLimiting.ts";
 import {
   LibraryFormatOption,
   LibraryStatusEnum,
@@ -23,6 +25,8 @@ const useLibraryGame = (
   const { userId } = useAuth();
 
   const [ inLibrary, setInLibrary ] = useState(!!initialData?.libraryStatus);
+  const [ unavailable, setUnavailable ] = useState(false);
+  const [ error, setError ] = useState('');
   const [ selectedPlatform, setSelectedPlatform ] = useState<SelectOption>(initialData?.libraryPlatform ?? {
     id: 0, label: `Select a console`
   });
@@ -54,8 +58,12 @@ const useLibraryGame = (
         if (userLibraryStatus) setSelectedStatus(userLibraryStatus);
       }
       catch (e) {
-        console.log("Game not found in library: ", e);
-        setInLibrary(false);
+        if (axios.isAxiosError(e) && e.response?.status === 429) {
+          setUnavailable(true);
+        }
+        else {
+          setInLibrary(false);
+        }
       }
     }
 
@@ -68,15 +76,27 @@ const useLibraryGame = (
       return;
     }
 
+    setError('');
     const payload = {
       gameId,
       libraryPlatform: selectedPlatform,
       libraryFormat: selectedFormat,
       libraryStatus: selectedStatus
     }
-    const response = await apiClient.post(`/users/${userId}/library`, payload);
-    if (response.status === 201) {
-      setInLibrary(true);
+
+    try {
+      const response = await apiClient.post(`/users/${userId}/library`, payload);
+      if (response.status === 201) {
+        setInLibrary(true);
+      }
+    }
+    catch (e) {
+      if (axios.isAxiosError(e) && e.response?.status === 429) {
+        setError(getRetryAfterMessage(e.response.headers));
+      }
+      else {
+        setError('Unable to update library. Please try again.');
+      }
     }
   }
 
@@ -85,31 +105,52 @@ const useLibraryGame = (
     libraryFormat: LibraryFormatOption;
     libraryStatus: LibraryStatusOption;
   }>) => {
+    setError('');
+    try {
+      //todo make sure updated is different from previous before the api call too
+      await apiClient.patch(`/users/${userId}/library/${gameId}`, updatedField);
 
-    //todo make sure updated is different from previous before the api call too
-    await apiClient.patch(`/users/${userId}/library/${gameId}`, updatedField);
-
-    if (Object.hasOwn(updatedField, 'libraryStatus')) {
-      const prevStatusEnum = selectedStatus.enum;
-      const newStatusEnum = updatedField.libraryStatus!.enum;
-      if (prevStatusEnum && newStatusEnum && prevStatusEnum !== newStatusEnum && onStatusUpdate !== undefined) {
-        onStatusUpdate(gameId, prevStatusEnum, newStatusEnum)
+      if (Object.hasOwn(updatedField, 'libraryStatus')) {
+        const prevStatusEnum = selectedStatus.enum;
+        const newStatusEnum = updatedField.libraryStatus!.enum;
+        if (prevStatusEnum && newStatusEnum && prevStatusEnum !== newStatusEnum && onStatusUpdate !== undefined) {
+          onStatusUpdate(gameId, prevStatusEnum, newStatusEnum)
+        }
+      }
+    }
+    catch (e) {
+      if (axios.isAxiosError(e) && e.response?.status === 429) {
+        setError(getRetryAfterMessage(e.response.headers));
+      }
+      else {
+        setError('Unable to update library. Please try again.');
       }
     }
   }
 
   const handleDelete = async () => {
-    await apiClient.delete(`/users/${userId}/library/${gameId}`);
-    if (onDelete !== undefined) {
-      if (selectedStatus.enum) {
-        onDelete(gameId, selectedStatus.enum);
+    setError('');
+    try {
+      await apiClient.delete(`/users/${userId}/library/${gameId}`);
+      if (onDelete !== undefined) {
+        if (selectedStatus.enum) {
+          onDelete(gameId, selectedStatus.enum);
+        }
+      }
+
+      setInLibrary(false);
+      setSelectedPlatform({ id: 0, label: "Select a console" });
+      setSelectedFormat({ id: 0, label: "Select a format" });
+      setSelectedStatus({ id: 0, label: "Add to library" });
+    }
+    catch (e) {
+      if (axios.isAxiosError(e) && e.response?.status === 429) {
+        setError(getRetryAfterMessage(e.response.headers));
+      }
+      else {
+        setError('Unable to remove game from library. Please try again.');
       }
     }
-
-    setInLibrary(false);
-    setSelectedPlatform({ id: 0, label: "Select a console" });
-    setSelectedFormat({ id: 0, label: "Select a format" });
-    setSelectedStatus({ id: 0, label: "Add to library" });
   }
 
   return {
@@ -118,6 +159,8 @@ const useLibraryGame = (
     selectedFormat, setSelectedFormat,
     selectedStatus, setSelectedStatus,
     inLibrary, setInLibrary,
+    unavailable,
+    error,
   }
 }
 

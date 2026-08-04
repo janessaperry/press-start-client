@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Button, Fieldset } from "@headlessui/react";
 import apiClient from "../../api/client.ts";
+import { getRetryAfterMessage } from "../../utils/rateLimiting.ts";
 import { validateEmailFormat } from "../../utils/validators.ts";
 import Alert from "../../components/Alert.tsx";
 import TextInput from "../../components/TextInput.tsx";
@@ -13,7 +14,8 @@ const ForgotPasswordPage = () => {
   const [ linkSent, setLinkSent ] = useState(false);
   const [ rateLimitHit, setRateLimitHit ] = useState(false);
   const [ countdown, setCountdown ] = useState<number>(0);
-  const [ serverError, setServerError ] = useState(false);
+  const [ serverError, setServerError ] = useState('');
+  const [ rateLimitError, setRateLimitError ] = useState('');
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -22,7 +24,8 @@ const ForgotPasswordPage = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setEmailError("");
-    setServerError(false);
+    setServerError("");
+    setRateLimitError("");
 
     const emailValid = validateEmailFormat(email);
     if (!emailValid) {
@@ -47,18 +50,21 @@ const ForgotPasswordPage = () => {
       if (axios.isAxiosError(e)) {
         const status = e.response?.status;
         if (status === 429) {
-          setRateLimitHit(true);
-          const retryAfter = e.response?.data?.retryAfter || 60;
-          if (countdown <= 0) setCountdown(retryAfter);
+          if (e.response?.data?.retryAfter !== undefined) {
+            setRateLimitHit(true);
+            if (countdown <= 0) setCountdown(e.response.data.retryAfter);
+          }
+          else {
+            setRateLimitError(getRetryAfterMessage(e.response!.headers));
+          }
         }
         else {
-          setServerError(true);
+          setServerError("Something went wrong. Please try again.");
         }
       }
       else {
-        setServerError(true);
+        setServerError("Something went wrong. Please try again.");
       }
-      console.error("Request failed:", e);
     }
   }
 
@@ -95,8 +101,12 @@ const ForgotPasswordPage = () => {
             variant="warning"/>
         )}
 
+        {rateLimitError && (
+          <Alert message={rateLimitError} variant="warning"/>
+        )}
+
         {serverError && (
-          <Alert message="Something went wrong. Please try again." variant="warning"/>
+          <Alert message={serverError} variant="warning"/>
         )}
 
         <Fieldset className="flex flex-col gap-8 border-none">

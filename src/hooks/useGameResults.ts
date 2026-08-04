@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import apiClient from "../api/client.ts";
+import { getRetryAfterMessage } from "../utils/rateLimiting.ts";
+import { GameOverview } from "../types/common.ts";
 import useAuth from "./useAuth.ts";
 import useIsMobile from "./useIsMobile.ts";
 
@@ -13,9 +15,10 @@ const PLATFORM_BY_SLUG = {
 }
 
 type GameResults = {
-  games: any[],
+  games: GameOverview[],
   resultsCount: number | undefined,
-  isLoading: boolean
+  isLoading: boolean,
+  error: string,
 }
 
 const useGameResults = (limit: number): GameResults => {
@@ -43,6 +46,7 @@ const useGameResults = (limit: number): GameResults => {
   const [ games, setGames ] = useState([]);
   const [ resultsCount, setResultsCount ] = useState<number | undefined>(undefined);
   const [ isLoading, setIsLoading ] = useState(false);
+  const [ error, setError ] = useState('');
   const isFirstRender = useRef(true);
 
   const getGames = async (signal: AbortSignal) => {
@@ -61,7 +65,12 @@ const useGameResults = (limit: number): GameResults => {
     }
     catch (e) {
       if (axios.isCancel(e)) return;
-      console.error(e);
+      if (axios.isAxiosError(e) && e.response?.status === 429) {
+        setError(getRetryAfterMessage(e.response.headers['retry-after']));
+      }
+      else {
+        console.error(e);
+      }
     }
     finally {
       if (!signal.aborted) setIsLoading(false);
@@ -71,6 +80,7 @@ const useGameResults = (limit: number): GameResults => {
   useEffect(() => {
     const controller = new AbortController();
     setIsLoading(true);
+    setError('');
 
     void getGames(controller.signal);
     return () => controller.abort();
@@ -102,7 +112,7 @@ const useGameResults = (limit: number): GameResults => {
     return () => controller.abort();
   }, [ debouncedParams ]);
 
-  return { games, resultsCount, isLoading };
+  return { games, resultsCount, isLoading, error };
 }
 
 export default useGameResults;

@@ -2,6 +2,7 @@ import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headless
 import { CaretDownIcon, TrashSimpleIcon } from "@phosphor-icons/react";
 import useLibraryGame from "../hooks/useLibraryGame.ts";
 import { LibraryStatusEnum, SelectOption } from "../types/common.ts";
+import Alert from "./Alert.tsx";
 import ButtonIcon from "./ButtonIcon.tsx";
 
 type Props = {
@@ -33,8 +34,20 @@ const LibraryControls = ({
     selectedPlatform, setSelectedPlatform,
     selectedFormat, setSelectedFormat,
     selectedStatus, setSelectedStatus,
-    inLibrary
+    inLibrary, unavailable, error
   } = useLibraryGame(gameOverview.id, libraryData, onDelete, onStatusUpdate);
+
+  if (unavailable) {
+    return (
+      <div className="space-y-2">
+        <p className="text-xl font-semibold">Library Currently Unavailable</p>
+        <p className="text-lg">
+          Please try again later. If the issue persists, contact <a href="mailto:hello@pressstart.gg"
+          className="link-primary">hello@pressstart.gg</a>.
+        </p>
+      </div>
+    );
+  }
 
   const onStatusChange = async (selectedStatus: SelectOption) => {
     setSelectedStatus(selectedStatus);
@@ -59,6 +72,10 @@ const LibraryControls = ({
 
   return (
     <>
+      {error && (
+        <Alert message={error} variant="warning"/>
+      )}
+
       <form className="flex flex-col gap-2 md:gap-4">
         <div className="flex gap-2">
           <Listbox value={selectedPlatform}

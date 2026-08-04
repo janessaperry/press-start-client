@@ -10,6 +10,7 @@ import {
   RowsIcon,
   SlidersIcon, XIcon
 } from "@phosphor-icons/react";
+import RateLimitPage from "../components/RateLimitPage.tsx";
 import FilterChipBar from "../components/FilterChipBar.tsx";
 import Filters from "../components/Filters.tsx";
 import GameCard from "../components/GameCard.tsx";
@@ -51,8 +52,8 @@ const GameResultsPage = () => {
   const limit = 20;
 
   const isMobile = useIsMobile();
-  const { games, resultsCount, isLoading } = useGameResults(limit);
-  const filterCategories = useFilterCategories();
+  const { games, resultsCount, isLoading, error } = useGameResults(limit);
+  const { error: filterError, ...filterCategories } = useFilterCategories();
   const {
     selectedFilters, committedOrder,
     handleFilterChange, applyFilters, cancelFilters, handleClearAll
@@ -88,6 +89,8 @@ const GameResultsPage = () => {
     }
     if (showSearchInput) setShowSearchInput(false);
   }, [ location.search ]);
+
+  if (error || filterError) return <RateLimitPage/>;
 
   const renderGameResults = () => {
     if (isLoading) return <LoadingGamesMessage/>
