@@ -8,14 +8,32 @@ import { validateEmailFormat } from "../../utils/validators.ts";
 import Alert from "../../components/Alert.tsx";
 import TextInput from "../../components/TextInput.tsx";
 
+const COOLDOWN_KEY = 'forgotPasswordCooldownExpiry';
+
+const getInitialCountdown = (): number => {
+  const expiry = sessionStorage.getItem(COOLDOWN_KEY);
+  if (!expiry) return 0;
+
+  const remaining = Math.ceil((Number(expiry) - Date.now()) / 1000);
+  if (remaining > 0) return remaining;
+
+  sessionStorage.removeItem(COOLDOWN_KEY);
+  return 0;
+};
+
 const ForgotPasswordPage = () => {
   const [ email, setEmail ] = useState("")
   const [ emailError, setEmailError ] = useState("")
   const [ linkSent, setLinkSent ] = useState(false);
-  const [ rateLimitHit, setRateLimitHit ] = useState(false);
-  const [ countdown, setCountdown ] = useState<number>(0);
+  const [ showCooldownAlert, setShowCooldownAlert ] = useState(false);
+  const [ countdown, setCountdown ] = useState<number>(getInitialCountdown);
   const [ serverError, setServerError ] = useState('');
   const [ rateLimitError, setRateLimitError ] = useState('');
+
+  const startCooldown = (seconds: number) => {
+    sessionStorage.setItem(COOLDOWN_KEY, String(Date.now() + seconds * 1000));
+    setCountdown(seconds);
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -27,6 +45,11 @@ const ForgotPasswordPage = () => {
     setServerError("");
     setRateLimitError("");
 
+    if (countdown > 0) {
+      setShowCooldownAlert(true);
+      return;
+    }
+
     const emailValid = validateEmailFormat(email);
     if (!emailValid) {
       setEmailError("Please enter a valid email address.");
@@ -36,7 +59,7 @@ const ForgotPasswordPage = () => {
     const response = await requestReset(email);
     if (response) {
       setLinkSent(true);
-      return;
+      startCooldown(60);
     }
   }
 
@@ -51,8 +74,7 @@ const ForgotPasswordPage = () => {
         const status = e.response?.status;
         if (status === 429) {
           if (e.response?.data?.retryAfter !== undefined) {
-            setRateLimitHit(true);
-            if (countdown <= 0) setCountdown(e.response.data.retryAfter);
+            startCooldown(e.response.data.retryAfter);
           }
           else {
             setRateLimitError(getRetryAfterMessage(e.response!.headers));
@@ -70,7 +92,8 @@ const ForgotPasswordPage = () => {
 
   useEffect(() => {
     if (countdown <= 0) {
-      setRateLimitHit(false);
+      sessionStorage.removeItem(COOLDOWN_KEY);
+      setShowCooldownAlert(false);
       return;
     }
 
@@ -96,7 +119,7 @@ const ForgotPasswordPage = () => {
             variant="info"/>
         )}
 
-        {rateLimitHit && (
+        {showCooldownAlert && (
           <Alert message={`Please wait ${countdown} seconds before requesting another reset link.`}
             variant="warning"/>
         )}
