@@ -4,6 +4,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { Button, Fieldset } from "@headlessui/react";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 import apiClient from "../../api/client.ts";
+import { getRetryAfterMessage } from "../../utils/rateLimiting.ts";
 import useAuth from "../../hooks/useAuth.ts";
 import { validateEmailFormat, validatePasswordFormat } from "../../utils/validators.ts";
 import Alert from "../../components/Alert.tsx";
@@ -81,13 +82,7 @@ const SignUpPage = () => {
           setAuthError(true);
         }
         else if (e.response?.status === 429) {
-          const retryAfterSecs = Number(e.response.headers['retry-after']);
-          const retryAfterMins = Number.isNaN(retryAfterSecs) ? null : Math.ceil(retryAfterSecs / 60);
-          setServerError(
-            retryAfterMins !== null
-              ? `Too many requests. Please try again after ${retryAfterMins} minutes.`
-              : 'Too many requests. Please try again later.'
-          );
+          setServerError(getRetryAfterMessage(e.response.headers));
         }
         else {
           setServerError('Something went wrong. Please try again.');

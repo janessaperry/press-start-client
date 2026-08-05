@@ -5,6 +5,7 @@ import { Button, Dialog, DialogBackdrop, DialogPanel, DialogTitle, Fieldset } fr
 import { BellIcon, LockKeyIcon } from "@phosphor-icons/react";
 import type { Icon } from "@phosphor-icons/react";
 import apiClient from "../api/client.ts";
+import { getRetryAfterMessage } from "../utils/rateLimiting.ts";
 import Alert from "../components/Alert.tsx";
 import TextInput from "../components/TextInput.tsx";
 import useAuth from "../hooks/useAuth.ts";
@@ -24,6 +25,7 @@ const AccountSettingsPage = () => {
   const [ confirmPassword, setConfirmPassword ] = useState('');
   const [ passwordSuccess, setPasswordSuccess ] = useState('');
   const [ serverError, setServerError ] = useState('');
+  const [ deleteError, setDeleteError ] = useState('');
 
   const [ passwordErrors, setPasswordErrors ] = useState({
     currentPassword: "",
@@ -90,14 +92,7 @@ const AccountSettingsPage = () => {
         }))
       }
       else if (axios.isAxiosError(e) && e.response?.status === 429) {
-        const retryAfterSecs = Number(e.response.headers['retry-after']);
-        const retryAfterMins = Number.isNaN(retryAfterSecs) ? null : Math.ceil(retryAfterSecs / 60);
-
-        setServerError(
-          retryAfterMins !== null
-            ? `Too many requests. Please try again after ${retryAfterMins} minutes.`
-            : 'Too many requests. Please try again later.'
-        );
+        setServerError(getRetryAfterMessage(e.response.headers));
       }
       else {
         setServerError('Unable to update password. Please try again later.');
@@ -112,7 +107,12 @@ const AccountSettingsPage = () => {
       navigate('/');
     }
     catch (e) {
-      console.error('Error deleting account:', e);
+      if (axios.isAxiosError(e) && e.response?.status === 429) {
+        setDeleteError(getRetryAfterMessage(e.response.headers));
+      }
+      else {
+        setDeleteError('Unable to delete account. Please try again.');
+      }
     }
   }
 
@@ -225,7 +225,13 @@ const AccountSettingsPage = () => {
         </div>
       </div>
 
-      <Dialog open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)} className="relative z-50">
+      <Dialog open={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setDeleteError('');
+        }}
+        className="relative z-50"
+      >
         <DialogBackdrop className="fixed inset-0 bg-secondary-900/80"/>
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <DialogPanel className="bg-primary-700 rounded-2xl p-6 max-w-md w-full space-y-4 shadow-xl">
@@ -236,8 +242,16 @@ const AccountSettingsPage = () => {
             <p className="text-lg">
               This will permanently remove all your data, including your game library. This action cannot be undone.
             </p>
+            {deleteError && (
+              <Alert message={deleteError} variant="warning"/>
+            )}
             <div className="flex gap-4">
-              <Button className="flex-1 button neutral" onClick={() => setDeleteModalOpen(false)}>
+              <Button className="flex-1 button neutral"
+                onClick={() => {
+                  setDeleteModalOpen(false);
+                  setDeleteError('');
+                }}
+              >
                 Cancel
               </Button>
               <Button className="flex-1 button danger" onClick={handleDeleteAccount}>
