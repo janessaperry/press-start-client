@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowRightIcon, CircleIcon } from "@phosphor-icons/react";
@@ -10,7 +9,7 @@ import { GameDetails } from "../types/common";
 import { getCoverUrl, getEsrbThumbnailUrl } from "../utils/images";
 import { formatTimeToBeat } from "../utils/times.ts";
 import NotFoundPage from "./NotFoundPage.tsx";
-import RateLimitPage from "../components/RateLimitPage.tsx";
+import ErrorPage from "../components/ErrorPage.tsx";
 import ImageCarousel from "../components/ImageCarousel.tsx";
 import InfoChipList from "../components/InfoChipList.tsx";
 import GameCoverList from "../components/GameCoverList.tsx";
@@ -22,7 +21,7 @@ const GameDetailsPage = () => {
 
   const [ gameDetails, setGameDetails ] = useState<GameDetails | null>(null);
   const [ hasRelatedContent, setHasRelatedContent ] = useState<boolean>(false);
-  const [ rateLimited, setRateLimited ] = useState(false);
+  const [ pageError, setPageError ] = useState(false);
   const { inLibrary, unavailable: libraryUnavailable } = useLibraryGame(Number(gameId));
   const { libraryStatus, libraryFormatControls } = useFilterCategories('library');
 
@@ -54,13 +53,8 @@ const GameDetailsPage = () => {
           || response.data.gameDetails.collections.length > 0;
         setHasRelatedContent(relatedContent);
       }
-      catch (e) {
-        if (axios.isAxiosError(e) && e.response?.status === 429) {
-          setRateLimited(true);
-        }
-        else {
-          console.error(e);
-        }
+      catch {
+        setPageError(true);
       }
       finally {
         setLoading(false);
@@ -71,7 +65,7 @@ const GameDetailsPage = () => {
   }, [ gameId ]);
 
   if (loading) return <GameDetailsSkeleton/>;
-  if (rateLimited) return <RateLimitPage/>;
+  if (pageError) return <ErrorPage/>;
   if (!gameDetails) return <NotFoundPage/>;
 
   return (

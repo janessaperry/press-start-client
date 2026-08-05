@@ -9,7 +9,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
-import RateLimitPage from "../components/RateLimitPage.tsx";
+import ErrorPage from "../components/ErrorPage.tsx";
 import FilterChipBar from "../components/FilterChipBar.tsx";
 import Filters from "../components/Filters.tsx";
 import GameCard from "../components/GameCard.tsx";
@@ -182,7 +182,7 @@ const LibraryPage = () => {
     );
   }
 
-  if (error || filterError) return <RateLimitPage/>;
+  if (error || filterError) return <ErrorPage/>;
 
   const renderGameResults = () => {
     if (hasLoaded && libraryTotalCount === 0) {

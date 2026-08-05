@@ -10,7 +10,7 @@ import {
   RowsIcon,
   SlidersIcon, XIcon
 } from "@phosphor-icons/react";
-import RateLimitPage from "../components/RateLimitPage.tsx";
+import ErrorPage from "../components/ErrorPage.tsx";
 import FilterChipBar from "../components/FilterChipBar.tsx";
 import Filters from "../components/Filters.tsx";
 import GameCard from "../components/GameCard.tsx";
@@ -90,7 +90,7 @@ const GameResultsPage = () => {
     if (showSearchInput) setShowSearchInput(false);
   }, [ location.search ]);
 
-  if (error || filterError) return <RateLimitPage/>;
+  if (error || filterError) return <ErrorPage/>;
 
   const renderGameResults = () => {
     if (isLoading) return <LoadingGamesMessage/>

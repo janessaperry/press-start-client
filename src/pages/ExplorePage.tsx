@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import apiClient from "../api/client.ts";
@@ -8,7 +7,7 @@ import NintendoLogo from "/src/assets/logos/platforms/nintendo-logo-white.svg";
 import XboxLogo from "/src/assets/logos/platforms/xbox-logo-white.svg"
 import PlaystationLogo from "/src/assets/logos/platforms/playstation-logo-white.svg"
 
-import RateLimitPage from "../components/RateLimitPage.tsx";
+import ErrorPage from "../components/ErrorPage.tsx";
 import GameCarousel from "../components/GameCarousel.tsx";
 import SearchWithDropdown from "../components/SearchWithDropdown.tsx";
 
@@ -16,7 +15,7 @@ const ExplorePage = () => {
   const navigate = useNavigate();
   const [ newRelease, setNewRelease ] = useState<GameOverview[]>([]);
   const [ comingSoon, setComingSoon ] = useState<GameOverview[]>([]);
-  const [ rateLimited, setRateLimited ] = useState(false);
+  const [ pageError, setPageError ] = useState(false);
 
   const handleSearchSubmit = (query: string) => {
     navigate({ pathname: "/games", search: `?search=${encodeURIComponent(query)}` });
@@ -30,20 +29,15 @@ const ExplorePage = () => {
         setComingSoon(games.status.comingSoon);
         setNewRelease(games.status.newRelease);
       }
-      catch (e) {
-        if (axios.isAxiosError(e) && e.response?.status === 429) {
-          setRateLimited(true);
-        }
-        else {
-          console.error(`Error fetching games: ${e}`);
-        }
+      catch {
+        setPageError(true);
       }
     }
     void fetchGames();
   }, [])
 
 
-  if (rateLimited) return <RateLimitPage/>;
+  if (pageError) return <ErrorPage/>;
 
   return (
     <>
