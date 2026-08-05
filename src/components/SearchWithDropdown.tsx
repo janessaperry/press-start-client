@@ -36,8 +36,8 @@ const SearchWithDropdown = ({ onSubmit, className }: Props) => {
         const response = await apiClient.get(`/games/search/${searchQuery}`);
         setSearchResults(response.data.searchResults ?? []);
       }
-      catch (e) {
-        console.error(`Error searching games: ${e}`);
+      catch {
+        setSearchResults([]);
       }
       finally {
         setIsSearchPending(false);

@@ -91,7 +91,6 @@ const SignUpPage = () => {
       else {
         setServerError('Something went wrong. Please try again.');
       }
-      console.error("Sign up failed:", e);
     }
   }
 

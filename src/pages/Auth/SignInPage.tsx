@@ -81,7 +81,6 @@ const SignInPage = () => {
       else {
         setServerError('Something went wrong. Please try again.');
       }
-      console.error("Login failed:", e);
       return;
     }
   }

@@ -71,10 +71,7 @@ const useLibraryGame = (
   }, [ gameId, userId ]);
 
   const handleSubmit = async (selectedStatus: SelectOption) => {
-    if (!userId) {
-      console.log("you need to create an account");
-      return;
-    }
+    if (!userId) return;
 
     setError('');
     const payload = {

@@ -69,7 +69,6 @@ const ResetPasswordPage = () => {
       else {
         setServerError('Unable to reset password. Please try again later.');
       }
-      console.error("Reset password failed:", e);
     }
   }
 
