@@ -110,6 +110,11 @@ export type GameDetails = {
     expansions: GameThumbnail[];
     dlcs: GameThumbnail[];
   }
+  libraryData: {
+    libraryPlatform: SelectOption;
+    libraryFormat: LibraryFormatOption;
+    libraryStatus: LibraryStatusOption;
+  } | null;
 }
 
 //*******************************//

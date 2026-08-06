@@ -19,6 +19,7 @@ type Props = {
   libraryStatusOptions?: SelectOption[];
   onDelete?: (gameId: number, libraryStatus: LibraryStatusEnum) => void;
   onStatusUpdate?: (gameId: number, prevLibraryStatus: LibraryStatusEnum, newLibraryStatus: LibraryStatusEnum) => void;
+  showTitle?: boolean;
 }
 
 const LibraryControls = ({
@@ -27,7 +28,8 @@ const LibraryControls = ({
   libraryFormatOptions,
   libraryStatusOptions,
   onDelete,
-  onStatusUpdate
+  onStatusUpdate,
+  showTitle = false,
 }: Props) => {
   const {
     handleSubmit, handleUpdate, handleDelete,
@@ -72,6 +74,15 @@ const LibraryControls = ({
 
   return (
     <>
+      {showTitle && (
+        <header className="space-y-4">
+          <h2>{inLibrary ? "Manage Game in Library" : "Add to Library"}</h2>
+          <p className="text-sm italic">Select the console and format you own the game in and add to your
+            library, or just add it to your wishlist.
+          </p>
+        </header>
+      )}
+
       {error && (
         <Alert message={error} variant="warning"/>
       )}

@@ -4,7 +4,6 @@ import { ArrowRightIcon, CircleIcon } from "@phosphor-icons/react";
 import apiClient from "../api/client.ts";
 import LibraryControls from "../components/LibraryControls.tsx";
 import useFilterCategories from "../hooks/useFilterCategories.ts";
-import useLibraryGame from "../hooks/useLibraryGame.ts";
 import { GameDetails } from "../types/common";
 import { getCoverUrl, getEsrbThumbnailUrl } from "../utils/images";
 import { formatTimeToBeat } from "../utils/times.ts";
@@ -22,7 +21,6 @@ const GameDetailsPage = () => {
   const [ gameDetails, setGameDetails ] = useState<GameDetails | null>(null);
   const [ hasRelatedContent, setHasRelatedContent ] = useState<boolean>(false);
   const [ pageError, setPageError ] = useState(false);
-  const { inLibrary, unavailable: libraryUnavailable } = useLibraryGame(Number(gameId));
   const { libraryStatus, libraryFormatControls } = useFilterCategories('library');
 
   function formatReleaseDate (dateIso: string | null): string {
@@ -46,6 +44,7 @@ const GameDetailsPage = () => {
         const response = await apiClient.get(`/games/${gameId}`);
         setGameDetails(response.data.gameDetails);
         window.scrollTo(0, 0);
+        console.log("response ", response.data)
 
         const relatedContent = response.data.gameDetails.relatedContent.dlcs.length > 0
           || response.data.gameDetails.relatedContent.expansions.length > 0
@@ -116,17 +115,11 @@ const GameDetailsPage = () => {
             </div>
 
             <section className="p-4 md:p-6 -ml-4 -mr-4 md:m-0  bg-primary-300 md:rounded-3xl space-y-4">
-              {!libraryUnavailable && (
-                <header className="space-y-4">
-                  <h2>{inLibrary ? "Manage Game in Library" : "Add to Library"}</h2>
-                  <p className="text-sm italic">Select the console and format you own the game in and add to you
-                    library, or just add it to your wishlist.
-                  </p>
-                </header>
-              )}
               <LibraryControls gameOverview={gameDetails}
+                libraryData={gameDetails.libraryData ?? undefined}
                 libraryFormatOptions={libraryFormatControls}
-                libraryStatusOptions={libraryStatus}/>
+                libraryStatusOptions={libraryStatus}
+                showTitle={true}/>
             </section>
           </div>
         </section>
