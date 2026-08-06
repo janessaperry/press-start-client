@@ -176,7 +176,7 @@ const GameResultsPage = () => {
                       onChange={(selectedOption) => handleSortChange(selectedOption)}
                       as="div">
                       <ListboxButton className="w-full button ghost justify-between">
-                        <span className="trtruncateuncate">{selectedSort?.label}</span>
+                        <span className="truncate">{selectedSort?.label}</span>
                         <CaretDownIcon weight="bold" className="shrink-0"/>
                       </ListboxButton>
                       <ListboxOptions anchor="bottom" transition className="dropdown-options primary">
