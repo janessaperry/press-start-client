@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const useIsMobile = () => {
   const mediaQuery = '(max-width: 1024px)';
-  const [ isMobile, setIsMobile ] = useState<boolean | undefined>(window.matchMedia(mediaQuery).matches);
+  const [ isMobile, setIsMobile ] = useState<boolean>(window.matchMedia(mediaQuery).matches);
 
   useEffect(() => {
     const mediaQueryList = window.matchMedia('(max-width: 1024px)');
