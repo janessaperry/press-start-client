@@ -51,25 +51,43 @@ const LibraryControls = ({
     );
   }
 
-  const onStatusChange = async (selectedStatus: SelectOption) => {
-    setSelectedStatus(selectedStatus);
+  const onStatusChange = async (newStatus: SelectOption) => {
+    const prev = selectedStatus;
+    setSelectedStatus(newStatus);
 
-    if (!inLibrary) {
-      await handleSubmit(selectedStatus);
+    try {
+      if (!inLibrary) {
+        await handleSubmit(newStatus);
+      }
+      else {
+        await handleUpdate({ libraryStatus: newStatus });
+      }
     }
-    else {
-      await handleUpdate({ libraryStatus: selectedStatus })
+    catch {
+      setSelectedStatus(prev);
     }
   }
 
-  const onPlatformChange = async (selectedPlatform: SelectOption) => {
-    setSelectedPlatform(selectedPlatform);
-    if (inLibrary) await handleUpdate({ libraryPlatform: selectedPlatform });
+  const onPlatformChange = async (newPlatform: SelectOption) => {
+    const prev = selectedPlatform;
+    setSelectedPlatform(newPlatform);
+    try {
+      if (inLibrary) await handleUpdate({ libraryPlatform: newPlatform });
+    }
+    catch {
+      setSelectedPlatform(prev);
+    }
   }
 
-  const onFormatChange = async (selectedFormat: SelectOption) => {
-    setSelectedFormat(selectedFormat);
-    if (inLibrary) await handleUpdate({ libraryFormat: selectedFormat })
+  const onFormatChange = async (newFormat: SelectOption) => {
+    const prev = selectedFormat;
+    setSelectedFormat(newFormat);
+    try {
+      if (inLibrary) await handleUpdate({ libraryFormat: newFormat });
+    }
+    catch {
+      setSelectedFormat(prev);
+    }
   }
 
   return (
@@ -84,13 +102,13 @@ const LibraryControls = ({
       )}
 
       {error && (
-        <Alert message={error} variant="warning"/>
+        <Alert message={error} variant="warning" className="mb-3"/>
       )}
 
       <form className="flex flex-col gap-2 md:gap-4">
         <div className="flex gap-2">
           <Listbox value={selectedPlatform}
-            onChange={(selectedPlatform) => onPlatformChange(selectedPlatform)}
+            onChange={(value) => onPlatformChange(value)}
             by="id">
             <ListboxButton className="flex-1 min-w-0 button ghost justify-between">
               <span className="truncate">{selectedPlatform.label}</span> <CaretDownIcon weight="bold"
@@ -110,7 +128,7 @@ const LibraryControls = ({
             </ListboxOptions>
           </Listbox>
 
-          <Listbox value={selectedFormat} onChange={(selectedFormat) => onFormatChange(selectedFormat)} by="id">
+          <Listbox value={selectedFormat} onChange={(value) => onFormatChange(value)} by="id">
             <ListboxButton className="flex-1 min-w-0 button ghost justify-between">
               <span className="truncate">{selectedFormat.label}</span> <CaretDownIcon weight="bold"
               className="shrink-0"/>
@@ -131,7 +149,7 @@ const LibraryControls = ({
 
         <div className="flex gap-2">
           <Listbox value={selectedStatus}
-            onChange={(selectedStatus) => onStatusChange(selectedStatus)} by="id">
+            onChange={(value) => onStatusChange(value)} by="id">
             <ListboxButton className="button primary justify-between grow min-w-0">
               <span className="truncate">{selectedStatus.label}</span> <CaretDownIcon weight="bold"
               className="shrink-0"/>

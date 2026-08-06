@@ -129,6 +129,7 @@ const useLibraryGame = (
       else {
         setError('Unable to update library. Please try again.');
       }
+      throw e;
     }
   }
 

@@ -5,7 +5,8 @@ type Variant = "warning" | "info" | "success";
 type Props = {
   variant: Variant;
   message: string;
-  children?: ReactNode
+  children?: ReactNode;
+  className?: string;
 }
 
 const variantStyles = {
@@ -20,11 +21,11 @@ const variantIcons = {
   success: CheckCircleIcon,
 }
 
-const Alert = ({ variant = 'info', message, children }: Props) => {
+const Alert = ({ variant = 'info', message, children, className }: Props) => {
   const Icon = variantIcons[variant];
 
   return (
-    <div className={`${variantStyles[variant]} px-4 py-2 rounded-md flex flex-col gap-1`}
+    <div className={`${variantStyles[variant]} ${className ?? ''} px-4 py-2 rounded-md flex flex-col gap-1`}
       role={variant === 'warning' ? 'alert' : 'status'}
       aria-live={variant === 'warning' ? 'assertive' : 'polite'}
       aria-atomic="true">
