@@ -44,7 +44,6 @@ const GameDetailsPage = () => {
         const response = await apiClient.get(`/games/${gameId}`);
         setGameDetails(response.data.gameDetails);
         window.scrollTo(0, 0);
-        console.log("response ", response.data)
 
         const relatedContent = response.data.gameDetails.relatedContent.dlcs.length > 0
           || response.data.gameDetails.relatedContent.expansions.length > 0

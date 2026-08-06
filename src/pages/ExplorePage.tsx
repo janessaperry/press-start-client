@@ -58,11 +58,11 @@ const ExplorePage = () => {
             </Link>
             <Link to="/explore/playstation"
               className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
-              <img src={PlaystationLogo} alt="View Xbox games" className="h-16"/>
+              <img src={PlaystationLogo} alt="View PlayStation games" className="h-16"/>
             </Link>
             <Link to="/explore/nintendo"
               className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
-              <img src={NintendoLogo} alt="View Xbox games" className="h-14"/>
+              <img src={NintendoLogo} alt="View Nintendo games" className="h-14"/>
             </Link>
             <Link to="/explore/pc" className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
               <div className="w-full text-center font-heading text-5xl sm:text-4xl lg:text-5xl">PC</div>

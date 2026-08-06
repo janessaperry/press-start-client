@@ -104,7 +104,14 @@ const useLibraryGame = (
   }>) => {
     setError('');
     try {
-      //todo make sure updated is different from previous before the api call too
+      const [ key, value ] = Object.entries(updatedField)[0] as [ 'libraryPlatform' | 'libraryFormat' | 'libraryStatus', SelectOption | LibraryFormatOption | LibraryStatusOption ];
+      const current = {
+        libraryPlatform: selectedPlatform,
+        libraryFormat: selectedFormat,
+        libraryStatus: selectedStatus
+      }[key];
+      if (current.id === value.id) return;
+
       await apiClient.patch(`/users/${userId}/library/${gameId}`, updatedField);
 
       if (Object.hasOwn(updatedField, 'libraryStatus')) {
