@@ -2,13 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import apiClient from "../api/client.ts";
 import { FilterCategories, SelectOption } from "../types/common.ts";
-
-const PLATFORM_FAMILY_BY_SLUG = {
-  playstation: { label: "PlayStation", platformIds: [ 48, 167 ] },
-  xbox: { label: "Xbox", platformIds: [ 49, 169 ] },
-  pc: { label: "PC", platformIds: [ 3, 14, 6 ] },
-  nintendo: { label: "Nintendo", platformIds: [ 130, 508 ] },
-}
+import { PLATFORM_FAMILY_BY_SLUG } from "../constants/platforms.ts";
 
 const useFilterCategories = (context?: string, userId?: number): FilterCategories & { error: boolean } => {
   const { platformFamilySlug } = useParams();

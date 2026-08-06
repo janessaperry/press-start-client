@@ -3,15 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import apiClient from "../api/client.ts";
 import { GameOverview } from "../types/common.ts";
+import { PLATFORM_FAMILY_BY_SLUG } from "../constants/platforms.ts";
 import useAuth from "./useAuth.ts";
 import useIsMobile from "./useIsMobile.ts";
-
-const PLATFORM_BY_SLUG = {
-  playstation: { id: 1, name: 'PlayStation' },
-  xbox: { id: 2, name: 'Xbox' },
-  pc: { id: 4, name: 'PC' },
-  nintendo: { id: 5, name: 'Nintendo' },
-}
 
 type GameResults = {
   games: GameOverview[],
@@ -42,7 +36,7 @@ const useGameResults = (limit: number): GameResults => {
     searchParams.get('search')
   ].join(',')
 
-  const [ games, setGames ] = useState([]);
+  const [ games, setGames ] = useState<GameOverview[]>([]);
   const [ resultsCount, setResultsCount ] = useState<number | undefined>(undefined);
   const [ isLoading, setIsLoading ] = useState(false);
   const [ error, setError ] = useState(false);
@@ -51,7 +45,7 @@ const useGameResults = (limit: number): GameResults => {
   const getGames = async (signal: AbortSignal) => {
     const apiParams = new URLSearchParams(searchParams);
     if (!apiParams.has('sorting')) apiParams.set('sorting', 'createdAt-desc');
-    if (platformFamilySlug) apiParams.set('platformFamily', String(PLATFORM_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_BY_SLUG]?.id));
+    if (platformFamilySlug) apiParams.set('platformFamily', String(PLATFORM_FAMILY_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_FAMILY_BY_SLUG]?.id));
     if (apiParams.has('page')) apiParams.delete('page');
     apiParams.set('limit', String(limit));
     apiParams.set('offset', String(offset));
