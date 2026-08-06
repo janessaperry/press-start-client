@@ -286,22 +286,22 @@ const LibraryPage = () => {
           <div className="col-span-2 lg:col-span-3 space-y-4 lg:space-y-6">
             <div className="space-y-4">
               <section id="library-container"
-                className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                className="flex flex-col lg:flex-row md:justify-between gap-4">
                 <h2>Library</h2>
 
-                <div className="flex flex-row md:justify-between gap-4">
-                  <Field className="grow md:grow-0 flex items-center gap-2">
-                    <Label>Sort by:</Label>
+                <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] md:flex md:justify-between items-center gap-4">
+                  <Field className="contents md:grow-0 md:flex items-center gap-2">
+                    <Label className="shrink-0">Sort by:</Label>
                     <Listbox value={selectedSort}
-                      onChange={(selectedOption) => handleSortChange(selectedOption)}>
-                      <ListboxButton className="grow lg:grow-0 button ghost justify-between">
-                        {selectedSort?.label}
-                        <CaretDownIcon weight="bold"/>
+                      onChange={(selectedOption) => handleSortChange(selectedOption)} as="div">
+                      <ListboxButton className="w-full button ghost justify-between">
+                        <span className="truncate">{selectedSort?.label}</span>
+                        <CaretDownIcon weight="bold" className="shrink-0"/>
                       </ListboxButton>
                       <ListboxOptions anchor="bottom" transition className="dropdown-options primary">
                         {sortOptions.map((option) => {
                           return (
-                            <ListboxOption key={option.id} value={option} className="dropdown-option ">
+                            <ListboxOption key={option.id} value={option} className="dropdown-option">
                               {option.label}
                             </ListboxOption>
                           )
@@ -310,7 +310,7 @@ const LibraryPage = () => {
                     </Listbox>
                   </Field>
 
-                  <Button onClick={() => setFilterModalOpen(true)} className="button ghost lg:hidden">
+                  <Button onClick={() => setFilterModalOpen(true)} className="button ghost h-full lg:hidden">
                     <SlidersIcon weight="bold"/> <span className="hidden sm:block">Filters</span>
                   </Button>
                 </div>
