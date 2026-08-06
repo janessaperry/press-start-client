@@ -24,7 +24,8 @@ const Modal = ({ children, className, modalOpen, setModalOpen, handleSubmit, han
   }
 
   return (
-    <div className={`${className || ''} ${modalOpen ? 'modal-open' : 'hidden'} fixed top-0 w-full h-dvh p-4 bg-blue-900/60 backdrop-blur-lg flex flex-col gap-8`}>
+    <div className={`${className || ''} ${modalOpen ? 'modal-open' : 'hidden'} fixed top-0 w-full h-dvh p-4 bg-blue-900/60 backdrop-blur-lg flex flex-col gap-8`}
+      role="dialog">
       <ButtonIcon handleClick={onCancel} icon={XIcon} variant='ghost' className="self-end"/>
 
       <div className="overflow-y-scroll scrollbar-on-dark">

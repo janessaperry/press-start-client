@@ -282,7 +282,8 @@ const GameDetailsPage = () => {
                   <Link to={`/game/${gameDetails.baseGame.id}/${gameDetails.baseGame.slug}`}>
                     <img className="max-w-16 rounded-sm"
                       src={getCoverUrl(gameDetails.baseGame.coverId, "cover_small")}
-                      alt={`${gameDetails.baseGame.name} cover art`}/>
+                      alt={`${gameDetails.baseGame.name} cover art`}
+                      loading="lazy"/>
                   </Link>
 
                   <div className="space-y-1">

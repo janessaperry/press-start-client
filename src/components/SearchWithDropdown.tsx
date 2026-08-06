@@ -15,6 +15,7 @@ const SearchWithDropdown = ({ onSubmit, className }: Props) => {
   const [ searchResults, setSearchResults ] = useState<Result[]>([]);
   const [ isSearchPending, setIsSearchPending ] = useState(false);
   const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
+  const [ searchError, setSearchError ] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -35,9 +36,11 @@ const SearchWithDropdown = ({ onSubmit, className }: Props) => {
       try {
         const response = await apiClient.get(`/games/search/${searchQuery}`);
         setSearchResults(response.data.searchResults ?? []);
+        setSearchError(false);
       }
       catch {
         setSearchResults([]);
+        setSearchError(true);
       }
       finally {
         setIsSearchPending(false);
@@ -53,6 +56,7 @@ const SearchWithDropdown = ({ onSubmit, className }: Props) => {
     if (value.length >= 3) {
       setIsSearchPending(true);
       setIsDropdownOpen(true);
+      setSearchError(false);
     }
     else {
       setIsSearchPending(false);
@@ -84,7 +88,10 @@ const SearchWithDropdown = ({ onSubmit, className }: Props) => {
           </Button>
         </form>
         {isDropdownOpen && (
-          <SearchResultsDropdown results={searchResults} isSearchPending={isSearchPending} query={searchQuery}/>
+          <SearchResultsDropdown results={searchResults}
+            isSearchPending={isSearchPending}
+            query={searchQuery}
+            hasError={searchError}/>
         )}
       </div>
     </search>

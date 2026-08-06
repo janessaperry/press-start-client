@@ -60,7 +60,8 @@ const GameCard = ({
             <div className="relative mx-auto">
               <img className="self-stretch object-cover aspect-square md:aspect-auto rounded-lg"
                 src={getCoverUrl(gameOverview.coverId, 'cover_big')}
-                alt={`${gameOverview.name} cover art`}/>
+                alt={`${gameOverview.name} cover art`}
+                loading="lazy"/>
 
               {gameOverview.inLibrary && (
                 <div className="absolute bottom-0 w-full h-2/3 px-1 pb-1 flex items-end justify-center gap-1 bg-linear-to-b from-secondary-900/0 via-secondary-900/60 to-secondary-900/80 border-b-2 border-accent-500 rounded-lg">

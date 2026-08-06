@@ -6,12 +6,16 @@ type Props = {
   results: Result[];
   isSearchPending: boolean;
   query: string;
+  hasError?: boolean;
 }
 
-const SearchResultsDropdown = ({ results, isSearchPending, query }: Props) => {
+const SearchResultsDropdown = ({ results, isSearchPending, query, hasError }: Props) => {
   const renderContent = () => {
     if (isSearchPending) {
       return <p className="p-3 text-grey-600 text-lg italic">Searching...</p>;
+    }
+    if (hasError) {
+      return <p className="p-3 text-grey-600 text-lg italic">Something went wrong. Please try again.</p>;
     }
     if (results.length === 0) {
       return <p className="p-3 text-grey-600 text-lg italic">No games found for "{query}"</p>;
