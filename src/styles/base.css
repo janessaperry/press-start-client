@@ -16,10 +16,6 @@
     min-h-screen
     scroll-smooth;
     text-rendering: optimizeSpeed;
-
-    &:has(.modal-open) {
-      @apply overflow-hidden;
-    }
   }
 
   #root {
