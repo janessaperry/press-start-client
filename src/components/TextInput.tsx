@@ -28,7 +28,7 @@ const TextInput = ({
       <div className={isPassword ? "relative" : undefined}>
         <input id={id}
           type={isPassword ? (showPassword ? "text" : "password") : type}
-          className={isPassword ? "w-full pr-10" : undefined}
+          className={isPassword ? "w-full pr-10" : "w-full"}
           {...inputProps}/>
 
         {isPassword && (
