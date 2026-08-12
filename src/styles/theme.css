@@ -3,6 +3,7 @@
   --color-*: initial;
   --color-purple-50: rgb(241, 230, 239);
   --color-purple-100: rgb(223, 189, 218);
+  --color-purple-200: rgb(211, 103, 194);
   --color-purple-300: rgb(145, 0, 122);
   --color-purple-500: rgb(115, 9, 98);
   --color-purple-600: rgb(105, 8, 89);
@@ -39,6 +40,7 @@
   /* Semantic Colors */
   --color-primary-50: var(--color-purple-50);
   --color-primary-100: var(--color-purple-100);
+  --color-primary-200: var(--color-purple-200);
   --color-primary-300: var(--color-purple-300);
   --color-primary-500: var(--color-purple-500);
   --color-primary-600: var(--color-purple-600);
