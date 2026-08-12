@@ -85,7 +85,7 @@ const AccountSettingsPage = () => {
       }
     }
     catch (e) {
-      if (axios.isAxiosError(e) && e.response?.status === 401) {
+      if (axios.isAxiosError(e) && e.response?.status === 400) {
         setPasswordErrors((prevState) => ({
           ...prevState,
           currentPassword: "Password is incorrect."
@@ -160,7 +160,8 @@ const AccountSettingsPage = () => {
                   <div className="space-y-2">
                     <h2>Update Password</h2>
                     <p className="text-secondary-100">
-                      Password must be at least 8 characters and include a number and lowercase letter.
+                      Password must be at least 8 characters and include an uppercase letter, a lowercase letter, and a
+                      number or special character.
                     </p>
                   </div>
 

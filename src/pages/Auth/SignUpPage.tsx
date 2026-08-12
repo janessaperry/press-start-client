@@ -129,7 +129,7 @@ const SignUpPage = () => {
           <TextInput
             id="password"
             label="Password"
-            description="Password should be at least 8 characters including a number and a lowercase letter."
+            description="Password must be at least 8 characters and include an uppercase letter, a lowercase letter, and a number or special character."
             type="password"
             placeholder="Enter your password"
             required={true}
