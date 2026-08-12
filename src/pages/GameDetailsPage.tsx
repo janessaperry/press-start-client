@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowRightIcon, CircleIcon } from "@phosphor-icons/react";
 import apiClient from "../api/client.ts";
+import useAuth from "../hooks/useAuth.ts";
 import LibraryControls from "../components/LibraryControls.tsx";
 import useFilterCategories from "../hooks/useFilterCategories.ts";
 import { GameDetails } from "../types/common";
@@ -16,6 +17,7 @@ import { BadgeNumber, BadgeText } from "../components/Badge.tsx";
 
 const GameDetailsPage = () => {
   const { gameId } = useParams();
+  const { isAuthenticated } = useAuth();
   const [ loading, setLoading ] = useState<boolean>(true);
 
   const [ gameDetails, setGameDetails ] = useState<GameDetails | null>(null);
@@ -114,11 +116,26 @@ const GameDetailsPage = () => {
             </div>
 
             <section className="p-4 md:p-6 -ml-4 -mr-4 md:m-0  bg-primary-300 md:rounded-3xl space-y-4">
-              <LibraryControls gameOverview={gameDetails}
-                libraryData={gameDetails.libraryData ?? undefined}
-                libraryFormatOptions={libraryFormatControls}
-                libraryStatusOptions={libraryStatus}
-                showTitle={true}/>
+              {isAuthenticated ? (
+                <LibraryControls gameOverview={gameDetails}
+                  libraryData={gameDetails.libraryData ?? undefined}
+                  libraryFormatOptions={libraryFormatControls}
+                  libraryStatusOptions={libraryStatus}
+                  showTitle={true}/>
+              ) : (
+                <div className="space-y-4">
+                  <header className="space-y-4">
+                    <h2>Start your game library</h2>
+                    <p className="text-sm italic">Sign up to keep track of the games you own, across every platform and
+                      format, all in one place.
+                    </p>
+                  </header>
+                  <div className="flex gap-2">
+                    <Link to="/sign-up" className="button primary flex-1 justify-center">Create an account</Link>
+                    <Link to="/sign-in" className="button ghost flex-1 justify-center">Sign in</Link>
+                  </div>
+                </div>
+              )}
             </section>
           </div>
         </section>
