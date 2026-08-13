@@ -105,7 +105,7 @@ const ForgotPasswordPage = () => {
   }, [ countdown ])
 
   return (
-    <section className="bg-primary-700 flex-1 p-12 flex flex-col gap-4">
+    <section className="bg-primary-700 flex-1 px-4 md:px-10 py-12 flex flex-col gap-4">
       <p>Don't have an account? <Link to="/sign-up" className="link-primary">Sign up</Link></p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-8">

@@ -96,7 +96,7 @@ const SignUpPage = () => {
 
 
   return (
-    <section className="bg-primary-700 flex-1 p-12 flex flex-col gap-4">
+    <section className="bg-primary-700 flex-1 px-4 md:px-10 py-12 flex flex-col gap-4">
       <p>Already have an account? <Link to="/sign-in"
         className="link-primary">Sign in</Link></p>
 
