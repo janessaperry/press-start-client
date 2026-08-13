@@ -93,9 +93,9 @@ const LibraryControls = ({
   return (
     <>
       {showTitle && (
-        <header className="space-y-4">
-          <h2>{inLibrary ? "Manage Game in Library" : "Add to Library"}</h2>
-          <p className="text-sm italic">Select the console and format you own the game in and add to your
+        <header className="space-y-2">
+          <h3>{inLibrary ? "Manage Game in Library" : "Add to Library"}</h3>
+          <p>Select the console and format you own the game in and add to your
             library, or just add it to your wishlist.
           </p>
         </header>

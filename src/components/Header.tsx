@@ -28,7 +28,7 @@ const Header = () => {
       <header className="sticky top-0 bg-secondary-900/80 backdrop-blur-lg z-20">
         <div className="container mx-auto p-4 md:px-8 md:py-4">
           <nav className="flex items-center justify-between">
-            <NavLink to="/">
+            <NavLink to="/explore">
               <img src={PressStartLogo} alt="Press Start Logo" className="max-w-[10rem] md:max-w-[16rem]"/>
             </NavLink>
 

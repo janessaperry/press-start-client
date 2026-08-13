@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowRightIcon, CircleIcon } from "@phosphor-icons/react";
+import { CircleIcon } from "@phosphor-icons/react";
 import apiClient from "../api/client.ts";
 import useAuth from "../hooks/useAuth.ts";
 import LibraryControls from "../components/LibraryControls.tsx";
@@ -72,18 +72,18 @@ const GameDetailsPage = () => {
     <>
       <div className="md:px-4 py-6 md:py-20 bg-purple-700">
         <section className="md:container md:mx-auto p-4 md:p-12 bg-primary-500 flex flex-col md:flex-row gap-6 md:gap-12 md:rounded-4xl">
-          <div className="md:basis-1/4 flex flex-col items-stretch gap-3 md:gap-6">
+          <div className="md:basis-1/4 flex flex-col items-stretch gap-3 md:gap-4">
             <img src={getCoverUrl(gameDetails.coverId)} alt={`${gameDetails.name} cover art`}
               className="self-center rounded-2xl max-w-1/2 w-full md:max-w-none"/>
 
-            <figure className="flex items-start gap-2 md:gap-3">
+            <figure className={`flex ${gameDetails.esrbDescriptions.length > 0 ? 'items-start' : 'items-center'} gap-2 md:gap-3`}>
               <img src={getEsrbThumbnailUrl(gameDetails.esrbThumbnailId)} alt={`ESRB Rating: ${gameDetails.esrbRating}`}
-                className="w-8 rounded-xs"/>
-              <figcaption className="leading-none">
-                <p className="text-sm font-semibold">{gameDetails.esrbRating}</p>
+                className="w-6 rounded-xs"/>
 
-                {gameDetails.esrbDescriptions &&
-                  <span className="text-xs italic">
+              <figcaption className="leading-none">
+                <p className="text-sm leading-none font-semibold">{gameDetails.esrbRating}</p>
+                {gameDetails.esrbDescriptions.length > 0 &&
+                  <span className="text-xs leading-none italic">
                     {gameDetails.esrbDescriptions.join(", ")}
                   </span>
                 }
@@ -124,10 +124,10 @@ const GameDetailsPage = () => {
                   showTitle={true}/>
               ) : (
                 <div className="space-y-4">
-                  <header className="space-y-4">
-                    <h2>Start your game library</h2>
-                    <p className="text-sm italic">Sign up to keep track of the games you own, across every platform and
-                      format, all in one place.
+                  <header className="space-y-2">
+                    <h3>Start your game library</h3>
+                    <p>
+                      Sign up to keep track of the games you own, across every platform and format, all in one place.
                     </p>
                   </header>
                   <div className="flex gap-2">
@@ -141,10 +141,10 @@ const GameDetailsPage = () => {
         </section>
       </div>
 
-      <section className="container px-4 md:px-10 pt-12 md:pt-24 pb-6 md:pb-12 space-y-4 md:space-y-6">
+      <section className="container px-4 md:px-10 py-12 md:py-24 space-y-4">
         <h2>Description</h2>
 
-        <div className="flex flex-col md:flex-row gap-6 md:gap-12">
+        <div className="flex flex-col lg:flex-row gap-6 md:gap-12">
           <div className="flex-1 space-y-4">
             {gameDetails.summary !== null ?
               <p className="text-lg whitespace-pre-line">{gameDetails.summary}</p>
@@ -158,7 +158,7 @@ const GameDetailsPage = () => {
 
           <div className="flex-1 flex flex-col md:flex-row gap-6">
             <section className="flex-1 space-y-2">
-              <h3>Available on</h3>
+              <h4>Available on</h4>
               {gameDetails.platforms.length > 0 ? (
                 <InfoChipList data={gameDetails.platforms} variant="secondary"/>
               ) : (
@@ -167,7 +167,7 @@ const GameDetailsPage = () => {
             </section>
 
             <section className="flex-1 space-y-2">
-              <h3>Genres</h3>
+              <h4>Genres</h4>
               {gameDetails.genres.length > 0 ? (
                 <InfoChipList data={gameDetails.genres} variant="secondary"/>
               ) : (
@@ -178,8 +178,8 @@ const GameDetailsPage = () => {
         </div>
       </section>
 
-      <div className="container px-4 md:px-10 pb-12 md:pb-20 flex flex-col md: lg:flex-row gap-6 md:gap-12">
-        <section className="flex-1 space-y-4">
+      <div className="container px-4 md:px-10 pb-12 md:pb-20 flex flex-col lg:flex-row gap-12">
+        <section className="flex-1 space-y-2">
           <h4>Time to beat</h4>
           {gameDetails.timeToBeat ?
             <>
@@ -211,13 +211,13 @@ const GameDetailsPage = () => {
         </section>
 
         {hasRelatedContent &&
-          <div className="flex-1 space-y-6 md:space-y-12">
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-12">
             {gameDetails.collections.length > 0 && (
-              <section className="space-y-3">
-                <h4>Series</h4>
+              <section className="space-y-10">
+                <h4 className="mb-2">Series</h4>
                 {gameDetails.collections.map(collection => (
                   <div key={collection.id} className="space-y-2">
-                    <p>{collection.name}</p>
+                    <p className="font-bold">{collection.name}</p>
                     <GameCoverList games={collection.games}/>
                   </div>
                 ))}
@@ -225,12 +225,12 @@ const GameDetailsPage = () => {
             )}
 
             {gameDetails.franchises.length > 0 &&
-              <section className="space-y-3">
-                <h4>Franchise</h4>
+              <section className="space-y-10">
+                <h4 className="mb-2">Franchise</h4>
                 {gameDetails.franchises.map(franchise => {
                   return (
                     <div key={franchise.id} className="space-y-2">
-                      <p>{franchise.name}</p>
+                      <p className="font-bold">{franchise.name}</p>
                       <GameCoverList games={franchise.games}/>
                     </div>
                   )
@@ -239,12 +239,8 @@ const GameDetailsPage = () => {
             }
 
             {gameDetails.relatedContent.expansions.length > 0 && (
-              <section className="space-y-3">
-                <div className="flex items-center justify-between gap-4">
-                  <h4>Expansions</h4>
-                  <ArrowRightIcon className="icon-sm"/>
-                </div>
-
+              <section className="space-y-2">
+                <h4>Expansions</h4>
                 <div className="flex flex-wrap gap-3">
                   <GameCoverList games={gameDetails.relatedContent.expansions}/>
                 </div>
@@ -252,12 +248,8 @@ const GameDetailsPage = () => {
             )}
 
             {gameDetails.relatedContent.dlcs.length > 0 && (
-              <section className="space-y-3">
-                <div className="flex items-center justify-between gap-4">
-                  <h4>DLCs</h4>
-                  <ArrowRightIcon className="icon-sm"/>
-                </div>
-
+              <section className="space-y-2">
+                <h4>DLCs</h4>
                 <div className="flex flex-wrap gap-3">
                   <GameCoverList games={gameDetails.relatedContent.dlcs}/>
                 </div>
@@ -266,14 +258,14 @@ const GameDetailsPage = () => {
           </div>
         }
 
-        <div className="flex-1 space-y-6 md:space-y-12">
-          <section className="space-y-3">
+        <div className="flex-1 block space-y-12 md:grid md:grid-cols-3 md:gap-6 lg:block">
+          <section className="space-y-2">
             <h4>Release date</h4>
             <p>{formatReleaseDate(gameDetails.releaseDate)}</p>
           </section>
 
           {gameDetails.publishers.length > 0 && (
-            <section className="space-y-3">
+            <section className="space-y-2">
               <h4>Publishers</h4>
               {gameDetails.publishers.map((publisher, index) => (
                 <p key={`game-publisher-${index}`}>{publisher}</p>
@@ -282,7 +274,7 @@ const GameDetailsPage = () => {
           )}
 
           {gameDetails.developers.length > 0 && (
-            <section className="space-y-3">
+            <section className="space-y-2">
               <h4>Developers</h4>
               {gameDetails.developers.map((developer, index) => (
                 <p key={`game-developer-${index}`}>{developer}</p>
@@ -291,7 +283,7 @@ const GameDetailsPage = () => {
           )}
 
           {gameDetails.gameType.id !== 0 && (
-            <section className="space-y-3">
+            <section className="space-y-2">
               <BadgeText label={gameDetails.gameType.label}/>
 
               {gameDetails.baseGame &&
