@@ -17,6 +17,7 @@
     "embla-carousel-react": "^8.6.0",
     "eslint-plugin-react": "^7.37.5",
     "lodash": "^4.17.23",
+    "logrocket": "^12.1.1",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "react-router-dom": "^7.6.0",
