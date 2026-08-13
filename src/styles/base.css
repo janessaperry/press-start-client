@@ -59,11 +59,11 @@
   }
 
   h5 {
-    @apply text-xl;
+    @apply text-xl font-medium;
   }
 
   h6 {
-    @apply text-lg;
+    @apply text-lg font-medium;
   }
 
   p {

@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
-import { CaretDownIcon, TrashSimpleIcon } from "@phosphor-icons/react";
+import { CaretDownIcon, CheckIcon, TrashSimpleIcon } from "@phosphor-icons/react";
 import useLibraryGame from "../hooks/useLibraryGame.ts";
 import { LibraryStatusEnum, SelectOption } from "../types/common.ts";
 import Alert from "./Alert.tsx";
@@ -22,6 +23,8 @@ type Props = {
   showTitle?: boolean;
 }
 
+const JUST_ADDED_DURATION = 1500;
+
 const LibraryControls = ({
   gameOverview,
   libraryData,
@@ -31,6 +34,8 @@ const LibraryControls = ({
   onStatusUpdate,
   showTitle = false,
 }: Props) => {
+  const [ justAdded, setJustAdded ] = useState(false);
+
   const {
     handleSubmit, handleUpdate, handleDelete,
     selectedPlatform, setSelectedPlatform,
@@ -44,9 +49,12 @@ const LibraryControls = ({
       <div className="space-y-2">
         <p className="text-xl font-semibold">Library Currently Unavailable</p>
         <p className="text-lg">
-          Please try again later. If the issue persists, contact <a href="mailto:hello@pressstart.gg"
-          className="link-primary">hello@pressstart.gg</a>.
+          Please try again later.
         </p>
+        {/*<p className="text-lg">*/}
+        {/*  Please try again later. If the issue persists, contact <a href="mailto:hello@pressstart.gg"*/}
+        {/*  className="link-primary">hello@pressstart.gg</a>.*/}
+        {/*</p>*/}
       </div>
     );
   }
@@ -58,6 +66,8 @@ const LibraryControls = ({
     try {
       if (!inLibrary) {
         await handleSubmit(newStatus);
+        setJustAdded(true);
+        setTimeout(() => setJustAdded(false), JUST_ADDED_DURATION);
       }
       else {
         await handleUpdate({ libraryStatus: newStatus });
@@ -147,7 +157,7 @@ const LibraryControls = ({
           </Listbox>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex">
           <Listbox value={selectedStatus}
             onChange={(value) => onStatusChange(value)} by="id">
             <ListboxButton className="button primary justify-between grow min-w-0">
@@ -167,10 +177,19 @@ const LibraryControls = ({
             </ListboxOptions>
           </Listbox>
 
-          {inLibrary &&
-            <ButtonIcon handleClick={handleDelete} icon={TrashSimpleIcon}
-              variant="danger" className="border border-danger-900" type="button"/>
-          }
+
+          <div className={`grid ${inLibrary ? 'ml-2 grid-cols-[1fr]' : 'grid-cols-[0fr]'} transition-[grid-template-columns] duration-500`}>
+            <div className="overflow-hidden min-w-0">
+              <div className="relative">
+                <div className={`p-2.5 flex items-center bg-success text-success-900 rounded-full transition-opacity duration-500 ${justAdded ? 'opacity-100 animate-slide-in-left' : 'opacity-0 pointer-events-none'}`}>
+                  <CheckIcon className="icon-md"/>
+                </div>
+                <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${inLibrary && !justAdded ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                  <ButtonIcon handleClick={handleDelete} icon={TrashSimpleIcon} variant="danger" type="button"/>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </form>
     </>

@@ -34,6 +34,12 @@
       focus-visible:outline-danger-500;
     }
 
+    &.success {
+      @apply text-success-900
+      bg-success-500 hover:bg-success-600
+      focus-visible:outline-success-500;
+    }
+
     &.disabled {
       @apply opacity-50 pointer-events-none;
     }
