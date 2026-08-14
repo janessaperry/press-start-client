@@ -49,42 +49,41 @@ const ExplorePage = () => {
         </div>
       </section>
 
-      <div className="container px-4 md:px-10 pt-12 md:pt-24 pb-6 md:pb-12 space-y-4 md:space-y-16">
-        <section className="flex flex-col gap-4 md:gap-6">
+      <div className="container px-4 md:px-10 py-12 md:py-24 space-y-12 md:space-y-16">
+        <section className="space-y-4">
           <h2>Explore by platform</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6">
             <Link to="/explore/xbox" className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
-              <img src={XboxLogo} alt="View Xbox games" className="h-14"/>
+              <img src={XboxLogo} alt="View Xbox games" className="h-10 md:h-14"/>
             </Link>
             <Link to="/explore/playstation"
               className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
-              <img src={PlaystationLogo} alt="View PlayStation games" className="h-16"/>
+              <img src={PlaystationLogo} alt="View PlayStation games" className="h-12 md:h-16"/>
             </Link>
             <Link to="/explore/nintendo"
               className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
-              <img src={NintendoLogo} alt="View Nintendo games" className="h-14"/>
+              <img src={NintendoLogo} alt="View Nintendo games" className="h-10 md:h-14"/>
             </Link>
             <Link to="/explore/pc" className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
-              <div className="w-full text-center font-heading text-5xl sm:text-4xl lg:text-5xl">PC</div>
+              <div className="w-full text-center font-heading text-4xl lg:text-5xl">PC</div>
             </Link>
           </div>
         </section>
 
         {newRelease &&
-          <section className="flex flex-col gap-4 md:gap-6">
+          <section className="space-y-2">
             <h2>New Releases</h2>
             <GameCarousel games={newRelease}/>
           </section>
         }
 
         {comingSoon &&
-          <section className="flex flex-col gap-4 md:gap-6">
+          <section className="space-y-2">
             <h2>Coming Soon</h2>
             <GameCarousel games={comingSoon}/>
           </section>
         }
       </div>
-
     </>
   );
 };

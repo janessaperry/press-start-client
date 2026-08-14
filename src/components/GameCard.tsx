@@ -55,10 +55,11 @@ const GameCard = ({
     <>
       <article className={`flex flex-col bg-primary-700 hover:gradient-primary rounded-2xl overflow-hidden ${className}`}>
         <Link to={`/game/${gameOverview.id}/${gameOverview.slug}`} tabIndex={focusable ? 0 : -1}
-          className={`flex-1 p-2 md:p-4 grid gap-4 ${variant === 'row' ? 'grid-cols-4' : 'grid-cols-1 md:grid-cols-4'}`}>
-          <div className="col-span-1 flex flex-col items-start gap-3">
+          className={`flex-1 p-2 md:p-4 grid content-start gap-4 ${variant === 'row' ? 'grid-cols-4' : 'grid-cols-1' +
+            ' md:grid-cols-4'}`}>
+          <div className="col-span-1 flex flex-col items-start md:gap-3">
             <div className="relative mx-auto w-full">
-              <img className="self-stretch w-full max-h-80 object-cover md:aspect-auto rounded-lg"
+              <img className="w-[clamp(64px,50vw,280px)] object-cover aspect-square mx-auto md:aspect-auto rounded-lg"
                 src={getCoverUrl(gameOverview.coverId, 'cover_big')}
                 alt={`${gameOverview.name} cover art`}
                 loading="lazy"/>

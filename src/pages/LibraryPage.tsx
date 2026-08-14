@@ -234,7 +234,7 @@ const LibraryPage = () => {
 
   return (
     <>
-      <div className="container px-4 md:px-10 pt-12 md:pt-24 pb-6 md:pb-12 space-y-4 md:space-y-16">
+      <div className="container px-4 md:px-10 py-12 md:py-24 space-y-12 md:space-y-16">
         <div className="space-y-4 md:space-y-6 lg:space-y-10">
           <header className="flex items-center gap-4">
             <h1 className="">My Games</h1>
