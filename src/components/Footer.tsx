@@ -10,7 +10,7 @@ const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <div className="bg-[url(/src/assets/images/blue-purple-logo-pattern-1280x1024.png)] bg-cover">
+    <div className="bg-[url(/src/assets/images/blue-purple-logo-pattern-1280x1024.png)] bg-cover pb-16 md:pb-0 border-t border-accent-300/10">
       <footer className="container px-4 py-16 text-grey-50 md:px-8 space-y-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-10">
           <div className="space-y-3 col-span-1 md:col-span-2">

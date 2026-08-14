@@ -134,7 +134,10 @@ const AccountSettingsPage = () => {
   return (
     <>
       <div className="container px-4 md:px-10 pt-12 md:pt-24 pb-12 space-y-8 md:space-y-12">
-        <h1>Account Settings</h1>
+        <div className="flex items-center justify-between gap-4">
+          <h1>Account Settings</h1>
+          <Button className="button ghost" onClick={logout}>Log out</Button>
+        </div>
 
         <div className="grid lg:grid-cols-4 gap-8">
           <aside className="lg:col-span-1">

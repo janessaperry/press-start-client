@@ -45,7 +45,7 @@ const ExplorePage = () => {
         <div className="container flex flex-col gap-6 md:gap-10">
           <h1 className="text-center">Find your next game</h1>
 
-          <SearchWithDropdown className="flex justify-center" onSubmit={handleSearchSubmit}/>
+          <SearchWithDropdown className="w-full md:max-w-3/4 lg:max-w-1/2 mx-auto" onSubmit={handleSearchSubmit}/>
         </div>
       </section>
 

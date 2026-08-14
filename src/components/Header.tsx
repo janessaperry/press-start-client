@@ -1,5 +1,4 @@
 import { NavLink, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { Button } from "@headlessui/react";
 import {
   GhostIcon, HouseIcon, MagnifyingGlassIcon, SignInIcon, TreasureChestIcon, UserIcon,
 } from "@phosphor-icons/react";
@@ -10,7 +9,7 @@ import { useSearchOverlay } from "../context/SearchOverlayContext.tsx";
 import SearchWithDropdown from "./SearchWithDropdown.tsx";
 
 const Header = () => {
-  const { userId, logout } = useAuth();
+  const { userId } = useAuth();
   const { openSearch } = useSearchOverlay();
   const navigate = useNavigate();
   const location = useLocation();
@@ -18,7 +17,7 @@ const Header = () => {
   const desktopInitialQuery = location.pathname === '/games' ? (searchParams.get('search') ?? '') : '';
 
   const getNavLinkClass = ({ isActive }: { isActive: boolean }): string => {
-    return `relative text-lg flex flex-col justify-start items-center
+    return `relative text-lg flex flex-col justify-start items-center text-center
     ${isActive ?
       "text-accent-300" :
       "text-grey-50 hover:text-interactive-primary-hover"
@@ -36,7 +35,7 @@ const Header = () => {
         <div className="container mx-auto px-4 py-6 md:px-8 md:py-4">
           <nav className="flex items-center justify-center md:justify-between md:gap-6 lg:gap-10">
             <NavLink to="/explore">
-              <img src={PressStartLogo} alt="Press Start Logo" className="max-w-[16rem]"/>
+              <img src={PressStartLogo} alt="Press Start Logo" className="w-full max-w-[16rem]"/>
             </NavLink>
 
             <SearchWithDropdown
@@ -82,20 +81,12 @@ const Header = () => {
                       )}
                     </NavLink>
                   </li>
-
-                  <li>
-                    <Button className="button ghost muted" onClick={logout}>Log out</Button>
-                  </li>
                 </>
-              )
-              }
+              )}
               {userId === null &&
                 <>
                   <li>
                     <NavLink to="/sign-in" className="button primary">Sign in</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/sign-up" className="link-primary">Create Account</NavLink>
                   </li>
                 </>
               }

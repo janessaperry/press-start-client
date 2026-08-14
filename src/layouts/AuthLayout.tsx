@@ -1,6 +1,7 @@
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg";
-import { GameControllerIcon, ListIcon, MagnifyingGlassIcon } from "@phosphor-icons/react";
+import { GameControllerIcon, MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { Link, Navigate, Outlet } from "react-router-dom";
+import CheckListIcon from "../components/icons/CheckListIcon.tsx";
 import useAuth from "../hooks/useAuth.ts";
 
 const AuthLayout = () => {
@@ -29,7 +30,7 @@ const AuthLayout = () => {
               </div>
               <div className="flex flex-col items-center gap-6">
                 <div className="p-4 border-2 border-primary-200/40 rounded-full">
-                  <ListIcon className="icon-lg lg:icon-xl text-primary-200"/></div>
+                  <CheckListIcon className="icon-lg lg:icon-xl text-primary-200"/></div>
                 <h3 className="text-primary-200">Collect</h3>
               </div>
               <div className="flex flex-col items-center gap-6">
