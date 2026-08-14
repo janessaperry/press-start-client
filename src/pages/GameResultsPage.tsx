@@ -3,12 +3,7 @@ import { createPortal } from "react-dom";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { Button, Field, Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
 import {
-  CaretDownIcon,
-  GhostIcon,
-  GridFourIcon,
-  PencilSimpleLineIcon,
-  RowsIcon,
-  SlidersIcon, XIcon
+  CaretDownIcon, GhostIcon, GridFourIcon, PencilSimpleLineIcon, RowsIcon, SlidersIcon,
 } from "@phosphor-icons/react";
 import ErrorPage from "../components/ErrorPage.tsx";
 import FilterChipBar from "../components/FilterChipBar.tsx";
@@ -17,7 +12,6 @@ import GameCard from "../components/GameCard.tsx";
 import LoadingGamesMessage from "../components/LoadingGamesMessage.tsx";
 import Modal from "../components/Modal.tsx";
 import Pagination from "../components/Pagination.tsx";
-import SearchGamesInput from "../components/SearchGamesInput.tsx";
 import StatusMessage from "../components/StatusMessage.tsx";
 import useFilterCategories from "../hooks/useFilterCategories.ts";
 import useFilterSelections from "../hooks/useFilterSelections.ts";
@@ -25,6 +19,7 @@ import useGameResults from "../hooks/useGameResults.ts";
 import useIsMobile from "../hooks/useIsMobile.ts";
 import { GameOverview, SelectOption } from "../types/common.ts";
 import { PLATFORM_FAMILY_BY_SLUG } from "../constants/platforms.ts";
+import { useSearchOverlay } from "../context/SearchOverlayContext.tsx";
 
 const sortOptions = [
   { id: "createdAt-desc", label: "Recently Added" },
@@ -38,7 +33,7 @@ const GameResultsPage = () => {
   const { platformFamilySlug } = useParams();
   const platformFamily = PLATFORM_FAMILY_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_FAMILY_BY_SLUG];
 
-  const [ showSearchInput, setShowSearchInput ] = useState(false);
+  const { openSearch } = useSearchOverlay();
   const [ searchParams, setSearchParams ] = useSearchParams();
   const searchQuery = searchParams.get('search') ?? undefined;
   const sorting = searchParams.get('sorting');
@@ -81,7 +76,6 @@ const GameResultsPage = () => {
       const top = el.getBoundingClientRect().top + window.scrollY - 80;
       window.scrollTo({ top, behavior: "smooth" });
     }
-    if (showSearchInput) setShowSearchInput(false);
   }, [ location.search ]);
 
   if (error || filterError) return <ErrorPage/>;
@@ -115,31 +109,18 @@ const GameResultsPage = () => {
 
   return (
     <>
-      <div className="container px-4 md:px-10 pt-12 md:pt-24 pb-6 md:pb-12 space-y-4 md:space-y-16">
+      <div className="container px-4 md:px-10 py-12 md:py-24 space-y-4 md:space-y-16">
         <header className="flex flex-col gap-4">
           <div className="flex items-end md:items-center gap-4">
             <h1 className="">{getTitle()}</h1>
 
             {searchQuery && (
-              <Button onClick={() => setShowSearchInput(!showSearchInput)} className="button ghost">
-                {showSearchInput ? (
-                  <>
-                    <XIcon weight="bold"/>
-                    Cancel
-                  </>
-                ) : (
-                  <>
-                    <PencilSimpleLineIcon weight="bold"/>
-                    Edit
-                  </>
-                )}
+              <Button onClick={() => openSearch(searchQuery)} className="md:hidden button ghost">
+                <PencilSimpleLineIcon weight="bold"/>
+                Edit
               </Button>
             )}
-
           </div>
-          {showSearchInput && (
-            <SearchGamesInput className=""/>
-          )}
         </header>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">

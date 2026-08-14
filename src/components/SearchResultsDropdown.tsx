@@ -32,7 +32,7 @@ const SearchResultsDropdown = ({ results, isSearchPending, query, hasError }: Pr
   }
 
   return (
-    <div className="p-1 bg-grey-50 w-full max-h-80 overflow-y-auto scrollbar-on-light rounded-2xl">
+    <div className="p-1 bg-grey-50 w-full max-h-[min(20rem,60dvh)] overflow-y-auto scrollbar-on-light rounded-2xl">
       {renderContent()}
     </div>
   )

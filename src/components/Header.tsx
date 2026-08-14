@@ -1,15 +1,21 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@headlessui/react";
-import { GhostIcon, ListIcon, XIcon } from "@phosphor-icons/react";
+import {
+  GhostIcon, HouseIcon, MagnifyingGlassIcon, SignInIcon, TreasureChestIcon, UserIcon,
+} from "@phosphor-icons/react";
 import PressStartLogo from "/src/assets/logos/press-start-logo--dark.svg"
 import useAuth from "../hooks/useAuth.ts";
+import { TelescopeIcon } from "./icons";
+import { useSearchOverlay } from "../context/SearchOverlayContext.tsx";
+import SearchWithDropdown from "./SearchWithDropdown.tsx";
 
 const Header = () => {
   const { userId, logout } = useAuth();
-  const [ isMobileMenuOpen, setIsMobileMenuOpen ] = useState(false);
-
-  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+  const { openSearch } = useSearchOverlay();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [ searchParams ] = useSearchParams();
+  const desktopInitialQuery = location.pathname === '/games' ? (searchParams.get('search') ?? '') : '';
 
   const getNavLinkClass = ({ isActive }: { isActive: boolean }): string => {
     return `relative text-lg flex flex-col justify-start items-center
@@ -20,19 +26,28 @@ const Header = () => {
   }
 
   const getMobileNavLinkClass = ({ isActive }: { isActive: boolean }): string => {
-    return `text-lg font-medium ${isActive ? "text-accent-300" : "text-grey-50 hover:text-interactive-primary-hover"}`
+    return `w-full flex flex-col items-center gap-0.5 text-sm font-bold text-center
+    ${isActive ? "text-accent-300" : "text-grey-50 hover:text-interactive-primary-hover"}`
   }
 
   return (
     <>
       <header className="sticky top-0 bg-secondary-900/80 backdrop-blur-lg z-20">
-        <div className="container mx-auto p-4 md:px-8 md:py-4">
-          <nav className="flex items-center justify-between">
+        <div className="container mx-auto px-4 py-6 md:px-8 md:py-4">
+          <nav className="flex items-center justify-center md:justify-between md:gap-6 lg:gap-10">
             <NavLink to="/explore">
-              <img src={PressStartLogo} alt="Press Start Logo" className="max-w-[10rem] md:max-w-[16rem]"/>
+              <img src={PressStartLogo} alt="Press Start Logo" className="max-w-[16rem]"/>
             </NavLink>
 
-            <ul className="hidden md:flex items-center gap-3 md:gap-8">
+            <SearchWithDropdown
+              className="flex-1 hidden md:block"
+              inputClassName="bg-transparent border-primary-100/20 text-grey-50"
+              onSubmit={(q) => navigate(`/games?search=${encodeURIComponent(q)}`)}
+              initialQuery={desktopInitialQuery}
+              hideButton
+            />
+
+            <ul className="hidden md:flex items-center gap-6 lg:gap-10">
               <li>
                 <NavLink to="/explore" className={getNavLinkClass}>
                   {({ isActive }) => (
@@ -43,6 +58,7 @@ const Header = () => {
                   )}
                 </NavLink>
               </li>
+              {userId && (
               <li>
                 <NavLink to="/my-games" className={getNavLinkClass}>
                   {({ isActive }) => (
@@ -53,6 +69,7 @@ const Header = () => {
                   )}
                 </NavLink>
               </li>
+              )}
               {userId && (
                 <>
                   <li>
@@ -83,72 +100,64 @@ const Header = () => {
                 </>
               }
             </ul>
-
-            <button className="md:hidden button ghost p-2" onClick={() => setIsMobileMenuOpen(true)}
-              aria-label="Open menu">
-              <ListIcon size={24}/>
-            </button>
           </nav>
         </div>
       </header>
 
-      <div className={`md:hidden fixed inset-0 z-50 transition-opacity duration-300
-        ${isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
-
-        <div className="absolute inset-0 bg-secondary-900/70" onClick={closeMobileMenu}/>
-
-        <div className={`absolute right-0 top-0 h-full w-72 bg-primary-700 flex flex-col p-6
-          transition-transform duration-300
-          ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
-
-          <div className="flex justify-end mb-8">
-            <button className="button ghost p-2" onClick={closeMobileMenu} aria-label="Close menu">
-              <XIcon size={24}/>
-            </button>
-          </div>
-
-          <ul className="flex flex-col gap-6">
-            <li>
-              <NavLink to="/explore" className={getMobileNavLinkClass} onClick={closeMobileMenu}>
-                Explore
+      {/* ----- MOBILE NAV ----- */}
+      <nav className="fixed md:hidden bottom-4 inset-x-4 px-4 py-3 bg-blue-500 border border-accent-300/40 rounded-full z-20">
+        <ul className="flex gap-2">
+          {userId === null && (
+            <li className="flex-1">
+              <NavLink to="/" className={getMobileNavLinkClass}>
+                <HouseIcon className="icon-lg"/>
+                Home
               </NavLink>
             </li>
-            <li>
-              <NavLink to="/my-games" className={getMobileNavLinkClass} onClick={closeMobileMenu}>
+          )}
+
+          <li className="flex-1">
+            <NavLink to="/explore" className={getMobileNavLinkClass}>
+              <TelescopeIcon className="icon-lg"/>
+              Explore
+            </NavLink>
+          </li>
+          {userId && (
+            <li className="flex-1">
+              <NavLink to="/my-games" className={getMobileNavLinkClass}>
+                <TreasureChestIcon className="icon-lg"/>
                 My Games
               </NavLink>
             </li>
-          </ul>
-
-          <div className="mt-auto flex flex-col gap-4">
-            {userId &&
-              <div className="flex flex-col gap-3">
-                <p className="text-sm uppercase tracking-widest text-primary-100">Account</p>
-                <NavLink to="/account-settings" className={getMobileNavLinkClass} onClick={closeMobileMenu}>
-                  Settings
+          )}
+          <li className="flex-1">
+            <button onClick={() => openSearch()} className={getMobileNavLinkClass({ isActive: false })}>
+              <MagnifyingGlassIcon className="icon-lg"/>
+              Search
+            </button>
+          </li>
+          {userId && (
+            <>
+              <li className="flex-1">
+                <NavLink to="/account-settings" className={getMobileNavLinkClass}>
+                  <UserIcon className="icon-lg"/>
+                  Account
                 </NavLink>
-                <button className="text-lg font-medium text-grey-50 hover:text-interactive-primary-hover text-left"
-                  onClick={() => {
-                    logout();
-                    closeMobileMenu();
-                  }}>
-                  Log out
-                </button>
-              </div>
-            }
-            {userId === null &&
-              <div className="flex flex-col gap-3">
-                <NavLink to="/sign-in" className="button primary text-center" onClick={closeMobileMenu}>
-                  Sign in
+              </li>
+            </>
+          )}
+          {userId === null &&
+            <>
+              <li className="flex-1">
+                <NavLink to="/sign-in" className={getMobileNavLinkClass}>
+                  <SignInIcon className="icon-lg"/>
+                  Sign In
                 </NavLink>
-                <NavLink to="/sign-up" className="link-primary text-center" onClick={closeMobileMenu}>
-                  Create Account
-                </NavLink>
-              </div>
-            }
-          </div>
-        </div>
-      </div>
+              </li>
+            </>
+          }
+        </ul>
+      </nav>
     </>
   );
 };

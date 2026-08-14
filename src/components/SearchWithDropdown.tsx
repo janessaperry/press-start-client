@@ -1,23 +1,52 @@
 import { Button, Input } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import apiClient from "../api/client.ts";
+import { useSearchOverlay } from "../context/SearchOverlayContext.tsx";
 import SearchResultsDropdown from "./SearchResultsDropdown.tsx";
 import { Result } from "../types/common.ts";
 
 type Props = {
   onSubmit: (query: string) => void;
   className?: string;
+  inputClassName?: string;
+  initialQuery?: string;
+  autoFocus?: boolean;
+  hideButton?: boolean;
 }
 
-const SearchWithDropdown = ({ onSubmit, className }: Props) => {
-  const [ searchQuery, setSearchQuery ] = useState('');
+const SearchWithDropdown = ({
+  onSubmit,
+  className,
+  inputClassName,
+  initialQuery = '',
+  autoFocus = false,
+  hideButton = false
+}: Props) => {
+  const location = useLocation();
+  const [ searchQuery, setSearchQuery ] = useState(initialQuery);
   const [ searchResults, setSearchResults ] = useState<Result[]>([]);
   const [ isSearchPending, setIsSearchPending ] = useState(false);
   const [ isDropdownOpen, setIsDropdownOpen ] = useState(false);
   const [ searchError, setSearchError ] = useState(false);
+  const { closeSearch } = useSearchOverlay();
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setSearchQuery(initialQuery);
+  }, [ initialQuery ]);
+
+  useEffect(() => {
+    setIsDropdownOpen(false);
+    closeSearch();
+  }, [ location.pathname ]);
+
+  useEffect(() => {
+    if (autoFocus) inputRef.current?.focus();
+  }, [ autoFocus ]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -67,31 +96,39 @@ const SearchWithDropdown = ({ onSubmit, className }: Props) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!searchQuery.trim()) return;
+    setIsDropdownOpen(false);
     onSubmit(searchQuery);
   }
 
   return (
     <search className={className}>
-      <div ref={containerRef} className="w-full md:max-w-3/4 lg:max-w-1/2 flex flex-col gap-3">
+      <div ref={containerRef} className="relative">
         <form className="flex items-stretch gap-3" onSubmit={handleSubmit}>
           <Input
+            ref={inputRef}
             name="search"
             type="search"
             placeholder="Search..."
             autoComplete="off"
             onChange={handleInput}
             value={searchQuery}
-            className="grow md:text-xl"
+            className={`grow md:text-xl ${inputClassName ?? ''}`}
           />
-          <Button type="submit" className="button primary aspect-square rounded-full">
-            <MagnifyingGlassIcon className="icon-md"/>
-          </Button>
+          {!hideButton && (
+            <Button type="submit" className="button primary aspect-square rounded-full">
+              <MagnifyingGlassIcon className="icon-md"/>
+            </Button>
+          )}
         </form>
         {isDropdownOpen && (
-          <SearchResultsDropdown results={searchResults}
-            isSearchPending={isSearchPending}
-            query={searchQuery}
-            hasError={searchError}/>
+          <div className="absolute top-full left-0 right-0 mt-4 z-50">
+            <SearchResultsDropdown results={searchResults}
+              isSearchPending={isSearchPending}
+              query={searchQuery}
+              hasError={searchError}
+            />
+          </div>
         )}
       </div>
     </search>
