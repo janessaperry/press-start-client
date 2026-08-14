@@ -17,7 +17,7 @@ const Header = () => {
   const desktopInitialQuery = location.pathname === '/games' ? (searchParams.get('search') ?? '') : '';
 
   const getNavLinkClass = ({ isActive }: { isActive: boolean }): string => {
-    return `relative text-lg flex flex-col justify-start items-center text-center
+    return `relative text-lg flex flex-col justify-start items-center text-center whitespace-nowrap
     ${isActive ?
       "text-accent-300" :
       "text-grey-50 hover:text-interactive-primary-hover"
@@ -72,13 +72,9 @@ const Header = () => {
               {userId && (
                 <>
                   <li>
-                    <NavLink to="/account-settings" className={getNavLinkClass}>
-                      {({ isActive }) => (
-                        <>
-                          Account
-                          {isActive && <GhostIcon weight="fill" size={12} className="absolute -bottom-3"/>}
-                        </>
-                      )}
+                    <NavLink to="/account-settings"
+                      className={({ isActive }) => `${getNavLinkClass({ isActive })} button`}>
+                      <UserIcon className="icon-sm"/>
                     </NavLink>
                   </li>
                 </>
