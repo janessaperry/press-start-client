@@ -38,7 +38,7 @@ const GameResultsPage = () => {
   const searchQuery = searchParams.get('search') ?? undefined;
   const sorting = searchParams.get('sorting');
   const selectedSort = sortOptions.find(option => option.id === sorting) ?? sortOptions[0];
-  const limit = 20;
+  const limit = 40;
 
   const isMobile = useIsMobile();
   const { games, resultsCount, isLoading, error } = useGameResults(limit);
@@ -101,7 +101,9 @@ const GameResultsPage = () => {
           })}
         </div>
         {resultsCount !== undefined &&
-          <Pagination resultsCount={resultsCount} itemsPerPage={limit} className="justify-self-center"/>
+          <div className="flex items-center justify-center">
+            <Pagination resultsCount={resultsCount} itemsPerPage={limit}/>
+          </div>
         }
       </>
     )
@@ -201,7 +203,7 @@ const GameResultsPage = () => {
               </section>
             </div>
 
-            <section className="col-span-2 space-y-4 md:space-y-6">
+            <section className="col-span-2 space-y-8 md:space-y-12">
               {renderGameResults()}
             </section>
           </div>

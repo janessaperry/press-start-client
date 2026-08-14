@@ -168,8 +168,8 @@ const LibraryPage = () => {
 
     return (
       <>
-        <h2>Currently Playing</h2>
-        <div className="grid grid-cols-6 gap-4 md:gap-6">
+        <h3>Currently Playing</h3>
+        <div className="grid grid-cols-6 gap-2 md:gap-4">
           {currentlyPlaying.map((game: LibraryGame) => (
             <article key={game.gameOverview.id} className="col-span-1 space-y-2">
               <img className="w-full rounded-md md:rounded-xl"
@@ -215,14 +215,12 @@ const LibraryPage = () => {
               libraryFormat: game.libraryFormat,
               libraryStatus: game.libraryStatus,
             }
-            return <GameCard key={game.gameOverview.id}
-              gameOverview={game.gameOverview}
+            return <GameCard key={game.gameOverview.id} gameOverview={game.gameOverview}
               showLibraryControls={true}
               libraryData={libraryData}
               libraryFormatOptions={filterCategories.libraryFormatControls}
               libraryStatusOptions={filterCategories.libraryStatus}
-              onDelete={onDelete}
-              onStatusUpdate={onStatusUpdate}/>
+              onDelete={onDelete} onStatusUpdate={onStatusUpdate}/>
           })}
         </div>
         <div className="flex items-center justify-center">
@@ -321,7 +319,9 @@ const LibraryPage = () => {
                 handleFilterChange={handleFilterChange}
                 handleClearAll={handleClearAll}/>
 
-              {renderGameResults()}
+              <section className="col-span-2 space-y-8 md:space-y-12">
+                {renderGameResults()}
+              </section>
             </div>
           </div>
         </div>

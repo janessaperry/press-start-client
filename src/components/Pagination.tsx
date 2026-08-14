@@ -39,23 +39,23 @@ const Pagination = ({ resultsCount, itemsPerPage, className }: Props) => {
 
   return (
     <>
-      <nav className={`flex gap-2 ${className}`}>
+      <nav className={`flex gap-2 ${className ?? ""}`}>
         <Link to={handleNavigation('back')}
-          className={`button ghost muted p-2 size-11 ${currentPage === '1' ? 'disabled' : ''}`}>
-          <CaretLeftIcon aria-hidden={true} className="icon-md"/>
+          className={`button ghost muted size-10 md:size-11 ${currentPage === '1' ? 'disabled' : ''}`}>
+          <CaretLeftIcon aria-hidden={true} className="icon-sm"/>
           <span className="sr-only">Previous page</span>
         </Link>
 
         {visiblePageLinks.map((page, i) => {
           if (page === "...") {
             return <div key={`p-break-${i}`}
-              className="flex items-center justify-center w-4 h-11 text-lg">{page}</div>
+              className="flex items-center justify-center w-2 h-11 md:text-lg">{page}</div>
           }
           else {
             return (
               <Link key={`p-${page}`} to={handleNavigation(page)}
                 aria-current={currentPage === page}
-                className="button ghost muted p-2 size-11 text-lg aria-current:bg-accent-500/10">
+                className="button ghost muted size-10 md:size-11 md:text-lg aria-current:bg-accent-500/10">
                 {page}
               </Link>
             )
@@ -63,8 +63,8 @@ const Pagination = ({ resultsCount, itemsPerPage, className }: Props) => {
         })}
 
         <Link to={handleNavigation('next')}
-          className={`button ghost muted p-2 size-11 ${currentPage === String(totalPages) ? 'disabled' : ''}`}>
-          <CaretRightIcon aria-hidden={true} className="icon-md"/>
+          className={`button ghost muted size-10 md:size-11 ${currentPage === String(totalPages) ? 'disabled' : ''}`}>
+          <CaretRightIcon aria-hidden={true} className="icon-sm"/>
           <span className="sr-only">Next page</span>
         </Link>
       </nav>

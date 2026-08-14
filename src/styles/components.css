@@ -1,7 +1,7 @@
 @layer components {
   .button {
     @apply flex items-center justify-center gap-2 md:gap-3
-    text-lg text-secondary-900 font-bold
+    md:text-lg text-secondary-900 font-bold
     px-3 md:px-4 py-2
     rounded-full whitespace-nowrap
     focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-interactive-primary;
