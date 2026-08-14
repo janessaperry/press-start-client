@@ -42,6 +42,7 @@ const SearchWithDropdown = ({
   useEffect(() => {
     setIsDropdownOpen(false);
     closeSearch();
+    inputRef.current?.blur();
   }, [ location.pathname ]);
 
   useEffect(() => {
@@ -96,9 +97,10 @@ const SearchWithDropdown = ({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!searchQuery.trim()) return;
+    const trimmedSearch = searchQuery.trim();
+    if (!trimmedSearch) return;
     setIsDropdownOpen(false);
-    onSubmit(searchQuery);
+    onSubmit(trimmedSearch);
   }
 
   return (

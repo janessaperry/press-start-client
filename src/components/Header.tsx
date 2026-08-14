@@ -29,6 +29,13 @@ const Header = () => {
     ${isActive ? "text-accent-300" : "text-grey-50 hover:text-interactive-primary-hover"}`
   }
 
+  const handleSearchSubmit = (searchQuery: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('search', searchQuery);
+    params.delete('page');
+    navigate({ pathname: "/games", search: `?${params}` });
+  }
+
   return (
     <>
       <header className="sticky top-0 bg-secondary-900/80 backdrop-blur-lg z-20">
@@ -41,7 +48,7 @@ const Header = () => {
             <SearchWithDropdown
               className="flex-1 hidden md:block"
               inputClassName="bg-transparent border-primary-100/20 text-grey-50"
-              onSubmit={(q) => navigate(`/games?search=${encodeURIComponent(q)}`)}
+              onSubmit={(q) => handleSearchSubmit(q)}
               initialQuery={desktopInitialQuery}
               hideButton
             />

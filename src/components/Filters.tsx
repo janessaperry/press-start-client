@@ -7,11 +7,18 @@ type Props = {
   selectedFilters: SelectedFilters;
   handleFilterChange: (compoundId: string, syncUrl?: boolean) => void;
   isLibrary?: boolean;
+  isSearch?: boolean;
   className?: string;
 } & ComponentProps<'section'>
 
-const Filters = ({ className, filterCategories, selectedFilters, handleFilterChange, isLibrary = false }: Props) => {
-
+const Filters = ({
+  className,
+  filterCategories,
+  selectedFilters,
+  handleFilterChange,
+  isLibrary = false,
+  isSearch = false
+}: Props) => {
   const {
     gameType,
     platform,
@@ -44,8 +51,9 @@ const Filters = ({ className, filterCategories, selectedFilters, handleFilterCha
 
 
       {gameType && (
-        <FilterCategory title="Game Type" showTitle={isLibrary}
-          filters={gameType}
+        // show all filter options if on the library page or have a search query, else hide Main Game (id = 0)
+        <FilterCategory title="Game Type" showTitle={isLibrary || isSearch}
+          filters={isLibrary || isSearch ? gameType : gameType.filter(gt => gt.id !== 0)}
           selectedFilters={selectedFilters.gameType}
           paramName='gameType'
           handleChange={handleFilterChange}/>

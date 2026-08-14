@@ -127,6 +127,7 @@ const GameResultsPage = () => {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           <Filters filterCategories={filterCategories}
+            isSearch={!!searchQuery}
             selectedFilters={selectedFilters}
             handleFilterChange={handleFilterChange}
             className="hidden lg:sticky lg:top-20 lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-scroll lg:block lg:col-span-1"/>
@@ -137,7 +138,7 @@ const GameResultsPage = () => {
                 setModalOpen={setFilterModalOpen}
                 handleSubmit={applyFilters}
                 handleCancel={cancelFilters}>
-                <Filters filterCategories={filterCategories}
+                <Filters filterCategories={filterCategories} isSearch={!!searchQuery}
                   selectedFilters={selectedFilters}
                   handleFilterChange={handleFilterChange}/>
               </Modal>,
