@@ -73,7 +73,7 @@ const GameResultsPage = () => {
     prevSearch.current = location.search;
     const el = document.getElementById("game-results-container");
     if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 80;
+      const top = el.getBoundingClientRect().top + window.scrollY - 140;
       window.scrollTo({ top, behavior: "smooth" });
     }
   }, [ location.search ]);
@@ -96,7 +96,7 @@ const GameResultsPage = () => {
         <div className={`grid gap-4 ${resultsView === 'grid' ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-2'}`}>
           {games.map((game: GameOverview) => {
             return (
-              <GameCard key={game.id} gameOverview={game} variant={resultsView}/>
+              <GameCard key={game.id} gameOverview={game} layout={resultsView}/>
             )
           })}
         </div>

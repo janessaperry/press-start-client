@@ -134,7 +134,7 @@ const LibraryPage = () => {
     prevSearch.current = location.search;
     const el = document.getElementById("library-container");
     if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 80;
+      const top = el.getBoundingClientRect().top + window.scrollY - 110;
       window.scrollTo({ top, behavior: "smooth" });
     }
   }, [ location.search ]);
@@ -215,7 +215,7 @@ const LibraryPage = () => {
               libraryFormat: game.libraryFormat,
               libraryStatus: game.libraryStatus,
             }
-            return <GameCard key={game.gameOverview.id} gameOverview={game.gameOverview}
+            return <GameCard key={game.gameOverview.id} gameOverview={game.gameOverview} layout="row"
               showLibraryControls={true}
               libraryData={libraryData}
               libraryFormatOptions={filterCategories.libraryFormatControls}

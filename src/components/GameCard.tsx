@@ -22,7 +22,7 @@ const showGameTypeBadge: Record<number, boolean> = {
 
 type GameCardProps = {
   gameOverview: GameOverview;
-  variant?: 'grid' | 'row';
+  layout: 'grid' | 'row';
   focusable?: boolean;
   inCarousel?: boolean;
   showLibraryControls?: boolean;
@@ -40,7 +40,7 @@ type GameCardProps = {
 const GameCard = ({
   gameOverview,
   className = "",
-  variant = 'grid',
+  layout,
   focusable = true,
   inCarousel = false,
   showLibraryControls = false,
@@ -50,16 +50,14 @@ const GameCard = ({
   onDelete,
   onStatusUpdate,
 }: GameCardProps) => {
-
   return (
     <>
-      <article className={`flex flex-col bg-primary-700 hover:gradient-primary rounded-2xl overflow-hidden ${className}`}>
+      <article className={`w-full flex flex-col bg-primary-700 hover:gradient-primary rounded-2xl overflow-hidden ${className}`}>
         <Link to={`/game/${gameOverview.id}/${gameOverview.slug}`} tabIndex={focusable ? 0 : -1}
-          className={`flex-1 p-2 md:p-4 grid content-start gap-4 ${variant === 'row' ? 'grid-cols-4' : 'grid-cols-1' +
-            ' md:grid-cols-4'}`}>
+          className={`flex-1 p-3 lg:p-4 grid content-start gap-4 ${layout === 'row' ? `grid-cols-4` : `grid-cols-1`}  md:grid-cols-4`}>
           <div className="col-span-1 flex flex-col items-start md:gap-3">
-            <div className="relative mx-auto w-full">
-              <img className="w-[clamp(64px,50vw,280px)] object-cover aspect-square mx-auto md:aspect-auto rounded-lg"
+            <div className="relative mx-auto">
+              <img className={`w-[clamp(64px,50vw,140px)] object-cover ${layout === 'grid' ? 'aspect-square' : ''} mx-auto md:aspect-auto rounded-lg`}
                 src={getCoverUrl(gameOverview.coverId, 'cover_big')}
                 alt={`${gameOverview.name} cover art`}
                 loading="lazy"/>
@@ -76,7 +74,7 @@ const GameCard = ({
             }
           </div>
 
-          <div className={`${variant === 'row' ? 'col-span-3' : 'col-span-1'} md:col-span-3 flex flex-col gap-2 md:gap-4`}>
+          <div className={`${layout === 'row' ? 'col-span-3' : 'col-span-1'} md:col-span-3 flex flex-col gap-2 md:gap-4`}>
             <div className="flex items-start gap-3">
               <h4 className="grow text-primary-50 line-clamp-2">{gameOverview.name}</h4>
               <BadgeNumber label={gameOverview.totalRating !== null ? String(Math.round(gameOverview.totalRating)) : 'n/a'}
