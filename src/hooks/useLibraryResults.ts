@@ -21,7 +21,6 @@ const useLibraryResults = (userId: number, limit: number) => {
   const [ isLoading, setIsLoading ] = useState(false);
   const [ hasLoaded, setHasLoaded ] = useState(false);
   const [ error, setError ] = useState(false);
-  const isFirstRender = useRef(true);
 
   const [ searchParams ] = useSearchParams();
   const currentPage = searchParams.get('page') ?? 1;
@@ -37,6 +36,7 @@ const useLibraryResults = (userId: number, limit: number) => {
     searchParams.get('genres'),
     searchParams.get('timeToBeat'),
   ].join(',');
+  const prevDebouncedKey = useRef(`${userId},${debouncedParams}`);
 
   const immediateParams = [
     searchParams.get('page'),
@@ -87,10 +87,9 @@ const useLibraryResults = (userId: number, limit: number) => {
   }, [ userId, immediateParams ]);
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+    const debouncedKey = `${userId},${debouncedParams}`;
+    if (prevDebouncedKey.current === debouncedKey) return;
+    prevDebouncedKey.current = debouncedKey;
 
     const controller = new AbortController();
     setIsLoading(true);

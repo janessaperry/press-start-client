@@ -21,7 +21,8 @@ import { GameOverview, SelectOption } from "../types/common.ts";
 import { PLATFORM_FAMILY_BY_SLUG } from "../constants/platforms.ts";
 import { useSearchOverlay } from "../context/SearchOverlayContext.tsx";
 
-const sortOptions = [
+const relevanceSortOption = { id: "relevance-desc", label: "Best Match" };
+const baseSortOptions = [
   { id: "createdAt-desc", label: "Recently Added" },
   { id: "name-asc", label: "Name (a-z)" },
   { id: "name-desc", label: "Name (z-a)" },
@@ -37,15 +38,21 @@ const GameResultsPage = () => {
   const [ searchParams, setSearchParams ] = useSearchParams();
   const searchQuery = searchParams.get('search') ?? undefined;
   const sorting = searchParams.get('sorting');
-  const selectedSort = sortOptions.find(option => option.id === sorting) ?? sortOptions[0];
+  const sortOptions = searchQuery ? [ relevanceSortOption, ...baseSortOptions ] : baseSortOptions;
+  const defaultSort = searchQuery ? relevanceSortOption : baseSortOptions[0];
+  const selectedSort = sortOptions.find(option => option.id === sorting) ?? defaultSort;
   const limit = 40;
 
   const isMobile = useIsMobile();
   const { games, resultsCount, isLoading, error } = useGameResults(limit);
   const { error: filterError, ...filterCategories } = useFilterCategories();
   const {
-    selectedFilters, committedOrder,
-    handleFilterChange, applyFilters, cancelFilters, handleClearAll
+    selectedFilters,
+    committedOrder,
+    handleFilterChange,
+    applyFilters,
+    cancelFilters,
+    handleClearAll
   } = useFilterSelections(filterCategories);
   const [ filterModalOpen, setFilterModalOpen ] = useState(false);
   const [ resultsView, setResultsView ] = useState<'row' | 'grid'>('row');

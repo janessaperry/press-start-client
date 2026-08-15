@@ -40,11 +40,11 @@ const useGameResults = (limit: number): GameResults => {
   const [ resultsCount, setResultsCount ] = useState<number | undefined>(undefined);
   const [ isLoading, setIsLoading ] = useState(false);
   const [ error, setError ] = useState(false);
-  const isFirstRender = useRef(true);
+  const prevDebouncedParams = useRef(debouncedParams);
 
   const getGames = async (signal: AbortSignal) => {
     const apiParams = new URLSearchParams(searchParams);
-    if (!apiParams.has('sorting')) apiParams.set('sorting', 'createdAt-desc');
+    if (!apiParams.has('sorting')) apiParams.set('sorting', apiParams.has('search') ? 'relevance-desc' : 'createdAt-desc');
     if (platformFamilySlug) apiParams.set('platformFamily', String(PLATFORM_FAMILY_BY_SLUG[platformFamilySlug as keyof typeof PLATFORM_FAMILY_BY_SLUG]?.id));
     if (apiParams.has('page')) apiParams.delete('page');
     apiParams.set('limit', String(limit));
@@ -75,10 +75,8 @@ const useGameResults = (limit: number): GameResults => {
   }, [ platformFamilySlug, immediateParams ]);
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+    if (prevDebouncedParams.current === debouncedParams) return;
+    prevDebouncedParams.current = debouncedParams;
 
     const controller = new AbortController();
     setIsLoading(true);
