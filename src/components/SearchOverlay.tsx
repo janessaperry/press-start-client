@@ -20,15 +20,16 @@ const SearchOverlay = () => {
 
       <div className="absolute inset-0 bg-secondary-900/80 backdrop-blur-sm" onClick={closeSearch}/>
 
-      <div className="relative flex flex-col flex-1 p-4 pt-8 gap-4">
+      <div className="relative flex p-4 pt-8 gap-4">
         <SearchWithDropdown
-          className="w-full"
+          className="grow"
           onSubmit={handleSubmit}
           initialQuery={currentSearchQuery}
           autoFocus={isOpen}
+          hideButton
         />
 
-        <button onClick={closeSearch} className="button ghost mt-auto">
+        <button onClick={closeSearch} className="button ghost">
           Cancel
         </button>
       </div>
