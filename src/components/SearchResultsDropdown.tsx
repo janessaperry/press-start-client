@@ -21,7 +21,7 @@ const SearchResultsDropdown = ({ results, isSearchPending, query, hasError }: Pr
       return <p className="p-3 text-grey-600 text-lg italic">No games found for "{query}"</p>;
     }
     return results.map(result => (
-      <Link key={result.id} to={`/game/${result.id}/${result.name}`}
+      <Link key={result.id} to={`/game/${result.id}/${result.slug}`}
         className="p-2 flex items-center gap-4 rounded-lg hover:bg-grey-100">
         <img src={getCoverUrl(result.coverId, 'thumb')}
           alt={`${result.name} cover art`}
