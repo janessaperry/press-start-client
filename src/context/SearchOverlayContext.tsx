@@ -2,8 +2,7 @@ import { createContext, useContext, useState, ReactNode } from "react";
 
 type SearchOverlayContextType = {
   isOpen: boolean;
-  initialQuery: string;
-  openSearch: (initialQuery?: string) => void;
+  openSearch: () => void;
   closeSearch: () => void;
 }
 
@@ -11,20 +10,12 @@ const SearchOverlayContext = createContext<SearchOverlayContextType | null>(null
 
 export const SearchOverlayProvider = ({ children }: { children: ReactNode }) => {
   const [ isOpen, setIsOpen ] = useState(false);
-  const [ initialQuery, setInitialQuery ] = useState('');
 
-  const openSearch = (query = '') => {
-    setInitialQuery(query);
-    setIsOpen(true);
-  };
-
-  const closeSearch = () => {
-    setIsOpen(false);
-    setInitialQuery('');
-  };
+  const openSearch = () => setIsOpen(true);
+  const closeSearch = () => setIsOpen(false);
 
   return (
-    <SearchOverlayContext.Provider value={{ isOpen, initialQuery, openSearch, closeSearch }}>
+    <SearchOverlayContext.Provider value={{ isOpen, openSearch, closeSearch }}>
       {children}
     </SearchOverlayContext.Provider>
   );

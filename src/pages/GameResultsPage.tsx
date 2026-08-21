@@ -124,7 +124,7 @@ const GameResultsPage = () => {
             <h1 className="">{getTitle()}</h1>
 
             {searchQuery && (
-              <Button onClick={() => openSearch(searchQuery)} className="md:hidden button ghost">
+              <Button onClick={() => openSearch()} className="md:hidden button ghost">
                 <PencilSimpleLineIcon weight="bold"/>
                 Edit
               </Button>

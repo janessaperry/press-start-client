@@ -1,10 +1,13 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useSearchOverlay } from "../context/SearchOverlayContext.tsx";
 import SearchWithDropdown from "./SearchWithDropdown.tsx";
 
 const SearchOverlay = () => {
-  const { isOpen, initialQuery, closeSearch } = useSearchOverlay();
+  const { isOpen, closeSearch } = useSearchOverlay();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [ searchParams ] = useSearchParams();
+  const currentSearchQuery = location.pathname === '/games' ? (searchParams.get('search') ?? '') : '';
 
   const handleSubmit = (query: string) => {
     navigate({ pathname: "/games", search: `?search=${encodeURIComponent(query)}` });
@@ -21,7 +24,7 @@ const SearchOverlay = () => {
         <SearchWithDropdown
           className="w-full"
           onSubmit={handleSubmit}
-          initialQuery={initialQuery}
+          initialQuery={currentSearchQuery}
           autoFocus={isOpen}
         />
 

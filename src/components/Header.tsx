@@ -14,7 +14,7 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [ searchParams ] = useSearchParams();
-  const desktopInitialQuery = location.pathname === '/games' ? (searchParams.get('search') ?? '') : '';
+  const currentSearchQuery = location.pathname === '/games' ? (searchParams.get('search') ?? '') : '';
 
   const getNavLinkClass = ({ isActive }: { isActive: boolean }): string => {
     return `relative text-lg flex flex-col justify-start items-center text-center whitespace-nowrap
@@ -49,7 +49,7 @@ const Header = () => {
               className="flex-1 hidden md:block"
               inputClassName="bg-transparent border-primary-100/20 text-grey-50"
               onSubmit={(q) => handleSearchSubmit(q)}
-              initialQuery={desktopInitialQuery}
+              initialQuery={currentSearchQuery}
               hideButton
             />
 
