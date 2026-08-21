@@ -125,13 +125,9 @@ const LibraryControls = ({
               className="shrink-0"/>
             </ListboxButton>
 
-            <ListboxOptions anchor="bottom end"
-              className="p-2 mt-2 w-(--button-width) min-w-40 text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
+            <ListboxOptions anchor="bottom end" className="dropdown-options">
               {gameOverview.platforms.map((item: SelectOption) => (
-                <ListboxOption key={item.id}
-                  value={item}
-                  className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
-                >
+                <ListboxOption key={item.id} value={item} className="dropdown-option">
                   {item.label}
                 </ListboxOption>
               ))}
@@ -144,12 +140,9 @@ const LibraryControls = ({
               className="shrink-0"/>
             </ListboxButton>
 
-            <ListboxOptions anchor="bottom end"
-              className="p-2 mt-2 w-(--button-width) min-w-40 text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
+            <ListboxOptions anchor="bottom end" className="dropdown-options">
               {libraryFormatOptions?.map((item: SelectOption) => (
-                <ListboxOption key={item.id} value={item}
-                  className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
-                >
+                <ListboxOption key={item.id} value={item} className="dropdown-option">
                   {item.label}
                 </ListboxOption>
               ))}
@@ -165,12 +158,9 @@ const LibraryControls = ({
               className="shrink-0"/>
             </ListboxButton>
 
-            <ListboxOptions anchor="bottom end"
-              className="p-2 mt-2 w-(--button-width) min-w-40 text-secondary-900 bg-grey-50 rounded-2xl focus-visible:outline-accent-700">
+            <ListboxOptions anchor="bottom end" className="dropdown-options">
               {libraryStatusOptions?.map((item: SelectOption) => (
-                <ListboxOption key={item.id} value={item}
-                  className="p-2 data-focus:bg-grey-100 data-selected:font-semibold data-selected:bg-purple-100 rounded-lg cursor-pointer"
-                >
+                <ListboxOption key={item.id} value={item} className="dropdown-option">
                   {item.label}
                 </ListboxOption>
               ))}

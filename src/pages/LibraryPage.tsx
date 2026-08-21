@@ -296,7 +296,7 @@ const LibraryPage = () => {
                         <span className="truncate">{selectedSort?.label}</span>
                         <CaretDownIcon weight="bold" className="shrink-0"/>
                       </ListboxButton>
-                      <ListboxOptions anchor="bottom" transition className="dropdown-options primary">
+                      <ListboxOptions anchor="bottom" transition className="dropdown-options">
                         {sortOptions.map((option) => {
                           return (
                             <ListboxOption key={option.id} value={option} className="dropdown-option">
