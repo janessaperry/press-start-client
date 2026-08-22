@@ -157,7 +157,7 @@ const GameResultsPage = () => {
             <div className="space-y-4">
               <section id="game-results-container" className="flex flex-col lg:flex-row md:justify-between gap-4">
                 <div className="hidden md:inline-block">
-                  <h2>{resultsCount} results</h2>
+                  <h2>{resultsCount !== undefined ? resultsCount.toLocaleString() : "Loading"} results</h2>
                 </div>
 
                 <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] md:flex md:justify-between items-center gap-4">
@@ -194,7 +194,7 @@ const GameResultsPage = () => {
                 handleClearAll={handleClearAll}/>
 
               <section className="flex items-center justify-between md:hidden">
-                <h2>{resultsCount} results</h2>
+                <h2>{resultsCount !== undefined ? resultsCount.toLocaleString() : "Loading"} results</h2>
 
                 <div role="group"
                   aria-label="View"

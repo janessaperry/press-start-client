@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import Logomark from "../assets/images/logomark.svg"
 import FeatureShowcase from "../components/FeatureShowcase.tsx";
 
 const HomePage = () => {
   return (
     <>
-      <section className="relative bg-purple-700 space-y-10 overflow-hidden">
+      <section className="bg-purple-700 bg-[url(/src/assets/images/purple-logo-pattern-1280x1024.png)] bg-cover">
         <div className="container px-4 md:px-10 py-12 md:py-24">
           <div className="relative w-full md:w-1/2 space-y-10 z-10">
             <div className="space-y-4">
@@ -20,11 +19,6 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-
-        <img src={Logomark}
-          alt="Logomark"
-          aria-hidden="true"
-          className="absolute top-1/2 -translate-y-1/2 left-0 lg:left-auto lg:-right-10 z-0 h-[140%] object-cover pointer-events-none"/>
       </section>
 
 
