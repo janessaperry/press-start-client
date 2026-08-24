@@ -78,10 +78,9 @@ const GameResultsPage = () => {
       return;
     }
     prevSearch.current = location.search;
-    const el = document.getElementById("game-results-container");
+    const el = document.getElementById("game-results-title");
     if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 140;
-      window.scrollTo({ top, behavior: "smooth" });
+      el.scrollIntoView(true);
     }
   }, [ location.search ]);
 
@@ -155,7 +154,8 @@ const GameResultsPage = () => {
 
           <div className="col-span-2 lg:col-span-3 space-y-4 md:space-y-6">
             <div className="space-y-4">
-              <section id="game-results-container" className="flex flex-col lg:flex-row md:justify-between gap-4">
+              <section id="game-results-title"
+                className="scroll-mt-36 flex flex-col lg:flex-row md:justify-between gap-4">
                 <div className="hidden md:inline-block">
                   <h2>{resultsCount !== undefined ? resultsCount.toLocaleString() : "Loading"} results</h2>
                 </div>

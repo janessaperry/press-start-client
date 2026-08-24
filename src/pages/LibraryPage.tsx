@@ -106,10 +106,9 @@ const LibraryPage = () => {
       return;
     }
     prevSearch.current = location.search;
-    const el = document.getElementById("library-container");
+    const el = document.getElementById("library-results-title");
     if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 20;
-      window.scrollTo({ top, behavior: "smooth" });
+      el.scrollIntoView(true);
     }
   }, [ location.search ]);
 
@@ -168,8 +167,8 @@ const LibraryPage = () => {
           <header>
             <div className="flex items-center gap-4">
               <h1>My Games</h1>
-              <div className="px-4 py-2 bg-accent-300/10 rounded-full">
-                <p className="font-semibold text-accent-300">{libraryTotalCount} games</p>
+              <div className="px-4 py-2 text-accent-300 bg-accent-300/10 flex items-center gap-2 rounded-full">
+                <p className="font-semibold text-sm md:text-base">{libraryTotalCount} games</p>
               </div>
             </div>
           </header>
@@ -180,12 +179,12 @@ const LibraryPage = () => {
 
               return (
                 <div key={count.label} className="flex items-center gap-2">
-                  <div className="p-2 bg-primary-100/10 rounded-full">
+                  <div className="p-1.5 md:p-2 bg-primary-100/10 rounded-full">
                     <Icon className="text-primary-100 icon-md"/>
                   </div>
-                  <div>
-                    <p className="text-lg md:text-xl font-semibold">{count.count}</p>
-                    <p className="text-sm md:text-base text-secondary-100">{count.label}</p>
+                  <div className="leading-none">
+                    <p className="md:text-xl font-semibold">{count.count}</p>
+                    <p className="text-xs md:text-base text-secondary-100">{count.label}</p>
                   </div>
                 </div>
               )
@@ -217,7 +216,8 @@ const LibraryPage = () => {
 
           <div className="col-span-2 lg:col-span-3 space-y-4 lg:space-y-6">
             <div className="space-y-4">
-              <section id="library-container" className="flex flex-col lg:flex-row md:justify-between gap-4">
+              <section id="library-results-title"
+                className="scroll-mt-28 flex flex-col lg:flex-row md:justify-between gap-4">
                 <div className="flex items-baseline justify-between gap-4 lg:block lg:space-y-2">
                   <h2>Library</h2>
                   <h4 className="text-secondary-100">{filteredCount} results</h4>

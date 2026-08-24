@@ -55,7 +55,7 @@ const Pagination = ({ resultsCount, itemsPerPage, className }: Props) => {
             return (
               <Link key={`p-${page}`} to={handleNavigation(page)}
                 aria-current={currentPage === page}
-                className="button ghost muted size-10 md:size-11 md:text-lg aria-current:bg-accent-500/10">
+                className="button ghost muted size-10 md:size-11 md:text-lg aria-current:bg-accent-300/10 aria-current:border-accent-300/40">
                 {page}
               </Link>
             )

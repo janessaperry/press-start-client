@@ -2,7 +2,7 @@ import { SwordIcon } from "@phosphor-icons/react";
 
 const LoadingGamesMessage = () => {
   return (
-    <div className="p-4 flex flex-col items-center gap-6 bg-blue-500/20 border border-accent-300/20 rounded-2xl">
+    <div className="w-full p-4 flex flex-col items-center gap-6">
       <SwordIcon className="text-primary-100  icon-2xl -rotate-45 animate-swing"/>
 
       <div className="space-y-2 text-center">
