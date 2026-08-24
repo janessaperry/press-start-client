@@ -1,11 +1,5 @@
 import { Button, Field, Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
-import {
-  CaretDownIcon,
-  GameControllerIcon,
-  GhostIcon,
-  SlidersIcon,
-  TreasureChestIcon
-} from "@phosphor-icons/react";
+import { CaretDownIcon, GhostIcon, SlidersIcon, TreasureChestIcon } from "@phosphor-icons/react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
@@ -23,7 +17,6 @@ import useFilterSelections from "../hooks/useFilterSelections.ts";
 import useIsMobile from "../hooks/useIsMobile.ts";
 import useLibraryResults from "../hooks/useLibraryResults.ts";
 import { LibraryGame, LibraryStatusEnum, SelectOption } from "../types/common.ts";
-import { getCoverUrl } from "../utils/images.ts";
 import { LIBRARY_STATUS_ICONS } from "../utils/libraryIcons.ts";
 
 const sortOptions = [
@@ -53,7 +46,6 @@ const LibraryPage = () => {
   const {
     libraryGames, setLibraryGames,
     filteredCount, setFilteredCount,
-    currentlyPlaying, setCurrentlyPlaying,
     libraryCounts, setLibraryCounts,
     libraryTotalCount, setLibraryTotalCount,
     isLoading, hasLoaded,
@@ -69,37 +61,19 @@ const LibraryPage = () => {
     setSearchParams(params, { replace: true });
   }
 
-  const onStatusUpdate = (gameId: number, prevLibraryStatus: LibraryStatusEnum, newLibraryStatus: LibraryStatusEnum) => {
+  const onStatusUpdate = (prevLibraryStatus: LibraryStatusEnum, newLibraryStatus: LibraryStatusEnum) => {
     setLibraryCounts(prev => prev.map(countEntry => {
       if (countEntry.enum === prevLibraryStatus) return { ...countEntry, count: countEntry.count - 1 };
       if (countEntry.enum === newLibraryStatus) return { ...countEntry, count: countEntry.count + 1 };
       return countEntry;
     }));
-
-    if (prevLibraryStatus === 'PLAYING') {
-      setCurrentlyPlaying(prev => (
-        prev.filter((game) => game.gameOverview.id !== gameId)
-      ));
-    }
-
-    if (newLibraryStatus === 'PLAYING') {
-      const addedGame = libraryGames.find((game) => game.gameOverview.id === gameId);
-      if (addedGame) {
-        setCurrentlyPlaying(prev => [ ...prev, addedGame ]);
-      }
-    }
   }
 
   const onDelete = (gameId: number, libraryStatus: LibraryStatusEnum) => {
     const newLibraryGames = libraryGames.filter((record: LibraryGame) => record.gameOverview.id !== gameId);
     setLibraryGames(newLibraryGames);
 
-    setCurrentlyPlaying(prev => (
-      prev.filter((libraryGame) => libraryGame.gameOverview.id !== gameId)
-    ));
-
     setLibraryTotalCount(prev => prev - 1);
-
     setLibraryCounts(prev => prev.map(category => (
       category.enum === libraryStatus
         ? { ...category, count: category.count - 1 }
@@ -134,53 +108,10 @@ const LibraryPage = () => {
     prevSearch.current = location.search;
     const el = document.getElementById("library-container");
     if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 110;
+      const top = el.getBoundingClientRect().top + window.scrollY - 20;
       window.scrollTo({ top, behavior: "smooth" });
     }
   }, [ location.search ]);
-
-  const renderCurrentlyPlaying = () => {
-    if (!hasLoaded) {
-      return (
-        <StatusMessage icon={GameControllerIcon} variant="info"
-          title="Gearing up..."
-          message="Fetching your currently playing games."/>
-      );
-    }
-
-    if (libraryTotalCount === 0) {
-      return (
-        <StatusMessage icon={GameControllerIcon} variant="info"
-          title="Ready Player One?"
-          message="Explore games and start your first adventure.">
-          <Link to="/explore" className="button primary">Explore games</Link>
-        </StatusMessage>
-      );
-    }
-
-    if (currentlyPlaying.length === 0) {
-      return (
-        <StatusMessage icon={GameControllerIcon} variant="info"
-          title="No games in progress"
-          message="Update a game's status to Currently Playing and it will appear here."/>
-      );
-    }
-
-    return (
-      <>
-        <h3>Currently Playing</h3>
-        <div className="grid grid-cols-6 gap-2 md:gap-4">
-          {currentlyPlaying.map((game: LibraryGame) => (
-            <article key={game.gameOverview.id} className="col-span-1 space-y-2">
-              <img className="w-full rounded-md md:rounded-xl"
-                src={getCoverUrl(game.gameOverview.coverId)}
-                alt={`${game.gameOverview.name} cover`}/>
-            </article>
-          ))}
-        </div>
-      </>
-    );
-  }
 
   if (error || filterError) return <ErrorPage/>;
 
@@ -234,28 +165,31 @@ const LibraryPage = () => {
     <>
       <div className="container px-4 md:px-10 py-12 md:py-24 space-y-12 md:space-y-16">
         <div className="space-y-4 md:space-y-6 lg:space-y-10">
-          <header className="flex items-center gap-4">
-            <h1 className="">My Games</h1>
+          <header>
+            <div className="flex items-center gap-4">
+              <h1>My Games</h1>
+              <div className="px-4 py-2 bg-accent-300/10 rounded-full">
+                <p className="font-semibold text-accent-300">{libraryTotalCount} games</p>
+              </div>
+            </div>
           </header>
 
-          <div className="flex flex-col md:flex-row gap-4 md:gap-10">
-            <section className="md:w-1/4 space-y-2 text-secondary-200">
-              <h4 className="text-secondary-100">Overview • {libraryTotalCount} Games</h4>
-              <ul className="space-y-1">
-                {libraryCounts.map(count => {
-                  const Icon = LIBRARY_STATUS_ICONS[count.enum];
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 md:gap-6">
+            {libraryCounts.map(count => {
+              const Icon = LIBRARY_STATUS_ICONS[count.enum];
 
-                  return <li key={count.label} className="flex justify-between gap-2">
-                    <span className="flex items-center gap-1.5"><Icon className="text-secondary-100"/> {count.label}</span>
-                    <span>{count.count}</span>
-                  </li>
-                })}
-              </ul>
-            </section>
-
-            <section className="md:w-3/4 p-4 space-y-4 md:p-6 border border-accent-300/20 rounded-2xl">
-              {renderCurrentlyPlaying()}
-            </section>
+              return (
+                <div key={count.label} className="flex items-center gap-2">
+                  <div className="p-2 bg-primary-100/10 rounded-full">
+                    <Icon className="text-primary-100 icon-md"/>
+                  </div>
+                  <div>
+                    <p className="text-lg md:text-xl font-semibold">{count.count}</p>
+                    <p className="text-sm md:text-base text-secondary-100">{count.label}</p>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
 
@@ -283,9 +217,11 @@ const LibraryPage = () => {
 
           <div className="col-span-2 lg:col-span-3 space-y-4 lg:space-y-6">
             <div className="space-y-4">
-              <section id="library-container"
-                className="flex flex-col lg:flex-row md:justify-between gap-4">
-                <h2>Library</h2>
+              <section id="library-container" className="flex flex-col lg:flex-row md:justify-between gap-4">
+                <div className="flex items-baseline justify-between gap-4 lg:block lg:space-y-2">
+                  <h2>Library</h2>
+                  <h4 className="text-secondary-100">{filteredCount} results</h4>
+                </div>
 
                 <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] md:flex md:justify-between items-center gap-4">
                   <Field className="contents md:grow-0 md:flex items-center gap-2">

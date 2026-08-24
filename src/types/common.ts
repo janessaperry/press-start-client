@@ -122,7 +122,7 @@ export type GameDetails = {
 //******** LIBRARY TYPES ********//
 //*******************************//
 
-export type LibraryStatusEnum = 'WANT_TO_PLAY' | 'PLAYING' | 'PLAYED' | 'ON_PAUSE' | 'WISHLIST';
+export type LibraryStatusEnum = 'WANT_TO_PLAY' | 'PLAYING' | 'PLAYED' | 'ON_PAUSE' | 'PLAY_ANYTIME' | 'WISHLIST';
 export type LibraryFormatEnum = 'DIGITAL' | 'PHYSICAL';
 export type LibraryGame = {
   libraryStatus: LibraryStatusOption;

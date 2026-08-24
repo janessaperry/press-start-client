@@ -20,7 +20,7 @@ const useLibraryGame = (
   gameId: number,
   initialData?: InitialData,
   onDelete?: (gameId: number, libraryStatus: LibraryStatusEnum) => void,
-  onStatusUpdate?: (gameId: number, prevLibraryStatus: LibraryStatusEnum, newLibraryStatus: LibraryStatusEnum) => void,
+  onStatusUpdate?: (prevLibraryStatus: LibraryStatusEnum, newLibraryStatus: LibraryStatusEnum) => void,
 ) => {
   const { userId } = useAuth();
 
@@ -118,7 +118,7 @@ const useLibraryGame = (
         const prevStatusEnum = selectedStatus.enum;
         const newStatusEnum = updatedField.libraryStatus!.enum;
         if (prevStatusEnum && newStatusEnum && prevStatusEnum !== newStatusEnum && onStatusUpdate !== undefined) {
-          onStatusUpdate(gameId, prevStatusEnum, newStatusEnum)
+          onStatusUpdate(prevStatusEnum, newStatusEnum)
         }
       }
     }

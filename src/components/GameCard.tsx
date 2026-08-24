@@ -34,7 +34,7 @@ type GameCardProps = {
   libraryFormatOptions?: SelectOption[];
   libraryStatusOptions?: SelectOption[];
   onDelete?: (gameId: number, libraryStatus: LibraryStatusEnum) => void;
-  onStatusUpdate?: (gameId: number, prevLibraryStatus: LibraryStatusEnum, newLibraryStatus: LibraryStatusEnum) => void;
+  onStatusUpdate?: (prevLibraryStatus: LibraryStatusEnum, newLibraryStatus: LibraryStatusEnum) => void;
 } & ComponentProps<'a'>
 
 const GameCard = ({

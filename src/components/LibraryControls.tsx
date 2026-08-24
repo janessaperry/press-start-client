@@ -19,7 +19,7 @@ type Props = {
   libraryFormatOptions?: SelectOption[];
   libraryStatusOptions?: SelectOption[];
   onDelete?: (gameId: number, libraryStatus: LibraryStatusEnum) => void;
-  onStatusUpdate?: (gameId: number, prevLibraryStatus: LibraryStatusEnum, newLibraryStatus: LibraryStatusEnum) => void;
+  onStatusUpdate?: (prevLibraryStatus: LibraryStatusEnum, newLibraryStatus: LibraryStatusEnum) => void;
   showTitle?: boolean;
 }
 
@@ -27,11 +27,8 @@ const JUST_ADDED_DURATION = 1500;
 
 const LibraryControls = ({
   gameOverview,
-  libraryData,
-  libraryFormatOptions,
-  libraryStatusOptions,
-  onDelete,
-  onStatusUpdate,
+  libraryData, libraryFormatOptions, libraryStatusOptions,
+  onDelete, onStatusUpdate,
   showTitle = false,
 }: Props) => {
   const [ justAdded, setJustAdded ] = useState(false);

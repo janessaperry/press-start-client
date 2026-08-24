@@ -1,4 +1,4 @@
-import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import { GameControllerIcon, Icon as PhosphorIcon } from "@phosphor-icons/react";
 import {
   BookmarkSimpleIcon,
   PlayCircleIcon,
@@ -13,5 +13,6 @@ export const LIBRARY_STATUS_ICONS: Record<LibraryStatusEnum, PhosphorIcon> = {
   PLAYING: PlayCircleIcon,
   PLAYED: CheckCircleIcon,
   ON_PAUSE: PauseCircleIcon,
+  PLAY_ANYTIME: GameControllerIcon,
   WISHLIST: ListHeartIcon,
 };
