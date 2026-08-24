@@ -1,3 +1,4 @@
+import { Button } from "@headlessui/react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useSearchOverlay } from "../context/SearchOverlayContext.tsx";
 import SearchWithDropdown from "./SearchWithDropdown.tsx";
@@ -15,23 +16,24 @@ const SearchOverlay = () => {
   };
 
   return (
-    <div className={`md:hidden fixed top-0 left-0 right-0 h-dvh z-50 flex flex-col transition-opacity duration-300
+    <div className={`md:hidden fixed inset-0 z-50 flex flex-col
       ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
 
       <div className="absolute inset-0 bg-secondary-900/80 backdrop-blur-sm" onClick={closeSearch}/>
 
-      <div className="relative flex p-4 pt-8 gap-4">
+      <div className="p-4 pt-8 relative">
         <SearchWithDropdown
-          className="grow"
+          className="w-full"
+          inputClassName="mr-22"
           onSubmit={handleSubmit}
           initialQuery={currentSearchQuery}
           autoFocus={isOpen}
           hideButton
         />
 
-        <button onClick={closeSearch} className="button ghost">
+        <Button onClick={closeSearch} className="button ghost muted absolute right-4 top-8">
           Cancel
-        </button>
+        </Button>
       </div>
     </div>
   );

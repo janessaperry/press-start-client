@@ -123,6 +123,7 @@ const SearchWithDropdown = ({
             </Button>
           )}
         </form>
+
         {isDropdownOpen && (
           <div className="absolute top-full left-0 right-0 mt-4 z-50">
             <SearchResultsDropdown results={searchResults}

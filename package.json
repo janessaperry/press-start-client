@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.9",
     "@phosphor-icons/react": "^2.1.10",
+    "@react-aria/overlays": "^3.32.1",
     "@tailwindcss/vite": "^4.1.13",
     "axios": "^1.9.0",
     "embla-carousel-react": "^8.6.0",

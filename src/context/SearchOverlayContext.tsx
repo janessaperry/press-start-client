@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from "react";
+import { usePreventScroll } from "@react-aria/overlays";
 
 type SearchOverlayContextType = {
   isOpen: boolean;
@@ -13,6 +14,8 @@ export const SearchOverlayProvider = ({ children }: { children: ReactNode }) => 
 
   const openSearch = () => setIsOpen(true);
   const closeSearch = () => setIsOpen(false);
+
+  usePreventScroll({ isDisabled: !isOpen });
 
   return (
     <SearchOverlayContext.Provider value={{ isOpen, openSearch, closeSearch }}>
