@@ -4,6 +4,7 @@ import { EmblaCarouselType } from 'embla-carousel'
 import { CaretLeftIcon, CaretRightIcon, CircleIcon, GhostIcon } from "@phosphor-icons/react";
 import { getScreenshotUrl } from "../utils/images.ts";
 import ButtonIcon from "./ButtonIcon.tsx";
+import ScreenshotLightbox from "./ScreenshotLightbox.tsx";
 
 type Props = {
   gameTitle: string,
@@ -16,6 +17,12 @@ const ImageCarousel = ({ gameTitle, imageIds }: Props) => {
     slidesToScroll: 1,
     loop: true
   })
+
+  const [ lightboxImageId, setLightboxImageId ] = useState<string | null>(null);
+
+  const handleImageClick = (id: string) => {
+    setLightboxImageId(id);
+  }
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -78,19 +85,24 @@ const ImageCarousel = ({ gameTitle, imageIds }: Props) => {
           {imageIds.map(id => {
               return (
                 <div key={`screenshot-${id}`} className="flex-[0_0_86%] min-w-0 pl-4">
-                  <img src={getScreenshotUrl(id)}
-                    alt={`Gameplay screenshots for ${gameTitle}`}
-                    className="w-full rounded-2xl"/>
+                  <button type="button" onClick={() => handleImageClick(id)} tabIndex={-1} className="block w-full p-0">
+                    <img src={getScreenshotUrl(id)}
+                      alt={`Gameplay screenshots for ${gameTitle}`}
+                      className="w-full rounded-2xl"/>
+                  </button>
                 </div>
               )
-            }
-          )}
+          })}
         </div>
 
         {/* gradient overlay */}
         <span className="block absolute top-0 right-0 h-full w-1/5 bg-linear-to-r from-blue-900/0 to-blue-900/60"
           aria-hidden="true"></span>
       </div>
+
+      <ScreenshotLightbox imageId={lightboxImageId}
+        alt={`Gameplay screenshot for ${gameTitle}`}
+        onClose={() => setLightboxImageId(null)}/>
     </div>
   )
 }
