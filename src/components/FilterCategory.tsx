@@ -9,27 +9,30 @@ type SelectOption = {
 }
 
 type Props = {
-  title: string,
-  showTitle?: boolean,
-  description?: string,
-  filters: SelectOption[],
-  selectedFilters: number[],
-  paramName: keyof SelectedFilters,
-  handleChange: (id: string) => void
+  title: string;
+  showTitle?: boolean;
+  description?: string;
+  showAllFilters?: boolean;
+  filters: SelectOption[];
+  selectedFilters: number[];
+  paramName: keyof SelectedFilters;
+  handleChange: (id: string) => void;
 }
 
 const FilterCategory = ({
   title,
   showTitle = true,
   description,
+  showAllFilters = false,
   filters,
   selectedFilters,
   paramName,
   handleChange
 }: Props) => {
-  const [ showAllFilters, setShowAllFilters ] = useState(false);
-  const visibleFilters = filters.slice(0, 5);
-  const hiddenFilters = filters.slice(5);
+  const [ showMore, setShowMore ] = useState(false);
+  const visibleFilters = showAllFilters ? filters : filters.slice(0, 5);
+  const hiddenFilters = showAllFilters ? [] : filters.slice(5);
+
 
   return (
     <>
@@ -41,10 +44,9 @@ const FilterCategory = ({
           </Legend>
         }
         <div className="space-y-1">
-          {visibleFilters.map((item: SelectOption, i) => {
+          {visibleFilters.map((item: SelectOption) => {
             return (
-              <Field key={item.id}
-                className={`flex gap-2 checkbox-field ${!showAllFilters && i >= 5 ? "max-h-0 overflow-hidden" : "max-h-20"} transition-all duration-1000`}>
+              <Field key={item.id} className="flex items-center md:items-start gap-2 checkbox-field">
                 <Checkbox className="group checkbox-input"
                   checked={selectedFilters.includes(item.id)}
                   onChange={() => handleChange(`${paramName}-${item.id}`)}>
@@ -57,12 +59,11 @@ const FilterCategory = ({
 
           {hiddenFilters.length > 0 &&
             <>
-              <div className={`grid ${showAllFilters ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'} transition-[grid-template-rows] duration-500 overflow-hidden`}>
+              <div className={`grid ${showMore ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'} transition-[grid-template-rows] duration-500 overflow-hidden`}>
                 <div className="space-y-1 min-h-0">
                   {hiddenFilters.map(item => {
                     return (
-                      <Field key={item.id}
-                        className="flex gap-2 checkbox-field">
+                      <Field key={item.id} className="flex gap-2 checkbox-field">
                         <Checkbox className="group checkbox-input"
                           checked={selectedFilters.includes(item.id)}
                           onChange={() => handleChange(`${paramName}-${item.id}`)}>
@@ -75,9 +76,8 @@ const FilterCategory = ({
                 </div>
               </div>
 
-              <Button className="link-neutral no-underline"
-                onClick={() => setShowAllFilters(!showAllFilters)}>
-                {showAllFilters ? 'Show less' : 'Show more'}
+              <Button className="link-neutral no-underline" onClick={() => setShowMore(!showMore)}>
+                {showMore ? 'Show less' : 'Show more'}
               </Button>
             </>
           }

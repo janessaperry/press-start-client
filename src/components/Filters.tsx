@@ -31,10 +31,10 @@ const Filters = ({
   } = filterCategories;
 
   return (
-    <section className={`${className || ''} p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl space-y-4 md:space-y-6 scrollbar-on-dark`}>
+    <section className={`${className ?? ''} p-4 bg-blue-500/50 border border-accent-300/20 rounded-2xl space-y-4 md:space-y-6 scrollbar-on-dark`}>
       <h4>Filters</h4>
       {isLibrary && libraryStatus && (
-        <FilterCategory title="Play Status"
+        <FilterCategory title="Play Status" showAllFilters={true}
           filters={libraryStatus}
           selectedFilters={selectedFilters.libraryStatus}
           paramName='libraryStatus'
@@ -48,7 +48,6 @@ const Filters = ({
           paramName='libraryFormat'
           handleChange={handleFilterChange}/>
       )}
-
 
       {gameType && (
         // show all filter options if on the library page or have a search query, else hide Main Game (id = 0)
