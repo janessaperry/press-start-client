@@ -97,7 +97,8 @@
 
   /* Animations */
   --animate-swing: swing 2s ease-in-out infinite;
-  --animate-slide-in-left: slide-in-left 0.4s ease-out;
+  --animate-slide-in-left: slide-in-left 0.4s cubic-bezier(0.3, 1.5, 0.6, 1);
+  --animate-pop-in: pop-in 0.2s cubic-bezier(0.3, 1.5, 0.6, 1);
 
   @keyframes swing {
     0%, 100% {
@@ -112,11 +113,22 @@
   @keyframes slide-in-left {
     from {
       opacity: 0;
-      transform: translateX(12px);
+      transform: translateX(12px) scale(0);
     }
     to {
       opacity: 1;
-      transform: translateX(0);
+      transform: translateX(0) scale(1);
+    }
+  }
+
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 }

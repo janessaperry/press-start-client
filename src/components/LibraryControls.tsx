@@ -23,7 +23,7 @@ type Props = {
   showTitle?: boolean;
 }
 
-const JUST_ADDED_DURATION = 1500;
+const JUST_ADDED_DURATION = 1250;
 
 const LibraryControls = ({
   gameOverview,
@@ -114,9 +114,7 @@ const LibraryControls = ({
 
       <form className="flex flex-col gap-2 md:gap-4">
         <div className="flex gap-2">
-          <Listbox value={selectedPlatform}
-            onChange={(value) => onPlatformChange(value)}
-            by="id">
+          <Listbox value={selectedPlatform} onChange={(value) => onPlatformChange(value)} by="id">
             <ListboxButton className="flex-1 min-w-0 button ghost justify-between">
               <span className="truncate">{selectedPlatform.label}</span> <CaretDownIcon weight="bold"
               className="shrink-0"/>
@@ -148,8 +146,7 @@ const LibraryControls = ({
         </div>
 
         <div className="flex">
-          <Listbox value={selectedStatus}
-            onChange={(value) => onStatusChange(value)} by="id">
+          <Listbox value={selectedStatus} onChange={(value) => onStatusChange(value)} by="id">
             <ListboxButton className="button primary justify-between grow min-w-0">
               <span className="truncate">{selectedStatus.label}</span> <CaretDownIcon weight="bold"
               className="shrink-0"/>
@@ -165,13 +162,13 @@ const LibraryControls = ({
           </Listbox>
 
 
-          <div className={`grid ${inLibrary ? 'ml-2 grid-cols-[1fr]' : 'grid-cols-[0fr]'} transition-[grid-template-columns] duration-500`}>
-            <div className="overflow-hidden min-w-0">
+          <div className={`grid ${inLibrary ? 'ml-2 grid-cols-[1fr]' : 'grid-cols-[0fr]'} transition-[grid-template-columns] duration-200`}>
+            <div className="min-w-0">
               <div className="relative">
-                <div className={`p-2.5 flex items-center bg-success text-success-900 rounded-full transition-opacity duration-500 ${justAdded ? 'opacity-100 animate-slide-in-left' : 'opacity-0 pointer-events-none'}`}>
-                  <CheckIcon className="icon-md"/>
+                <div className={`p-2.5 flex items-center bg-success text-success-900 rounded-full transition-opacity duration-100 ${justAdded ? 'opacity-100 animate-slide-in-left' : 'opacity-0 pointer-events-none'}`}>
+                  <CheckIcon className="icon-md shrink"/>
                 </div>
-                <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${inLibrary && !justAdded ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-100 ${inLibrary && !justAdded ? 'opacity-100 animate-pop-in' : 'opacity-0 pointer-events-none'}`}>
                   <ButtonIcon handleClick={handleDelete} icon={TrashSimpleIcon} variant="danger" type="button"/>
                 </div>
               </div>
