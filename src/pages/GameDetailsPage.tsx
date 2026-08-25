@@ -71,44 +71,47 @@ const GameDetailsPage = () => {
   return (
     <>
       <div className="md:px-4 py-6 md:py-20 bg-purple-700">
-        <section className="md:container md:mx-auto p-4 md:p-12 bg-primary-500 flex flex-col md:flex-row gap-6 md:gap-12 md:rounded-4xl">
-          <div className="md:basis-1/4 flex flex-col items-stretch gap-3 md:gap-4">
+        <section className="md:container md:mx-auto p-4 md:p-6 lg:p-12 bg-primary-500 flex flex-col md:flex-row gap-6 lg:gap-12 md:rounded-4xl">
+          <div className="md:basis-1/4">
             <img src={getCoverUrl(gameDetails.coverId)} alt={`${gameDetails.name} cover art`}
-              className="self-center rounded-2xl max-w-1/2 w-full md:max-w-none"/>
-
-            <figure className={`flex ${gameDetails.esrbDescriptions.length > 0 ? 'items-start' : 'items-center'} gap-2 md:gap-3`}>
-              <img src={getEsrbThumbnailUrl(gameDetails.esrbThumbnailId)} alt={`ESRB Rating: ${gameDetails.esrbRating}`}
-                className="w-6 rounded-xs"/>
-
-              <figcaption className="leading-none">
-                <p className="text-sm leading-none font-semibold">{gameDetails.esrbRating}</p>
-                {gameDetails.esrbDescriptions.length > 0 &&
-                  <span className="text-xs leading-none italic">
-                    {gameDetails.esrbDescriptions.join(", ")}
-                  </span>
-                }
-              </figcaption>
-            </figure>
+              className="mx-auto rounded-2xl max-w-1/2 w-full md:max-w-none"/>
           </div>
 
           <div className="md:basis-3/4 space-y-10">
-            <div className="flex items-start gap-10">
+            <div className="flex items-start gap-4 md:gap-8 lg:gap-10">
               <div className="grow space-y-3">
-                <h1>{gameDetails.name}</h1>
+                <h1 className="text-3xl md:text-4xl lg:text-5xl">{gameDetails.name}</h1>
 
-                <div className="text-secondary-100 flex items-center gap-2">
-                  {gameDetails.publishers.length > 0 && (
-                    <>
-                      <p>{gameDetails.publishers[0]}</p>
-                      <CircleIcon weight="fill" size="6"/>
-                    </>
+                <div className="w-full text-secondary-100 flex items-center gap-x-4 gap-y-2 flex-wrap">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {gameDetails.publishers.length > 0 && (
+                      <>
+                        <p>{gameDetails.publishers[0]}</p>
+                        <CircleIcon weight="fill" size="6"/>
+                      </>
+                    )}
+                    <p>{formatReleaseYear(gameDetails.releaseDate)}</p>
+                  </div>
+
+                  {gameDetails.gameType.id !== 0 && (
+                    <BadgeText label={gameDetails.gameType.label}/>
                   )}
-                  <p>{formatReleaseYear(gameDetails.releaseDate)}</p>
                 </div>
 
-                {gameDetails.gameType.id !== 0 && (
-                  <BadgeText label={gameDetails.gameType.label}/>
-                )}
+                <figure className={`flex ${gameDetails.esrbDescriptions.length > 0 ? 'items-start' : 'items-center'} gap-2 md:gap-3`}>
+                  <img src={getEsrbThumbnailUrl(gameDetails.esrbThumbnailId)}
+                    alt={`ESRB Rating: ${gameDetails.esrbRating}`}
+                    className="w-6 rounded-xs"/>
+
+                  <figcaption className="leading-none">
+                    <p className="text-sm leading-none font-semibold">{gameDetails.esrbRating}</p>
+                    {gameDetails.esrbDescriptions.length > 0 && (
+                      <span className="text-xs leading-none italic">
+                        {gameDetails.esrbDescriptions.join(", ")}
+                      </span>
+                    )}
+                  </figcaption>
+                </figure>
               </div>
 
               <BadgeNumber label={gameDetails.totalRating !== null ? String(Math.round(gameDetails.totalRating)) : 'n/a'}

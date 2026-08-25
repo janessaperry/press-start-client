@@ -60,7 +60,7 @@
   }
 
   .checkbox-label {
-    @apply cursor-pointer;
+    @apply py-0.5 md:py-0 cursor-pointer;
   }
 
   .dropdown-options {
