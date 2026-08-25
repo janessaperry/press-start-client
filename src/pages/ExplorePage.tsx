@@ -54,8 +54,9 @@ const ExplorePage = () => {
         <section className="flex flex-col gap-4 md:gap-6">
           <div className="contents md:flex items-end justify-between gap-4">
             <h2>Explore by platform</h2>
-            <Link to="/games" className="order-2 link-primary md:text-lg flex items-center gap-2 whitespace-nowrap">Explore
-              All Games <ArrowRightIcon className="icon-sm"/></Link>
+            <Link to="/games" className="order-2 link-primary md:text-lg flex items-center gap-2 whitespace-nowrap">
+              Explore All Games <ArrowRightIcon className="icon-sm"/>
+            </Link>
           </div>
           <div className="order-1 grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6">
             <Link to="/explore/xbox" className="flex items-center justify-center py-6 px-4 bg-primary-300 rounded-xl">
@@ -77,14 +78,26 @@ const ExplorePage = () => {
 
         {newRelease &&
           <section className="space-y-2">
-            <h2>New Releases</h2>
+            <div className="flex items-end justify-between gap-4">
+              <h2>New Releases</h2>
+              <Link to="/games?releaseDate=1"
+                className="order-2 link-primary md:text-lg flex items-center gap-2 whitespace-nowrap">
+                See all <ArrowRightIcon className="icon-sm"/>
+              </Link>
+            </div>
             <GameCarousel games={newRelease}/>
           </section>
         }
 
         {comingSoon &&
           <section className="space-y-2">
-            <h2>Coming Soon</h2>
+            <div className="flex items-end justify-between gap-4">
+              <h2>Coming Soon</h2>
+              <Link to="/games?releaseDate=2"
+                className="order-2 link-primary md:text-lg flex items-center gap-2 whitespace-nowrap">
+                See all <ArrowRightIcon className="icon-sm"/>
+              </Link>
+            </div>
             <GameCarousel games={comingSoon}/>
           </section>
         }

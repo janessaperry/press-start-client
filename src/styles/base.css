@@ -94,7 +94,7 @@
   }
 
   /* Inputs */
-  input[type="text"], input[type="password"], input[type="search"] {
+  input[type="text"], input[type="password"], input[type="email"], input[type="search"] {
     @apply px-4 py-2 rounded-full
     text-secondary-900
     bg-grey-100

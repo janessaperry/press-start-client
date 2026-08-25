@@ -10,7 +10,7 @@ type Props = {
 const FilterChip = ({ chipId, label, handleChange }: Props) => {
   return (
     <li id={chipId}
-      className="py-1 pl-3 pr-1 flex items-center gap-1 text-primary border border-primary-300 rounded-full">
+      className="shrink-0 py-1 pl-3 pr-1 flex items-center gap-1 text-primary border border-primary-300 rounded-full">
       {label}
       <button onClick={() => handleChange(chipId, true)}
         className="p-1 hover:bg-danger-500 hover:text-danger-50 focus-visible:outline-2 focus-visible:outline-danger-500 rounded-full">

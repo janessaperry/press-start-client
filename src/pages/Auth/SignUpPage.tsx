@@ -100,7 +100,7 @@ const SignUpPage = () => {
       <p>Already have an account? <Link to="/sign-in"
         className="link-primary">Sign in</Link></p>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-8">
         <h1>Sign up</h1>
 
         {authError && (
@@ -121,6 +121,7 @@ const SignUpPage = () => {
             id="email"
             label="Email address"
             placeholder="email@example.com"
+            type="email"
             required={true}
             errorMessage={formErrors.email}
             value={formData.email}

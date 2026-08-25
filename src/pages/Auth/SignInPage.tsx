@@ -88,7 +88,7 @@ const SignInPage = () => {
   return (
     <section className="bg-primary-700 flex-1 px-4 md:px-10 py-12 flex flex-col gap-4">
       <p>Don't have an account? <Link to="/sign-up" className="link-primary">Sign up</Link></p>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-8">
         <h1>Sign in</h1>
 
         {authError && (
@@ -105,6 +105,7 @@ const SignInPage = () => {
           <TextInput id="email"
             label="Email address"
             placeholder="email@example.com"
+            type="email"
             required={true}
             errorMessage={formErrors.email}
             value={formData.email}

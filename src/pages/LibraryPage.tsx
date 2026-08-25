@@ -165,9 +165,10 @@ const LibraryPage = () => {
       <div className="container px-4 md:px-10 py-12 md:py-24 space-y-12 md:space-y-16">
         <div className="space-y-4 md:space-y-6 lg:space-y-10">
           <header>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between md:justify-start gap-4 md:gap-8">
               <h1>My Games</h1>
               <div className="px-4 py-2 text-accent-300 bg-accent-300/10 flex items-center gap-2 rounded-full">
+                <TreasureChestIcon className="icon-sm" weight="fill"/>
                 <p className="font-semibold text-sm md:text-base">{libraryTotalCount} games</p>
               </div>
             </div>

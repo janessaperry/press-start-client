@@ -155,7 +155,7 @@ const GameResultsPage = () => {
           <div className="col-span-2 lg:col-span-3 space-y-4 md:space-y-6">
             <div className="space-y-4">
               <section id="game-results-title"
-                className="scroll-mt-36 flex flex-col lg:flex-row md:justify-between gap-4">
+                className="scroll-mt-32 flex flex-col lg:flex-row md:justify-between gap-4">
                 <div className="hidden md:inline-block">
                   <h2>{resultsCount !== undefined ? resultsCount.toLocaleString() : "Loading"} results</h2>
                 </div>
