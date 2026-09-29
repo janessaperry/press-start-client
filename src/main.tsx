@@ -1,11 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import LogRocket from 'logrocket'
+import { isbot } from 'isbot'
 import { AuthProvider } from "./context/AuthProvider.tsx";
 import App from './App.tsx'
 import './styles/index.css'
 
-if (import.meta.env.PROD) {
+if (import.meta.env.PROD && !isbot(navigator.userAgent)) {
   LogRocket.init(import.meta.env.VITE_LOGROCKET_ID)
 }
 

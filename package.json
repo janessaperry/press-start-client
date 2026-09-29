@@ -17,6 +17,7 @@
     "axios": "^1.9.0",
     "embla-carousel-react": "^8.6.0",
     "eslint-plugin-react": "^7.37.5",
+    "isbot": "^5.2.2",
     "lodash": "^4.17.23",
     "logrocket": "^12.1.1",
     "react": "^19.2.1",
